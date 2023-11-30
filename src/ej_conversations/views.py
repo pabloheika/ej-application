@@ -186,7 +186,6 @@ class ConversationCreateView(CreateView):
 
     def post(self, request, board_slug, *args, **kwargs):
         form = self.form_class(request=request)
-        kwargs.setdefault("is_promoted", True)
         kwargs["board"] = self.get_board()
 
         if form.is_valid_post():
