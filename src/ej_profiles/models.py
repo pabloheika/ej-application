@@ -230,7 +230,7 @@ class Profile(models.Model):
         # Fetch all conversations the user created
         created = self.user.conversations.cache_annotations(
             "first_tag", "n_user_votes", "n_comments", user=self.user
-        )
+        ).order_by("-created")
 
         # Fetch voted conversations
         # This code merges in python 2 querysets. The first is annotated with

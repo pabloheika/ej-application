@@ -188,7 +188,7 @@ class ConversationCreateView(CreateView):
         form = self.form_class(request=request)
         kwargs["board"] = self.get_board()
 
-        if form.is_valid_post():
+        if form.is_valid():
             with transaction.atomic():
                 conversation = form.save_comments(self.request.user, **kwargs)
 

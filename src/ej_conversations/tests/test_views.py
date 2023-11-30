@@ -316,7 +316,7 @@ class TestConversationCreate(ConversationSetup):
         assert response.url == "/userboard/conversations/1/whatever/"
 
         conversation = Conversation.objects.first()
-        assert conversation.is_promoted
+        assert conversation.is_promoted == False
         assert conversation.board == base_board
 
     def test_user_should_not_create_conversation_on_another_users_board(self, base_board, base_user):

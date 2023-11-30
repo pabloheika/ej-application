@@ -99,11 +99,11 @@ class Conversation(HasFavoriteMixin, TimeStampedModel):
         """
         checks if conversation is a available for participation.
         """
-        if self.end_date and datetime.today().date() > self.end_date:
-            self.is_hidden, self.is_promoted = [True, False]
-        else:
-            self.is_hidden, self.is_promoted = [False, True]
 
+        def end_date_is_bigger_then_today():
+            return self.end_date and datetime.today().date() > self.end_date
+
+        self.is_hidden = True if end_date_is_bigger_then_today() else False
         self.save()
 
     @property

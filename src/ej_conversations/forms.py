@@ -61,11 +61,7 @@ class ConversationForm(EjModelForm):
 
     class Meta:
         model = Conversation
-        fields = ["title", "text", "is_promoted", "anonymous_votes_limit", "start_date", "end_date"]
-        help_texts = {
-            "is_promoted": _("Place conversation in the main /conversations/ URL."),
-            "is_hidden": _("Mark to make the conversation invisible."),
-        }
+        fields = ["title", "text", "anonymous_votes_limit", "start_date", "end_date"]
         widgets = {"start_date": ConversationDateWidget, "end_date": ConversationDateWidget}
 
     def __init__(self, *args, **kwargs):
