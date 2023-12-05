@@ -19,7 +19,7 @@ The following instructions works properly with compose plugin version `v2.21.0` 
 
 **3. Run inv tasks**
 
-    $ pip3 install invoke==2.0.0 --user
+    $ pip3 install invoke==2.0.0 django-environ --user
     $ inv docker-build
     $ inv docker-up
 
