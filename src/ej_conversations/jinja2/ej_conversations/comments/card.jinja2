@@ -42,10 +42,10 @@
                 <span>{{_("Thank you for your participation!") }}</span>
             </div>
         {% endif %}
-        <span class="privacy-policy__title">{{_("Questions about privacy?")}}<a onclick="togglePrivacyBox()">{{_("Understand how your data is used")}}</a></span>
+        <span class="privacy-policy__title privacy-policy--margin">{{_("Questions about privacy?")}}<a onclick="togglePrivacyBox()">{{_("Understand how your data is used")}}</a></span>
         <div id="privacy-box" class="hide">
             <div class="privacy-policy__text">{{ privacy_policy }}</div>
-            <a class="privacy-policy__close-button" onclick="togglePrivacyBox()">{{_("close")}}</a>
+            <a class="privacy-policy__close-button privacy-policy--margin" onclick="togglePrivacyBox()">{{_("close")}}</a>
         </div>
     </div>
 </div>
