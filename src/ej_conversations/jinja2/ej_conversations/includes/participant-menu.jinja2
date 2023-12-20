@@ -2,7 +2,12 @@
     <h1 class="participant-menu__welcome-title participant-menu__item participant-menu__item--margin">{{_("Welcome, ")}} </h1>
     <h1 class="participant-menu__welcome-title participant-menu__item">{{request.user.name}}!</h1>
 
-    <a id="home" href="{{ url("profile:home") }}" class="participant-menu__home-link">Home</a>
+    <a id="home" class="participant-menu__home-link"
+    hx-get="{{ url("profile:home") }}"
+                hx-target="#home-content"
+                hx-swap="outerHTML"
+                hx-params="load-home"
+    >Home</a>
 
     <h3 class="participant-menu__item">
         {{ _('My Boards') }}

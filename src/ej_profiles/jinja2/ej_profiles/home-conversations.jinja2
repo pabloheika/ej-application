@@ -1,0 +1,95 @@
+{% from "ej_profiles/includes/search-filter.jinja2" import search_filter %}
+
+{% macro render_conversations(conversations) %}
+    {% if not conversations %}
+        <p class="contribution_votes__message">{{_("You haven't voted in any conversations yet.")}}</p>
+    {% endif %}
+    {% for conversation in conversations %}
+        <div id="current-votes">
+            {{ conversation|role('summary') }}
+            {{ conversation|role('user-home-progress', user=user) }}
+            <hr>
+        </div>
+    {% endfor %}
+{% endmacro %}
+
+{% macro render_comments(comments) %}
+    {% if not comments %}
+        <p class="contribution_votes__message">{{_("You haven't commented in any conversations yet.")}}</p>
+    {% else %}
+        <p class="contributions_comments__message">
+            {{_("Comments you've submitted for approval in third-party conversations, in descending date order")}}
+        </p>
+        {% include 'ej_profiles/includes/comments-tags-filter.jinja2' %}
+        <div id="comments-current-cards">
+            {% for comment in comments %}
+                {{ comment|role('summary') }}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endmacro %}
+
+<div id="home-content">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <h2 class="text-accent">{{ _('Conversations') }}</h2>
+
+    <div class="home-tabs">
+        <div class="home-tabs__add">
+            <i class="fa fa-plus-square fa-lg"></i>
+            <a title="{{_('New conversation')}}"
+                href="{{ url('boards:conversation-create', board_slug=user_boards.first().slug) }}">
+                {{_('Create new')}}
+            </a>
+        </div>
+        {{ tabs({
+            _('Public Conversations'): '#public-conversations',
+            _('My conversations'): '#my-conversations',
+            _('Votes'): '#contribution-votes',
+            _('Comments'): '#contribution-comments'}, class_='width-full') }}
+    </div>
+
+    <div id="public-conversations">
+        <p class="contribution_votes__message">
+            {{_("List of conversations created by EJ community and available for participation.")}}
+        </p>
+        {{ search_filter(all_tags, participated_tags, "public", has_filtered_tag, host, "is_promoted") }}
+
+        <div class="alternate-cards" id="public-current-cards">
+            {% for conversation in public_conversations %}
+                <div class="margin-y3">{{ conversation|role('card', button_text=_("Participate")) }}</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="my-conversations" class="my_conversations">
+        {% if created_conversations %}
+            <p class="contribution_votes__message">{{_("List of conversations created by you.")}}</p>
+            {{ search_filter(my_tags, my_tags, "my", has_filtered_tag, host, "is_author") }}
+        {% else %}
+            <p class="my_conversations__message">{{_("You have not created any conversations.")}}</p>
+        {% endif %}
+        <div class="alternate-cards" id="my-current-cards">
+
+            {% for conversation in created_conversations %}
+                <div class="margin-y3">
+                    {{ conversation|role('card', button_text=_("Gerenciar!"), url=url('boards:dataviz-dashboard',  **conversation.get_url_kwargs())) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="contribution-votes" class="contribution_votes">
+        {% if voted_conversations %}
+            <p class="contribution_votes__message">
+                {{_("List of conversations you participated at least once. To resume voting, click on the title.")}}
+            </p>
+        {% endif %}
+        <div class="contribution_votes__card">
+            {{ render_conversations(voted_conversations) }}
+        </div>
+    </div>
+
+    <div id="contribution-comments" class="contributions_comments">
+        {{ render_comments(comments) }}
+    </div>
+</div>

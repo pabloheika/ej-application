@@ -90,8 +90,12 @@ class HomeView(ListView):
     queryset = Conversation.objects.filter(is_promoted=True).order_by("-created")
 
     def get(self, request, *args, **kwargs):
+        print(request.GET.get("load-home"))
         user = request.user
         tour_url = reverse("profile:tour")
+        if request.GET.get("load-home"):
+            print("load-home")
+            return render(request, "ej_profiles/home-conversations.jinja2", self.get_context_data())
         if user.get_profile().completed_tour:
             return super().get(request, *args, **kwargs)
         return redirect(tour_url)
