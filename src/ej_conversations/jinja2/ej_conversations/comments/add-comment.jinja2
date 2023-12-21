@@ -5,7 +5,8 @@
         <span>{{_("Thank you! Your comment was sent to moderation and will be evaluated soon.")}}</span>
     </div>
 </dialog>
-<div class="comment-card" id="voting-card">
+<div class="voting-card comment-card">
+
     <form 
         id="add-comment"
         method="post" 
@@ -44,7 +45,6 @@
                 </p>
 
             {% if not n_comments >= max_comments or request.user.is_superuser %}
-            <span>Rendering</span>
                 <div class="modal__buttons">
                     <button class="modal__buttons--white" type="button"
                         hx-get="{{ url('boards:conversation-comment_cancel', **conversation.get_url_kwargs()) }}"
