@@ -22,10 +22,10 @@
                 </div>
                 <span class="voting-card__progress__values">{{ n_user_final_votes }} {{_("of")}} {{ conversation.n_approved_comments }} {{_("comments")}}</span>
                 <a class="voting-card__label voting-card__add-comment"
-                hx-get="{{ url('boards:conversation-detail', **conversation.get_url_kwargs()) }}"
+                hx-get="{{ url('boards:conversation-comment', **conversation.get_url_kwargs()) }}"
                 hx-target="#voting-card"
-                hx-params="comment-addition">
-                    <i class="fa">&#xf055;</i> {{ _('Add comment') }}
+                hx-swap="innerHTML">
+                    <i class="fa">&#xf055;</i> {{ _('Add comment test') }}
                 </a>
             </div>
         {% if comment %}

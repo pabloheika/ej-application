@@ -1,13 +1,18 @@
+
+
 <dialog class="toast toast--hide" id="comment-dialog-confirmation">
     <div class="toast__content">
         <span>{{_("Thank you! Your comment was sent to moderation and will be evaluated soon.")}}</span>
     </div>
 </dialog>
+<div class="comment-card" id="voting-card">
+    <form 
+        id="add-comment"
+        method="post" 
+        hx-post="{{ url('boards:conversation-comment', **conversation.get_url_kwargs()) }}"
+        hx-swap="innerHTML"
+        hx-target="#voting-card"
 
-<div class="voting-card comment-card">
-    <form method="post" id="add-comment"
-        hx-post="{{ url('boards:conversation-detail', **conversation.get_url_kwargs()) }}"
-        hx-swap="none"
     >
         {{ csrf_input }}
         <input type="hidden" name="action" value="comment">
@@ -30,18 +35,21 @@
                     <span class="voting-card__label">{{n_comments}} {{_("Comments added (Max. ")}} {{max_comments}})</span>
                 </div>
 
-                <textarea name="content" id="id_content" maxlength="256" required></textarea>
+                {{ form.content.errors }}
+                {{ form.content }}
+
+
                 <p class="voting-card__label left no-margin">
                     (<span id="maxLenght">256</span><span> {{_("Characters remaining)")}}</span>
                 </p>
 
             {% if not n_comments >= max_comments or request.user.is_superuser %}
+            <span>Rendering</span>
                 <div class="modal__buttons">
                     <button class="modal__buttons--white" type="button"
-                        hx-get="{{ url('boards:conversation-detail', **conversation.get_url_kwargs()) }}"
+                        hx-get="{{ url('boards:conversation-comment_cancel', **conversation.get_url_kwargs()) }}"
                         hx-target="#voting-card"
-                        hx-params="comment-addition-cancel"
-                        hx-swap="outerHTML">
+                        hx-swap="innerHTML">
                         {{ _('Return') }}
                     </button>
                     <button class="modal__buttons--blue" type="submit">
@@ -58,21 +66,16 @@
 
                     <div class="modal__buttons">
                         <button class="modal__buttons--white" type="button"
-                            hx-get="{{ url('boards:conversation-detail', **conversation.get_url_kwargs()) }}"
+                            hx-get="{{ url('boards:conversation-comment_cancel', **conversation.get_url_kwargs()) }}"
                             hx-target="#voting-card"
-                            hx-params="comment-addition-cancel"
                             hx-swap="outerHTML">
                             {{ _('Cancel') }}
-                        </button>
-                        <button id="send-button" class="modal__buttons--gray" type="button">
-                            {{ _('Send to moderation') }}
                         </button>
                     </div>
                 </div>
             {% endif %}
     </form>
 </div>
-
 <script>
 
 $('textarea').keyup(function() {
@@ -90,8 +93,14 @@ if (sendButton) {
     });
 }
 
-$("#add-comment").on("htmx:afterRequest", () => {
-    $('textarea')[0].value = "";
-    showConfirmationDialogFor("#comment-dialog-confirmation")
+$("#add-comment").on("htmx:afterRequest", (event) => {
+    const response = event.detail.xhr.response;
+    console.log(response.message)
+    console.log(event.detail.xhr)
+    console.log(response)
+    if ($(".errorlist").length == 0) {
+        $('textarea')[0].value = "";
+        showConfirmationDialogFor("#comment-dialog-confirmation")
+    }
 });
 </script>

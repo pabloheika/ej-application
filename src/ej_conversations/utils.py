@@ -8,6 +8,8 @@ from sidekick import import_later
 
 from ej.components.builtins import toast
 from ej_users.models import SignatureFactory
+from django.forms.utils import ErrorList
+from django.core.exceptions import ValidationError
 
 log = getLogger("ej")
 models = import_later(".models", package=__package__)
@@ -118,9 +120,9 @@ def handle_detail_comment(request, conversation):
     """
     form = forms.CommentForm(conversation=conversation, request=request)
     if form.is_valid():
-        new_comment = form.cleaned_data["content"]
+        content: str = form.cleaned_data.get("content")
         user = request.user
-        new_comment = conversation.create_comment(user, new_comment)
+        new_comment = conversation.create_comment(user, content)
         log.info(f"user {user.id} posted comment {new_comment.id} on {conversation.id}")
     return {"form": form}
 

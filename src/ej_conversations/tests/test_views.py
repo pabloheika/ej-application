@@ -167,7 +167,7 @@ class TestConversationDetail(ConversationSetup):
         client.force_login(user)
 
         client.post(
-            f"/board/conversations/{first_conversation.id}/{first_conversation.slug}/",
+            f"/board/conversations/{first_conversation.id}/{first_conversation.slug}/comment/",
             {"action": "comment", "content": "test comment"},
         )
 
