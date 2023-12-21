@@ -17,11 +17,12 @@ class CommentForm(EjModelForm):
 
     def __init__(self, *args, conversation, **kwargs):
         self.conversation = conversation
-        super(CommentForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
+
         self.fields["content"].widget.attrs["placeholder"] = _("Give your opinion here")
         self.fields["content"].widget.attrs["title"] = _("Suggest a new comment")
 
-    def clean(self):
+    def clean_content(self):
         super().clean()
         content = (self.cleaned_data.get("content") or "").strip()
         if content:
@@ -30,9 +31,9 @@ class CommentForm(EjModelForm):
             ).exists()
             if comment_exists:
                 msg = _("You already submitted this comment.")
-                raise ValidationError({"content": msg})
-            self.cleaned_data["content"] = content
-        return self.cleaned_data
+                raise ValidationError(msg, code="duplicated")
+
+        return content
 
 
 class ConversationDateWidget(forms.DateInput):
