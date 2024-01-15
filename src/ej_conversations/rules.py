@@ -1,5 +1,6 @@
 from random import randrange
 
+from django.db.models import Q
 from django.conf import settings
 from django.utils.timezone import now
 
@@ -57,22 +58,22 @@ def next_comment(conversation, user):
     """
     if user.is_authenticated:
         # Non voted user-created comments
-        comments = conversation.approved_comments.filter(author=user).exclude(votes__author=user)
+        comments = conversation.approved_comments.filter(author=user).exclude(Q(votes__author=user) | Q(votes__choice=Choice.SKIP))
         size = comments.count()
         if size:
             return comments[randrange(0, size)]
 
         # Regular comments
         try:
-            return conversation.approved_comments.exclude(votes__author=user).random()
+            return conversation.approved_comments.exclude(Q(votes__author=user) | Q(votes__choice=Choice.SKIP)).random()
         except Comment.DoesNotExist:
             pass
 
         # Comments the user has skip
-        comments = conversation.approved_comments.filter(votes__author=user, votes__choice=Choice.SKIP)
-        size = comments.count()
-        if size:
-            return comments[randrange(0, size)]
+        # comments = conversation.approved_comments.filter(votes__author=user, votes__choice=Choice.SKIP)
+        # size = comments.count()
+        # if size:
+        #     return comments[randrange(0, size)]
     return None
 
 

@@ -6,6 +6,7 @@ from boogie import models
 from boogie import rules
 from ckeditor.fields import RichTextField
 from django.conf import settings
+from django.db.models import Q
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db.models.functions import Length
@@ -352,7 +353,7 @@ class Conversation(HasFavoriteMixin, TimeStampedModel):
 
         if comment_id:
             try:
-                return self.approved_comments.exclude(votes__author=user).get(id=comment_id)
+                return self.approved_comments.exclude(Q(votes__author=user) | Q(votes__choice=Choice.SKIP)).get(id=comment_id)
             except Exception as e:
                 pass
         return self.next_comment(user)
