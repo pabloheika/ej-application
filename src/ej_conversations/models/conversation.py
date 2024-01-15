@@ -375,7 +375,7 @@ class Conversation(HasFavoriteMixin, TimeStampedModel):
         n = 0
         if not user.is_anonymous:
             self.for_user = user
-            n = self.n_user_final_votes
+            n = self.n_user_votes
             n = min(n, total)
         if total < 1:
             return 1
@@ -383,11 +383,11 @@ class Conversation(HasFavoriteMixin, TimeStampedModel):
 
     def current_comment_count(self, user):
         self.for_user = user
-        n_user_final_votes = self.n_user_final_votes
+        n_user_votes = self.n_user_votes
 
-        if self.n_approved_comments == n_user_final_votes:
-            return n_user_final_votes
-        return n_user_final_votes + 1
+        if self.n_approved_comments == n_user_votes:
+            return n_user_votes
+        return n_user_votes + 1
 
     def custom_apps_menu_links(self):
         """

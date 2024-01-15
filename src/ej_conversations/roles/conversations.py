@@ -143,7 +143,7 @@ def conversation_user_progress(conversation, request=None, user=None, **kwargs):
     n = 0
     if not user.is_anonymous:
         conversation.for_user = user
-        n = conversation.n_user_final_votes
+        n = conversation.n_user_votes
     return progress_bar(min(n, total), total, **kwargs)
 
 
@@ -161,5 +161,5 @@ def conversation_user_home_progress(conversation, request=None, user=None, **kwa
     kwargs["extended_text"] = _(" of ")
     if not user.is_anonymous:
         conversation.for_user = user
-        n = conversation.n_user_final_votes
+        n = conversation.n_user_votes
     return progress_bar(min(n, total), total, **kwargs)
