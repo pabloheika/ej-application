@@ -1,6 +1,8 @@
-FROM python:3.8.18-slim-bullseye
+FROM python:3.9.18-slim-bullseye
 RUN apt-get update \
     && apt-get install -y \
+    zlib1g-dev \
+    libjpeg-dev \
     curl \
     gcc \
     git \
@@ -19,4 +21,5 @@ RUN poetry config virtualenvs.create false
 COPY ./ /ej-application
 WORKDIR ej-application
 # Installs main and dev groups dependencies
+RUN poetry lock
 RUN poetry install --with main,dev
