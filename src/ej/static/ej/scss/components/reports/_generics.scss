@@ -1,33 +1,29 @@
-.export-button {
-    display: inline-flex;
-    margin: 0 0 0 25px;
-    font-weight: bold;
-    border: 1px solid $color-gray-brigther;
-    color: $color-white;
-    padding: .5rem;
-    align-items: baseline;
-    border-radius: .5rem;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    cursor: pointer;
-    div:not(.modal-content) {
-        display: flex;
-    }
-    a {
-        font-size: .9rem;
-        i {
-        margin: 0 .4rem 0 0;
-        color: $color-brand;
-        }
-    }
-
-    &__title {
-        font-weight: bold;
-        font-size: .9rem;
-        color: $color-gray-darker;
-    }
-}
-
 ::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
+}
+
+.scroll-top {
+    display: none;
+
+    @media only screen and (max-width: 900px) {
+        display: flex;
+        background-color: $color-theme-report-blue;
+        padding: 2.313rem 0 2.688rem;
+        justify-content: center;
+        align-items: center;
+        gap: 0.813rem;
+    }
+
+    i {
+        color: $color-white;
+        margin: 0;
+    }
+
+    a {
+        color: $color-white;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 600;
+    }
 }

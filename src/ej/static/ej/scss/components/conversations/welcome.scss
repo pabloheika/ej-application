@@ -2,56 +2,114 @@
     @media only screen and (max-width: 900px) {
         font-size: 14px;
         grid-template-columns: 5% auto 5%;
-        grid-template-rows: 1vh auto 1fr;
+        grid-template-rows: 7vh auto 1fr;
     }
     @media only screen and (max-width: 500px) {
         font-size: 13px;
         grid-template-columns: 5% auto 5%;
-        &__link {
+        &__button {
             max-width: unset !important;
-        }
-        h1 {
-            margin-bottom: 1rem !important;
         }
     }
     @media only screen and (max-width: 375px) {
         font-size: 12px;
-        grid-template-columns: 2% auto 2%;
     }
 
     font-family: 'Work Sans';
     display: grid;
     grid-template-columns: auto minmax(auto, 800px) auto;
-    grid-template-rows: 7vh auto 1fr;
+    grid-template-rows: 10vh auto 1fr;
 
     &__item {
         grid-column: 2;
         grid-row: 2;
     }
-    h1 {
-        font-size: 2.625em;
-        margin-bottom: 5.5rem;
-    }
-    &__message {
-        font-size: 1.75em;
-        p {
-            font-weight: 400;
+    
+    &__title {
+        font-size: 2.25em;
+        margin: 0 0 3.125rem;
+        font-weight: 600;
+
+        @media only screen and (max-width: 900px) {
+            & {
+                font-size: 1.67em;
+                margin: 0 0 1.688rem !important;
+            }
         }
     }
-    &__link {
-        @extend .button;
-        background-color: $color-accent;
+    &__message {
+        font-size: 1.25em;
+        color: $color-theme-dark-blue;
+
+        @media only screen and (max-width: 900px) {
+            font-size: 1.335em;
+        }
+
+        &--margin-bottom {
+            margin: 0 0 1.5rem 0;
+        }
+
+        &__subtitle {
+            text-transform: uppercase;
+            font-size: 1.25em;
+            color: $color-theme-dark-blue;
+
+            @media only screen and (max-width: 900px) {
+                font-size: 1.34em;
+            }
+        }
+    }
+
+    &__button, &__button:hover {
+        background-color: $color-accent !important;
         border-radius: .5rem;
-        border: 1px solid $color-accent;
-        max-width: 15rem;
-        width: 100%;
-        padding: .5rem 0;
+        border: unset !important;
         box-sizing: content-box;
         float: right;
-        a {
-            color: $color-white;
-            font-weight: 700;
+        text-transform: none;
+        font-size: 1em;
+        margin: 0;
+        letter-spacing: 0;
+        color: $color-white;
+        font-weight: 700;
+        width: 253px;
+        height: 53px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        @media only screen and (max-width: 900px) {
+            & {
+                font-size: 1.335em; 
+            }
+        }
+    }
+
+    &__logo {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2.75rem;
+        margin-bottom: 3.616rem;
+
+        @media only screen and (max-width: 900px) {
+            & {
+                align-items: center;
+                flex-direction: column-reverse;
+                gap: 1.535rem;
+                margin-bottom: 2.5rem;
+                margin-top: 1.5rem;
+            } 
+        }
+
+        &--no-photo {
+            display: flex;
+            justify-content: end;
+        }
+
+        img {
+            max-width: 246px;
+            max-height: 120px;
         }
     }
 }
-

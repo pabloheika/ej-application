@@ -1,14 +1,6 @@
 .visible {
     visibility: visible !important;
 }
-.tab-color{
-  display: inline-flex;
-  a[is-selected]{
-    border-bottom-color: $color-brand;
-    color: $color-brand;
-  }
-
-}
 
 .inputs-min-size{
   input, textarea, select{

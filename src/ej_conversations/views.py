@@ -85,6 +85,7 @@ class ConversationCommonView:
 
         return {
             "background_image_url": conversation.get_background_image_url(host),
+            "logo_image_url": conversation.get_logo_image_url(host),
             "conversation": conversation,
             "comment": comment,
             "comment_form": self.form_class(conversation=conversation),
@@ -180,7 +181,7 @@ class BoardConversationsView(ConversationView):
         }
 
 
-class ConversationWelcomeView(DetailView):
+class ConversationWelcomeView(ConversationCommonView, DetailView):
     queryset = Conversation.objects.all()
     form_class = CommentForm
     model = Conversation
@@ -189,11 +190,6 @@ class ConversationWelcomeView(DetailView):
     @redirect_to_conversation_detail
     def get(self, request, *args, **kwargs):
         return super().get(request)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["host"] = get_host_with_schema(self.request)
-        return context
 
 
 @method_decorator([check_conversation_overdue], name="dispatch")

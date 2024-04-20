@@ -1,3 +1,5 @@
+.. _Campanha de email:
+
 ******************
 Campanha de email
 ******************

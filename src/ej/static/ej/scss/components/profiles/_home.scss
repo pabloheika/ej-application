@@ -34,7 +34,7 @@
     #my-tag-choice, #my-all-tags, .my-tag-header--add {
       display: none;
     }
-    
+
 
     .public-tag-header--add--not-allowed {
       cursor: not-allowed;
@@ -407,6 +407,10 @@
     overflow: scroll hidden;
     &__add {
       padding-bottom: 1.5rem;
+    }
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;  /* Safari and Chrome */
     }
   }
 

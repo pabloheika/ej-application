@@ -65,7 +65,7 @@ def build_assets(ctx):
 
 
 @task
-def docs(ctx, orm=False):
+def docs(ctx, watch=False, orm=False):
     """
     Builds Sphinx documentation.
     """
@@ -85,6 +85,9 @@ def docs(ctx, orm=False):
             )
     else:
         print_yellow("call inv docs --orm to update ORM graphs")
+
+    if watch:
+        ctx.run("sphinx-autobuild --port 8080 -b html docs/ build/docs/", pty=True)
 
     ctx.run("sphinx-build docs/ build/docs/", pty=True)
 

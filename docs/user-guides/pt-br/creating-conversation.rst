@@ -64,7 +64,20 @@ Esta imagem fica disposta no cabeçalho da tela de votação.
 .. figure:: ../images/custom-banner.png
    :align: center
 
-Mensagem de boas vindas
+Logotipo da organização
+***********************
+
+Permite que o criador da conversa insira uma logotipo, como por exemplo, a logotipo da organização que promove 
+a coleta de opinião, para ser apresentada no momento que o participante acessa a página de participação.
+
+Esta imagem é apresentada somente quando o criador da conversa define uma `mensagem de boas-vindas <creating-conversation.html#id1>`_.
+
+.. figure:: ../images/welcome-page-logo.png
+   :align: center
+
+   Logotipo posicionada ao lado do botão para iniciar a coleta.
+
+Mensagem de boas-vindas
 ************************
 
 Permite que o criador da conversa cadastre um texto que será apresentado antes da página de participação.
@@ -81,3 +94,21 @@ Uma vez que o texto for cadastrado, apresentaremos a página de boas-vindas que 
    :align: center
 
    Tela de boas-vindas de uma conversa.
+
+Mensagem ao final da votação
+****************************
+
+Permite que o criador da conversa cadastre um texto que será apresentado quando o participante finaliza a coleta.
+É um campo útil para dar uma resposta de feedback, agradecimento ou alguma informação relevante ao usuário sobre a pesquisa.
+
+.. figure:: ../images/ending-message-1.png
+   :align: center
+
+   Campo de cadastro do texto para o final da votação.
+
+Uma vez que o texto for cadastrado, no momento em que o usuário finalizar a coleta, ela será exibida.
+
+.. figure:: ../images/ending-message-2.png
+   :align: center
+
+   Mensagem final em exibição no card de votação.

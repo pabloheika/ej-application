@@ -36,31 +36,52 @@ i.fa, i.fas, i.fab, i.far {
 .tabs, .categories {
     @extend .row;
 
-    > * {
-        border-bottom: 0.25rem solid transparent;
-    }
-    a {
+    div,a {
         font-weight: bold;
         color: $color-navigation-header-text;
         white-space: nowrap;
-    }
-    [is-selected] {
-        @extend .text-accent;
-        border-bottom-color: color('accent');
     }
 }
 
 .tabs {
     @extend .uppercase;
-    border-bottom: 1px solid $color-theme-report-gray;
     justify-content: flex-start;
+    border-bottom: 1px solid $color-theme-report-light-gray;
+
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;  /* Safari and Chrome */
+    }
+
+    &-container {
+        display: flex;
+        padding: unset !important;
+        border-bottom: unset !important;
+
+        & [is-selected] {
+            @extend .text-accent;
+            border-bottom-color: color('accent');
+        }
+    }
 
     a {
         margin-right: 2.625rem;
         padding-bottom: 1.125rem;
+        cursor: pointer;
+        text-align: center;
+        width: 100%;
+        border-bottom: 0.25rem solid transparent;
     }
+
     &--scroll-x {
         overflow-x: scroll;
+    }
+    &__tab-content {
+        display: none;
+
+        &--active {
+            display: inherit;
+        }
     }
 }
 
@@ -229,9 +250,6 @@ dialog.toast--show {
 @media only screen and (max-width: 1016px) {
     .toast {
         margin-left: auto;
-    }
-    .tabs {
-        display: block;
     }
 }
 //------------------------------------------------------------------------------

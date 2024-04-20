@@ -127,6 +127,5 @@ src/ej/tests/e2e/node_modules
 src/ej/tests/e2e/cypress/screenshots
 
 # Third party apps
-src/ej_pencillabs
 src/ej_signatures
 src/ej_activation

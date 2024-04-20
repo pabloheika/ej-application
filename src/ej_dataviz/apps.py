@@ -9,7 +9,6 @@ class EjDatavizConfig(AppConfig):
     roles = None
 
     def ready(self):
-        from . import rules, roles
+        from . import rules
 
         self.rules = rules
-        self.roles = roles

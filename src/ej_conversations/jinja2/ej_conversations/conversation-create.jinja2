@@ -1,4 +1,4 @@
-{% extends 'base.jinja2' %}
+{% extends 'ej_conversations/base.jinja2' %}
 {% set main_class = 'pad-x0' %}
 {% block menu %}{% include 'ej_conversations/includes/participant-menu.jinja2' %}{% endblock %}
 
@@ -19,7 +19,7 @@
                     {# CONVERSATION FORM #}
                     <h1 class="text-accent">{{ _('Advanced settings') }}</h3>
                     <p class="helptext">
-                    {{_("Optional fields. The following information serves to facilitate 
+                    {{_("Optional fields. The following information serves to facilitate
                         the identification and management of your conversation.")}}</p>
 
                     <h4 class="conversation-form__h4">{{_("Anonymous participation")}}</h4>
@@ -38,9 +38,7 @@
                     <h4 class="conversation-form__h4">{{_("Customize")}}</h4>
                     <div class="block">
                         <label for="">{{form.background_image.label}}</label>
-                        <div class="opinion-col-2">
-                                {{form.background_image}}
-                        </div>
+                            {{form.background_image}}
                         <legend>{{_("This image will be presented to your audience on the participation page, 
                                 allowing you to give more context to the researched topic")}}
                         </legend>
@@ -49,12 +47,22 @@
                         {{ form.errors["background_image"] }}
                     {% endif %}
 
+                    <div class="block">
+                        <label for="">{{form.logo_image.label}}</label>
+                            {{form.logo_image}}
+                        <legend>{{_("This image will be presented to your audience on the welcome page")}}
+                        </legend>
+                    </div>
+                    {% if "logo_image" in form.errors %}
+                        {{ form.errors["logo_image"] }}
+                    {% endif %}
+
                     <div class="conversation-form__custom-richtext">
                         <label>{{_("Text to be displayed as welcome")}}</label>
                         <div class="conversation-form__custom-richtext__text">
                             {{form.welcome_message}}
                         </div>
-                        <legend>{{_("This text will be presented to new participants who access 
+                        <legend>{{_("This text will be presented to new participants who access
                             the shared link for this conversation")}}</legend>
                     </div>
 
@@ -63,7 +71,7 @@
                         <div class="conversation-form__custom-richtext__text">
                             {{form.ending_message}}
                         </div>
-                        <legend>{{_("This text will be presented to participants who have 
+                        <legend>{{_("This text will be presented to participants who have
                             completed the collection")}}</legend>
                     </div>
 

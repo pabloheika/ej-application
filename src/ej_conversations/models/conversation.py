@@ -100,6 +100,13 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
         verbose_name=_("Background image"),
         validators=[validate_file_size],
     )
+    logo_image = models.ImageField(
+        upload_to="conversations/logo/",
+        blank=True,
+        null=True,
+        verbose_name=_("Background image"),
+        validators=[validate_file_size],
+    )
 
     welcome_message = RichTextField(
         blank=True,
@@ -457,6 +464,13 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
 
         if background_image_url:
             return f"{host}/media/{background_image_url}"
+        return None
+
+    def get_logo_image_url(self, host):
+        logo_image_url = self.logo_image
+
+        if logo_image_url:
+            return f"{host}/media/{logo_image_url}"
         return None
 
 

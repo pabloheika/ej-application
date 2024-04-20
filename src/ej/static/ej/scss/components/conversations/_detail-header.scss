@@ -18,9 +18,27 @@
     box-shadow: 0px 10px 10px #00000033;
     background-repeat: repeat;
 
+    @media only screen and (max-width: 320px) {
+        & {
+            padding: 1.875rem 1.625rem 1.938rem 2rem;
+        }
+    }
+
+    @media (max-width: 900px) and (min-width: 321px) {
+        & {
+            padding: 1.875rem 1.625rem 1.938rem 2rem;    
+        }
+    }
+
     &--default-img {
         background-image: url("/static/img/comment_card/conversation-title-bg.svg");
         height: 225px;
+
+        @media (max-width: 900px) and (min-width: 321px) {
+            & { 
+                height: 258px;
+            }
+        }
     }
 
     &__gradient {
@@ -73,6 +91,20 @@
         font-family: 'Work Sans';
         font-size: 1.5em;
         text-transform: unset;
+
+        @media only screen and (max-width: 320px) {
+            & {
+                max-height: 64px;
+                overflow-y: scroll;
+            }
+        }
+
+        @media (max-width: 900px) and (min-width: 321px) {
+            & {
+                max-height: 62px;
+                overflow-y: scroll;
+            }
+        }
 
         &--white {
             color: $color-white;
@@ -161,31 +193,4 @@
     .conversation-dashboard div {
         color: $color-black;
     }
-
-    @media only screen and (max-width: 320px) {
-        & {
-            padding: 1.875rem 1.625rem 1.938rem 2rem;
-    
-            &__text {
-                max-height: 64px;
-                overflow-y: scroll;
-            }
-        } 
-    }
-
-    @media (max-width: 900px) and (min-width: 321px) {
-        & {
-            padding: 1.875rem 1.625rem 1.938rem 2rem;
-    
-            &--default-img {
-                height: 258px;
-            }
-    
-            &__text {
-                max-height: 62px;
-                overflow-y: scroll;
-            }
-        }
-    }
-
 }

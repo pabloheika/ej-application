@@ -19,9 +19,8 @@ class PaletteWidget(forms.RadioSelect):
 class BoardForm(EjModelForm):
     class Meta:
         model = models.Board
-        fields = ["title", "description", "slug", "palette", "image"]
+        fields = ["title", "description", "slug"]
         widgets = {
             "palette": PaletteWidget,
-            # "image": FileInput,
         }
         help_texts = {"slug": _("You cannot change this value afterwards")}

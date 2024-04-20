@@ -1,3 +1,4 @@
+{% from "ej_dataviz/reports/includes/sort-filter.jinja2" import sort_filter %}
 <div class="comment-report__filters">
         <div class="comment-report__filters-inputs">
             <div class="search">
@@ -22,6 +23,8 @@
                     <option value="convergence">{{_("convergence")}}</option>
                 </select>
             </div>
+
+            {{ sort_filter("#comment-filters-form") }}
 
             <div class="clusters-container" onclick="toogleClusters()">
                 <div>

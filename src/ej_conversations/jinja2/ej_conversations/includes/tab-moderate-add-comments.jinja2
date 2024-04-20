@@ -1,8 +1,8 @@
-<form method="POST" action="{{ conversation.patch_url('conversation:new_comment') }}" id="moderate-add" class="block pad-t3">
+<form method="POST" action="{{ conversation.patch_url('conversation:new_comment') }}" id="moderate-add" class="block pad-t3 tabs__tab-content">
     {{ csrf_input }}
 
     <div class="comments-list"></div>
-    
+
     <div class="comments-panel left">
         <a href="#" class="comments-panel__add-btn" onclick="addComment()">
             <i class="fas fa-plus"></i>
@@ -68,7 +68,7 @@
             }, 4000);
             return
         }
-        
+
         commentsCount++;
         const clone = document.importNode(template.content, true);
         clone.querySelector('span').innerText += commentsCount;

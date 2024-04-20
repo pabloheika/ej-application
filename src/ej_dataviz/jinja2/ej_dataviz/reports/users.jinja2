@@ -5,8 +5,10 @@
 
 {% block report %}
 <section>
-        <h1 class="text-accent">{{_('Users report')}}</h1>
-
+        <div class="export-button__header">
+            <h1 class="text-accent">{{_('Users report')}}</h1>
+            {{ export_modal(conversation, 'users_data')}}
+        </div>
         <div class="margin-y3 comment-report">
             <div class="comment-report__comments" id="comments">
                 {% include 'ej_dataviz/reports/includes/users/table.jinja2' %}

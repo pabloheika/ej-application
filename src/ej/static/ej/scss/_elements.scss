@@ -375,14 +375,17 @@ legend {
     animation: rotation 1s linear infinite;
     margin-top: 2rem;
 }
+
 .hide {
     display: none !important;
     opacity: 0;
 }
+
 .show {
     display: block !important;
     opacity: 1;
 }
+
 .htmx-request .loader{
     display:inline;
 }

@@ -18,8 +18,9 @@ participantes. Também permite acesso rápido aos relatórios de comentários
 e de participantes. Tanto o criador da conversa quanto administradores
 do ambiente podem acessar o Dashboard de uma conversa,
 basta clicar na conversa desejada que o botão de acesso ao
-Dashboard será apresentado.
-
+Dashboard será apresentado. Ademais, o dashboard permite a exportação dos dados de votação,
+nos formatos "csv" e "json".
+   
 .. figure:: ../images/dashboard.png
    :align: center
 
@@ -44,19 +45,20 @@ O relatório de comentários permite analisar a performance dos comentários,
 tanto no geral (considerando todos os participantes) tanto por grupo de opinião.
 É possível filtrar os comentarios pelo conteúdo, pelo nível de concordância, discordância,
 convergência entre outros. Também é possível exportar os dados apresentados, caso o usuário
-queira utilizar outras ferramentas de *dataviz* para realizar suas análises.
+queira utilizar outras ferramentas de *dataviz* para realizar suas análises. É possível exportar
+os dados nos formatos "csv" e "json".
 
 
-
-.. figure:: ../images/comments-report2.png
-   :align: center
-
-   Relatório de comentários geral
 
 .. figure:: ../images/comments-report1.png
    :align: center
 
-   Relatório de comentários por grupo
+   Relatório de comentários 
+
+.. figure:: ../images/comments-report2.png
+   :align: center
+
+   Opções de exportação do relatório
 
 
 Gestão de personas

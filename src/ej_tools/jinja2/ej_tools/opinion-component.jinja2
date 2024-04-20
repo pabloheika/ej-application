@@ -1,5 +1,6 @@
 {% extends 'ej_conversations/base.jinja2' %}
 {% from "ej_tools/includes/help-card.jinja2" import help_card %}
+{% from "ej/includes/tabs.jinja2" import tabs %}
 
 {% block metaOG2 %}
 
@@ -21,30 +22,20 @@
 			<h3 class="h3 h3--space">{{_("Collection Link")}}</h3>
 			<span class="helptext">{{_("Customize and start a collection with EJ's built-in opinion component.")}}</span>
 			<div class="tabs-space">
-				{{ tabs({
-					_('Customization'): '#customization',
-					_('Generate code'): '#generate-code',
-					}, class_='width-full')
-				}}
+				{{ tabs({ _('Customization'): 'customization', _('Generate code'): 'generate-code'}) }}
 			</div>
 			<div class="tools-divider opinion-divider">
-				<div id="customization">
+				<div id="customization" class="tabs__tab-content">
 					<div class="opinion-col-1">
 						{% include 'ej_tools/includes/opinion-component-avatar-info.jinja2' %}
 						<div class="opinion-col-2">
 							<span class="opinion-col-2__subtitle">
-								{{_("You can customize your collection using a background image and/or a logo, as well as a message tailored to your audience.")}}
+								{{_("You can customize your collection using a message tailored to your audience.")}}
 							</span><br>
 
 							<form method="POST" enctype="multipart/form-data" id="opinion-component-form" class="form-component">
 								{{ csrf_input }}
 								{{ opinion_component_form.conversation.as_hidden() }}
-								<div class="form-component__drop_box">
-									{% if "logo_image" in opinion_component_form.errors %}
-										{{ opinion_component_form.errors["logo_image"] }}
-									{% endif %}
-									{{opinion_component_form.logo_image}}
-								</div>
 
 								<div class="form-component__message">
 									<label class="form-component__message__label" for="custom-message">{{_("Your message")}}</label>
@@ -66,7 +57,7 @@
 						</div>
 					</div>
 				</div>
-				<div id="generate-code">
+				<div id="generate-code" class="tabs__tab-content">
 					<div class="opinion-col-1">
 						{% include 'ej_tools/includes/opinion-component-avatar-info.jinja2' %}
 						<div class="opinion-col-2">

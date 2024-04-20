@@ -1,0 +1,25 @@
+{% macro sort_filter(target_id) %}
+
+<div class="sorting">
+    <span class="filter__sort">
+        <a onclick="setSort('desc', '#sort-down-icon', '#sort-up-icon')"><i class="fa fa-sort-down fa-2x icon--blue" id="sort-down-icon"></i></a>
+        <a onclick="setSort('asc', '#sort-up-icon', '#sort-down-icon')"><i class="fa fa-sort-up fa-2x" id="sort-up-icon"></i></a>
+        <input name="sort" id="sort" value="desc" type="hidden">
+    </span>
+</div>
+
+
+<script>
+    function setSort(val, current, previous) {
+        $("#sort").val(val);
+
+        let previousIcon = $(previous);
+        let currentIcon = $(current);
+        currentIcon.toggleClass("icon--blue");
+        previousIcon.toggleClass("icon--blue");
+    
+        htmx.trigger("{{target_id}}", 'sort')
+    }
+</script>
+
+{% endmacro %}

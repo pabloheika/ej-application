@@ -15,7 +15,7 @@
     <div class="board-statistics-container">
         <div id="edit-board">
             <div class="left-side">
-                <h1 class="h2 text-accent">{{ board.title}}</h1>
+                <h1 class="header-space text-accent">{{ board.title}}</h1>
 
                 {%- if request.user.has_perm('ej.can_edit_board', board) %}
                     <a href="{{ url('boards:board-edit', board_slug=board.slug) }}"><i class="fas fa-pen"></i></a>

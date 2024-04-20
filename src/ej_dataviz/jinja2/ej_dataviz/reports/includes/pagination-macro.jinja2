@@ -1,34 +1,77 @@
 {% macro pagination(page, items) %}
-<div class="margin-y3 pagination">
+<div class="pagination">
     <div class="pagination__info">
         <span>
-            {% trans  %}Showing{% endtrans %}&nbsp;{{page|length}}&nbsp;{{items}}&nbsp;{{_('of')}}&nbsp;{{page.paginator.count}}
+            {{_("Exhibiting")}}&nbsp;{{page|length}}&nbsp;{{_('of')}}&nbsp;{{page.paginator.count}}
         </span>
     </div>
-    <div class="pagination__pages">
-        <span class="step-links">
-            {% if page.has_previous %}
-                {% if page.number > 1 %}
-                    <a onclick="setPage('first')">&laquo; {{_("first")}}</a>
-                    <a onclick="setPage('previous')">
-                        <i class="fas fa-chevron-left"></i>
+    <div class="pagination__container">
+        <div>
+            {% if page.has_previous() %}
+            <a onclick="setPage('previous')" class="pagination__container-page pagination__container-arrow--first">
+                <i class="fas fa-chevron-left"></i>
+            </a>
+            {% else %}
+                <span class="pagination__container-page pagination__container-arrow--first">
+                    <i class="fas fa-chevron-left"></i>
+                </span>
+            {% endif %}
+        </div>
+        
+        <div class="pagination__container-index">
+            {% for page_number in page.paginator.page_range %}
+                {# current page #}
+                {% if page_number == page.number %}
+                    <span class="pagination__container-page pagination__container-page--current">
+                        {{page_number}}
+                    </span>
+                {# current page and on each sides pages #}
+                {% elif page_number + 1 == page.number or page_number - 1 == page.number %}
+                    <a class="pagination__container-page" onclick="setPage({{ page_number }})">
+                        {{ page_number }}
+                    </a>
+                {# first #}
+                {% elif page_number != page.number and page_number == 1 %}
+                    <a class="pagination__container-page" onclick="setPage({{ page_number }})">
+                        {{ page_number }}
+                    </a>
+                    {% if page.number > 3 %}
+                        <span class="pagination__container-page pagination__container-page--clear-elipse">
+                            ...
+                        </span>
+                    {% endif %}
+                {# last #}
+                {% elif page_number != page.number and page_number == page.paginator.num_pages %}
+                    {% if page_number - 1 != page.number %}
+                        <span class="pagination__container-page pagination__container-page--clear-elipse">
+                            ...
+                        </span>
+                    {% endif %}
+                    <a class="pagination__container-page" onclick="setPage({{ page_number }}, event)">
+                        {{ page_number }}
                     </a>
                 {% endif %}
-            {% endif %}
+            {% endfor %}
+        </div>
 
-            <span class="current">
-                {{_("Page")}} {{ page.number }} {{_("of")}} {{ page.paginator.num_pages }}
-            </span>
-
+        <div>
             {% if page.has_next() %}
-                <a onclick="setPage('next')">
+                <a onclick="setPage('next')" class="pagination__container-page pagination__container-arrow--last">
                     <i class="fas fa-chevron-right"></i>
                 </a>
+            {% else %}
+                <span class="pagination__container-page pagination__container-arrow--last">
+                    <i class="fas fa-chevron-right"></i>
+                </span>
             {% endif %}
-            <a onclick="setPage('last')">{{_("last")}} &raquo;</a>
-        </span>
+        </div>
+        
         <input name="page" id="page" value={{page.number}} type="hidden">
     </div>
+</div>
+<div class="scroll-top">
+    <i class="fa">&#xf139;</i>
+    <a id="report-scroll-top">{{_("Back to top")}}</a>
 </div>
 <script>
 
@@ -64,7 +107,7 @@
             pageValue = "{{page.previous_page_number() if page.number > 1 else 1}}";
             break;
         default:
-            pageValue = 1;
+            pageValue = step;
         }
 
         let pageInput = $("#page");
@@ -75,5 +118,9 @@
     $(document).ready(function() {
         resetPageOnFilter();
     })
+
+    $("#report-scroll-top").on("click", function() {
+        $('html, body').animate({ scrollTop: 0 }, 'smooth');
+    });
 </script>
 {% endmacro %}

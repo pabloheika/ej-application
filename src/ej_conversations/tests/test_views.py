@@ -88,6 +88,17 @@ class TestConversationWelcome(ConversationSetup):
         response = client.get(welcome_url)
         assert response.status_code == 302
 
+    def test_custom_conversation_without_logo_on_welcome(self, conversation):
+        client = Client()
+        welcome_url = reverse(
+            "boards:conversation-welcome", kwargs=conversation.get_url_kwargs()
+        )
+        conversation.welcome_message = "<p>olá</p>"
+        conversation.save()
+        response = client.get(welcome_url)
+
+        assert b"conversation-welcome__logo--no-photo" in response.content
+
 
 class TestConversationDetail(ConversationSetup):
     @pytest.fixture
@@ -484,6 +495,7 @@ class TestConversationCreate(ConversationSetup):
         client.force_login(base_user)
 
         background_image = get_image_file("image.png")
+        logo_image = get_image_file("image2.png")
 
         response = client.post(
             url,
@@ -494,7 +506,35 @@ class TestConversationCreate(ConversationSetup):
                 "comments_count": 0,
                 "anonymous_votes_limit": 0,
                 "background_image": background_image,
+                "logo_image": logo_image,
                 "ending_message": "ending message",
+            },
+        )
+        assert response.status_code == 302
+        conversation = Conversation.objects.first()
+        assert response.url == reverse(
+            "boards:conversation-detail", kwargs=conversation.get_url_kwargs()
+        )
+        assert conversation.is_promoted == False
+        assert conversation.board == base_board
+
+    def test_custom_conversation_with_mandatory_fields(self, base_board, base_user):
+        url = reverse(
+            "boards:conversation-create", kwargs={"board_slug": base_board.slug}
+        )
+        client = Client()
+        client.force_login(base_user)
+
+        response = client.post(
+            url,
+            {
+                "title": "whatever",
+                "tags": "tag",
+                "text": "description",
+                "comments_count": 0,
+                "anonymous_votes_limit": 0,
+                "background_image": "",
+                "logo_image": "",
             },
         )
         assert response.status_code == 302
@@ -556,6 +596,95 @@ class TestConversationCreate(ConversationSetup):
         )
         response = client.get(detail_url)
         assert b"You have already voted on all the comments." in response.content
+
+    def test_custom_conversation_with_background_image_on_voting(
+        self, base_board, base_user
+    ):
+        url = reverse(
+            "boards:conversation-create", kwargs={"board_slug": base_board.slug}
+        )
+        client = Client()
+        client.force_login(base_user)
+
+        background_image = get_image_file("image.png")
+
+        client.post(
+            url,
+            {
+                "title": "whatever",
+                "tags": "tag",
+                "text": "description",
+                "comments_count": 0,
+                "anonymous_votes_limit": 0,
+                "background_image": background_image,
+                "logo_image": "",
+            },
+        )
+        conversation = Conversation.objects.first()
+        detail_url = reverse(
+            "boards:conversation-detail", kwargs=conversation.get_url_kwargs()
+        )
+        response = client.get(detail_url)
+        assert b".png" in response.content
+
+    def test_custom_conversation_with_default_image_on_voting(
+        self, base_board, base_user
+    ):
+        url = reverse(
+            "boards:conversation-create", kwargs={"board_slug": base_board.slug}
+        )
+        client = Client()
+        client.force_login(base_user)
+
+        client.post(
+            url,
+            {
+                "title": "whatever",
+                "tags": "tag",
+                "text": "description",
+                "comments_count": 0,
+                "anonymous_votes_limit": 0,
+                "background_image": "",
+                "logo_image": "",
+            },
+        )
+        conversation = Conversation.objects.first()
+        detail_url = reverse(
+            "boards:conversation-detail", kwargs=conversation.get_url_kwargs()
+        )
+        response = client.get(detail_url)
+        assert b".svg" in response.content
+
+    def test_custom_conversation_with_logo_on_welcome(self, base_board, base_user):
+        url = reverse(
+            "boards:conversation-create", kwargs={"board_slug": base_board.slug}
+        )
+        client = Client()
+        client.force_login(base_user)
+
+        logo_image = get_image_file("logo.png")
+
+        client.post(
+            url,
+            {
+                "title": "whatever",
+                "tags": "tag",
+                "text": "description",
+                "comments_count": 0,
+                "anonymous_votes_limit": 0,
+                "background_image": "",
+                "logo_image": logo_image,
+            },
+        )
+
+        anonymous_client = Client()
+
+        conversation = Conversation.objects.first()
+        welcome_url = reverse(
+            "boards:conversation-welcome", kwargs=conversation.get_url_kwargs()
+        )
+        response = anonymous_client.get(welcome_url, follow=True)
+        assert b".png" in response.content
 
 
 class TestConversationComments(ConversationSetup):
@@ -804,6 +933,7 @@ class TestConversationEdit(ConversationSetup):
             },
         )
         background_image = get_image_file("image.png")
+        logo_image = get_image_file("image2.png")
 
         response = logged_admin.post(
             url,
@@ -814,6 +944,7 @@ class TestConversationEdit(ConversationSetup):
                 "comments_count": 0,
                 "anonymous_votes_limit": 0,
                 "background_image": background_image,
+                "logo_image": logo_image,
                 "ending_message": "ending message",
             },
         )
@@ -828,6 +959,41 @@ class TestConversationEdit(ConversationSetup):
         assert new_conversation.text == "description"
         assert new_conversation.background_image
         assert new_conversation.ending_message == "ending message"
+        assert new_conversation.logo_image
+
+    def test_edit_custom_conversation_with_valid_form_without_images(
+        self, new_conversation, logged_admin, base_board
+    ):
+        url = reverse(
+            "boards:conversation-edit",
+            kwargs={
+                "board_slug": base_board.slug,
+                "conversation_id": new_conversation.id,
+                "slug": new_conversation.slug,
+            },
+        )
+
+        response = logged_admin.post(
+            url,
+            {
+                "title": "bar",
+                "tags": "tag",
+                "text": "description",
+                "comments_count": 0,
+                "anonymous_votes_limit": 0,
+                "background_image": "",
+                "logo_image": "",
+            },
+        )
+
+        new_conversation.refresh_from_db()
+
+        assert response.status_code == 302
+        assert response.url == reverse(
+            "boards:conversation-detail", kwargs=new_conversation.get_url_kwargs()
+        )
+        assert new_conversation.title == "bar"
+        assert new_conversation.text == "description"
 
 
 class TestConversationModerate(ConversationSetup):

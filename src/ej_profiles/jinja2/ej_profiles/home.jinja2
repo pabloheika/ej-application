@@ -1,5 +1,6 @@
 {% extends 'base.jinja2' %}
 {% from "ej_profiles/includes/search-filter.jinja2" import search_filter %}
+{% from "ej/includes/tabs.jinja2" import tabs %}
 
 {% block menu %}
     {% include 'ej_conversations/includes/participant-menu.jinja2' %}
@@ -19,13 +20,13 @@
             </a>
         </div>
         {{ tabs({
-            _('Public Conversations'): '#public-conversations',
-            _('My conversations'): '#my-conversations',
-            _('My Votes'): '#contribution-votes',
-            _('My Comments'): '#contribution-comments'}, class_='width-full') }}
+            _('Public Conversations'): 'public-conversations',
+            _('My conversations'): 'my-conversations',
+            _('My Votes'): 'contribution-votes',
+            _('My Comments'): 'contribution-comments'}) }}
     </div>
 
-    <div id="public-conversations" class="content-grid">
+    <div id="public-conversations" class="content-grid tabs__tab-content">
         {{ search_filter(all_tags, participated_tags, "public", has_filtered_tag, host, "is_promoted") }}
         <div class="alternate-cards" id="public-current-cards">
             {% for conversation in public_conversations %}
@@ -34,7 +35,7 @@
         </div>
     </div>
 
-    <div id="my-conversations" class="my_conversations content-grid">
+    <div id="my-conversations" class="my_conversations content-grid tabs__tab-content">
         {% if created_conversations %}
             {{ search_filter(my_tags, my_tags, "my", has_filtered_tag, host, "is_author") }}
         {% else %}
@@ -50,13 +51,13 @@
         </div>
     </div>
 
-    <div id="contribution-votes" class="contribution-votes">
+    <div id="contribution-votes" class="contribution-votes tabs__tab-content">
         <div class="contribution-votes__card">
             {{ render_conversations(voted_conversations) }}
         </div>
     </div>
 
-    <div id="contribution-comments" class="contributions-comments">
+    <div id="contribution-comments" class="contributions-comments tabs__tab-content">
         {{ render_comments(comments) }}
     </div>
 

@@ -36,7 +36,7 @@ Cypress.Commands.add('createCustomConversation', () => {
   cy.get('input[name=title]').type("praças públicas")
   cy.get('input[name=tags]').type("infraestrutura")
   cy.get('#id_anonymous_votes_limit').type(2)
-  cy.get('.conversation-form__custom-richtext label').should('contain', 'Texto a ser apresentado como boas-vindas')
+  cy.get('.conversation-form__custom-richtext label').should('contain', 'Texto adicional a ser apresentado na tela de boas-vindas')
   cy.get('#id_ending_message').typeCkeditor("Muito obrigada pela participação, ela é muito importante.");
   cy.get('input[type=submit]').click()
 })

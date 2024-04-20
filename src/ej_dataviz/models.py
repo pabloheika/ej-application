@@ -48,15 +48,16 @@ class CommentsReportSearchFilter:
 
 
 class CommentsReportOrderByFilter:
-    def __init__(self, order, comments, comments_df: pd.DataFrame):
+    def __init__(self, order, comments, comments_df: pd.DataFrame, ascending=False):
         self.comments = comments
         self.order = order
+        self.ascending = ascending
         self.comments_df = comments_df
 
     def filter(self):
         if not self.order or self.order == "created":
-            return self.comments_df.sort_values("comment", ascending=False)
-        return self.comments_df.sort_values(self.order, ascending=False)
+            return self.comments_df.sort_values("comment", ascending=self.ascending)
+        return self.comments_df.sort_values(self.order, ascending=self.ascending)
 
 
 class ToolsLinksHelper:

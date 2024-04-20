@@ -270,7 +270,9 @@ class TestReportRoutes(ClusterRecipes):
         assert filtered_comments_df.iloc[[3]].get("group").item() == cluster.name
         assert len(filtered_comments_df.index) == 4
 
-    def test_sort_comments_dataframe(self, conversation_with_comments):
+    def test_sort_comments_dataframe_in_descending_order(
+        self, conversation_with_comments
+    ):
         clusters_filter = CommentsReportClustersFilter([], conversation_with_comments)
         comments_df = clusters_filter.filter()
 
@@ -299,6 +301,36 @@ class TestReportRoutes(ClusterRecipes):
         assert round(sorted_comments_df.iloc[[2]].get("disagree").item(), 1) == 66.7
         assert sorted_comments_df.iloc[[3]].get("content").item() == "aa"
         assert round(sorted_comments_df.iloc[[3]].get("disagree").item(), 1) == 0.0
+
+    def test_sort_comments_dataframe_in_ascending_order(self, conversation_with_comments):
+        clusters_filter = CommentsReportClustersFilter([], conversation_with_comments)
+        comments_df = clusters_filter.filter()
+
+        orderby_filter = CommentsReportOrderByFilter(
+            "agree", conversation_with_comments.comments, comments_df, True
+        )
+        sorted_comments_df = orderby_filter.filter()
+        assert sorted_comments_df.iloc[[0]].get("content").item() == "aaaa"
+        assert round(sorted_comments_df.iloc[[0]].get("agree").item(), 1) == 0.0
+        assert sorted_comments_df.iloc[[1]].get("content").item() == "test"
+        assert round(sorted_comments_df.iloc[[1]].get("agree").item(), 1) == 0.0
+        assert sorted_comments_df.iloc[[2]].get("content").item() == "aaa"
+        assert round(sorted_comments_df.iloc[[2]].get("agree").item(), 1) == 33.3
+        assert sorted_comments_df.iloc[[3]].get("content").item() == "aa"
+        assert round(sorted_comments_df.iloc[[3]].get("agree").item(), 1) == 100.0
+
+        orderby_filter = CommentsReportOrderByFilter(
+            "disagree", conversation_with_comments.comments, comments_df, True
+        )
+        sorted_comments_df = orderby_filter.filter()
+        assert sorted_comments_df.iloc[[0]].get("content").item() == "aa"
+        assert round(sorted_comments_df.iloc[[0]].get("disagree").item(), 1) == 0.0
+        assert sorted_comments_df.iloc[[1]].get("content").item() == "aaa"
+        assert round(sorted_comments_df.iloc[[1]].get("disagree").item(), 1) == 66.7
+        assert sorted_comments_df.iloc[[2]].get("content").item() == "aaaa"
+        assert round(sorted_comments_df.iloc[[2]].get("disagree").item(), 1) == 100.0
+        assert sorted_comments_df.iloc[[3]].get("content").item() == "test"
+        assert round(sorted_comments_df.iloc[[3]].get("disagree").item(), 1) == 100.0
 
     def test_search_string_comments_dataframe(self, conversation_with_comments):
         clusters_filter = CommentsReportClustersFilter([], conversation_with_comments)

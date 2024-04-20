@@ -1,0 +1,17 @@
+{% macro show_comments(comments, conversation, csrf_input, id) %}
+    {% include 'ej_conversations/includes/tab-moderate-show-comments.jinja2' %}
+{% endmacro %}
+
+
+{% macro reject_button(comment) %}
+    <a class="comment__action reject-btn" onclick="rejectComment({{ comment.id }})" value="{{ comment.id }}">
+        <i class="fa fa-ban"></i>{{ _('Reject') }}
+    </a>
+{% endmacro %}
+
+
+{% macro approve_button(comment) %}
+    <a class="comment__action approve-btn" onclick="approveComment({{ comment.id }})" value="{{ comment.id }}">
+        <i class="fa fa-thumbtack"></i>{{ _('Approve') }}
+    </a>
+{% endmacro %}

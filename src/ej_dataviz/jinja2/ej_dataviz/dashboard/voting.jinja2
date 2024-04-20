@@ -1,7 +1,9 @@
+{% from "ej_dataviz/reports/includes/export-data.jinja2" import export_modal %}
+
 <div class="center-grid">
-    <div class="conversation-dashboard conversation-dashboard-section__title flex">
+    <div class="conversation-dashboard conversation-dashboard-section__title flex export-button__header">
         <h1 class="text-accent">{{_('Voting')}}</h1>
-        {% include 'ej_dataviz/reports/includes/voting-modal-export.jinja2' %}
+        {{ export_modal(conversation, 'votes_data')}}
     </div>
 </div>
 <div class="voting-section__container center-grid">

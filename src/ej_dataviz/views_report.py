@@ -81,13 +81,15 @@ class CommentReportFilterView(CommentReportBaseView):
         conversation = context["object"]
         search_text = self.request.GET.get("search")
         order_by = self.request.GET.get("order-by")
+        ascending = self.request.GET.get("sort", False) == "asc"
+
         cluster_ids = self.request.GET.getlist("clusters")
         comments_df = CommentsReportClustersFilter(cluster_ids, conversation).filter()
         comments_df = CommentsReportSearchFilter(
             search_text, conversation.comments, comments_df
         ).filter()
         comments_df = CommentsReportOrderByFilter(
-            order_by, conversation.comments, comments_df
+            order_by, conversation.comments, comments_df, ascending
         ).filter()
         context["page"] = self.paginate_comments(
             conversation, comments_df, self.request.GET.get("page") or 1

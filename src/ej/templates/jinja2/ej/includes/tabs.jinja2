@@ -1,0 +1,31 @@
+{% macro tabs(nav_items, classes='') %}
+
+<div class="tabs {{classes}}">
+    <div class="tabs-container">
+        {% for key, id in nav_items.items() %}
+            <a tabindex="0" role="tab" id={{id}}-tab onclick="showTab('{{id}}')">{{key}}</a>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    const activeTabContentCssClass = "tabs__tab-content--active";
+
+    function showTab(tabId) {
+        $(`[is-selected]`).removeAttr('is-selected', '');
+        $(`.${activeTabContentCssClass}`).removeClass(activeTabContentCssClass);
+        $(`#${tabId}-tab`).attr('is-selected', '');
+        $(`#${tabId}`).addClass(activeTabContentCssClass);
+    }
+
+    $(document).ready(function() {
+        function showFirstTab(tabId) {
+            $(`#${tabId}`).addClass(activeTabContentCssClass);
+            $(`#${tabId}-tab`).attr('is-selected', '');
+        }
+        let values = {{nav_items.values()|list|safe}};
+        let firstTabId = values[0];
+        showFirstTab(firstTabId);
+    })
+</script>
+{% endmacro %}

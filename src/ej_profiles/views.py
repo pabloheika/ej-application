@@ -95,18 +95,6 @@ class EditView(UpdateView):
 
 
 @method_decorator([login_required], name="dispatch")
-class ContributionsView(DetailView):
-    template_name = "ej_profiles/contributions.jinja2"
-
-    def get_context_data(self, **kwargs):
-        profile = self.request.user.get_profile()
-        return {
-            **profile.get_contributions_data(),
-            "user_boards": Board.objects.filter(owner=self.request.user),
-        }
-
-
-@method_decorator([login_required], name="dispatch")
 class HomeView(ListView):
     template_name = "ej_profiles/home.jinja2"
     queryset = Conversation.objects.filter(is_promoted=True).order_by("-created")

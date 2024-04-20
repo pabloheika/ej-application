@@ -1,3 +1,5 @@
+.. _Architecture:
+
 =======================
 Arquitetura de Software
 =======================

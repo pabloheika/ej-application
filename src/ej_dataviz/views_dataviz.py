@@ -238,7 +238,12 @@ def votes_data_cluster(request, conversation, fmt, cluster_id, **kwargs):
 def comments_data(request, conversation_id, fmt, **kwargs):
     conversation = Conversation.objects.get(pk=conversation_id)
     comments = conversation.comments
-    clusters = Clusterization.objects.filter(conversation=conversation).last().clusters
+    try:
+        clusters = (
+            Clusterization.objects.filter(conversation=conversation).last().clusters
+        )
+    except AttributeError:
+        clusters = None
     votes = conversation.votes
     filename = conversation.slug + "-comments"
     return comments_data_common(comments, votes, filename, fmt, clusters)

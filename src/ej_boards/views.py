@@ -44,7 +44,10 @@ class BoardCreateView(CreateView):
 
     def get_context_data(self):
         form = BoardForm(request=self.request)
-        return {"form": form}
+        return {
+            "form": form,
+            "user_boards": Board.objects.filter(owner=self.request.user),
+        }
 
 
 @method_decorator([can_edit_board], name="dispatch")
@@ -69,6 +72,7 @@ class BoardEditView(UpdateView):
             "form": form,
             "board": board,
             "user_boards": Board.objects.filter(owner=self.request.user),
+            "current_page": board.slug,
         }
 
     def get_object(self) -> Board:

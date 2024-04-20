@@ -1,15 +1,14 @@
-<div class="form-component__drop_box" id="{{ widget.name }}-dropbox">
+<div class="form-component__drop-box" id="{{ widget.name }}-dropbox">
   <div class="dropzone" id="{{ widget.name }}-div">
-    <input accept="image/png, image/gif, image/jpeg" type="{{ widget.type }}" name="{{ widget.name }}" id="{{ widget.name }}">
-    <input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}">
-    <input type="checkbox" name="{{ widget.name }}_clear" id="{{ widget.name }}_clear">
+    <input class="hide" accept="image/png, image/gif, image/jpeg" type="{{ widget.type }}" name="{{ widget.name }}" id="{{ widget.name }}">
+    <input class="hide" type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}">
     {% if widget.value and is_valid_image %}
       <div id="{{ widget.name }}-uploaded">
         <div class="form-component form-component--uploaded">
           <span class="form-component__image">{{_("Current image:")}}</span>
           <span class="form-component__image-name">{{widget.value.url}}</span>
           <div class="form-component__upload-buttons">
-            <a type="button" class="form-component__upload-buttons--remove" onClick="removeFile()">
+            <a type="button" class="form-component__upload-buttons--remove" onClick="removeFile{{widget.attrs.id}}()">
               {{_("Remove")}}
             </a>
             <a type="button" class="form-component__upload-buttons--view" href="{{ widget.value.url }}" target="_blank" id="{{ widget.name }}-preview">
@@ -25,7 +24,7 @@
           <span class="form-component__image">{{_("Current image:")}}</span>
           <span class="form-component__image-name"></span>
           <div class="form-component__upload-buttons">
-            <a type="button" class="form-component__upload-buttons--remove" onClick="removeFile()">
+            <a type="button" class="form-component__upload-buttons--remove" onClick="removeFile{{widget.attrs.id}}()">
               {{_("Remove")}}
             </a>
             <a type="button" class="form-component__upload-buttons--view" href="" target="_blank" id="{{ widget.name }}-preview">
@@ -36,23 +35,23 @@
       </div>
       <div class="empty-image" id="{{ widget.name }}-empty">
     {% endif %}
-        <label class="dropzone--widget-label" for="{{ widget.name }}" id="{{ widget.name }}-label">
+        <label class="dropzone--label-margin-0" for="{{ widget.name }}" id="{{ widget.name }}-label">
           <header>
             <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M4.5 19.4996C4.5 21.3561 5.2375 23.1366 6.55025 24.4493C7.86301 25.7621 9.64349 26.4996 11.5 26.4996H18.5V31.6716L15.914 29.0856C15.5368 28.7212 15.0316 28.5197 14.5072 28.5242C13.9828 28.5288 13.4812 28.7391 13.1104 29.1099C12.7395 29.4807 12.5292 29.9824 12.5247 30.5068C12.5201 31.0312 12.7217 31.5364 13.086 31.9136L19.086 37.9136C19.4611 38.2885 19.9697 38.4991 20.5 38.4991C21.0303 38.4991 21.5389 38.2885 21.914 37.9136L27.914 31.9136C28.2783 31.5364 28.4799 31.0312 28.4753 30.5068C28.4708 29.9824 28.2605 29.4807 27.8896 29.1099C27.5188 28.7391 27.0172 28.5288 26.4928 28.5242C25.9684 28.5197 25.4632 28.7212 25.086 29.0856L22.5 31.6716V26.4996H27.5C28.7335 26.4988 29.9536 26.2446 31.0847 25.7526C32.2158 25.2606 33.2337 24.5413 34.0752 23.6394C34.9167 22.7376 35.5638 21.6724 35.9764 20.5099C36.3889 19.3475 36.5582 18.1127 36.4735 16.8821C36.3889 15.6516 36.0523 14.4515 35.4845 13.3565C34.9166 12.2615 34.1298 11.2949 33.1728 10.5167C32.2158 9.73855 31.109 9.16538 29.9212 8.83283C28.7334 8.50028 27.49 8.41543 26.268 8.58356C26.0318 7.54073 25.5891 6.55579 24.9659 5.68691C24.3427 4.81803 23.5518 4.08281 22.6398 3.52466C21.7278 2.96652 20.7132 2.59677 19.6559 2.43724C18.5986 2.27771 17.5201 2.33164 16.484 2.59584C15.4479 2.86004 14.4753 3.32916 13.6235 3.9755C12.7717 4.62183 12.0581 5.43228 11.5247 6.359C10.9913 7.28571 10.649 8.3099 10.518 9.37109C10.387 10.4323 10.47 11.509 10.762 12.5376C9.04272 12.7198 7.45172 13.5319 6.29553 14.8174C5.13933 16.1028 4.49975 17.7706 4.5 19.4996ZM22.5 26.4996H18.5V16.4996C18.5 15.9691 18.7107 15.4604 19.0858 15.0853C19.4609 14.7103 19.9696 14.4996 20.5 14.4996C21.0304 14.4996 21.5391 14.7103 21.9142 15.0853C22.2893 15.4604 22.5 15.9691 22.5 16.4996V26.4996Z" fill="#9CA3AF"/>
             </svg>
             <div class="dropzone__upload-card-content">
-              <span class="dropzone__upload-card-content--text">
+              <span class="dropzone__upload-card-content__field-title">
                 {{widget.attrs.title}}
               </span><br>
-              <span class="dropzone__upload-card-content--hint">
+              <span class="dropzone__upload-card-content__hint">
                 {{_("Click to upload or drag and drop the file into this area")}}
               </span>
             </div>
           </header>
-          <span class="size-text">{{_("Maximum size: 5mb // Suggested dimensions: 1400x200px")}}</span>
+          <span class="dropzone__hint-size">{{_("Maximum size: 5mb // Suggested dimensions: 1400x200px")}}</span>
         </label>
-        <button type="button" class="upload" onClick="clickOnInput('{{ widget.name }}')">
+        <button type="button" class="upload" onClick="clickOnInput{{widget.attrs.id}}('{{ widget.name }}')">
           <i class="fa">&#xf002;</i>
           {{_("Choose file")}}
         </button>
@@ -63,10 +62,10 @@
 <script>
 let dropZoneElement{{widget.attrs.id}} = $("#{{ widget.name }}-dropbox");
 let inputElement{{widget.attrs.id}} = $("#{{ widget.name }}");
-const uploadedFileDiv = $("#{{ widget.name }}-uploaded");
+let uploadedFileDiv{{widget.attrs.id}} = $("#{{ widget.name }}-uploaded");
 
-function clickOnInput(inputId){
-    $(`#${inputId}`).click();
+function clickOnInput{{widget.attrs.id}}(inputId){
+  $(`#${inputId}`).click();
 }
 
 dropZoneElement{{widget.attrs.id}}.bind("dragover", (event) => {
@@ -74,36 +73,36 @@ dropZoneElement{{widget.attrs.id}}.bind("dragover", (event) => {
 });
 
 dropZoneElement{{widget.attrs.id}}.bind("drop", (event) => {
-    event.preventDefault();
-
-    event.originalEvent.dataTransfer.dropEffect = 'copy';
-    const files = event.originalEvent.dataTransfer.files;
-    if (files.length > 0) {
-        const imageInput = inputElement{{widget.attrs.id}};
-        imageInput.prop("files", files);
-
-        showImageName(files[0].name, imageInput);
-        changeClearCheckbox(false);
-        changePreviewImgURL();
-    }
+  event.preventDefault();
+  
+  event.originalEvent.dataTransfer.dropEffect = 'copy';
+  const files = event.originalEvent.dataTransfer.files;
+  if (files.length > 0) {
+    const imageInput = inputElement{{widget.attrs.id}};
+    imageInput.prop("files", files);
+    
+    showImageName{{widget.attrs.id}}(files[0].name, imageInput);
+    changeClearCheckbox{{widget.attrs.id}}(false);
+    changePreviewImgURL{{widget.attrs.id}}();
+  }
 });
 
 inputElement{{widget.attrs.id}}.bind("change", (event) => {
     const imageName = event.target.value;
 
-    if (imageName) {
-        showImageName(imageName, inputElement{{widget.attrs.id}});
-        changeClearCheckbox(false);
-        changePreviewImgURL();
-    }
+  if (imageName) {
+    showImageName{{widget.attrs.id}}(imageName, inputElement{{widget.attrs.id}});
+    changeClearCheckbox{{widget.attrs.id}}(false);
+    changePreviewImgURL{{widget.attrs.id}}();
+  }
 });
 
-function showImageName(name, input){
-    const parentElement = input.parent().parent();
-    const imageName = parentElement.find(".form-component__image-name");
+function showImageName{{widget.attrs.id}}(name, input){
+  const parentElement = input.parent().parent();
+  const imageName = parentElement.find(".form-component__image-name");
 
-    uploadedFileDiv.removeClass("hide");
-    imageName.html(name);
+  uploadedFileDiv{{widget.attrs.id}}.removeClass("hide");
+  imageName.html(name);
 
     const emptyFileDiv = $("#{{ widget.name }}-empty");
     if (!emptyFileDiv.hasClass("hide")) {
@@ -111,34 +110,33 @@ function showImageName(name, input){
     }
 }
 
-function removeFile(){
-    const imageName = $("#{{ widget.name }}-uploaded .form-component__image-name");
-    imageName.innerHTML = '';
+function removeFile{{widget.attrs.id}}(){
+  const imageName = $("#{{ widget.name }}-uploaded .form-component__image-name");
+  imageName.innerHTML = '';
 
     const emptyFileDiv = $("#{{ widget.name }}-empty");
     if (emptyFileDiv.hasClass("hide")) {
         emptyFileDiv.removeClass("hide");
     }
 
-    if (!uploadedFileDiv.hasClass("hide")) {
-        uploadedFileDiv.addClass("hide");
-    }
-
-    changeClearCheckbox(true);
+  if (!uploadedFileDiv{{widget.attrs.id}}.hasClass("hide")) {
+    uploadedFileDiv{{widget.attrs.id}}.addClass("hide");
+  }
+  changeClearCheckbox{{widget.attrs.id}}(true);
 }
 
-function changeClearCheckbox(value){
-    const clearCheckbox = $("#{{ widget.name }}_clear")[0];
-    clearCheckbox.checked = value;
+function changeClearCheckbox{{widget.attrs.id}}(value){
+  const clearCheckbox = $("#{{ widget.checkbox_id }}")[0];
+  clearCheckbox.checked = value;
 }
 
-function changePreviewImgURL() {
-    const imageInput = inputElement{{widget.attrs.id}}
-    const [file] = imageInput.prop("files")
-    if (file) {
-        const previewButton = $("#{{ widget.name }}-preview")
-        previewButton.attr("href", URL.createObjectURL(file));
-    }
+function changePreviewImgURL{{widget.attrs.id}}() {
+  const imageInput = inputElement{{widget.attrs.id}}
+  const [file] = imageInput.prop("files")
+  if (file) {
+    const previewButton = $("#{{ widget.name }}-preview");
+    previewButton.attr("href", URL.createObjectURL(file));
+  }
 }
 
 </script>

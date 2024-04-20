@@ -5,13 +5,6 @@ from hyperpython import a, div
 from ..roles.tags import icon
 
 
-def tabs(items, select=0, js=True, classes="", **kwargs):
-    """
-    Return a tabbed interface.
-    """
-    return _make_tabs(f"tabs {classes}", js, kwargs, list(_tab_anchors(items, select)))
-
-
 def categories(items, select=0, js=True, **kwargs):
     """
     Similar to tabs, but display several categories for the user to select.

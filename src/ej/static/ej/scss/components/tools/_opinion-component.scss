@@ -78,84 +78,16 @@
         line-height: normal;
     }
 
-    .form-component--uploaded {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-
-        @media only screen and (max-width: 320px) {
-            & {
-                width: 90%;
-            }
-        }
-    }
-
     .form-component {
-        &__drop_box {
-            margin: 0.375rem 0;
-            padding: 1.875rem 3.125rem;
-            border-radius: 5px;
-            border: 2px dashed $color-gray-200;
-            background: $color-gray-50;
-            text-align: center;
-            height: 305px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-
-            @media only screen and (max-width: 320px) {
-                & {
-                    height: 355px !important;
-                }
-            }
-        }
-          
-        &__drop_box:nth-child(4) {
-        margin-top: .813rem;
-        }
-
-        &__image {
-            color: $color-theme-report-light-blue;
-            font-weight: bold;
-            display: block;
-        }
-
-        &__image-name {
-            color: $color-gray-500;
-            font-size: 12px;
-        }
-
         &__message {
-            margin-top: 1.813rem;
+            margin-top: 0.5rem;
+            text-transform: capitalize;
 
             &__label {
-                margin-bottom: .75rem; 
-                color: $color-theme-dark-blue; 
-                font-size: 1rem; 
-                font-style: normal; 
-                font-weight: 700; 
-                line-height: 1.5rem; 
-                text-transform: initial;
+                text-transform: capitalize;
+                margin-bottom: 0.5rem;
             }
         }
-
-        &__upload-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 1.875rem;
-            
-            &--remove, &--view {
-              text-transform: uppercase;
-            }
-            &--remove {
-              color: $color-accent;
-              
-            }
-            &--view {
-              color: $color-complementary-gray;
-            }
-        }    
-
         .tools-card-footer.opinion-component {
             margin: .75rem 0 0 0 !important;
             display: block !important; 
@@ -244,67 +176,4 @@
 
 .cke_top {
     padding: 0 !important;
-}
-
-// Upload card
-
-.dropzone {
-    input {
-        display: none;
-    }
-
-    .upload {
-        display: flex;
-        padding: .5rem .75rem;
-        justify-content: center;
-        align-items: center;
-        gap: .5rem; 
-        border-radius: 5px;
-        background: $color-theme-report-light-blue; 
-        margin: auto;
-        height: 40px;
-        text-transform: initial;
-    }
-
-    label {
-        text-align: center; 
-        margin-bottom: 1rem !important; 
-        text-transform: initial;
-
-        .size-text {
-            color: $color-gray-500; 
-            text-align: center; 
-            font-size: .75rem; 
-            font-style: normal; 
-            font-weight: 700; 
-            line-height: normal;
-        }
-    }
-
-    &--widget-label {
-        margin-bottom: 0;
-    }
-
-    &__upload-card-content {
-        text-align: center;
-        font-size: 1rem;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 1.5rem;
-        color:$color-gray-500;
-
-        &--text {
-            color:$color-gray-500;
-            text-align: center;
-            font-size: 1rem;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 1.5rem;
-        }
-
-        &--hint {
-           font-weight: 400; 
-        }
-    }
-
 }

@@ -121,21 +121,12 @@ class OpinionComponentView(UpdateView):
         )
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        opinion_component = self.get_object()
-        if opinion_component:
-            logo_url = opinion_component.logo_image.name
-        else:
-            background_url = None
-            logo_url = None
-
         return {
             "ej_domain": get_host_with_schema(self.request),
             "tool": OpinionComponentTool(self.conversation),
             "npm_version": npm_version(),
             "conversation": self.conversation,
             "opinion_component_form": self.opinion_component_form,
-            "background_url": background_url,
-            "logo_url": logo_url,
         }
 
 

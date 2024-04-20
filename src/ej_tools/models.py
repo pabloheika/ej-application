@@ -59,11 +59,6 @@ class OpinionComponent(models.Model):
     configure the EJ opinion web component
     """
 
-    FIVE_MB = 5242880
-
-    logo_image = models.ImageField(
-        upload_to="opinion_component/logo/", validators=[validate_file_size]
-    )
     conversation = models.OneToOneField(
         "ej_conversations.Conversation", on_delete=models.CASCADE
     )

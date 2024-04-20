@@ -1,4 +1,6 @@
 {% extends 'ej_conversations/base.jinja2' %}
+{% from "ej/includes/tabs.jinja2" import tabs %}
+{% from "ej_conversations/comments/moderation-macros.jinja2" import show_comments, reject_button, approve_button %}
 
 {% block content %}
     <section class="content-grid moderate">
@@ -90,73 +92,51 @@
             </div>
         </div>
 
-                {{ tabs({_('Pending'): '#moderate-pending',
-                        _('Approved'): '#moderate-approved',
-                        _('Rejected'): '#moderate-rejected',
-                        _('Add'): '#moderate-add'},
-                        classes="tabs--scroll-x margin-y2") }}
-                {{ show_comments(pending, 'pending') }}
-                {{ show_comments(approved, 'approved') }}
-                {{ show_comments(rejected, 'rejected') }}
+        {{ tabs({_('Pending'): 'moderate-pending',
+                _('Approved'): 'moderate-approved',
+                _('Rejected'): 'moderate-rejected',
+                _('Add'): 'moderate-add'}, classes='margin-y2 tabs--scroll-x') }}
 
-        <script>
-            const path = document.location.href.split('/');
-            if(path[path.length - 2] == 'new') {
-                const tab = document.querySelector(".tabs :last-child");
-                tab.click();
-            }
-        </script>
-
-        <script>
-            function toggleComment(commentID, status) {
-                const commentElem = document.querySelector(`[data-comment-id='${commentID}']`);
-                const commentInput = commentElem.querySelector("input");
-                const antistatus = status == 'approved' ? 'rejected' : 'approved';
-
-                if (commentElem.classList.contains(status)) {
-                    commentElem.classList.remove(status);
-                    commentInput.name = '';
-                    return;
-                }
-
-                commentElem.classList.remove(antistatus)
-                commentElem.classList.add(status);
-                commentInput.name = status;
-            }
-
-            const rejectComment = (commentID) => toggleComment(commentID, "rejected");
-            const approveComment = (commentID) => toggleComment(commentID, "approved");
-
-            const formSubmit = (formID) => {
-                const form = document.querySelector(`${formID}`);
-                form.submit();
-            }
-
-            const approveFormSubmit = () => formSubmit("#moderate-approved");
-            const reproveFormSubmit = () => formSubmit("#moderate-rejected");
-            const pendingFormSubmit = () => formSubmit("#moderate-pending");
-
-        </script>
-
+        {{ show_comments(pending, conversation, csrf_input, 'pending') }}
+        {{ show_comments(approved, conversation, csrf_input, 'approved') }}
+        {{ show_comments(rejected, conversation, csrf_input, 'rejected') }}
         {% include 'ej_conversations/includes/tab-moderate-add-comments.jinja2' %}
-
     </section>
+
+    <script>
+        const path = document.location.href.split('/');
+        if(path[path.length - 2] == 'new') {
+            const tab = document.querySelector(".tabs :last-child");
+            tab.click();
+        }
+
+        function toggleComment(commentID, status) {
+            const commentElem = document.querySelector(`[data-comment-id='${commentID}']`);
+            const commentInput = commentElem.querySelector("input");
+            const antistatus = status == 'approved' ? 'rejected' : 'approved';
+
+            if (commentElem.classList.contains(status)) {
+                commentElem.classList.remove(status);
+                commentInput.name = '';
+                return;
+            }
+
+            commentElem.classList.remove(antistatus)
+            commentElem.classList.add(status);
+            commentInput.name = status;
+        }
+
+        const rejectComment = (commentID) => toggleComment(commentID, "rejected");
+        const approveComment = (commentID) => toggleComment(commentID, "approved");
+
+        const formSubmit = (formID) => {
+            const form = document.querySelector(`${formID}`);
+            form.submit();
+        }
+
+        const approveFormSubmit = () => formSubmit("#moderate-approved");
+        const reproveFormSubmit = () => formSubmit("#moderate-rejected");
+        const pendingFormSubmit = () => formSubmit("#moderate-pending");
+
+    </script>
 {% endblock %}
-
-{% macro show_comments(comments, id) %}
-    {% include 'ej_conversations/includes/tab-moderate-show-comments.jinja2' %}
-{% endmacro %}
-
-
-{% macro reject_button(comment) %}
-    <a class="comment__action reject-btn" onclick="rejectComment({{ comment.id }})" value="{{ comment.id }}">
-        <i class="fa fa-ban"></i>{{ _('Reject') }}
-    </a>
-{% endmacro %}
-
-
-{% macro approve_button(comment) %}
-    <a class="comment__action approve-btn" onclick="approveComment({{ comment.id }})" value="{{ comment.id }}">
-        <i class="fa fa-thumbtack"></i>{{ _('Approve') }}
-    </a>
-{% endmacro %}

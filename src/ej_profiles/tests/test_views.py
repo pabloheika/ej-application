@@ -19,7 +19,7 @@ import pytest
 
 
 class TestRoutes(UrlTester):
-    user_urls = ["/profile/", "/profile/edit/", "/profile/contributions/"]
+    user_urls = ["/profile/", "/profile/edit/"]
 
 
 def create_image(filename, size=(100, 100), image_mode="RGB", image_format="png"):

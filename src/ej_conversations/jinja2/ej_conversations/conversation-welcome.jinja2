@@ -13,19 +13,42 @@
     <{{ main_tag }} id="main-content" tabindex=0>
     {% block content %}
         <div class="conversation-welcome">
-            <div></div>
             <div class="conversation-welcome__item">
-                <h1 class="h2 text-accent left">{{_("Hello!")}}</h1>
+                <h1 class="conversation-welcome__title text-accent left">{{_("Hello!")}}</h1>
                 <div class="conversation-welcome__message left">
-                    {{object.welcome_message|safe}}
+                    <p>{{_("We want to know your opinion:")}}
+                        <span class="bold">{{conversation.text}}</span>
+                    </p>
+                    <span>{{_("The research is quick and your contribution can 
+                        significantly expand our knowledge on the topic.")}}</span>
                 </div>
-                <a href={{url("boards:conversation-detail", **conversation.get_url_kwargs())}}>
-                    <div class="conversation-welcome__link">
-                        {{_("Lets Go!")}}
+                {% if logo_image_url %}
+                    <div class="conversation-welcome__logo">
+                        <img src="{{logo_image_url}}"/>
+                        <a class="conversation-welcome__button" 
+                            href={{url("boards:conversation-detail", **conversation.get_url_kwargs())}}
+                        >
+                            {{_("Lets Go!")}}
+                        </a>
                     </div>
-                </a>
+                {% else %}
+                    <div class="conversation-welcome__logo conversation-welcome__logo--no-photo">
+                        <a class="conversation-welcome__button" 
+                            href={{url("boards:conversation-detail", **conversation.get_url_kwargs())}}
+                        >
+                            {{_("Lets Go!")}}
+                        </a>
+                    </div>
+                {% endif %}
+                <div>
+                    <p class="conversation-welcome__message__subtitle bold">
+                        {{_("About the research")}}
+                    </p>
+                    <div class="conversation-welcome__message">
+                        {{object.welcome_message|safe}}
+                    </div>
+                </div>
             </div>
-            <div></div>
         </div>
     {% endblock %}
     </{{ main_tag }}>

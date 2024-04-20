@@ -1,13 +1,11 @@
 from django.urls import path
 
 from ej_boards.utils import patched_register_app_routes
-from ej_tools.urls import urlpatterns as conversation_tools_urlpatterns
-from ej_conversations.urls.conversations import (
-    urlpatterns as conversation_urlpatterns,
-    conversation_url,
-)
 from ej_clusters.urls.clusters import urlpatterns as cluster_urlpatterns
+from ej_conversations.urls.conversations import urlpatterns as conversation_urlpatterns
 from ej_dataviz.urls import urlpatterns as dataviz_urlpatterns
+from ej_tools.urls import urlpatterns as conversation_tools_urlpatterns
+
 from . import views
 
 app_name = "ej_boards"

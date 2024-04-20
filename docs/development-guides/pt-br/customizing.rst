@@ -77,7 +77,7 @@ ser encontrado no app ``ej_activation``:
     # ej_activation/apps.py
     def customize_menu(self, conversation):
         """
-        injects links on conversation menu-detail template.
+        injects links in conversation menu template.
         """
         return {
             "title": _("Activation"),

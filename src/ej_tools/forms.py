@@ -35,22 +35,7 @@ class CustomTemplateChoiceWidget(forms.RadioSelect):
         return self.renderer.render(context)
 
 
-class CustomImageInputWidget(forms.ClearableFileInput):
-    template_name = "ej_tools/includes/image-input.jinja2"
-    renderer = get_template(template_name)
-
-    def render(self, name, value, attrs=None, renderer=None):
-        context = self.get_context(name, value, attrs)
-        context["widget"]["value"] = value
-        if value:
-            context["is_valid_image"] = hasattr(value, "url")
-        return self.renderer.render(context)
-
-
 class OpinionComponentForm(forms.ModelForm):
-    logo_image = forms.ImageField(
-        widget=CustomImageInputWidget(attrs={"id": "logo_input", "title": _("Logo")})
-    )
     conversation = forms.ModelChoiceField(
         widget=forms.HiddenInput(), queryset=Conversation.objects.all()
     )

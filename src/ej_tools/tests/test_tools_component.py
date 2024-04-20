@@ -29,27 +29,10 @@ class TestOpinionComponent(ConversationRecipes):
         data = {
             "conversation": conversation_db.id,
             "final_voting_message": "finished voting!",
-            "custom": "",
-        }
-        response = client.post(url, data)
-        assert response.status_code == 200
-        assert not OpinionComponent.objects.filter(conversation=conversation_db).exists()
-
-    def test_custom_conversation_component_valid_form(self, conversation_db):
-        client = Client()
-        client.force_login(conversation_db.author)
-
-        url = conversation_db.patch_url("conversation-tools:opinion-component")
-        logo_image = TestOpinionComponent.get_image_file("image2.png")
-        data = {
-            "logo_image": logo_image,
-            "conversation": conversation_db.id,
-            "final_voting_message": "finished voting!",
-            "custom": "",
         }
         response = client.post(url, data)
         assert response.status_code == 302
-        assert OpinionComponent.objects.filter(conversation=conversation_db).exists()
+        assert not OpinionComponent.objects.filter(conversation=conversation_db).exists()
 
     def test_get_conversation_component(self, conversation_db):
         client = Client()
@@ -58,23 +41,3 @@ class TestOpinionComponent(ConversationRecipes):
         url = conversation_db.patch_url("conversation-tools:opinion-component")
         response = client.get(url)
         assert response.status_code == 200
-        assert b"logo_image" in response.content
-
-    def test_custom_conversation_component_invalid_form(self, conversation_db):
-        client = Client()
-        client.force_login(conversation_db.author)
-
-        url = conversation_db.patch_url("conversation-tools:opinion-component")
-        logo_image = TestOpinionComponent.get_image_file("image2.png")
-        data = {
-            "logo_image": logo_image,
-            "conversation": conversation_db.id,
-            "final_voting_message": "",
-            "custom": "",
-        }
-        response = client.post(url, data)
-
-        error_message = "This field is required"
-        assert response.status_code == 200
-        assert not OpinionComponent.objects.filter(conversation=conversation_db).exists()
-        assert error_message.encode() in response.content

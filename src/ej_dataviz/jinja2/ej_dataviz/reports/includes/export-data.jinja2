@@ -1,42 +1,44 @@
-{% macro export_modal(can_view_detail, conversation, type_data, _id, cluster=None) %}
+{% macro export_modal(conversation, which, cluster=None) %}
+{% if cluster %}
+  {% set report_url = "dataviz:" + which +"-cluster" %}
+{% else %}
+  {% set report_url = "dataviz:" + which %}
+{% endif %}
 
-<div class="export-button" id="export-btn-{{type_data}}-{{_id}}">
+<div id="export-data-macro">
   <div>
-      <a data-toggle="modal">
-        <i class="fas fa-cloud-download-alt"></i>
+      <a onclick="toggleExportOptions()" class="export-button">
+        <i class="fas fa-file-download"></i>
+        <span class="export-button__title">{{_("Export")}}</span>
       </a>
-    <div id="export-modal-{{type_data}}-{{_id}}" class="modal-report">
-        <div class="modal-content">
-            <span class="close-report" id="{{type_data}}-{{_id}}" onclick='closeExportDropdown(this)'>&times;</span>
-            {% if can_view_detail %}{{ conversation|role('download-data', which=type_data, cluster=cluster) }}{% endif %}
-        </div>
-    </div>
   </div>
-  <div>
-      <span class="export-button__title">{{_("Export")}}</span>
+  <div id="export-card-id" class="export-button__card hide">
+    <div class="export-button__card--triangle"></div>
+    <div class="export-button__card-content">
+      <span>{{ _("Export") }}</span>
+      <span>
+        <a href="{{url(report_url, **{"conversation_id": conversation.id, "slug": conversation.slug, "fmt": "json"})}}">json</a>
+        <span>{{_("or")}}</span>
+        <a href="{{url(report_url, **{"conversation_id": conversation.id, "slug": conversation.slug, "fmt": "csv"})}}">csv</a>
+      </span>
+    </div>
   </div>
 </div>
 
 
 <script>
-function closeExportDropdown(closeIcon) {
-  let modal = $("#export-modal-{{type_data}}-{{_id}}")[0];
-    if (modal) {
-        modal.classList.remove("show-options");
-    }
+
+function toggleExportOptions() {
+  let optionsCard = $("#export-card-id").toggleClass("hide");
 }
 
-function openExportDropdown(event) {
-    if (event.target.classList[0] != "close-report") {
-        let modal = $("export-modal-{{type_data}}-{{_id}}")[0];
-        modal.classList.toggle("show-options");
-    }
-}
+document.addEventListener('click', function(event) {
+  let exportMacro = document.getElementById("export-data-macro");
+  if (!exportMacro.contains(event.target)) {
+    $("#export-card-id").addClass("hide");
+  }
+})
 
-let exportBtn = $("export-btn-{{type_data}}-{{_id}}")[0];
-if (exportBtn) {
-    exportBtn.onclick = openExportDropdown;
-}
 </script>
 
 {% endmacro %}
