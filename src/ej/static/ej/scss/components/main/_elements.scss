@@ -77,10 +77,10 @@ i.fa, i.fas, i.fab, i.far {
         overflow-x: scroll;
     }
     &__tab-content {
-        display: none;
+        display: none !important;
 
-        &--active {
-            display: inherit;
+        &--show {
+            display: inherit !important;
         }
     }
 }
