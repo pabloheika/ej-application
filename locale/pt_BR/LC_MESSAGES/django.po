@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-24 20:57-0300\n"
+"POT-Creation-Date: 2024-04-29 23:07-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -15,10 +15,6 @@ msgstr ""
 "Generated-By: Babel 2.5.3\n"
 "X-Generator: Poedit 2.2.1\n"
 "X-Loco-Parser: loco_parse_po\n"
-
-#: build/docs/_sources/development-guides/pt-br/translations.rst.txt:66
-msgid "This string should be translated"
-msgstr ""
 
 #: src/ej/components/builtins.py:12
 #, python-brace-format
@@ -3005,22 +3001,17 @@ msgstr "Exportar"
 msgid "or"
 msgstr "ou"
 
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/filters-macro.jinja2:11
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/filters-macro.jinja2:10
 #, fuzzy
 msgid "Search for key word"
 msgstr "Procure por palavra-chave"
 
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/filters-macro.jinja2:16
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/filters-macro.jinja2:15
 #, fuzzy
 msgid "Order by"
 msgstr "ordenar por"
 
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/filters-macro.jinja2:21
-#, fuzzy
-msgid "creation date"
-msgstr "data de criação"
-
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/filters-macro.jinja2:33
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/filters-macro.jinja2:30
 #, fuzzy
 msgid "Filter by clusters"
 msgstr "Filtrar por grupos"
@@ -3033,6 +3024,12 @@ msgstr "Exibindo"
 #, fuzzy
 msgid "Back to top"
 msgstr "Voltar para o topo"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/filters.jinja2:2
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/filters.jinja2:3
+#, fuzzy
+msgid "creation date"
+msgstr "data de criação"
 
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:8
 #, fuzzy
