@@ -103,9 +103,11 @@
         }
 
         &-inputs {
-            gap: 1rem;
-            display: flex;
-            justify-content: space-between;
+            // gap: 1rem;
+            // display: flex;
+            // justify-content: space-between;
+            display: grid;
+            grid-template-columns: 246px 300px 74.18px auto;
 
             @media (max-width: 1200px) {
                 & {
@@ -115,7 +117,8 @@
         }
 
         .search {
-            max-width: 40rem !important;
+            // max-width: 40rem !important;
+            max-width: 12.75rem;
             width: 100%;
             input {
                     margin: unset;
@@ -156,7 +159,10 @@
         .ordering {
             display: flex;
             align-items: baseline;
-            gap: .5rem;
+            // gap: .5rem;
+            gap: 1rem;
+            max-width: 254px;
+            width: 100%;
             
             select {
                 cursor: pointer;
@@ -166,6 +172,7 @@
                 min-width: 15em;
                 background-color: $color-white;
                 padding-right: 1rem;
+                border-right: 8px solid transparent;
 
                 @media (max-width: 500px) {
                     min-width: unset;
