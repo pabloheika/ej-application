@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-29 23:07-0300\n"
+"POT-Creation-Date: 2024-05-02 14:23-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -15,6 +15,10 @@ msgstr ""
 "Generated-By: Babel 2.5.3\n"
 "X-Generator: Poedit 2.2.1\n"
 "X-Loco-Parser: loco_parse_po\n"
+
+#: build/docs/_sources/development-guides/pt-br/translations.rst.txt:66
+msgid "This string should be translated"
+msgstr ""
 
 #: src/ej/components/builtins.py:12
 #, python-brace-format
