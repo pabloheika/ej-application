@@ -1,0 +1,35 @@
+{% from 'ej/includes/menu-item.jinja2' import menu_item, board_menu_item %}
+
+<nav class="participant-menu">
+    <div class="participant-menu__avatar">
+        <img>
+    </div>
+    <h3 class="participant-menu__item participant-menu__item--column-2">
+        {{ _('My Boards') }}
+    </h3>
+    {% if user_boards is defined %}
+        <ul class="board-list participant-menu__item">
+            {% for board in user_boards %}
+                {{ board_menu_item(current_page, board.slug, url('boards:conversation-list', board_slug=board.slug), board) }}
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if request.user.is_staff or request.user.is_superuser %}
+        <h3 class="participant-menu__item participant-menu__item--margin participant-menu__item--column-2">
+            {{_("Manage")}}
+        </h3>
+        <ul class="participant-menu__item">
+            {{ menu_item(current_page, "administration", url('administration:index'), _("EJ Environment")) }}
+        </ul>
+    {% endif %}
+
+    <h3 class="participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{_("Help")}}</h3>
+    <ul class="participant-menu__item">
+        <li><a href="{{ url("profile:tour")+'?completedTour=false' }}">{{_("Tour")}}</a></li>
+        <li><a href="/docs" target="#blank">{{_("Documentation")}}</a></li>
+    </ul>
+</nav>
+<nav class="menu-padding participant-menu__item--margin">
+    {{ page_menu.ACCESSIBILITY() }}
+</nav>
