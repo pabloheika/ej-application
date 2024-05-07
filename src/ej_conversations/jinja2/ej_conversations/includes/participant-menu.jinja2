@@ -6,20 +6,27 @@
 
     {{ menu_item(current_page, "home", url("profile:home"), _('Home')) }}
 
-    {% block profile_menu %}
-        <h3 class="participant-menu__item participant-menu__item--column-2">
-            {{ _('My Boards') }}
-            <a href="{{ url('boards:board-create') }}" class="add-button" title="{{_('New board')}}"><i class="fa fa-plus-square fa-lg"></i></a>
-        </h3>
-        {% if user_boards is defined %}
-            <ul class="board-list participant-menu__item">
-                {% for board in user_boards %}
-                    {{ board_menu_item(current_page, board.slug, url('boards:conversation-list', board_slug=board.slug), board) }}
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {%endblock %}
+    <h3 class="participant-menu__item participant-menu__item--column-2">
+        {{ _('My Boards') }}
+    </h3>
+    {% if user_boards is defined %}
+        <ul class="board-list participant-menu__item">
+            {% for board in user_boards %}
+                {{ board_menu_item(current_page, board.slug, url('boards:conversation-list', board_slug=board.slug), board) }}
+            {% endfor %}
+        </ul>
+    {% endif %}
 
+    <div class="participant-menu__item--column-2 participant-menu__buttons-container">
+        <a title="{{_('New board')}}"
+            href="{{ url('boards:board-create') }}">
+            <button>{{_('Create board')}}</button>
+        </a>
+        <a title="{{_('New conversation')}}" class="is-primary"
+            href="{{ url('boards:conversation-create', board_slug=user_boards.first().slug) }}">
+            <button>{{_('Create conversation')}}</button>
+        </a>
+    </div>
 
     {% if request.user.is_staff or request.user.is_superuser %}
         <h3 class="participant-menu__item participant-menu__item--margin participant-menu__item--column-2">
