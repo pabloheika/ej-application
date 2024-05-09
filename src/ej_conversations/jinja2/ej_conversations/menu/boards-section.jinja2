@@ -1,0 +1,11 @@
+{% from 'ej/includes/menu-item.jinja2' import board_menu_item %}
+<h3 class="participant-menu__item grid-column-2">
+        {{ _('My Boards') }}
+</h3>
+{% if user_boards is defined %}
+    <ul class="board-list participant-menu__item">
+        {% for board in user_boards %}
+            {{ board_menu_item(current_page, board.slug, url('boards:conversation-list', board_slug=board.slug), board) }}
+        {% endfor %}
+    </ul>
+{% endif %}

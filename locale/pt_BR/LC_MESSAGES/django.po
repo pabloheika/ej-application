@@ -614,7 +614,7 @@ msgstr ""
 msgid "From which EJ channel the vote comes from"
 msgstr ""
 
-#: src/ej_conversations/models/vote.py:69
+#: src/ej_conversations/models/vote.py:70
 msgid "non-moderated comments cannot receive votes"
 msgstr "comentários não-moderados não podem receber votos"
 
@@ -1088,38 +1088,38 @@ msgstr "O domínio do site que hospeda o webchat do rasa bot."
 msgid "a conversation can have a maximum of five domains"
 msgstr "Uma conversa pode ter no máximo cinco links integrados."
 
-#: src/ej_tools/models.py:84
+#: src/ej_tools/models.py:83
 msgid "Client ID"
 msgstr "Chave pública"
 
-#: src/ej_tools/models.py:85
+#: src/ej_tools/models.py:84
 #, fuzzy
 msgid "Client Secret"
 msgstr "Chave secreta"
 
-#: src/ej_tools/models.py:86
+#: src/ej_tools/models.py:85
 #, fuzzy
 msgid "Mautic Access Token"
 msgstr "Token de acesso"
 
-#: src/ej_tools/models.py:87
+#: src/ej_tools/models.py:86
 #, fuzzy
 msgid "Refresh Token"
 msgstr "Atualizar token"
 
-#: src/ej_tools/models.py:89
+#: src/ej_tools/models.py:88
 msgid "Mautic URL"
 msgstr "URL do Mautic"
 
-#: src/ej_tools/models.py:89
+#: src/ej_tools/models.py:88
 msgid "Generated Url from Mautic."
 msgstr "Url gerada no Mautic."
 
-#: src/ej_tools/models.py:162
+#: src/ej_tools/models.py:161
 msgid "Client not found."
 msgstr "Chave do Mautic não encontrada"
 
-#: src/ej_tools/models.py:166
+#: src/ej_tools/models.py:165
 #: src/ej_tools/tests/test_mautic_integrations.py:126
 #, fuzzy
 msgid ""
@@ -1129,25 +1129,25 @@ msgstr ""
 "Não foi possível localizar uma instância do Mautic com a URL fornecida. "
 "Verifique sua url do Mautic e a url de redirecionamento na página do Mautic."
 
-#: src/ej_tools/models.py:187
+#: src/ej_tools/models.py:186
 msgid "Couldn't generate tokens."
 msgstr "Não foi possível gerar os tokens."
 
-#: src/ej_tools/models.py:212
+#: src/ej_tools/models.py:211
 #, fuzzy
 msgid "Couldn't generate new token."
 msgstr "Não foi possível gerar os tokens."
 
-#: src/ej_tools/models.py:262
+#: src/ej_tools/models.py:261
 #, fuzzy
 msgid "There was an error connection to mautic server, please check your url."
 msgstr "Houve um erro na conexao com o Mautic, por favor verifique a URL."
 
-#: src/ej_tools/models.py:302
+#: src/ej_tools/models.py:301
 msgid "Couldn't create a new contact in Mautic."
 msgstr ""
 
-#: src/ej_tools/models.py:306
+#: src/ej_tools/models.py:305
 #: src/ej_tools/tests/test_mautic_integrations.py:158
 msgid "There was an error connection to mautic server, please try again."
 msgstr "Houve um erro na conexao com o Mautic, por favor tente novamente."
@@ -1812,6 +1812,7 @@ msgid "users"
 msgstr "usuários"
 
 #: src/ej_boards/jinja2/ej_boards/board-create.jinja2:7
+#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:23
 msgid "Create board"
 msgstr "Criar mural"
 
@@ -1845,7 +1846,7 @@ msgid "Manage boards"
 msgstr "Gerenciar murais"
 
 #: src/ej_boards/jinja2/ej_boards/includes/menu.jinja2:6
-#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:12
+#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:21
 msgid "New board"
 msgstr "Novo mural"
 
@@ -1997,7 +1998,7 @@ msgstr "Salvar edições"
 
 #: src/ej_clusters/jinja2/ej_clusters/edit/edit-cluster-form.jinja2:42
 #: src/ej_clusters/jinja2/ej_clusters/includes/stereotypes-menu.jinja2:4
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:55
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:40
 msgid "Manage personas"
 msgstr "Gerenciar personas"
 
@@ -2226,6 +2227,7 @@ msgid "Total conversations"
 msgstr "Conversas hospedadas"
 
 #: src/ej_conversations/jinja2/ej_conversations/board-conversations-list.jinja2:54
+#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:25
 #: src/ej_profiles/jinja2/ej_profiles/home.jinja2:17
 #, fuzzy
 msgid "New conversation"
@@ -2309,6 +2311,7 @@ msgstr ""
 "Esse texto será apresentado para os participantes que finalizarem a coleta."
 
 #: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:80
+#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:27
 msgid "Create conversation"
 msgstr "Criar conversa"
 
@@ -2327,7 +2330,7 @@ msgid "Conversation: \"{}\""
 msgstr "Conversa: \"{}\""
 
 #: src/ej_conversations/jinja2/ej_conversations/conversation-edit.jinja2:16
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:22
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:10
 msgid "Edit conversation"
 msgstr "Editar conversa"
 
@@ -2605,12 +2608,14 @@ msgid "This conversation is hidden."
 msgstr "Esta conversa está oculta."
 
 #: src/ej_conversations/jinja2/ej_conversations/includes/conversation-detail-header.jinja2:32
+#: src/ej_conversations/jinja2/ej_conversations/menu/conversation-menu.jinja2:11
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/channels-chart.jinja2:6
 #, fuzzy
 msgid "participants"
 msgstr "Participantes"
 
 #: src/ej_conversations/jinja2/ej_conversations/includes/conversation-detail-header.jinja2:47
+#: src/ej_conversations/jinja2/ej_conversations/menu/conversation-menu.jinja2:15
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/channels-chart.jinja2:8
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/voting.jinja2:25
 #, fuzzy
@@ -2714,73 +2719,70 @@ msgstr "Encontrar arquivo"
 msgid "New Conversation"
 msgstr "Nova conversa"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:7
-#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:7
-#, fuzzy
-msgid "Home"
-msgstr "Início"
-
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:30
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:18
 msgid "Back to conversations"
 msgstr "Voltar para conversas"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:39
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:24
 #, fuzzy
 msgid "Collect opinions"
 msgstr "Coletar opiniões"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:41
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:26
 #: src/ej_profiles/jinja2/ej_profiles/includes/tour-page3.jinja2:16
 #, fuzzy
 msgid "Dashboard"
 msgstr "Painel"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:42
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:27
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/voting.jinja2:5
 msgid "Voting"
 msgstr "Votação"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:45
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:30
 msgid "Manage Comments"
 msgstr "Gerenciar comentários"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:51
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:36
 msgid "Model and Analyze"
 msgstr "Modelar e Analisar"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:54
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:39
 #, fuzzy
 msgid "Create/Edit groups"
 msgstr "Criar/Editar grupos"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:68
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:53
 msgid "Reports"
 msgstr "Relatórios"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:76
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:61
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/comments.jinja2:8
 #, fuzzy
 msgid "Comments report"
 msgstr "Relatório de comentários"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:83
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:68
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/participants.jinja2:8
 #, fuzzy
 msgid "Participants report"
 msgstr "Relatório de participantes"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:112
-#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:33
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:97
+#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:40
+#: src/ej_conversations/jinja2/ej_conversations/menu/conversation-menu.jinja2:28
 msgid "Help"
 msgstr "Ajuda"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:114
-#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:35
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:99
+#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:42
+#: src/ej_conversations/jinja2/ej_conversations/menu/conversation-menu.jinja2:30
 msgid "Tour"
 msgstr "Tour"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:115
-#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:36
+#: src/ej_conversations/jinja2/ej_conversations/includes/menu.jinja2:100
+#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:43
+#: src/ej_conversations/jinja2/ej_conversations/menu/conversation-menu.jinja2:31
 msgid "Documentation"
 msgstr "Documentação"
 
@@ -2789,17 +2791,24 @@ msgstr "Documentação"
 msgid "Welcome, "
 msgstr "Boas vindas, "
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:11
+#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:7
+#: src/ej_conversations/jinja2/ej_conversations/menu/page-menu-links.jinja2:4
+#, fuzzy
+msgid "Home"
+msgstr "Início"
+
+#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:10
+#: src/ej_conversations/jinja2/ej_conversations/menu/boards-section.jinja2:3
 #, fuzzy
 msgid "My Boards"
 msgstr "Meus Murais"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:26
+#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:33
 #, fuzzy
 msgid "Manage"
 msgstr "Gerenciar"
 
-#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:29
+#: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:36
 #, fuzzy
 msgid "EJ Environment"
 msgstr "Ambiente EJ"
@@ -2857,6 +2866,20 @@ msgstr "Comentários com menos de três caracteres não serão adicionados."
 #: src/ej_conversations/jinja2/ej_conversations/includes/tab-moderate-show-comments.jinja2:36
 msgid "No comments left"
 msgstr "Não há mais comentários"
+
+#: src/ej_conversations/jinja2/ej_conversations/menu/conversation-menu.jinja2:8
+#, fuzzy
+msgid "About the conversation"
+msgstr "Sobre a conversa"
+
+#: src/ej_conversations/jinja2/ej_conversations/menu/conversation-menu.jinja2:19
+msgid "Share"
+msgstr "Compartilhe"
+
+#: src/ej_conversations/jinja2/ej_conversations/menu/conversation-menu.jinja2:25
+#, fuzzy
+msgid "created by"
+msgstr "criada por"
 
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/channels-chart.jinja2:2
 #, fuzzy

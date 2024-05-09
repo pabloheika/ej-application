@@ -1,0 +1,11 @@
+<div class="page-menu__links grid-column-2">
+    <a href="{{ url('profile:home') }}">
+        <i class="fa fa-chevron-circle-up"></i>
+        {{ _('Home') }}
+    </a>
+    
+    <a href="{{ url('boards:conversation-list', board_slug=conversation.board.slug) }}">
+        <i class="fa fa-chevron-circle-left"></i>
+        {{ _('Board') }}
+    </a> 
+</div>

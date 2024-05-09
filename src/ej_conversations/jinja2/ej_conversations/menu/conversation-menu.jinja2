@@ -1,31 +1,32 @@
-{% from 'ej/includes/menu-item.jinja2' import menu_item, board_menu_item %}
+{% from 'ej/includes/menu-item.jinja2' import menu_item %}
 
 <nav class="participant-menu">
-    <div class="participant-menu__avatar">
-        <img>
-    </div>
-    <h3 class="participant-menu__item participant-menu__item--column-2">
-        {{ _('My Boards') }}
-    </h3>
-    {% if user_boards is defined %}
-        <ul class="board-list participant-menu__item">
-            {% for board in user_boards %}
-                {{ board_menu_item(current_page, board.slug, url('boards:conversation-list', board_slug=board.slug), board) }}
-            {% endfor %}
-        </ul>
-    {% endif %}
+    {% include 'ej_conversations/menu/page-menu-links.jinja2' %}
 
-    {% if request.user.is_staff or request.user.is_superuser %}
-        <h3 class="participant-menu__item participant-menu__item--margin participant-menu__item--column-2">
-            {{_("Manage")}}
-        </h3>
-        <ul class="participant-menu__item">
-            {{ menu_item(current_page, "administration", url('administration:index'), _("EJ Environment")) }}
-        </ul>
-    {% endif %}
+    <span class="participant-menu__conversation-text grid-column-2">{{conversation.text}}</span>
+    <div class="grid-column-2">
+        <h3 class="participant-menu__item">{{_("About the conversation")}}</h3>
+        <div class="participant-menu__conversation-info">
+            <i class="fas fa-users"></i>
+            <span>{{conversation.n_participants}} {{_("participants")}}</span>
+        </div>
+        <div class="participant-menu__conversation-info">
+            <i class="fas fa-vote-yea"></i>
+            <span>{{conversation.n_votes}} {{_("votes")}}</span>
+        </div>
+        <div class="participant-menu__conversation-share">
+            <i class="fas fa-share-alt"></i>
+            <span>{{_("Share")}}</span>
+        </div>
+    </div>
+
+    <div class="participant-menu__user-section grid-column-2">
+        <img class="participant-menu__avatar" src="{{ request.user.profile.image_url }}">
+        <span class="participant-menu__username">{{_("created by")}} {{ request.user.name }}</span>
+    </div>
 
     <h3 class="participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{_("Help")}}</h3>
-    <ul class="participant-menu__item">
+    <ul class="participant-menu__item participant-menu__bottom-divider">
         <li><a href="{{ url("profile:tour")+'?completedTour=false' }}">{{_("Tour")}}</a></li>
         <li><a href="/docs" target="#blank">{{_("Documentation")}}</a></li>
     </ul>

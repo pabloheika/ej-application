@@ -1,21 +1,9 @@
 {% from 'ej/includes/menu-item.jinja2' import menu_item %}
 
-<nav aria-labelledby="menu-conversation">
-    <div class="page-menu__links">
-        <a href="{{ url('profile:home') }}">
-            <i class="fa fa-chevron-circle-up"></i>
-            {{ _('Home') }}
-        </a>
-        
-        <a href="{{ url('boards:conversation-list', board_slug=conversation.board.slug) }}">
-            <i class="fa fa-chevron-circle-left"></i>
-            {{ _('Board') }}
-        </a> 
-    </div>
+<nav class="participant-menu">
+    {% include 'ej_conversations/menu/page-menu-links.jinja2' %}
 
-    <hr class="nav-divider">
-
-    <ul class="nav-header">
+    <ul class="nav-header grid-column-2">
         {% if request.user.has_perm('ej.can_edit_conversation', conversation) %}
             <li class="menu-item">
                 <a class="menu-item__edit" href="{{ conversation.patch_url('conversation:edit') }}">
@@ -31,11 +19,8 @@
             </li>
         {% endif %}
     </ul>
-</nav>
+    {% include 'ej_conversations/includes/delete-confimation-modal.jinja2' %}
 
-{% include 'ej_conversations/includes/delete-confimation-modal.jinja2' %}
-
-<nav class="participant-menu">
     <h3 class="participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{ _('Collect opinions') }}</h3>
     <ul class="participant-menu__item">
         {{ menu_item(current_page, "dashboard", url('boards:dataviz-dashboard', **conversation.get_url_kwargs()), _('Dashboard')) }}
