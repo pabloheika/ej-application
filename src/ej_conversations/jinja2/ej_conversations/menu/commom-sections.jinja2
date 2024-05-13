@@ -1,0 +1,11 @@
+<div class="grid-column-2">
+    <h3 class="participant-menu__item participant-menu__item--margin">{{_("Help")}}</h3>
+    <ul class="participant-menu__item participant-menu__bottom-divider">
+        <li><a href="{{ url("profile:tour")+'?completedTour=false' }}">{{_("Tour")}}</a></li>
+        <li><a href="/docs" target="#blank">{{_("Documentation")}}</a></li>
+    </ul>
+</div>
+
+<div class="grid-column-2 participant-menu__accessibility">
+    {{ page_menu.ACCESSIBILITY() }}
+</div>

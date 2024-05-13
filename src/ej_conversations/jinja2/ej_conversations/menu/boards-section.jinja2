@@ -1,11 +1,27 @@
 {% from 'ej/includes/menu-item.jinja2' import board_menu_item %}
-<h3 class="participant-menu__item grid-column-2">
-        {{ _('My Boards') }}
-</h3>
-{% if user_boards is defined %}
-    <ul class="board-list participant-menu__item">
-        {% for board in user_boards %}
-            {{ board_menu_item(current_page, board.slug, url('boards:conversation-list', board_slug=board.slug), board) }}
-        {% endfor %}
-    </ul>
-{% endif %}
+<div class="grid-column-2 participant-menu__bottom-divider">
+    <a>
+        <h3 class="participant-menu__item participant-menu__toggle-section" onclick="toggleSection()">
+            {{ _('My Boards') }}
+            <i id="board-chevron-icon" class="fa fa-chevron-left"></i>
+        </h3>
+    </a>
+    <div id="board-list-container" class="hide">
+        {% if user_boards is defined %}
+            <ul class="board-list participant-menu__item">
+                {% for board in user_boards %}
+                    {{ board_menu_item(current_page, board.slug, url('boards:conversation-list', board_slug=board.slug), board) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function toggleSection(section_id) {
+        let section = $("#board-list-container").toggleClass("hide");
+        let icon = $("#board-chevron-icon");
+        icon.toggleClass("fa-chevron-left");
+        icon.toggleClass("fa-chevron-down");
+    }
+</script>

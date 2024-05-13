@@ -511,7 +511,7 @@ body {
         font-size: 1em;
 
         li {
-            padding: 0.32rem 0 0.32rem 1.438rem;
+            padding: 0.32rem 0 0.32rem 0.25rem;
             box-sizing: content-box;
         }
 
@@ -533,10 +533,16 @@ body {
     }
 
     &__welcome-title {
-        font-size: 1.5rem !important;
-        line-height: 1.8rem !important;
-        color: black;
-        margin-bottom: unset !important;
+        margin-bottom: 2.375rem;
+        margin-top: 4.75rem;
+        
+        h1 {
+            font-size: 1.5rem !important;
+            line-height: 1.8rem !important;
+            font-weight: 400;
+            color: $color-theme-dark-blue;
+            margin-bottom: unset !important;
+        }
     }
 
     &__home-link {
@@ -564,9 +570,9 @@ body {
     }
 
     &__buttons-container {
-        border-bottom: 1px solid $color-gray-darker;
         padding-bottom: 2.19rem !important;
     }
+
     .menu-links {
         padding-bottom: 1.0625rem;
         border-bottom: 1px solid $color-gray-darker;
@@ -629,8 +635,18 @@ body {
     }
 
     &__bottom-divider {
-        padding-bottom: 2.25rem !important;
+        padding-bottom: 1.5rem !important;
         border-bottom: 1px solid $color-navigation-header;
+    }
+
+    &__accessibility {
+        margin-top: 2rem !important;
+        margin-bottom: 2.25rem;
+    }
+
+    &__toggle-section i {
+        color: $color-gray-darker;
+        float: right;
     }
 }
 
