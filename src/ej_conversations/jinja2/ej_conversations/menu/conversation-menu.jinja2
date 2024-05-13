@@ -1,11 +1,16 @@
 {% from 'ej/includes/menu-item.jinja2' import menu_item %}
 
 <nav class="participant-menu">
-    {% include 'ej_conversations/menu/page-menu-links.jinja2' %}
+    <div class="page-menu__links grid-column-2">
+        <a href="{{ url('profile:home') }}">
+            <i class="fa fa-chevron-circle-up"></i>
+            {{ _('Home') }}
+        </a>
+    </div>
 
     <span class="participant-menu__conversation-text grid-column-2">{{conversation.text}}</span>
     <div class="grid-column-2">
-        <h3 class="participant-menu__item">{{_("About the conversation")}}</h3>
+        <h3 class="menu-section__title">{{_("About the conversation")}}</h3>
         <div class="participant-menu__conversation-info">
             <i class="fas fa-users"></i>
             <span>{{conversation.n_participants}} {{_("participants")}}</span>
@@ -14,7 +19,7 @@
             <i class="fas fa-vote-yea"></i>
             <span>{{conversation.n_votes}} {{_("votes")}}</span>
         </div>
-        <div class="participant-menu__conversation-share">
+        <div class="participant-menu__conversation-share" onclick="copyToClipboard()">
             <i class="fas fa-share-alt"></i>
             <span>{{_("Share")}}</span>
         </div>
@@ -25,12 +30,5 @@
         <span class="participant-menu__username">{{_("created by")}} {{ request.user.name }}</span>
     </div>
 
-    <h3 class="participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{_("Help")}}</h3>
-    <ul class="participant-menu__item participant-menu__bottom-divider">
-        <li><a href="{{ url("profile:tour")+'?completedTour=false' }}">{{_("Tour")}}</a></li>
-        <li><a href="/docs" target="#blank">{{_("Documentation")}}</a></li>
-    </ul>
-</nav>
-<nav class="menu-padding participant-menu__item--margin">
-    {{ page_menu.ACCESSIBILITY() }}
+    {% include 'ej_conversations/menu/commom-sections.jinja2' %}
 </nav>

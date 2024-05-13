@@ -8,7 +8,7 @@
     </a>
     <div id="board-list-container" class="hide">
         {% if user_boards is defined %}
-            <ul class="board-list participant-menu__item">
+            <ul class="board-list participant-menu__item participant-menu__item--sm-padding">
                 {% for board in user_boards %}
                     {{ board_menu_item(current_page, board.slug, url('boards:conversation-list', board_slug=board.slug), board) }}
                 {% endfor %}

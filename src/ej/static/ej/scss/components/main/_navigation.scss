@@ -160,10 +160,17 @@ body {
     }
 
     &__links {
-        display: flex;
-        gap: 2.219rem;
         padding: 2.25rem 0 1.0625rem;
         border-bottom: 1px solid #C4C4C4;
+    }
+
+    &__dashboard-links {
+        padding: 2.25rem 0.75rem 1.75rem 0.75rem;
+    }
+
+    &__links, &__dashboard-links {
+        display: flex;
+        gap: 2.219rem;
 
         a {
             font-weight: 600;
@@ -183,6 +190,7 @@ body {
     }
 
     .nav-header {
+        padding: 2.156rem 0.75rem 0;
         #board-name i {
             display: none;
         }
@@ -495,6 +503,16 @@ body {
     a {font-weight: bold}
 }
 
+.menu-section {
+    &__title {
+        margin-bottom: 1.4375rem !important;
+        color: #FF3E72;
+        font-weight: 400;
+        font-size: 1em;
+    }
+
+}
+
 .participant-menu {
     display: grid;
     grid-template-columns: 1rem auto 1.75rem;
@@ -511,7 +529,7 @@ body {
         font-size: 1em;
 
         li {
-            padding: 0.32rem 0 0.32rem 0.25rem;
+            padding: 0.32rem 0 0.32rem 1.438rem;
             box-sizing: content-box;
         }
 
@@ -519,6 +537,12 @@ body {
             grid-column: 2/3;
             padding: unset !important;
             font-weight: 400;
+        }
+    }
+
+    &__item--sm-padding {
+        li {
+            padding: 0.32rem 0 0.32rem 0.25rem;
         }
     }
 
@@ -614,6 +638,7 @@ body {
     }
 
     &__conversation-share {
+        cursor: pointer;
         i {
             color: $color-theme-dark-blue;
         }
@@ -624,6 +649,9 @@ body {
         }
     }
     &__conversation-info {
+        margin-bottom: 1.4375rem;
+        line-height: 1.17rem;
+        
         i {
             color: $color-gray-darker;
         }
