@@ -122,30 +122,69 @@
     font-weight: 700;
     color: $color-gray-darker;
   }
+
+  &__detail {
+    display: grid;
+    grid-template-columns: repeat(13, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    grid-column-gap: 1rem;
+    grid-row-gap: 1rem; 
+  }
+
   &__name {
     grid-area: 1 / 1 / 2 / 3;
-
   }
+
+  &__name--detail {
+    grid-area: 1 / 1 / 2 / 5; 
+  }
+
   &__email {
     grid-area: 1 / 3 / 2 / 5;
   }
+
+  &__email--detail {
+    grid-area: 1 / 5 / 2 / 12; 
+  }
+
   &__city {
     grid-area: 2 / 1 / 3 / 2;
   }
+
+  &__city--detail {
+    grid-area: 2 / 1 / 3 / 4; 
+  }
+
   &__state {
     grid-area: 2 / 2 / 3 / 3;
+  }
+
+  &__state--detail {
+    grid-area: 2 / 4 / 3 / 5; 
   }
 
   &__country {
     grid-area: 2 / 3 / 3 / 4;
   }
 
+  &__country--detail {
+    grid-area: 2 / 6 / 3 / 12; 
+  }
+
   &__birth-date {
     grid-area: 3 / 1 / 4 / 2;
   }
 
+  &__birth-date--detail {
+    grid-area: 3 / 1 / 4 / 4; 
+  }
+
   &__occupation {
     grid-area: 3 / 2 / 4 / 4;
+  }
+
+  &__occupation--detail {
+    grid-area: 3 / 4 / 4 / 6; 
   }
 
   &__education {
@@ -153,23 +192,31 @@
   }
 
   &__education--detail {
-    grid-area: 3 / 3 / 4 / 5;
+    grid-area: 3 / 7 / 4 / 12; 
   }
 
   &__ethnicity {
     grid-area: 4 / 1 / 5 / 2;
   }
 
+  &__ethnicity--detail {
+    grid-area: 4 / 1 / 5 / 3; 
+  }
+
   &__gender_other {
     grid-area: 4 / 2 / 5 / 4;
+  }
+
+  &__gender_other--detail {
+    grid-area: 4 / 3 / 5 / 12; 
   }
 
   &__political_activity {
     grid-area: 5 / 1 / 7 / 3;
   }
 
-  &__political_activity--detail{
-    grid-area: 5 / 1 / 7 / 2;
+  &__political_activity--detail {
+    grid-area: 5 / 1 / 7 / 3; 
   }
 
   &__biography {
@@ -177,9 +224,9 @@
   }
 
   &__biography--detail {
-    grid-area: 5 / 2 / 7 / 5;
+    grid-area: 5 / 4 / 7 / 12; 
   }
-
+  
   &__current-password {
     grid-area: 1 / 1 / 1 / 1;
     input[type='password'] {margin: -1.125rem 0 0rem 0;}
@@ -205,7 +252,7 @@
   }
 
   &__edit {
-    grid-area: 6 / 4 / 6 / 4;
+    grid-area: 6 / 13 / 6 / 13; 
   }
 
   select, textarea{
