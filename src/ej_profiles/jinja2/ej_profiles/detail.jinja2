@@ -21,31 +21,31 @@
         <div class="content-grid inputs-min-size">
         {{ tabs({_('Profile'): 'profile-info',
                 _('Account'): 'profile-account'}) }}
-            <div class="form-profile form-profile--row-separation tabs__tab-content" id="profile-info">
-                <div class="form-profile-detail__name">
+            <div class="form-profile--detail form-profile--row-separation tabs__tab-content" id="profile-info">
+                <div class="form-profile__name--detail">
                     <label>{{_("name")}}</label>
                     <span>{{ profile.name }}</span>
                 </div>
-                <div class="form-profile-detail__email">
+                <div class="form-profile__email--detail">
                     <label>{{_("email")}}</label>
                     <span>{{profile.email}}</span>
                 </div>
-                <div class="form-profile__city">
+                <div class="form-profile__city--detail">
                     <label>{{_("city")}}</label>
                     <span>{{ profile.city}}</span>
                 </div>
 
-                <div class="form-profile__state">
+                <div class="form-profile__state--detail">
                     <label>{{_("state")}}</label>
                     <span>{{ profile.state}}</span>
                 </div>
 
-                <div class="form-profile__country">
+                <div class="form-profile__country--detail">
                     <label>{{_("country")}}</label>
                     <span>{{ profile.country}}</span>
                 </div>
 
-                <div class="form-profile__birth-date">
+                <div class="form-profile__birth-date--detail">
                     <label>{{_("birth_date")}}</label>
                     {% if profile.birth_date %}
                         <span>{{ profile.birth_date.strftime('%d/%m/%Y')}}</span>
@@ -54,7 +54,7 @@
                     {% endif %}
                 </div>
 
-                <div class="form-profile__occupation">
+                <div class="form-profile__occupation--detail">
                     <label>{{_("occupation")}}</label>
                     <span>{{ profile.occupation}}</span>
                 </div>
@@ -64,11 +64,11 @@
                     <span>{{ profile.education}}</span>
                 </div>
 
-                <div class="form-profile__ethnicity">
+                <div class="form-profile__ethnicity--detail">
                     <label>{{_("ethnicity")}}</label>
                     <span>{{ profile.ethnicity}}</span>
                 </div>
-                <div class="form-profile__gender_other">
+                <div class="form-profile__gender_other--detail">
                     <label>{{_("gender")}}</label>
                     <span>{{ profile.gender}}</span>
                 </div>
