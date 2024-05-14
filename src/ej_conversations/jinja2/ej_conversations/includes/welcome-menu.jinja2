@@ -6,6 +6,8 @@
         <h1>{{request.user.name}}!</h1>
     </div>
 
+
+
     <div class="participant-menu__item--column-2 participant-menu__buttons-container">
         <a title="{{_('New board')}}"
             href="{{ url('boards:board-create') }}">
@@ -16,6 +18,9 @@
             <button>{{_('Create conversation')}}</button>
         </a>
     </div>
+    
+    {% block profile_menu %}
+    {%endblock %}
 
     {% include 'ej_conversations/menu/boards-section.jinja2' %}
     {% include 'ej_conversations/menu/commom-sections.jinja2' %} 
