@@ -160,7 +160,7 @@ body {
     }
 
     &__links {
-        padding: 2.25rem 0 1.0625rem;
+        padding: 2.25rem 0 1.75rem;
         border-bottom: 1px solid #C4C4C4;
     }
 
@@ -511,11 +511,15 @@ body {
         font-size: 1em;
     }
 
+    &__profile-block {
+        margin-bottom: 1.5rem !important;
+    }
+
 }
 
 .participant-menu {
     display: grid;
-    grid-template-columns: 1rem auto 1.75rem;
+    grid-template-columns: 0.75rem auto 0.75rem;
 
     .grid-column-2 {
         grid-column: 2;
@@ -529,7 +533,7 @@ body {
         font-size: 1em;
 
         li {
-            padding: 0.32rem 0 0.32rem 1.438rem;
+            padding: 0.32rem 0 0.32rem 1rem;
             box-sizing: content-box;
         }
 

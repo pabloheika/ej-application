@@ -1,10 +1,10 @@
-{% extends 'ej_conversations/includes/participant-menu.jinja2' %}
+{% extends 'ej_conversations/includes/welcome-menu.jinja2' %}
 {% from 'ej/includes/menu-item.jinja2' import menu_item %}
 
 {% block profile_menu %}
 <h3 class="participant-menu__item participant-menu__item--column-2">{{_('Profile')}}</h3>
-    <ul class="participant-menu__item margin-x3">
-        {{ menu_item(current_page, "detail-profile", url('profile:detail'), _('Details')) }}
-        {{ menu_item(current_page, "edit-profile", url('profile:edit'), _('Edit profile')) }}
-    </ul>
+<ul class="participant-menu__item menu-section__profile-block margin-x3">
+    {{ menu_item(current_page, "detail-profile", url('profile:detail'), _('Details')) }}
+    {{ menu_item(current_page, "edit-profile", url('profile:edit'), _('Edit profile')) }}
+</ul>
 {% endblock %}
