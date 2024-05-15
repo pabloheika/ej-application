@@ -7,6 +7,21 @@ from django.apps import apps
 from django.test.client import Client
 from hyperpython import Blob  # noqa: F401
 from sidekick import deferred, import_later, namespace
+from ej_clusters import math as _cmath  # noqa: E402
+from ej_clusters.math import factories as _factories  # noqa: E402
+from boogie.models import F, Q, Sum, Max, Min  # noqa: E402
+from django.conf import settings  # noqa: E402
+from django.contrib.auth.models import AnonymousUser  # noqa: E402
+from ej_clusters.enums import ClusterStatus  # noqa: E402
+from ej_profiles.enums import Race, Gender  # noqa: E402
+from ej_conversations.enums import Choice, RejectionReason  # noqa: E402
+from ej_conversations.models import (
+    Conversation,
+    Comment,
+    Vote,
+    FavoriteConversation,
+    ConversationTag,
+)  # noqa: E402
 
 # Pydata
 pd = import_later("pandas")
@@ -25,15 +40,6 @@ impute = import_later("sklearn.impute")
 os.environ.setdefault("DJANGO_SETTINGS_MODEL", "ej.settings")
 django.setup()
 
-#
-# Django imports
-#
-from boogie.models import F, Q, Sum, Max, Min  # noqa: E402
-from django.conf import settings  # noqa: E402
-from django.contrib.auth.models import AnonymousUser  # noqa: E402
-from ej_clusters.enums import ClusterStatus  # noqa: E402
-from ej_profiles.enums import Race, Gender  # noqa: E402
-from ej_conversations.enums import Choice, RejectionReason  # noqa: E402
 
 _export = {F, Q, Max, Min, Sum, sk}
 _enums = {ClusterStatus, Choice, RejectionReason, Race, Gender}
@@ -49,15 +55,6 @@ _first = lambda obj: deferred(lambda: obj.first())
 def extract(obj):
     return obj._obj__
 
-
-# Conversation app
-from ej_conversations.models import (
-    Conversation,
-    Comment,
-    Vote,
-    FavoriteConversation,
-    ConversationTag,
-)  # noqa: E402
 
 conversations = Conversation.objects
 conversation = _first(conversations)
@@ -114,9 +111,6 @@ def fix_links(data, prefix="http://localhost:8000"):
 #
 # Math module
 #
-from ej_clusters import math as _cmath  # noqa: E402
-from ej_clusters.math import factories as _factories  # noqa: E402
-
 math = namespace(
     clusters=_cmath, kmeans=_cmath.kmeans, pipeline=_cmath.pipeline, factories=_factories
 )

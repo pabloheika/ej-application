@@ -135,7 +135,7 @@ def can_view_report_details(view_func):
     def wrapper_func(request, *args, **kwargs):
         try:
             conversation_id = kwargs.get("conversation_id")
-            conversation = Conversation.objects.get(id=conversation_id)
+            Conversation.objects.get(id=conversation_id)
         except AttributeError:
             return JsonResponse({"error": "You don't have permission to view this data."})
 

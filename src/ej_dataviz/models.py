@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 
-from django.utils.translation import gettext_lazy as _
 import pandas as pd
 
 from ej_conversations.models import Conversation
@@ -10,34 +9,56 @@ from .utils import (
     get_cluster_or_404,
     get_clusters,
     get_comments_dataframe,
+    get_user_dataframe,
 )
 
 
-class CommentsReportClustersFilter:
+class ReportClustersFilter:
     def __init__(self, cluster_ids: list, conversation: Conversation):
         self.cluster_ids = cluster_ids
         self.conversation = conversation
         self.clusters_filters = []
 
     def filter(self):
-        comments_df = get_comments_dataframe(self.conversation.comments, "")
+        df = self.get_dataframe(self.conversation, "")
         if not self.cluster_ids:
-            return comments_df
+            return df
         for cluster_id in self.cluster_ids:
             try:
                 cluster = get_cluster_or_404(cluster_id, self.conversation)
                 self.clusters_filters.append(cluster.name)
             except Exception:
                 pass
+        dataframe_utils = self.get_dataframe_utils(df)
         clusters = get_clusters(self.conversation)
-        commentsDataframeUtils = CommentsDataframeUtils(comments_df)
-        return commentsDataframeUtils.filter_by_cluster(clusters, self.clusters_filters)
+        return dataframe_utils.filter_by_cluster(clusters, self.clusters_filters)
+
+    def get_dataframe(self, conversation: Conversation, page_number: int = 1):
+        pass
+
+    def get_dataframe_utils(self, df):
+        pass
+
+
+class CommentsReportClustersFilter(ReportClustersFilter):
+    def get_dataframe(self, conversation: Conversation, page_number: int = 1):
+        return get_comments_dataframe(conversation, page_number)
+
+    def get_dataframe_utils(self, df):
+        return CommentsDataframeUtils(df)
+
+
+class UsersReportClustersFilter(ReportClustersFilter):
+    def get_dataframe(self, conversation: Conversation, page_number: int = 1):
+        return get_user_dataframe(conversation, page_number)
+
+    def get_dataframe_utils(self, df):
+        return UsersDataframeUtils(df)
 
 
 class CommentsReportSearchFilter:
-    def __init__(self, text: str, comments: list, comments_df: pd.DataFrame):
+    def __init__(self, text: str, comments_df: pd.DataFrame):
         self.text = text
-        self.comments = comments
         self.comments_df = comments_df
 
     def filter(self):
@@ -47,17 +68,37 @@ class CommentsReportSearchFilter:
         return self.comments_df
 
 
-class CommentsReportOrderByFilter:
-    def __init__(self, order, comments, comments_df: pd.DataFrame, ascending=False):
-        self.comments = comments
+class UsersReportSearchFilter:
+    def __init__(self, text: str, users_df: pd.DataFrame):
+        self.text = text
+        self.users_df = users_df
+
+    def filter(self):
+        usersDataframeUtils = UsersDataframeUtils(self.users_df)
+        if self.text:
+            return usersDataframeUtils.search_user(self.text)
+        return self.users_df
+
+
+class ReportOrderByFilter:
+    def __init__(
+        self,
+        order,
+        report_df: pd.DataFrame,
+        ascending=False,
+        default_order="comment",
+    ):
         self.order = order
+        self.report_df = report_df
         self.ascending = ascending
-        self.comments_df = comments_df
+        self.default_order = default_order
 
     def filter(self):
         if not self.order or self.order == "created":
-            return self.comments_df.sort_values("comment", ascending=self.ascending)
-        return self.comments_df.sort_values(self.order, ascending=self.ascending)
+            return self.report_df.sort_values(
+                self.default_order, ascending=self.ascending
+            )
+        return self.report_df.sort_values(self.order, ascending=self.ascending)
 
 
 class ToolsLinksHelper:
@@ -90,6 +131,7 @@ class CommentsDataframeUtils:
         Filter the comments dataframe by the content column. It will be checked if the
         content has the substring variable.
         """
+
         return self.comments_df[self.comments_df.content.str.contains(text, case=False)]
 
     def get_cluster_comments_df(self, cluster, cluster_name):
@@ -115,3 +157,25 @@ class CommentsDataframeUtils:
             self.comments_df = self.comments_df[self.comments_df.group != ""]
 
         return self.comments_df
+
+
+@dataclass
+class UsersDataframeUtils:
+
+    users_df: pd.DataFrame
+
+    def search_user(self, text):
+        """
+        Filter users dataframe by the name or email column. It will be checked if the
+        user has the substring variable.
+        """
+        search_by_name = self.users_df.name.str.contains(text, case=False)
+        search_by_email = self.users_df.email.str.contains(text, case=False)
+        return self.users_df[search_by_name | search_by_email]
+
+    def filter_by_cluster(self, clusters, cluster_filters):
+        """
+        Gets the conversation participants (users_df) and cluster users
+        filtered by the group specified in cluster_filters.
+        """
+        return self.users_df[self.users_df["group"].isin(cluster_filters)]

@@ -1,8 +1,8 @@
 from logging import getLogger
 
 from boogie.models import QuerySet, F, Manager, Value, IntegerField
-from django.contrib.auth import get_user_model
 from sidekick import import_later
+from django.contrib.auth import get_user_model
 
 from ej_conversations.math import imputation
 from ej_conversations.models import Conversation, Comment
@@ -248,26 +248,27 @@ class ClusterQuerySet(ClusterizationBaseMixin, QuerySet):
         imputer = impute.SimpleImputer()
         votes_qs = self.votes().filter(comment__status=Comment.STATUS.approved)
         user_votes = votes_qs.votes_table()
-        user_votes.values[:] = imputer.fit_transform(user_votes)
-        cluster_votes = self._cluster_votes(cluster_ids, votes_qs)
+        if not user_votes.empty:
+            user_votes.values[:] = imputer.fit_transform(user_votes)
+            cluster_votes = self._cluster_votes(cluster_ids, votes_qs)
 
-        # Aggregate user and cluster votes
-        cluster_votes = pd.DataFrame(cluster_votes)
-        cluster_votes.index *= -1
-        votes = user_votes.append(cluster_votes)
-        votes_data = imputer.transform(votes.values)
+            # Aggregate user and cluster votes
+            cluster_votes = pd.DataFrame(cluster_votes)
+            cluster_votes.index *= -1
+            votes = user_votes.append(cluster_votes)
+            votes_data = imputer.transform(votes.values)
 
-        # Find labels and associate them with cluster labels
-        labels = [cluster_ids[i] for i in pipeline.fit_predict(votes_data)]
-        user_labels = labels[:-n_clusters]
-        user_labels = pd.DataFrame(
-            [list(user_votes.index), user_labels], index=["user", "label"]
-        ).T
-        stereotype_labels = labels[len(user_labels) :]
+            # Find labels and associate them with cluster labels
+            labels = [cluster_ids[i] for i in pipeline.fit_predict(votes_data)]
+            user_labels = labels[:-n_clusters]
+            user_labels = pd.DataFrame(
+                [list(user_votes.index), user_labels], index=["user", "label"]
+            ).T
+            stereotype_labels = labels[len(user_labels) :]
 
-        return self._save_clusterization(
-            pipeline, cluster_ids, stereotype_labels, user_labels, commit
-        )
+            return self._save_clusterization(
+                pipeline, cluster_ids, stereotype_labels, user_labels, commit
+            )
 
     def _cluster_votes(self, cluster_ids, votes):
         comments = Comment.objects.filter(
@@ -275,6 +276,13 @@ class ClusterQuerySet(ClusterizationBaseMixin, QuerySet):
         )
         stereotype_votes = self.stereotype_votes(comments).votes_table("zero")
         stereotype_ids = self.dataframe("id", "stereotypes__id", index=None)
+
+        stereotype_with_votes = list(
+            set(self.stereotype_votes(comments).values_list("author__id", flat=True))
+        )
+        stereotype_ids = stereotype_ids[
+            stereotype_ids["stereotypes__id"].isin(stereotype_with_votes)
+        ]
 
         cluster_votes = []
         for cluster_id in cluster_ids:

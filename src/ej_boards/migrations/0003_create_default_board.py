@@ -17,7 +17,7 @@ def create_default_board(apps, schema_editor):
 
 
 def user_not_have_default_board(user):
-    return not (slugify(user.email[:50]),) in list(user.boards.values_list("slug"))
+    return (slugify(user.email[:50]),) not in list(user.boards.values_list("slug"))
 
 
 def create_user_default_board(user, db_alias, Boards):

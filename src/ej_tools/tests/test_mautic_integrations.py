@@ -1,8 +1,6 @@
-from requests.api import request
-from urllib3.exceptions import HTTPError
 import pytest
 from django.utils.translation import gettext as _
-from unittest.mock import patch, MagicMock, Mock
+from unittest.mock import patch, MagicMock
 from django.core.exceptions import ValidationError
 
 from ej_conversations.mommy_recipes import ConversationRecipes

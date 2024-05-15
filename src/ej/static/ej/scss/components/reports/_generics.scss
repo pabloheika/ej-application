@@ -1,3 +1,5 @@
+@import 'pagination';
+
 ::-webkit-calendar-picker-indicator {
     display: none;
     -webkit-appearance: none;
@@ -25,5 +27,201 @@
         text-transform: uppercase;
         font-size: 12px;
         font-weight: 600;
+    }
+}
+
+#report-filters-form {
+    margin: unset;
+    position: relative;
+}
+
+#datatables-container {
+    overflow-y: scroll;
+    max-height: calc(100vh - 290px);
+}
+
+#report-table-container::-webkit-scrollbar {
+    display: none;
+}
+
+.report {
+    &__comments, &__users {
+        &--hide {
+            display: none;
+        }
+        table {
+            thead {
+                position: sticky;
+                top: 0;
+            }
+            thead tr {
+                background-color: $color-black;
+                color: $color-white;
+            }
+            thead th {
+                padding: 1rem !important;
+                text-transform: uppercase;
+                i {
+                    font-size: 1.2rem;
+                }
+            }
+            tbody tr:nth-child(odd) td:first-child {
+                background-color: $color-brand-lighter;
+            }
+        }
+    }
+
+    &__comment, &__user {
+        padding: 1rem;
+        box-sizing: content-box;
+        div:first-child {
+            color: $color-black;
+            margin-bottom: 1rem;
+        }
+        div:nth-child(2) {
+            color: $color-brand;
+            font-weight: 600;
+        }
+        div:nth-child(3) {
+            color: $color-accent;
+            font-weight: 600;
+        }
+    }
+
+    &__percentages {
+        font-weight: bold;
+        color: $color-black;
+    }
+
+    &__filters {
+        background-color: $color-gray-brigther;
+        padding: 1rem 1.5rem;
+        box-sizing: content-box;
+
+        input, select, .ordering span, .clusters-container span, .clusters {
+            font-size: 0.75em;
+        }
+
+        &-inputs {
+            gap: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            @media (max-width: 1200px) {
+                & {
+                    flex-wrap: wrap;
+                }
+            }
+        }
+
+        .search {
+            max-width: 40rem !important;
+            width: 100%;
+            input {
+                    margin: unset;
+                    background-image: url("/static/img/icons/gray-search.svg");
+                    background-size: 1.4rem;
+                    background-position: .625rem;
+                    padding: 0 0 0 2.2rem;
+                    border-color: $color-gray-brigther !important;
+                    border-radius: 10px !important;
+                    max-width: 40rem !important;
+                    width: 100%;
+            }
+            @media (max-width: 1200px) {
+                & {
+                    max-width: unset !important;
+
+                    input {
+                        max-width: unset !important;
+                    }
+                }
+            }
+        }
+
+        .ordering,
+        .clusters-container {
+            span {
+                cursor: pointer;
+                white-space: nowrap;
+            }
+
+            span, i {
+                text-transform: uppercase;
+                color: $color-black;
+                font-weight: 600;
+            }
+        }
+
+        .ordering {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            
+            select {
+                cursor: pointer;
+                border: transparent;
+                border-radius: .5rem;
+                margin: unset;
+                min-width: 15em;
+                background-color: $color-white;
+                padding-right: 1rem;
+                border-right: 8px solid transparent;
+
+                @media (max-width: 500px) {
+                    min-width: unset;
+                }
+            }
+        }
+
+        .clusters-container {
+            display: flex;
+        }
+
+        .clusters {
+            gap: 1rem;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+
+            .cluster {
+                padding: .5rem;
+                color: $color-gray-darker;
+                background-color: $color-white;
+                font-weight: 600;
+                text-transform: uppercase;
+                border-radius: .5rem;
+                cursor: pointer;
+                letter-spacing: 0;
+
+                &--active {
+                    background-color: $color-accent;
+                    color: $color-white;
+                }
+            }
+            select {
+                display: none;
+            }
+        }
+
+        .sorting {
+            display: flex;
+            align-items: center;
+            font-size: 0.75em;
+            
+            #sort-up-icon {
+                top: 0.35rem;
+                right: -0.05rem;
+            }
+
+            #sort-down-icon {
+                margin-left: 0;
+            }
+
+            .icon--blue {
+                color: $color-theme-dark-blue !important;
+            }
+        }
     }
 }

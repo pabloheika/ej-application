@@ -1,35 +1,40 @@
 {% extends 'ej_dataviz/reports/base.jinja2' %}
 {% from "ej_dataviz/reports/includes/export-data.jinja2" import export_modal %}
-{% from "ej_dataviz/reports/includes/pagination-macro.jinja2" import pagination %}
 {% set conversation = object %}
 
 {% block report %}
 <section>
-        <div class="export-button__header">
-            <h1 class="text-accent">{{_('Users report')}}</h1>
-            {{ export_modal(conversation, 'users_data')}}
+    <div class="export-button__header">
+        <h1 class="text-accent">{{_('Users report')}}</h1>
+        {{ export_modal(conversation, 'users_data')}}
+    </div>
+    <div class="margin-y3 report">
+        <div class="report__users" id="users">
+            <form hx-get="{{url("dataviz:users-filter", **{"conversation_id": conversation.id, "slug": conversation.slug})}}"
+                hx-swap="outerHTML"
+                hx-target="#report-table-container"
+                hx-trigger="clustersChanged delay:0.5s, orderChanged delay:0.5s, sort delay:0.5s, pageChanged, keyup delay:1s"
+                onkeypress="return event.keyCode != 13;" id="report-filters-form" action="GET">
+                    {% include 'ej_dataviz/reports/includes/users/filters.jinja2' %}
+                    {% include 'ej_dataviz/reports/includes/users/table.jinja2' %}
+            </form>
         </div>
-        <div class="margin-y3 comment-report">
-            <div class="comment-report__comments" id="comments">
-                {% include 'ej_dataviz/reports/includes/users/table.jinja2' %}
-            </div>
-            {{ pagination(page, _("users")) }}
-        </div>
+    </div>
 </section>
 
 <script>
     function showFilters() {
         $("#filters").removeClass("hide");
-        $("#filters-tab").removeClass("comment-report__tabs--disabled");
+        $("#filters-tab").removeClass("report__tabs--disabled");
         $("#comments").addClass("hide");
-        $("#comments-tab").addClass("comment-report__tabs--disabled");
+        $("#comments-tab").addClass("report__tabs--disabled");
     }
 
     function showComments() {
         $("#filters").addClass("hide");
-        $("#filters-tab").addClass("comment-report__tabs--disabled");
+        $("#filters-tab").addClass("report__tabs--disabled");
         $("#comments").removeClass("hide");
-        $("#comments-tab").removeClass("comment-report__tabs--disabled");
+        $("#comments-tab").removeClass("report__tabs--disabled");
     }
 </script>
 {% endblock %}

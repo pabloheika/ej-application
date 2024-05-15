@@ -1,7 +1,10 @@
-# Welcome to Pushing Together
 
-Pushing Together is an open-source web platform to manage participative opinion research, with bult-in machine learning algorithm to generate opinion groups from participation data. 
+[[_TOC_]]
 
+<img width="128" src="https://gitlab.com/pencillabs/ej/ej-application/-/raw/develop/src/ej/static/ej/assets/img/logo/logo-dark.png?ref_type=heads" align="left" style="margin-right:15px"/>
+
+**Pushing Together** is an open-source web platform to manage participative opinion research, 
+with bult-in machine learning algorithm to generate opinion groups from participation data. 
 You can visit EJ at [https://www.ejplatform.org](https://www.ejplatform.org).
 For detailed information on developing and using our system, please refer to the [documentation](https://www.ejplatform.org/docs/).
 For contributions, issues or feature requests join us on [https://gitlab.com/pencillabs/ej/ej-application](https://gitlab.com/pencillabs/ej/ej-application).

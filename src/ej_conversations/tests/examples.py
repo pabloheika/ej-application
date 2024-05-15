@@ -69,7 +69,6 @@ VOTE = {
     "comment": "content",
     "choice": 1,
     "channel": "ej",
-    "analytics_utm": None,
 }
 
 VOTES = [

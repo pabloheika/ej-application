@@ -1,4 +1,3 @@
-import json
 from logging import getLogger
 from typing import Any, Dict
 
@@ -6,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.utils.translation import gettext as __, gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, TemplateView, CreateView
 from django.views.generic.edit import UpdateView

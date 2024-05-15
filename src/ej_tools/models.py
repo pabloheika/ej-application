@@ -9,7 +9,6 @@ from django.shortcuts import redirect
 from requests import Request
 from django.conf import settings
 
-from ej_conversations.validators import validate_file_size
 from src.ej_tools.utils import get_host_with_schema
 from .constants import MAX_CONVERSATION_DOMAINS
 from .utils import prepare_host_with_https
@@ -44,7 +43,7 @@ class RasaConversation(models.Model):
                 conversation=self.conversation
             ).count()
             return num_domains >= MAX_CONVERSATION_DOMAINS
-        except Exception as e:
+        except Exception:
             return False
 
     def clean(self):
@@ -76,6 +75,7 @@ class OpinionComponent(models.Model):
         return ""
 
 
+# TODO: Removes this implementation
 class ConversationMautic(models.Model):
     """
     Allows correlation between a conversation and an instance of Mautic
@@ -183,7 +183,7 @@ class MauticOauth2Service:
             try:
                 response = requests.post(self.oauth2_token_url, json=params)
                 result = json.loads(response.text)
-            except:
+            except Exception:
                 raise ValidationError(_("Couldn't generate tokens."))
             self.conversation_mautic.save_oauth2_tokens(
                 result["access_token"], result["refresh_token"]
@@ -208,7 +208,7 @@ class MauticOauth2Service:
             result = json.loads(response.text)
             self.conversation_mautic.save_oauth2_tokens(result["access_token"])
             return response
-        except:
+        except Exception:
             raise ValidationError(_("Couldn't generate new token."))
 
 
@@ -256,7 +256,7 @@ class MauticClient:
                     self.get_contacts_url(phone_number),
                     headers=self.api_headers_with_authorization(),
                 )
-            except Exception as e:
+            except Exception:
                 raise ValidationError(
                     _(
                         "There was an error connection to mautic server, please check your url."
@@ -298,7 +298,7 @@ class MauticClient:
                     data=params,
                     headers=self.api_headers_with_authorization(),
                 )
-            except Exception as e:
+            except Exception:
                 raise ValidationError(_("Couldn't create a new contact in Mautic."))
 
             if not create_new_contact.status_code == 201:
@@ -318,12 +318,12 @@ class MauticClient:
         conversation = vote.comment.conversation
         conversation_mautic = ConversationMautic.objects.get(conversation=conversation)
 
-        if phone_number != None and conversation_mautic:
+        if phone_number is not None and conversation_mautic:
             try:
                 https_ej_server = prepare_host_with_https(request)
                 self.check_or_create_contact(phone_number, https_ej_server)
                 print("Voto relacionado a um contato no Mautic")
-            except:
+            except Exception:
                 pass
 
     @staticmethod
@@ -343,5 +343,4 @@ class WebchatHelper:
 
     @staticmethod
     def get_rasa_domain(host):
-        return WebchatHelper.AVAILABLE_ENVIRONMENT_MAPPING.get(host)
         return WebchatHelper.AVAILABLE_ENVIRONMENT_MAPPING.get(host)

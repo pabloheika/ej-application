@@ -19,7 +19,7 @@ body {
 .main-container {
     width: 100%;
     text-align: left !important;
-    margin: 0 0 0 264px;
+    margin: 0 0 0 18.75rem;
 }
 
 .main-header {
@@ -123,12 +123,11 @@ body {
 // Sidebar / menu
 
 .nav-divider {
-    width: 100%;
     border-top: 1px solid $color-navigation-header;
-    margin: unset;
+    margin: 0 0.625rem;
 
     &--darker {
-        border-top: 1px solid #BABABA;
+        border-top: 1px solid $color-theme-report-gray;
     }
 }
 
@@ -140,8 +139,12 @@ body {
     transition: .3s;
     background-color: $color-navigation-menu-background;
     border-right: 1px solid rgba(0, 0, 0, .05);
-    background-color: color("white");
     overflow: hidden auto;
+
+    @media only screen and (max-width: 900px){
+        min-width: 15.188rem;
+        max-width: 15.188rem;
+    }
 
     @media only screen and (min-height: 500px) and (max-width: 800px) {
         max-height: unset;
@@ -156,14 +159,29 @@ body {
         font-family: 'Work Sans', 'sans-serif';
     }
 
+    &__links {
+        display: flex;
+        gap: 2.219rem;
+        padding: 2.25rem 0 1.75rem 0.625rem;
+
+        a {
+            font-weight: 600;
+            font-size: 0.75em;
+            letter-spacing: 0;
+            line-height: 0;
+            color: $color-complementary-gray;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+
+            i {
+                font-size: 1.188em;
+            }
+        }
+    }
+
     .nav-header {
-        background-color: $color-accent;
-        position: relative;
-
-        display: grid;
-        grid-template-columns: 56px auto;
-        grid-template-rows: auto auto;
-
+        padding: 2.156rem 0.75rem 0;
         #board-name i {
             display: none;
         }
@@ -193,7 +211,6 @@ body {
         }
 
         li:nth-of-type(1) {
-            font-size: 1.5rem;
             font-family: "Work Sans", sans-serif;
             line-height: 1.5rem;
             padding-bottom: 0.25rem;
@@ -214,28 +231,55 @@ body {
             grid-row: 2/span 1;
         }
 
-        .menu-item .conversation-title {
-            a {
-                color: white;
-                span {
-                    margin: unset !important;
-                }
-            }
-        }
-
         .menu-item {
-            padding: 0 .5rem;
+            display: flex;
+            gap: 0.938rem;
             text-overflow: ellipsis;
-            display: -webkit-box;
             -webkit-line-clamp: 4;
             -webkit-box-orient: vertical;
             overflow-wrap: anywhere;
             padding-bottom: 0 !important;
             margin-bottom: 0.25rem;
+            font-size: 1em;
+
             a {
                 color: white;
-                font-weight: 100;
             }
+
+            &__edit, &__delete {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 0.313rem;
+                margin: 0;
+                color: $color-white;
+                height: 3.75rem;
+            }
+
+            &__edit {
+                background-color: $color-black;
+                border: $color-black;
+                width: 8.75rem;
+                text-transform: none;
+                letter-spacing: 0;
+                font-size: 1em;
+                line-height: 1.25rem;
+                font-weight: 400;
+                padding: 0 1.25rem;
+                text-align: center;
+            }
+
+            &__delete {
+                width: 3.875rem;
+                background-color: $color-red-negative;
+                border: $color-red-negative;
+                font-size: 1em;
+
+                i {
+                    font-size: 1.125em;
+                }
+            }
+
         }
     }
 
@@ -298,7 +342,7 @@ body {
         border-bottom: none;
     }
     .add-button {
-        color: #30bfd3;
+        color: $color-brand;
     }
     .board-list {
         overflow-x: hidden;
@@ -314,13 +358,14 @@ body {
             }
         }
         li.selected-board {
-            background-color: #C4C4C4;
+            background-color: $color-navigation-header;
             margin: 0rem -2rem 0rem -2rem;
             padding: 0rem 2rem 0rem 2rem;
         }
     }
     .report-section {
         .display-reports {
+            color: $color-black;
             label {
                 cursor: pointer;
                 color: unset;
@@ -353,7 +398,7 @@ body {
             transform: rotate(180deg);
         }
         .selected {
-            background: #c4c4c4;
+            background: $color-navigation-header;
         }
         .show {
             display: block;
@@ -381,7 +426,7 @@ body {
     top: 3rem;
     right: 0;
     background: $color-white;
-    border: 1px solid #C4C4C4;
+    border: 1px solid $color-navigation-header;
     box-sizing: border-box;
     padding: 0;
     border-radius: .2rem;
@@ -452,22 +497,121 @@ body {
     a {font-weight: bold}
 }
 
+.menu-section {
+    &__title {
+        margin-bottom: 1.4375rem !important;
+        color: $color-accent;
+        font-weight: 400;
+        font-size: 1em;
+    }
+}
+
+.conversation-menu {
+    display: grid;
+    grid-template-columns: 0.75rem auto 0.75rem;
+    
+    .grid-column-2 {
+        grid-column: 2;
+    }
+    
+    &__links {
+        padding: 2.25rem 0 1.75rem;
+        border-bottom: 1px solid $color-navigation-header;
+    }
+    
+    &__avatar {
+        width: 3rem;
+        height: 3rem;
+        max-width: unset !important;
+        display: flex;
+        border-radius: 50%;
+        object-fit: cover;
+        border-style: none;
+        margin-bottom: 1rem;
+    }
+
+    &__username {
+        font-size: 1rem;
+        color: $color-gray-darker;
+        line-height: 1.17rem;
+    }
+
+    &__conversation-text {
+        font-size: 1.25em;
+        color: $color-theme-dark-blue;
+        line-height: 1.46rem;
+        max-height: 6rem;
+        overflow: hidden;
+        margin-top: 2.625rem;
+        margin-bottom: 2.375rem;
+    }
+
+    &__conversation-share {
+        cursor: pointer;
+        i {
+            color: $color-theme-dark-blue;
+        }
+        span {
+            color: $color-theme-dark-blue;
+            font-weight: 500;
+            margin-left: 0.375rem;
+        }
+    }
+
+    &__conversation-info {
+        margin-bottom: 1.4375rem;
+        line-height: 1.17rem;
+        
+        i {
+            color: $color-gray-darker;
+        }
+        span {
+            text-transform: lowercase;
+            color: $color-gray-darker;
+            font-weight: 500;
+        }
+    }
+
+    &__user-section {
+        padding-bottom: 4.25rem;
+        margin-top: 1.76rem;
+        border-bottom: 1px solid $color-navigation-header;
+    }
+
+    &__item {
+        li {
+            padding: 0.32rem 0 0.32rem 0.25rem;
+            box-sizing: content-box;
+        }
+    }
+
+}
+
 .participant-menu {
     display: grid;
-    grid-template-columns: 1.75rem auto 1.75rem;
+    grid-template-columns: 1rem auto 1.75rem;
 
+    &__item {
+        li {
+            padding: 0.32rem 0 0.32rem 1.438rem;
+            box-sizing: content-box;
+        }
+    }
+
+}
+
+.participant-menu, .conversation-menu {
     &__item {
         overflow: hidden;
         text-overflow: ellipsis;
         grid-column: 1/4;
-        li {
-            padding: 0.32rem 0 0.32rem 1.75rem;
-            box-sizing: content-box;
-        }
+        color: $color-accent;
+        font-size: 1em;
 
         &--column-2 {
             grid-column: 2/3;
             padding: unset !important;
+            font-weight: 400;
         }
     }
 
@@ -497,7 +641,7 @@ body {
     }
 
     .nav-divider {
-        margin: 1rem 0 0 0 !important;
+        margin: 1rem 0.625rem 0 0.625rem !important;
         grid-column: 1/4;
     }
 }
@@ -506,16 +650,30 @@ body {
     .page-menu {
         z-index: 750;
         .nav-header {
-            background-color: $color-navigation-header;
-            grid-template-columns: auto;
-            grid-template-rows: unset;
+            background-color: $color-navigation-menu-background;
 
             #board-name i {display: block;}
 
             .menu-item {
-                padding-left: 1.5rem;
+                &__edit, &__delete {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 0.313rem;
+                    margin: 0;
+                }
 
-                a{color: $color-black-alternative;}
+                &__edit {
+                    width: 13.188rem;
+                    height: 2.625rem;
+                }
+
+                &__delete {
+                    width: 3.125rem;
+                    height: 2.625rem;
+                    background-color: $color-red-negative;
+                    border: $color-red-negative;
+                }
             }
 
             a {color: $color-navigation-header-text;}
@@ -528,7 +686,6 @@ body {
 
             li:nth-of-type(1) {
                 font-weight: bold;
-                font-size: 1.5rem;
                 font-family: "Work Sans", sans-serif;
                 padding-bottom: 0.25rem;
                 justify-self: flex-start;
@@ -561,13 +718,12 @@ body {
             margin-bottom: unset;
         }
 
-        //background-color: rgba(0, 0, 0, 0.008);
         background-color: $color-navigation-menu-background;
         border-radius: 0;
         flex: 1;
         min-height: calc(100vh - 3rem);
-        min-width: size(11);
-        max-width: size(11);
+        min-width: 18.75rem;
+        max-width: 18.75rem;
 
         &,
         &[is-menu],
@@ -586,15 +742,12 @@ body {
             h2,
             h3 {
                 display: block;
-                font-size: 1rem;
                 line-height: 1.125rem;
                 margin-top: 0;
 
             }
         }
-        nav:first-child a {
-            font-weight: 500;
-        }
+
         nav:last-child::after {
             content: none;
         }

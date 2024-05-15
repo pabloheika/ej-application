@@ -8,13 +8,13 @@
             <h1 class="text-accent">{{_('Comments report')}}</h1>
             {{ export_modal(conversation, 'comments_data')}}
         </div>
-        <div class="margin-y3 comment-report">
-            <div class="comment-report__comments" id="comments">
+        <div class="margin-y3 report">
+            <div class="report__comments" id="comments">
                 <form hx-get="{{url("dataviz:comments-filter", **{"conversation_id": conversation.id, "slug": conversation.slug})}}"
                     hx-swap="outerHTML"
-                    hx-target="#comments-table-container"
+                    hx-target="#report-table-container"
                     hx-trigger="clustersChanged delay:0.5s, orderChanged delay:0.5s, sort delay:0.5s, pageChanged, keyup delay:1s"
-                    onkeypress="return event.keyCode != 13;" id="comment-filters-form" action="GET">
+                    onkeypress="return event.keyCode != 13;" id="report-filters-form" action="GET">
                         {% include 'ej_dataviz/reports/includes/comments/filters.jinja2' %}
                         {% include 'ej_dataviz/reports/includes/comments/table.jinja2' %}
                 </form>
@@ -25,9 +25,9 @@
 <script>
     function showComments() {
         $("#filters").addClass("hide");
-        $("#filters-tab").addClass("comment-report__tabs--disabled");
+        $("#filters-tab").addClass("report__tabs--disabled");
         $("#comments").removeClass("hide");
-        $("#comments-tab").removeClass("comment-report__tabs--disabled");
+        $("#comments-tab").removeClass("report__tabs--disabled");
     }
 </script>
 {% endblock %}

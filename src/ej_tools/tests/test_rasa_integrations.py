@@ -40,7 +40,7 @@ class TestRasaConversationForm(ConversationRecipes):
         assert form.is_valid()
 
     def test_rasa_conversation_invalid_form(self, db, mk_conversation):
-        conversation = mk_conversation()
+        mk_conversation()
         form = RasaConversationForm({"domain": "notadomain"})
         assert not form.is_valid()
         assert _("Enter a valid URL.") == form.errors["domain"][0]
@@ -143,7 +143,7 @@ class TestRasaConversationFormRoute(ConversationRecipes):
         )
 
         assert response.status_code == 302
-        assert response.url == f"/login/"
+        assert response.url == "/login/"
 
 
 class TestRasaConversationIntegrationsAPI(ConversationRecipes):

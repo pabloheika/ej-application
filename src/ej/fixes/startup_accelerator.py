@@ -10,11 +10,8 @@ BLACKLIST = ["pandas._libs.tslibs.nattype"]
 
 
 def make_lazy_importer(names):
-    import demandimport
-
     slow_modules = set(names)
     sys_import = builtin_import
-    lazy_import = demandimport._demandimport
     track = []
     blacklist = frozenset(BLACKLIST)
 
@@ -27,11 +24,6 @@ def make_lazy_importer(names):
                 raise ValueError(
                     [x for x in track if x.startswith("ej") or x.startswith("boogie")]
                 )
-            try:
-                mod = lazy_import(name, globals, locals, fromlist, level)
-            except KeyError:
-                print("bad import:", name)
-                return sys_import(name, globals, locals, fromlist, level)
         else:
             return sys_import(name, globals, locals, fromlist, level)
 

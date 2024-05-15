@@ -1,6 +1,4 @@
 from ej_tools.utils import get_host_with_schema
-import pytest
-from requests import get
 from ej_conversations.mommy_recipes import ConversationRecipes
 from unittest.mock import patch
 import mock

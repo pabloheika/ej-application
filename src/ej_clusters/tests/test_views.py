@@ -1,5 +1,4 @@
 import pytest
-from django.utils.translation import gettext_lazy as _
 from django.test import Client
 from django.urls import reverse
 from boogie.testing.pytest import UrlTester

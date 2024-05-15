@@ -1,0 +1,40 @@
+{% from 'ej/includes/menu-item.jinja2' import menu_item %}
+
+<nav class="conversation-menu">
+    <div class="page-menu__links conversation-menu__links grid-column-2">
+        <a href="{{ url('profile:home') }}">
+            <i class="fa fa-chevron-circle-up"></i>
+            {{ _('Home') }}
+        </a>
+    </div>
+
+    <span class="conversation-menu__conversation-text grid-column-2">{{conversation.text}}</span>
+    <div class="grid-column-2">
+        <h3 class="menu-section__title">{{_("About the conversation")}}</h3>
+        <div class="conversation-menu__conversation-info">
+            <i class="fas fa-users"></i>
+            <span>{{conversation.n_participants}} {{_("participants")}}</span>
+        </div>
+        <div class="conversation-menu__conversation-info">
+            <i class="fas fa-vote-yea"></i>
+            <span>{{conversation.n_votes}} {{_("votes")}}</span>
+        </div>
+        <div class="conversation-menu__conversation-share" onclick="copyToClipboard()">
+            <i class="fas fa-share-alt"></i>
+            <span>{{_("Share")}}</span>
+        </div>
+    </div>
+
+    <div class="conversation-menu__user-section grid-column-2">
+        <img class="conversation-menu__avatar" src="{{ conversation.author.profile.image_url }}">
+        <span class="conversation-menu__username">{{_("created by")}} {{ conversation.author.name }}</span>
+    </div>
+
+    <div class="grid-column-2">
+        <h3 class="conversation-menu__item conversation-menu__item--margin">{{_("Help")}}</h3>
+        <ul class="conversation-menu__item participant-menu__bottom-divider">
+            <li><a href="{{ url("profile:tour")+'?completedTour=false' }}">{{_("Tour")}}</a></li>
+            <li><a href="/docs" target="#blank">{{_("Documentation")}}</a></li>
+        </ul>
+    </div>
+</nav>

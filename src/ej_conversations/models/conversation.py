@@ -409,7 +409,7 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
                 return self.approved_comments.exclude(votes__author=user).get(
                     id=comment_id
                 )
-            except Exception as e:
+            except Exception:
                 pass
         return self.next_comment(user)
 

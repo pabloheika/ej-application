@@ -10,10 +10,8 @@ pd = import_later("pandas")
 
 # noinspection PyIncorrectDocstring
 def comment_statistics(
-    votes,
-    author="author",
-    comment="comment",
-    choice="choice",
+    comments,
+    comments_df,
     convergence=False,
     participation=False,
     ratios=False,
@@ -23,12 +21,11 @@ def comment_statistics(
     the number of votes for each comment/choice with those given values.
 
     Args:
-        votes (dataframe):
-            A dataframe of votes with at the "author", "comment", and "choice"
-            columns.
-        author, comment, choice (str):
-            Names for the "author", "comment", and "choice" columns in the
-            votes dataset.
+        comments:
+            All the comments of a conversation.
+        comments_df (dataframe):
+            A dataframe of comments with with "author", "content", "agree", "disagree",
+            "skipped", "participants", "created" columns.
         convergence (bool):
             If True, appends a "convergence" column to the dataframe that
             measures the proportional difference between "agree" and "disagree"
@@ -43,12 +40,12 @@ def comment_statistics(
             of the total votes in the given comment.
 
     Notes:
-        Input data usually comes from a call to vote_queryset.dataframe().
+        Input data usually comes from a call to comment_queryset.dataframe().
     """
-    table = _make_table(votes, comment, author, choice)
+    table = _make_comments_table(comments_df)
     table.index.name = "comment"
     if participation:
-        participation = len(votes[author].unique())
+        participation = comments.votes().values("author").distinct().count()
     return _statistics(
         table, convergence=convergence, participation=participation, ratios=ratios
     )
@@ -67,7 +64,7 @@ def user_statistics(
     Similar to :func:`comments_statistics`, but gathers information by user,
     rather than by comment. It accepts the same parameters.
     """
-    table = _make_table(votes, author, comment, choice)
+    table = _make_users_table(votes, author, comment, choice)
     table.index.name = "user"
     if participation:
         participation = len(votes[comment].unique())
@@ -76,10 +73,19 @@ def user_statistics(
     )
 
 
-def _make_table(votes, row, col, choice):
+def _make_comments_table(comments_df):
     """
-    Common implementation to :func:`comment_statistics` and :func:`user_statistics`
-    functions.
+    Gets a comments dataframe and returns a dataframe with columns 0 (skipped), 1 (agree)
+    and -1 (disagree).
+    """
+    comments_df = comments_df.rename(columns={"agree": 1, "disagree": -1, "skipped": 0})
+    return comments_df.filter([0, 1, -1], axis=1)
+
+
+def _make_users_table(votes, row, col, choice):
+    """
+    Returns a user dataframe table with columns 0 (skipped votes), 1 (agree votes) and
+    -1 (disagree votes) for each user.
     """
     group = votes.groupby([row, choice])
     df = group.count()

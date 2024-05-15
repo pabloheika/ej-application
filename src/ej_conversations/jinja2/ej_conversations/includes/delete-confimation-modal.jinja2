@@ -1,0 +1,34 @@
+<div class="modal__overlay hide" id="delete-modal">
+    <div class="modal__container-alternative">
+        <form method="post" class="modal__content-alternative">
+            {{csrf_input }}
+            <div class="modal__title-alternative">{{_("Are you sure?")}}</div>
+            <span>{{_("Deleted conversations cannot be recovered")}}</span>
+
+            <div class="modal__btn-alternative">
+                <button type="button"class="modal__btn-alternative--gray" onclick="closeModal()">
+                    {{_("Return")}}
+                </button>
+                <button type="submit" class="modal__btn-alternative--red" 
+                    formaction="{{ conversation.patch_url('conversation:delete') }}">
+                    {{_("Delete")}}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function closeModal() {
+        const modal = $('#delete-modal');
+        const body = $("body").removeClass('overflow-deactive');
+        modal.addClass('hide');
+        modal.removeClass('form-modal-delete-show');
+    }
+
+    function showConfirmationDelete() {
+        const modal = $('#delete-modal');
+        const body = $("body").addClass('overflow-deactive')
+        modal.addClass('form-modal-delete-show');
+        modal.removeClass('hide');   
+    }
+</script>

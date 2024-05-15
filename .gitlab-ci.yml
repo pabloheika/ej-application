@@ -1,5 +1,6 @@
 stages:
     - style
+    - linter
     - unit tests
     - build
     - deploy
@@ -17,6 +18,18 @@ black:
         - /bin/bash -c "pip install black==22.3.0"
     script:
         - /bin/bash -c "black --check ."
+    tags:
+        - k8s
+
+ruff:
+    stage: linter
+    image:
+        name: python:3.8.18-slim-bullseye
+        pull_policy: if-not-present
+    before_script:
+        - /bin/bash -c "pip install ruff==0.3.7"
+    script:
+        - /bin/bash -c "ruff check"
     tags:
         - k8s
 

@@ -18,7 +18,7 @@ try:
     def print_red(msg: str):
         print(Fore.RED + msg + reset_output_color())
 
-except Exception as exc:
+except Exception:
 
     def reset_output_color() -> None:
         return None

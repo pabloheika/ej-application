@@ -80,21 +80,21 @@ class TestGetViews:
         assert data == COMMENT
 
     def test_comments_endpoint_user_is_author(self, comment):
-        path = BASE_URL + f"/comments/?is_author=true"
+        path = BASE_URL + "/comments/?is_author=true"
         api = authenticate_user_api({"email": "email@server.com", "password": "password"})
         data = api.get(path, format="json").data
 
         assert data[0]["summary"] == comment_summary(comment)
 
     def test_comments_endpoint_is_approved(self, comment):
-        path = BASE_URL + f"/comments/?is_author=true&is_approved=true"
+        path = BASE_URL + "/comments/?is_author=true&is_approved=true"
         api = authenticate_user_api({"email": "email@server.com", "password": "password"})
         data = api.get(path, format="json").data
 
         assert data[0]["summary"] == comment_summary(comment)
 
     def test_comments_endpoint_is_rejected(self, comment):
-        path = BASE_URL + f"/comments/?is_author=true&is_rejected=true"
+        path = BASE_URL + "/comments/?is_author=true&is_rejected=true"
         comment.status = "rejected"
         comment.save()
         api = authenticate_user_api({"email": "email@server.com", "password": "password"})
@@ -103,7 +103,7 @@ class TestGetViews:
         assert data[0]["summary"] == comment_summary(comment)
 
     def test_comments_endpoint_is_pending(self, comment):
-        path = BASE_URL + f"/comments/?is_author=true&is_pending=true"
+        path = BASE_URL + "/comments/?is_author=true&is_pending=true"
         comment.status = "pending"
         comment.save()
         api = authenticate_user_api({"email": "email@server.com", "password": "password"})
@@ -112,7 +112,7 @@ class TestGetViews:
         assert data[0]["summary"] == comment_summary(comment)
 
     def test_comments_endpoint_is_pending_is_approved_combination(self, comments):
-        path = BASE_URL + f"/comments/?is_author=true&is_pending=true&is_approved=true"
+        path = BASE_URL + "/comments/?is_author=true&is_pending=true&is_approved=true"
         pending_comment = comments[0]
         pending_comment.status = "pending"
         pending_comment.save()
@@ -141,7 +141,7 @@ class TestGetViews:
 
     def test_random_voted_comment_with_id_endpoint(self, comments):
         comment = comments[1]
-        voting_path = BASE_URL + f"/votes/"
+        voting_path = BASE_URL + "/votes/"
         post_data = {
             "choice": 1,
             "comment": comment.id,
@@ -159,7 +159,7 @@ class TestGetViews:
         assert data["content"] != comment.content
 
     def test_get_promoted_conversations(self, conversation):
-        path = BASE_URL + f"/conversations/?is_promoted=true"
+        path = BASE_URL + "/conversations/?is_promoted=true"
         api = authenticate_user_api({"email": "email@server.com", "password": "password"})
         data = api.get(path, format="json").data
         assert "card" in data[0]
@@ -174,7 +174,7 @@ class TestGetViews:
         assert "card" in data[0]
 
     def test_search_inexistent_conversation(self, conversation):
-        path = BASE_URL + f"/conversations/?is_promoted=true&text_contains=asdfghjkl"
+        path = BASE_URL + "/conversations/?is_promoted=true&text_contains=asdfghjkl"
         api = authenticate_user_api({"email": "email@server.com", "password": "password"})
         data = api.get(path, format="json").data
         assert data == []
@@ -230,7 +230,7 @@ class TestApiRoutes:
     EXCLUDES = dict(skip=["created", "modified"])
 
     def test_post_conversation(self, api, user):
-        path = BASE_URL + f"/conversations/"
+        path = BASE_URL + "/conversations/"
         board = Board.objects.create(
             slug="board1", title="My Board", owner=user, description="board"
         )
@@ -252,7 +252,7 @@ class TestApiRoutes:
         assert response.status_code == 403
 
     def test_delete_conversation(self, user):
-        path = BASE_URL + f"/conversations/"
+        path = BASE_URL + "/conversations/"
         board = Board.objects.create(
             slug="board1", title="My Board", owner=user, description="board"
         )
@@ -273,7 +273,7 @@ class TestApiRoutes:
         assert response.status_code == 403
 
     def test_update_conversation(self, user):
-        path = BASE_URL + f"/conversations/"
+        path = BASE_URL + "/conversations/"
         board = Board.objects.create(
             slug="board1", title="My Board", owner=user, description="board"
         )
@@ -303,7 +303,7 @@ class TestApiRoutes:
         assert response.status_code == 403
 
     def test_post_comment(self, api, conversation, user):
-        comments_path = BASE_URL + f"/comments/"
+        comments_path = BASE_URL + "/comments/"
         comment_data = dict(COMMENT, status="pending")
         post_data = dict(
             content=comment_data["content"],
@@ -338,7 +338,7 @@ class TestApiRoutes:
         assert data == comment_data
 
     def test_delete_comment(self, conversation, user):
-        comments_path = BASE_URL + f"/comments/"
+        comments_path = BASE_URL + "/comments/"
         comment_data = dict(COMMENT, status="pending")
         post_data = dict(
             content=comment_data["content"],
@@ -362,7 +362,7 @@ class TestApiRoutes:
         assert not comment
 
     def test_update_comment(self, conversation, user):
-        comments_path = BASE_URL + f"/comments/"
+        comments_path = BASE_URL + "/comments/"
         comment_data = dict(COMMENT, status="pending")
         post_data = dict(
             content=comment_data["content"],
@@ -402,32 +402,7 @@ class TestApiRoutes:
         assert comment.status == "rejected"
 
     def test_post_vote(self, api, comment, user):
-        path = BASE_URL + f"/votes/"
-        post_data = {
-            "analytics_utm": {
-                "utm_campaign": 1,
-                "utm_test": "test",
-            },
-            "choice": 1,
-            "comment": comment.id,
-            "channel": "telegram",
-        }
-
-        # Non authenticated user
-        assert api.post(path, post_data) == self.AUTH_ERROR
-
-        # Authenticated user
-        token = Token.objects.create(user=user)
-        _api = APIClient()
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
-        _api.post(path, post_data, format="json")
-
-        vote = comment.votes.last()
-
-        assert vote.analytics_utm == {"utm_campaign": 1, "utm_test": "test"}
-
-    def test_post_vote_without_analytics_utm(self, api, comment, user):
-        path = BASE_URL + f"/votes/"
+        path = BASE_URL + "/votes/"
         post_data = {
             "choice": 0,
             "comment": comment.id,
@@ -440,22 +415,14 @@ class TestApiRoutes:
         _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
         _api.post(path, post_data, format="json")
 
-        vote = comment.votes.last()
-        assert vote.analytics_utm == None
-
-        post_data["analytics_utm"] = {}
         _api.post(path, post_data, format="json")
 
         vote = comment.votes.last()
-        assert vote.analytics_utm == {}
+        assert vote
 
     def test_post_skipped_vote(self, api, comment, user):
-        path = BASE_URL + f"/votes/"
+        path = BASE_URL + "/votes/"
         post_data = {
-            "analytics_utm": {
-                "utm_campaign": 1,
-                "utm_test": "test",
-            },
             "choice": 0,
             "comment": comment.id,
             "channel": "telegram",
@@ -469,71 +436,21 @@ class TestApiRoutes:
         _api.post(path, post_data, format="json")
 
         post_data = {
-            "analytics_utm": {
-                "utm_campaign": 2,
-            },
             "choice": 1,
             "comment": comment.id,
             "channel": "telegram",
         }
 
         vote = comment.votes.last()
-        assert vote.analytics_utm == {"utm_campaign": 1, "utm_test": "test"}
 
         _api.post(path, post_data, format="json")
 
         vote = comment.votes.last()
-        assert vote.analytics_utm == {
-            "utm_campaign": 2,
-        }
-
-    def test_delete_vote(self, comment, user, admin_user, other_user):
-        path = BASE_URL + f"/votes/"
-        post_data = {
-            "analytics_utm": {
-                "utm_campaign": 1,
-                "utm_test": "test",
-            },
-            "choice": 0,
-            "comment": comment.id,
-            "channel": "opinion_component",
-        }
-
-        # Authenticated normal user
-        token = Token.objects.create(user=user)
-        _api = APIClient()
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
-
-        # Creates a vote
-        _api.post(path, post_data, format="json")
-        vote = Vote.objects.first()
         assert vote
 
-        path = path + f"{vote.id}/"
-        response = _api.delete(path, HTTP_AUTHORIZATION=f"Token {token.key}")
-        assert response.status_code == 403
-
-        # User try to delete another user vote
-        token3 = Token.objects.create(user=other_user)
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token3.key)
-        response = _api.delete(path, HTTP_AUTHORIZATION=f"Token {token3.key}")
-        assert response.status_code == 403
-
-        # Authenticated superuser
-        token2 = Token.objects.create(user=admin_user)
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token2.key)
-        response = _api.delete(path, HTTP_AUTHORIZATION=f"Token {token2.key}")
-        assert response.status_code == 204
-        vote = Vote.objects.first()
-        assert not vote
-
     def test_update_vote(self, comment, user):
-        path = BASE_URL + f"/votes/"
+        path = BASE_URL + "/votes/"
         post_data = {
-            "analytics_utm": {
-                "utm_campaign": 1,
-                "utm_test": "test",
-            },
             "choice": 1,
             "comment": comment.id,
             "channel": "telegram",
@@ -551,7 +468,7 @@ class TestApiRoutes:
 
         # Updates the vote
         path = path + f"{vote.id}/"
-        update_data = {"choice": "-1", "analytics_utm": {"utm_test": "updated test"}}
+        update_data = {"choice": "-1"}
         _api.put(
             path,
             data=update_data,
@@ -560,7 +477,6 @@ class TestApiRoutes:
         )
 
         vote = Vote.objects.first()
-        assert vote.analytics_utm == {"utm_test": "updated test"}
         assert vote.choice == Choice.DISAGREE
 
 

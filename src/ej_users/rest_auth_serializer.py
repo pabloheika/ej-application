@@ -3,15 +3,8 @@ from .models import User, MetaData
 from ej_profiles.models import Profile
 
 try:
-    from allauth.account import app_settings as allauth_settings
-    from allauth.utils import email_address_exists, get_username_max_length
     from allauth.account.adapter import get_adapter
-    from allauth.account.utils import setup_user_email
-    from allauth.socialaccount.helpers import complete_social_login
-    from allauth.socialaccount.models import SocialAccount
-    from allauth.socialaccount.providers.base import AuthProcess
-    from django.utils.translation import gettext as _
-except Exception as e:
+except Exception:
     raise ImportError("allauth needs to be added to INSTALLED_APPS.")
 
 
@@ -22,7 +15,7 @@ class RegistrationSerializer(serializers.Serializer):
     def save(self, request):
         try:
             user = User.objects.get(email=request.data.get("email"))
-        except Exception as e:
+        except Exception:
             email = request.data.get("email")
             name = request.data.get("name")
             password = request.data.get("password")
@@ -39,7 +32,7 @@ class RegistrationSerializer(serializers.Serializer):
         profile = None
         try:
             profile = Profile.objects.get(user=user)
-        except Exception as e:
+        except Exception:
             profile = Profile(user=user)
         if phone_number:
             profile.phone_number = phone_number

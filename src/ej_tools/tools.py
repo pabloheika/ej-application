@@ -1,7 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import PermissionDenied
 from rest_framework.authtoken.models import Token
-from django.shortcuts import reverse
 
 
 class AbstractTool:
@@ -60,7 +59,7 @@ class BotsWhatsappTool(AbstractTool):
         self.name: str = "WhatsApp"
         self.description: str = _(
             "Whatsapp user will interact with the bot in the private chat."
-            + "Use Twilio as a broker for connection."
+            + "Use WhatsApp Cloud API for connection."
         )
         self.share: str = _(
             "I am the virtual assistant for the EJ platform. Empurrando Juntos, or EJ Platform, "
@@ -138,7 +137,7 @@ class OpinionComponentTool(AbstractTool):
         if request.user.is_authenticated and request.user.id == conversation.author.id:
             try:
                 author_token = Token.objects.get(user=conversation.author)
-            except Exception as e:
+            except Exception:
                 author_token = Token.objects.create(user=conversation.author)
         return author_token
 

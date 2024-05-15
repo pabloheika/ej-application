@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 
 from ej_boards.models import Board
 from ej_users.models import User

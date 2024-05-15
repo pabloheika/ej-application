@@ -7,7 +7,7 @@ from ej_users.models import User
 TOOLS_CHANNEL = {
     "socketio": (_("Opinion Bots"), "webchat"),
     "telegram": (_("Opinion Bots"), "telegram"),
-    "twilio": (_("Opinion Bots"), "whatsapp"),
+    "whatsapp": (_("Opinion Bots"), "whatsapp"),
     "opinion_component": (_("Opinion component"),),
     "rocketchat": (_("Rocket.Chat"),),
     "unknown": (),

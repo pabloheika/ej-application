@@ -1,4 +1,4 @@
-{% macro pagination(page, items) %}
+{% macro pagination(page) %}
 <div class="pagination">
     <div class="pagination__info">
         <span>
@@ -78,7 +78,7 @@
     // set page to 1 when ordering or cluster field changes.
     // This is a common behavior for web pages with filters and pagination.
     function resetPageOnFilter() {
-        $("#comment-filters-form").on(
+        $("#report-filters-form").on(
             {
                 orderChanged: function() {
                     let pageInput = $("#page");
@@ -92,7 +92,7 @@
         )
     }
 
-    // setNextPage is necessary to avoid calling paginator methods on each HTMX request.
+    // setPage is necessary to avoid calling paginator methods on each HTMX request.
     function setPage(step) {
         let pageValue = 1;
 
@@ -112,7 +112,7 @@
 
         let pageInput = $("#page");
         pageInput[0].value = pageValue;
-        htmx.trigger('#comment-filters-form', 'pageChanged');
+        htmx.trigger('#report-filters-form', 'pageChanged');
     }
 
     $(document).ready(function() {

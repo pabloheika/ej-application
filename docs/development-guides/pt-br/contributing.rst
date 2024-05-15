@@ -22,8 +22,8 @@ do repositório. Caso você tenha alguma dificuldade ou dúvida que não esteja
 documentada, fique à vontade para perguntar nos canais da Pencil. Lembre-se:
 
 1. Seja gentil e educada(o) ao fazer perguntas.
-2. Faça perguntas inteligentes. Descreva o que você já tentou e pesquisou. Simplesmente dizer que "não funciona" não é uma pergunta inteligente.
-3. Seja paciente. As pessoas da equipe irão te responder assim que possível.
+2. Em caso de dúvidas, não deixe de buscar ajuda com a equipe. Evite perguntas sem muitos detalhes. Descreva o que você já tentou e pesquisou e, se possível, forneça logs de erros. Assim, alguém poderá te ajudar de forma mais rápida e direcionada.
+3. Seja paciente. As pessoas da equipe irão te responder assim que possível. Caso um tempo já tenha se passado sem resposta, pergunte se alguém da equipe conseguiu verificar ou reproduzir seu problema.
 4. Sempre priorize a comunicação nos grupos. Evite contactar pessoas da equipe no privado.
 
 Estudando a aplicação
@@ -114,6 +114,8 @@ Algumas práticas que adotamos:
 - Priorizar o uso de ``flexbox`` e ``grid layout`` para posicionar e alinhar elementos na tela.
 - Evitar utilizar ``padding`` e ``margin`` para posicionar elementos na tela.
 - Nunca definir cores de forma *hardcoded* nos arquivos scss. Sempre reutilizar as variáveis do arquivo ``_config.scss``.
+- Priorizar a estruturação de media queries dentro da própria classe do elemento. Este método é conhecido como `Media Query Bubbling <https://www.creativebloq.com/how-to/how-to-structure-media-queries-in-sass>`_.
+- Priorizar utilização de métodos do Jquery ao invés de métodos nativos do javascript. Apesar dos métodos nativos apresentarem maior `performance <https://in.indeed.com/career-advice/career-development/javascript-vs-jquery>`_, o Jquery oferece `algumas comodidades <https://learn.jquery.com/using-jquery-core/jquery-object/>`_.
 - Caso você tenha alguma dúvida sobre o protótipo de alta fidelidade relacionado à sua issue, pergunte para a pessoa mentora ou a designer.
 
 *****************
@@ -124,6 +126,15 @@ Toda linguagem tem sua forma de resolver problemas, não é diferente com Python
 tente implementar a solução da issue da forma mais "pythonica" possível.
 A equipe adota a ferramenta `Black <https://github.com/psf/black>`_ como padrão de
 formatação de código Python.
+
+*******************
+Analisador estático
+*******************
+
+A EJ usa o analisador estático `Ruff <https://github.com/astral-sh/ruff>`_ para manter a qualidade do 
+código e evitar erros comuns no desenvolvimento de software. Para executar o Ruff, conecte-se ao 
+container Django, usando o comando ``inv docker-attach`` e, dentro do container, execute o comando ``ruff check``.
+
 
 ****************************
 Boas práticas de programação

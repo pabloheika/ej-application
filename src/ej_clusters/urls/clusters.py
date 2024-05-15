@@ -2,7 +2,7 @@ from django.urls import path
 from ..views import clusters
 
 app_name = "ej_clusters"
-conversation_url = f"<int:conversation_id>/<slug:slug>/"
+conversation_url = "<int:conversation_id>/<slug:slug>/"
 
 urlpatterns = [
     path(

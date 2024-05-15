@@ -181,9 +181,9 @@ class UserMixin(ConversationMixin):
                 groups.append(users_conversation_cluster.first().name)
             else:
                 groups.append(str(_("No group")))
-        stats.insert(1, _("Group"), groups, True)
-        stats.insert(7, _("Phone number"), phone_numbers, True)
-        stats.insert(8, _("Date joined"), date_joined, True)
+        stats.insert(1, "group", groups, True)
+        stats.insert(7, "phone_number", phone_numbers, True)
+        stats.insert(8, "date_joined", date_joined, True)
         # Use better values for extended columns
         for field, transform in transforms.items():
             stats[field] = stats[field].apply(transform)

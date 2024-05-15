@@ -1,6 +1,6 @@
 {% from "ej_dataviz/reports/includes/pagination-macro.jinja2" import pagination %}
 
-<div id="comments-table-container">
+<div id="report-table-container">
     <div id="datatables-container">
         <table id="comments-table" class="display cell-border">
             <thead>
@@ -18,7 +18,7 @@
                 {% for comment in page %}
                     <tr>
                         <td>
-                            <div class="comment-report__comment">
+                            <div class="report__comment">
                                 <div>{{comment[0]}}</div>
                                 <div>{{comment[1]}}</div>
                                 {% if comment|length > 7 %}
@@ -26,17 +26,17 @@
                                 {% endif %}
                             </div>
                         </td>
-                        <td class="comment-report__percentages">{{"%s%%"|format(comment[2]|round)}}</td>
-                        <td class="comment-report__percentages">{{"%s%%"|format(comment[3]|round)}}</td>
-                        <td class="comment-report__percentages">{{"%s%%"|format(comment[4]|round)}}</td>
-                        <td class="comment-report__percentages">{{"%s%%"|format(comment[5]|round)}}</td>
+                        <td class="report__percentages">{{"%s%%"|format(comment[2]|round)}}</td>
+                        <td class="report__percentages">{{"%s%%"|format(comment[3]|round)}}</td>
+                        <td class="report__percentages">{{"%s%%"|format(comment[4]|round)}}</td>
+                        <td class="report__percentages">{{"%s%%"|format(comment[5]|round)}}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
-    {{ pagination(page, _("comments")) }}
+    {{ pagination(page) }}
 
     <script>
 

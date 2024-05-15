@@ -49,13 +49,34 @@ queira utilizar outras ferramentas de *dataviz* para realizar suas análises. É
 os dados nos formatos "csv" e "json".
 
 
-
-.. figure:: ../images/comments-report1.png
+.. figure:: ../images/comments-report-2.png
    :align: center
 
    Relatório de comentários 
 
-.. figure:: ../images/comments-report2.png
+.. figure:: ../images/comments-report-1.png
+   :align: center
+
+   Relatório de comentários por grupo
+
+
+Relatório de participantes
+--------------------------
+
+O relatório de participantes permite analisar os dados dos participantes de uma coleta,
+apresentando dados do usuário e o grupo no qual ele pertence naquele contexto. 
+É possível filtrar os participantes pelo nome e email, pelo nível de concordância, discordância,
+participação, entre outros. 
+Com este relatório também é possível exportar os dados apresentados, caso o usuário
+queira utilizar outras ferramentas de *dataviz* para realizar suas análises.
+
+
+.. figure:: ../images/participants-report-1.png
+   :align: center
+
+   Relatório de participantes geral
+
+.. figure:: ../images/participants-report-2.png
    :align: center
 
    Opções de exportação do relatório

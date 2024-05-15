@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 def user_not_have_default_board(user):
     default_board = (slugify(user.email[:50]),)
-    return not (default_board in list(user.boards.values_list("slug")))
+    return default_board not in list(user.boards.values_list("slug"))
 
 
 def get_or_create_user_default_board(user, db_alias, Boards):
@@ -39,10 +39,10 @@ def add_default_board(apps, schema_editor):
             user_default_board = get_or_create_user_default_board(conversation_author, db_alias, Boards)
             try:
                 board = getattr(conversation, "board")
-                if board == None:
+                if board is None:
                     conversation.board = user_default_board
                     conversation.save()
-            except Exception as e:
+            except Exception:
                 conversation.board = user_default_board
                 conversation.save()
 

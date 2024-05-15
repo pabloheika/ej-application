@@ -10,6 +10,7 @@ from sidekick import import_later
 
 from ej_clusters.models import Cluster
 from ej_conversations.utils import check_promoted
+from ej_conversations.models.conversation import Conversation
 
 from .constants import EXPOSED_PROFILE_FIELDS
 from .constants import *
@@ -29,11 +30,12 @@ def add_group_column(comments_df, group_name):
     comments_df["group"] = group_name
 
 
-def get_comments_dataframe(comments, cluster_name):
+def get_comments_dataframe(conversation, cluster_name):
     """
     Gets the comments dataframe from statistics_summary_dataframe and sets the
     group column for each comment row
     """
+    comments = conversation.comments
     df = comments.statistics_summary_dataframe(normalization=100)
     add_group_column(df, cluster_name)
     return df
@@ -120,6 +122,29 @@ def get_user_data(conversation):
     ]
     df.columns = ["email", "user_id", *df.columns[2:]]
     return df
+
+
+def get_user_dataframe(conversation: Conversation, page_number: int = 1):
+    """
+    creates a Django Paginator instance using conversation comments as list of items.
+
+    :param page_number: a integer with the Paginator page.
+    :param conversation: a Conversation instance
+    """
+    users_df = conversation.users.statistics_summary_dataframe(
+        normalization=100, convergence=False, conversation=conversation
+    )
+
+    users_df.insert(
+        0,
+        "participant",
+        users_df[["email"]].agg("\n".join, axis=1),
+        True,
+    )
+
+    users_df.drop(["phone_number"], inplace=True, axis=1)
+    users_df = users_df.sort_values("name", ascending=False)
+    return users_df
 
 
 def comments_data_common(comments, votes, filename, fmt, clusters=None):
@@ -229,7 +254,7 @@ def create_stereotype_coords(
             "name", index="users"
         )
         if labels.shape != (0, 0):
-            table["cluster"] = labels.loc[labels.index.values != None]
+            table["cluster"] = labels.loc[labels.index.values != None]  # noqa: E711
             table["cluster"].fillna(__("*Unknown*"), inplace=True)
             kwargs["labels"] = labels
 

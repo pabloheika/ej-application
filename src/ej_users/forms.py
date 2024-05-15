@@ -20,7 +20,7 @@ class TermsWidget(forms.CheckboxInput):
 
         try:
             terms = FlatPage.objects.get(url="/usage/").content
-        except Exception as e:
+        except Exception:
             terms = ""
         context = self.get_context(name, value, attrs)
         context["widget"]["terms"] = terms
@@ -36,7 +36,7 @@ class PrivacyPolicyWidget(forms.CheckboxInput):
 
         try:
             privacy_policy = FlatPage.objects.get(url="/privacy-policy/").content
-        except Exception as e:
+        except Exception:
             privacy_policy = ""
         context = self.get_context(name, value, attrs)
         context["widget"]["privacy_policy"] = privacy_policy

@@ -1,4 +1,3 @@
-import os
 from functools import reduce
 from invoke import task
 
@@ -75,7 +74,7 @@ def docker_test(ctx, dry_run=False, build=False):
     Runs EJ tests;
     """
     do = runner(ctx, dry_run, pty=True)
-    do(f"docker exec --user=root -it  server /bin/bash -c 'inv test'")
+    do("docker exec --user=root -it  server /bin/bash -c 'inv test'")
 
 
 @task
@@ -84,7 +83,7 @@ def docker_attach(ctx):
     Connect to EJ web server container;
     """
     do = runner(ctx, dry_run=False, pty=True)
-    do(f"docker exec -it server bash")
+    do("docker exec -it server bash")
 
 
 @task
@@ -111,4 +110,4 @@ def docker_logs(ctx):
     Follows EJ web server log;
     """
     do = runner(ctx, dry_run=False, pty=True)
-    do(f"docker logs -f server")
+    do("docker logs -f server")

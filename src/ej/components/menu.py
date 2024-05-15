@@ -25,7 +25,7 @@ class CustomizeMenuMixin:
                 getattr(apps.app_configs[config], "customize_menu")
                 app_menu = apps.app_configs[config].customize_menu(self)
                 apps_links.append(app_menu)
-            except Exception as e:
+            except Exception:
                 pass
         return apps_links
 

@@ -3,8 +3,8 @@ from . import views_dataviz
 from . import views_report
 
 app_name = "ej_dataviz"
-conversation_url = f"<int:conversation_id>/<slug:slug>/"
-report_url = f"<int:conversation_id>/<slug:slug>/report/"
+conversation_url = "<int:conversation_id>/<slug:slug>/"
+report_url = "<int:conversation_id>/<slug:slug>/report/"
 
 reports_urlpatterns = [
     path(
@@ -19,8 +19,13 @@ reports_urlpatterns = [
     ),
     path(
         report_url + "users/",
-        views_report.UserReportDetailView.as_view(),
+        views_report.UsersReportDetailView.as_view(),
         name="users",
+    ),
+    path(
+        report_url + "users/filter",
+        views_report.UsersReportFilterView.as_view(),
+        name="users-filter",
     ),
 ]
 

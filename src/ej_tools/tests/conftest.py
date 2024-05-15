@@ -1,5 +1,4 @@
 import pytest
-from django.conf import settings
 
 from ej_conversations.tests.conftest import *
 from ej_tools.models import OpinionComponent

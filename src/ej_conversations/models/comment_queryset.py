@@ -3,11 +3,12 @@ import logging
 from boogie import db
 from boogie.models.wordcloud import WordCloudQuerySet
 from django.contrib.auth import get_user_model
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from .vote import Vote
 from ..math import comment_statistics
 from ..mixins import ConversationMixin, EXTEND_FIELDS as _EXTEND_FIELDS
+from ej_conversations.enums import Choice
 
 
 log = logging.getLogger("ej")
@@ -19,6 +20,36 @@ class CommentQuerySet(ConversationMixin, WordCloudQuerySet):
     """
 
     comments = lambda self, conversation=None: self
+
+    def dataframe(self, *fields, index=None, verbose=False):
+        """
+        Returns a pandas dataframe for the comment queryset.
+        """
+        if not fields:
+            fields = (
+                "id",
+                "author",
+                "content",
+                "agree",
+                "disagree",
+                "skipped",
+                "participants",
+                "created",
+            )
+        return super().dataframe(*fields, index=index, verbose=verbose)
+
+    def get_annotated_comments(self):
+        """
+        Return comments annotated with the total of agree votes (agree field), the total
+        of disagree votes (disagree field), the total of skipped votes (skipped field),
+        and the total of participation for each comment.
+        """
+        return self.annotate(
+            disagree=Count("votes", filter=Q(votes__choice=Choice.DISAGREE)),
+            agree=Count("votes", filter=Q(votes__choice=Choice.AGREE)),
+            skipped=Count("votes", filter=Q(votes__choice=Choice.SKIP)),
+            participants=Count("votes__author"),
+        )
 
     def _votes_from_comments(self, comments):
         return Vote.objects.filter(comment__in=self)
@@ -63,17 +94,20 @@ class CommentQuerySet(ConversationMixin, WordCloudQuerySet):
         The resulting dataframe has the 'content', 'author', 'agree', 'disagree'
         'skipped', 'convergence' and 'participation' columns.
         """
-        votes = (votes or self.votes()).dataframe(
-            "comment", "author", "choice", "created"
-        )
+        annotated_comments = self.get_annotated_comments()
+        comments_df = annotated_comments.dataframe()
         stats = comment_statistics(
-            votes, participation=True, convergence=True, ratios=True
+            annotated_comments,
+            comments_df,
+            participation=True,
+            convergence=True,
+            ratios=True,
         )
         stats *= normalization
         stats = self.extend_dataframe(stats, "author__name", *extend_fields, "content")
         stats["author"] = stats.pop("author__name")
         stats["group"] = "geral"
-        stats["created"] = votes["created"]
+        stats["created"] = comments_df["created"]
         cols = [
             "content",
             "author",

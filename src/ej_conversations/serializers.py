@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 
 from ej_conversations.roles.conversations import conversation_card
 from ej_conversations.roles.comments import comment_summary
-from ej_tools.models import ConversationMautic, MauticClient
 from ej.serializers import BaseApiSerializer
 from .models import Conversation, Comment, Vote
 from ej_users.models import User
@@ -180,7 +179,7 @@ class VoteSerializer(BaseApiSerializer):
 
     class Meta:
         model = Vote
-        fields = ["links", "comment", "choice", "created", "channel", "analytics_utm"]
+        fields = ["links", "comment", "choice", "created", "channel"]
 
     def get_links(self, obj):
         return {
@@ -202,15 +201,12 @@ class VoteSerializer(BaseApiSerializer):
 
     def save_hook(self, request, vote):
         user = request.user
-        # TODO: remove the integration with Mautic
-        create_mautic_contact_from_author(request, vote)
         try:
             skipped_vote = Vote.objects.get(comment=vote.comment, choice=0, author=user)
             skipped_vote.choice = vote.choice
-            skipped_vote.analytics_utm = vote.analytics_utm
             skipped_vote.save()
             return skipped_vote
-        except Exception as e:
+        except Exception:
             pass
         if vote.id is None:
             vote.author = user
@@ -218,16 +214,5 @@ class VoteSerializer(BaseApiSerializer):
         elif vote.author != user:
             raise PermissionError("cannot update vote of a different user")
         else:
-            vote.save(update_fields=["choice", "analytics_utm"])
+            vote.save(update_fields=["choice"])
         return vote
-
-
-def create_mautic_contact_from_author(request, vote):
-    conversation = vote.comment.conversation
-    try:
-        conversation_mautic = ConversationMautic.objects.get(conversation=conversation)
-        mautic_client = MauticClient(conversation_mautic)
-        create_contact_from_author = mautic_client.create_contact(request, vote)
-        return create_contact_from_author
-    except:
-        pass

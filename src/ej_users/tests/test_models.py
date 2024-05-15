@@ -1,5 +1,4 @@
 import pytest
-import mock
 from boogie.testing.pytest import ModelTester
 from ej.testing import EjRecipes
 from ej_users import password_reset_token

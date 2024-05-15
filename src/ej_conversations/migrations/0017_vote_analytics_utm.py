@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ej_conversations', '0016_conversation_board_update_field'),
+        ("ej_conversations", "0016_conversation_board_update_field"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='vote',
-            name='analytics_utm',
+            model_name="vote",
+            name="analytics_utm",
             field=models.JSONField(blank=True, null=True),
         ),
     ]

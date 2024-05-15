@@ -1,6 +1,5 @@
 import json
 from typing import Any, Dict
-from django.utils.translation import gettext_lazy as _
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import UpdateView

@@ -2,7 +2,6 @@ import pytest
 from constance import config
 from django.urls import reverse
 from django.test import Client
-from ej import views
 from ej.testing import UrlTester
 from ej_conversations.tests.test_views import ConversationSetup
 

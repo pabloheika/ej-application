@@ -1,4 +1,3 @@
-import os
 import environ
 
 from boogie.configurations import Conf

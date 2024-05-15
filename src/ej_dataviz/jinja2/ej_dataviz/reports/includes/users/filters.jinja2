@@ -1,0 +1,5 @@
+{% from "ej_dataviz/reports/includes/filters-macro.jinja2" import filters %}
+{% set ordering_options = [["name", _("name")], 
+    ["email", _("email")], ["date_joined", _("creation date")]]
+%}
+{{ filters(clusters, ordering_options) }}

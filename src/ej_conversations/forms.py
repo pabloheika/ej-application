@@ -44,7 +44,7 @@ class ConversationDateWidget(forms.DateInput):
         if isinstance(value, date):
             value = value.strftime("%Y-%m-%d")
 
-        if name == "start_date" and value == None:
+        if name == "start_date" and value is None:
             today = datetime.today()
             value = today.strftime("%Y-%m-%d")
 

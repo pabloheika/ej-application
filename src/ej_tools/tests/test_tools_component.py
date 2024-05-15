@@ -1,4 +1,3 @@
-import pytest
 from io import BytesIO
 from PIL import Image
 from django.test import Client
