@@ -1,7 +1,7 @@
 $clusters-button-height: 2.313rem;
 
 #hr-divider {
-  border: 1px solid $color-theme-report-gray; 
+  border: 1px solid $color-theme-report-gray;
   margin: 1.4rem 0 1.6rem;
 }
 
@@ -27,16 +27,16 @@ $clusters-button-height: 2.313rem;
 }
 
 .form-cluster-description {
-  
+
   form {
     display: grid;
     grid-gap: 1rem;
-    grid-template-rows: 1.187rem auto 1.187rem 1fr; 
+    grid-template-rows: 1.187rem auto 1.187rem 1fr;
     margin: 0;
   }
 
   label {
-    text-indent: unset; 
+    text-indent: unset;
     font-weight: bold;
     font-size: 1rem;
     line-height: 1.188rem;
@@ -79,10 +79,10 @@ $clusters-button-height: 2.313rem;
   grid-row-gap: 1rem;
   grid-template-rows: 1.187rem 11.5rem auto auto auto;
 
-  #stereotypes_label {    
+  #stereotypes_label {
     font-weight: bold;
     font-size: 1rem;
-    line-height: 1.188rem; 
+    line-height: 1.188rem;
     text-indent: unset;
 
     img {
@@ -94,7 +94,7 @@ $clusters-button-height: 2.313rem;
   .disable-tooltip {
     display: none !important;
   }
-  
+
   .tooltip-persona {
     width: fit-content;
     height: 1.375rem;
@@ -112,10 +112,10 @@ $clusters-button-height: 2.313rem;
   }
 
   .new-persona-shortcut {
-    display: flex; 
+    display: flex;
     gap: 1rem;
 
-    #new_persona_check { 
+    #new_persona_check {
       z-index: 0;
       position: absolute;
       left: 0.375rem;
@@ -127,24 +127,24 @@ $clusters-button-height: 2.313rem;
   }
 
   #new-persona-text {
-    display: inline-grid; 
+    display: inline-grid;
     position: relative;
     left: 2.25rem;
     bottom: 0.313rem;
 
     .label-new-persona {
-      margin-bottom: 0; 
+      margin-bottom: 0;
       font-weight: bold;
       font-size: 0.875rem;
-      line-height: 1rem; 
-      color: $color-black-alternative; 
-      text-indent: unset; 
+      line-height: 1rem;
+      color: $color-black-alternative;
+      text-indent: unset;
       text-transform: none;
     }
 
     #text-new-persona {
       font-size: 0.875rem;
-      text-align: left; 
+      text-align: left;
     }
   }
 
@@ -198,7 +198,7 @@ $clusters-button-height: 2.313rem;
   select::-webkit-scrollbar-track {
     background-color: $color-white;
   }
-    
+
   select::-webkit-scrollbar-thumb {
     background-color: $color-bright-blue;
     border-radius: 0.625rem;
@@ -250,7 +250,7 @@ $clusters-button-height: 2.313rem;
 .options-groups {
   width: fit-content;
   border: 3px solid $color-theme-report-gray;
-  color: $color-theme-report-gray; 
+  color: $color-theme-report-gray;
   background-color: $color-white;
   text-transform: lowercase;
   padding: 0 0.9rem;
@@ -303,14 +303,14 @@ $clusters-button-height: 2.313rem;
     place-items: center;
     justify-content: center;
     gap: .5rem;
-    border-radius: 1.5rem; 
+    border-radius: 1.5rem;
     font-size: 0.875rem;
     padding: 1.37rem 1.54rem;
     width: min-content;
     background-color: $color-theme-report-blue;
     border: 1px solid $color-theme-report-blue;
-    margin-top: 1rem; 
-  
+    margin-top: 1rem;
+
     i {
       font-size: 0.875rem;
       margin: 0;
@@ -329,7 +329,7 @@ $clusters-button-height: 2.313rem;
     line-height: 1rem;
     margin: 0;
     margin-top: 1rem;
-    
+
     i {
       margin: 0.313rem;
     }
@@ -346,7 +346,7 @@ $clusters-button-height: 2.313rem;
   justify-content: center;
   font-size: 0.875rem;
   padding: 1.37rem 1.063rem;
-  width: 13.875rem; 
+  width: 13.875rem;
   background: $color-theme-report-blue;
   border: 1px solid $color-theme-report-blue;
   border-radius: 1.563rem;
@@ -374,7 +374,7 @@ $clusters-button-height: 2.313rem;
   place-items: center;
   justify-content: center;
   gap: .5rem;
-  border-radius: 1.5rem; 
+  border-radius: 1.5rem;
   font-size: 0.875rem;
   padding: 1.37rem 1.54rem;
   width: min-content;
@@ -387,7 +387,7 @@ $clusters-button-height: 2.313rem;
   }
 }
 
-.disable-div { 
+.disable-div {
   color: $color-complementary-gray !important;
 }
 
@@ -399,7 +399,63 @@ $clusters-button-height: 2.313rem;
 .form-modal-delete-show {
   display: block;
 }
-  
+
+.cluster-modal {
+
+    &__participants,
+    &__header,
+    &__comments {
+        color: $color-black;
+        margin-bottom: 1rem;
+    }
+
+    i {
+        margin-left: unset;
+    }
+
+    &__participants {
+        max-height: 50vh;
+        overflow: scroll;
+    }
+
+    &__header {
+        position: relative;
+
+        i {
+            position: absolute;
+            right: 0;
+            top: 0;
+            cursor: pointer;
+            font-size: 1.5em;
+            color: $color-black;
+
+            @media (max-width: 414px) {
+                & {
+                    font-size: 20px;
+                }
+            }
+        }
+
+        span {
+            font-size: 1.1em !important;
+        }
+
+        @media (max-width: 414px) {
+            & h1 {
+                max-width: 80%;
+            }
+        }
+    }
+
+    &__comments {
+
+        .comment-stats {
+            font-size: 14px;
+            color: $color-gray-500 !important;
+        }
+    }
+}
+
 @media (max-width: 875px) {
   .edit-content {
     padding: 0 1.5rem;
@@ -429,10 +485,10 @@ $clusters-button-height: 2.313rem;
     .new-persona-shortcut {
       margin-top: 0;
 
-      #new_persona_check { 
+      #new_persona_check {
         left: 0;
       }
-    } 
+    }
 
     #new-persona-text {
       left: 1.875rem;
@@ -454,7 +510,7 @@ $clusters-button-height: 2.313rem;
       padding: .3rem .25rem .3rem 0.6rem !important;
     }
   }
-  
+
   .new-group-modal {
     left: 15%;
     top: 15%;
@@ -482,13 +538,13 @@ $clusters-button-height: 2.313rem;
     width: 100%;
   }
 
-  .manage-personas-container { 
+  .manage-personas-container {
     bottom: .625rem;
     display: flex;
     justify-content: center;
     margin-bottom: 1rem;
   }
-  
+
   .confirmation-modal {
     width: 80%;
     padding: 1.5rem;
@@ -501,7 +557,7 @@ $clusters-button-height: 2.313rem;
       }
     }
   }
-  
+
 }
 
 @media (max-width: 996px) and (min-width: 524px) {
@@ -526,7 +582,7 @@ $clusters-button-height: 2.313rem;
   .manage-personas-container {
     bottom: 0;
   }
-  
+
 }
 
 @media (max-width: 996px) and (min-width: 876px) {

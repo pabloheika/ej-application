@@ -9,9 +9,8 @@
                     <th><i class="fa fa-check" title={{_("Agree")}}></i></th>
                     <th><i class="fa fa-times" title={{_("Disagree")}}></i></th>
                     <th><i class="fa fa-arrow-right" title={{_("Skipped")}}></i></th>
-                    <th>
-                        <i class="fas fa-users" title={{_("Participation index")}}></i>
-                    </th>
+                    <th><i class="fas fa-handshake" title={{_("Convergence")}}></i></th>
+                    <th><i class="fas fa-users" title={{_("Participation")}}></i></th>
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +29,7 @@
                         <td class="report__percentages">{{"%s%%"|format(comment[3]|round)}}</td>
                         <td class="report__percentages">{{"%s%%"|format(comment[4]|round)}}</td>
                         <td class="report__percentages">{{"%s%%"|format(comment[5]|round)}}</td>
+                        <td class="report__percentages">{{"%s%%"|format(comment[6]|round)}}</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -54,6 +54,7 @@
                     { data: '{{_("Disagree")}}', className: 'desktop' },
                     { data: '{{_("Skipped")}}', className: 'desktop' },
                     { data: '{{_("Convergence")}}', className: 'desktop' },
+                    { data: '{{_("Participation")}}', className: 'desktop' },
                 ]
             }
             if(window["commentsTable"]) {

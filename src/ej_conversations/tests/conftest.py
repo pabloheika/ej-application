@@ -6,7 +6,20 @@ from django.test.client import Client
 from django.contrib.auth.models import AnonymousUser
 
 from ej_conversations import create_conversation
+from ej_boards.models import Board
 from ej_users.models import User
+
+from rest_framework.test import APIClient
+
+API_V1_URL = "/api/v1"
+
+
+def get_authorized_api_client(user_info):
+    api = APIClient()
+    response = api.post(API_V1_URL + "/login/", user_info, format="json")
+    access_token = response.json()["access_token"]
+    api.credentials(HTTP_AUTHORIZATION="Bearer " + access_token)
+    return api
 
 
 @pytest.fixture
@@ -50,6 +63,12 @@ def vote(db, user, comment):
     vote_object = comment.vote(author=user, choice="agree")
     yield vote_object
     vote_object.delete()
+
+
+@pytest.fixture
+def board(user):
+    board = Board.objects.create(slug="userboard", owner=user, description="board")
+    return board
 
 
 @pytest.fixture

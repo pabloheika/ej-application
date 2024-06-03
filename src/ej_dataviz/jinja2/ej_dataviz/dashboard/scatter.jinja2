@@ -1,75 +1,74 @@
 {% block content %}
-    <div class="scatter-section--grow scatter-section__title flex">
-        <h1 class="conversation-dashboard-section__title text-accent">{{_("Scatter plot")}}</h1>
-        <p>
-            {{_("Each chart point represents a different participant. Participants with similar voting, appears near each other.")}}
-        </p>
+    <div class="scatter-section">
+        <div class="scatter-section__filters scatter-section__title flex">
+            <h1 class="conversation-dashboard-section__title text-accent">{{_("Scatter plot")}}</h1>
+            <p class="margin-y2">
+                {{_("Each chart point represents a different participant. Participants with similar voting, appears near each other.")}}
+            </p>
 
-    {% if json_data %}
-        <div class="scatter-filter">
-            <span class="bold scatter-filter__filter-by-text">{{ _('filter by') }}</span>
-            <div id="scatter-filter__categories">
-                <button class="" onclick="organizeBy(this, 3)">{{ _('Opinion') }}</button>
-                <button class="scatter-filter__button--inactive" onclick="organizeBy(this, 0)">{{ gender_field }}</button>
-                <button class="scatter-filter__button--inactive" onclick="organizeBy(this, 1)">{{ race_field }}</button>
-                <button class="scatter-filter__button--inactive" onclick="organizeBy(this, 2)">{{ _('State') }}</button>
+        {% if json_data %}
+            <div class="scatter-filter">
+                <div id="scatter-filter__categories">
+                    <button class="" onclick="organizeBy(this, 3)">{{ _('Opinion') }}</button>
+                    <button class="scatter-filter__button--inactive" onclick="organizeBy(this, 0)">{{ gender_field }}</button>
+                    <button class="scatter-filter__button--inactive" onclick="organizeBy(this, 1)">{{ race_field }}</button>
+                    <button class="scatter-filter__button--inactive" onclick="organizeBy(this, 2)">{{ _('State') }}</button>
+                </div>
             </div>
-        </div>
-    {% else %}
-        <div class="scatter-filter">
-            <div class="input-container__warn-message">
-                <span>{{_("Create some personas to visualize this graph.")}}</span>
+        {% else %}
+            <div class="scatter-filter">
+                <div class="input-container__warn-message">
+                    <span>{{_("Create some personas to visualize this graph.")}}</span>
+                </div>
             </div>
+        {% endif %}
         </div>
-    {% endif %}
-    </div>
-    {% if json_data %}
-        <div id="scatter-container" class="scatter-section__container">
-            <div class="size-y6p col flex-center"><p>{{ _('Loading data...') }}</p></div>
-        </div>
-    {% endif %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.1.0/echarts.min.js" defer></script>
-    <script defer>
-        window.addEventListener('load', function () {
-            // Load main data from json.
-            $.ajax("{{url('boards:dataviz-scatter_pca_json',  **conversation.get_url_kwargs())}}").then(function (data) {
-                // Prepare container
-               var $container = $("#scatter-container");
-               var dom = $container[0], chart = echarts.init(dom);
-               dom['chart'] = chart;
-               var chartOptions = {};
-                if (!data.error) {
-                    // Init chart
-                    chart.visualMap = data.visualMap;
-                    chart.option = data.option;
-                    chart.option.tooltip.formatter = function (e) {
-                        var name = e.data[2],
-                            gender = e.data[3],
-                            race = e.data[4],
-                            state = e.data[5],
-                            cluster = e.data[6];
-                        state = (state && chart.organizeBy === 2)? ' (' + state + ')': '';
-                        return (
-                            '<strong>' + name + state + '</strong>'
-                        );
-                    };
-                    chart.option.visualMap = [data.visualMap[data.visualMap.length - 1]];
-                    console.log("visual map: ", chart.option.visualMap);
-                    chart.setOption(chart.option, true);
-                } else {
-                    chart.setOption({series: [{data: [], type: "scatter"}], xAxis: {}, yAxis: {}}, true);
-                }
-                chart.resize();
+        {% if json_data %}
+            <div id="scatter-container" class="scatter-section__chart">
+                <div class="size-y6p col flex-center"><p>{{ _('Loading data...') }}</p></div>
+            </div>
+        {% endif %}
+        <script defer>
+            window.addEventListener('load', function () {
+                // Load main data from json.
+                $.ajax("{{url('boards:dataviz-scatter_pca_json',  **conversation.get_url_kwargs())}}").then(function (data) {
+                    // Prepare container
+                var $container = $("#scatter-container");
+                var dom = $container[0], chart = echarts.init(dom);
+                dom['chart'] = chart;
+                var chartOptions = {};
+                    if (!data.error) {
+                        // Init chart
+                        chart.visualMap = data.visualMap;
+                        chart.option = data.option;
+                        chart.option.tooltip.formatter = function (e) {
+                            var name = e.data[2],
+                                gender = e.data[3],
+                                race = e.data[4],
+                                state = e.data[5],
+                                cluster = e.data[6];
+                            state = (state && chart.organizeBy === 2)? ' (' + state + ')': '';
+                            return (
+                                '<strong>' + name + state + '</strong>'
+                            );
+                        };
+                        chart.option.visualMap = [data.visualMap[data.visualMap.length - 1]];
+                        chart.setOption(chart.option, true);
+                    } else {
+                        chart.setOption({series: [{data: [], type: "scatter"}], xAxis: {}, yAxis: {}}, true);
+                    }
+                    chart.resize();
+                });
             });
-        });
 
-        function organizeBy(elem, idx) {
-            document.querySelector("button[class='']").classList.toggle('scatter-filter__button--inactive');
-            elem.classList.toggle('scatter-filter__button--inactive');
-            var chart = $('#scatter-container')[0].chart;
-            chart.organizeBy = idx;
-            chart.option.visualMap = [chart.visualMap[idx]];
-            chart.setOption(chart.option, true);
-        }
-    </script>
+            function organizeBy(elem, idx) {
+                document.querySelector("button[class='']").classList.toggle('scatter-filter__button--inactive');
+                elem.classList.toggle('scatter-filter__button--inactive');
+                var chart = $('#scatter-container')[0].chart;
+                chart.organizeBy = idx;
+                chart.option.visualMap = [chart.visualMap[idx]];
+                chart.setOption(chart.option, true);
+            }
+        </script>
+    </div>
 {% endblock %}

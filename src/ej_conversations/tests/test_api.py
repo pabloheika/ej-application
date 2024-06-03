@@ -1,19 +1,17 @@
-import pytest
 from django.utils.translation import gettext_lazy as _
-from rest_framework.test import APIClient
-from rest_framework.authtoken.models import Token
+import pytest
 
-from ej_conversations.models import Comment, Vote
-from ej_conversations.roles.comments import comment_summary
-from ej_conversations.models.util import vote_count, statistics_for_user, statistics
-from ej_conversations.mommy_recipes import ConversationRecipes
-from ej_conversations.enums import Choice
-from ej_conversations.models.vote import VoteChannels
 from ej_boards.models import Board
+from ej_conversations.enums import Choice
+from ej_conversations.models import Comment, Vote
+from ej_conversations.models.util import statistics, statistics_for_user, vote_count
+from ej_conversations.models.vote import VoteChannels
+from ej_conversations.mommy_recipes import ConversationRecipes
+from ej_conversations.roles.comments import comment_summary
+from ej_conversations.tests.conftest import API_V1_URL, get_authorized_api_client
 from ej_users.models import User
-from .examples import COMMENT, CONVERSATION, VOTE, VOTES
 
-BASE_URL = "/api/v1"
+from .examples import COMMENT, CONVERSATION, VOTE, VOTES
 
 
 @pytest.fixture
@@ -30,41 +28,36 @@ def other_user(db):
     return user
 
 
-def authenticate_user_api(user_info):
-    api = APIClient()
-    response = api.post(BASE_URL + "/login/", user_info, format="json")
-    user_token = response.json()["token"]
-    api.credentials(HTTP_AUTHORIZATION="Token " + user_token)
-    return api
-
-
 class TestGetViews:
     def test_conversations_endpoint_author(self, conversation):
-        path = BASE_URL + f"/conversations/{conversation.id}/"
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
-
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
+        path = API_V1_URL + f"/conversations/{conversation.id}/"
         data = api.get(path, format="json").data
         del data["created"]
         assert data == CONVERSATION
 
     def test_conversations_endpoint_admin(self, conversation, admin_user):
-        path = BASE_URL + f"/conversations/{conversation.id}/"
-        api = authenticate_user_api({"email": admin_user.email, "password": "pass"})
+        api = get_authorized_api_client({"email": admin_user.email, "password": "pass"})
 
+        path = API_V1_URL + f"/conversations/{conversation.id}/"
         data = api.get(path, format="json").data
         del data["created"]
         assert data == CONVERSATION
 
     def test_conversations_endpoint_not_authenticated(self, conversation, api):
-        path = BASE_URL + f"/conversations/{conversation.id}/"
+        path = API_V1_URL + f"/conversations/{conversation.id}/"
         data = api.get(path)
         assert len(data) == 2
         assert data.get("text") == conversation.text
         assert data.get("statistics")
 
     def test_conversations_endpoint_other_user(self, conversation, other_user):
-        path = BASE_URL + f"/conversations/{conversation.id}/"
-        api = authenticate_user_api({"email": other_user.email, "password": "password"})
+        path = API_V1_URL + f"/conversations/{conversation.id}/"
+        api = get_authorized_api_client(
+            {"email": other_user.email, "password": "password"}
+        )
 
         data = api.get(path, format="json").data
         assert len(data) == 2
@@ -72,59 +65,73 @@ class TestGetViews:
         assert data.get("statistics")
 
     def test_comments_endpoint(self, comment):
-        path = BASE_URL + f"/comments/{comment.id}/"
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        path = API_V1_URL + f"/comments/{comment.id}/"
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
 
         data = api.get(path, format="json").data
         del data["created"]
         assert data == COMMENT
 
     def test_comments_endpoint_user_is_author(self, comment):
-        path = BASE_URL + "/comments/?is_author=true"
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        path = API_V1_URL + "/comments/?is_author=true"
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
 
         assert data[0]["summary"] == comment_summary(comment)
 
     def test_comments_endpoint_is_approved(self, comment):
-        path = BASE_URL + "/comments/?is_author=true&is_approved=true"
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        path = API_V1_URL + "/comments/?is_author=true&is_approved=true"
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
 
         assert data[0]["summary"] == comment_summary(comment)
 
     def test_comments_endpoint_is_rejected(self, comment):
-        path = BASE_URL + "/comments/?is_author=true&is_rejected=true"
+        path = API_V1_URL + "/comments/?is_author=true&is_rejected=true"
         comment.status = "rejected"
         comment.save()
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
 
         assert data[0]["summary"] == comment_summary(comment)
 
     def test_comments_endpoint_is_pending(self, comment):
-        path = BASE_URL + "/comments/?is_author=true&is_pending=true"
+        path = API_V1_URL + "/comments/?is_author=true&is_pending=true"
         comment.status = "pending"
         comment.save()
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
 
         assert data[0]["summary"] == comment_summary(comment)
 
     def test_comments_endpoint_is_pending_is_approved_combination(self, comments):
-        path = BASE_URL + "/comments/?is_author=true&is_pending=true&is_approved=true"
+        path = API_V1_URL + "/comments/?is_author=true&is_pending=true&is_approved=true"
         pending_comment = comments[0]
         pending_comment.status = "pending"
         pending_comment.save()
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
 
         assert data[0]["summary"] == comment_summary(pending_comment)
         assert data[1]["summary"] == comment_summary(comments[1])
 
     def test_random_comments_endpoint(self, comment):
-        path = BASE_URL + f"/conversations/{comment.conversation.id}/random-comment/"
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        path = API_V1_URL + f"/conversations/{comment.conversation.id}/random-comment/"
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
         del data["created"]
         assert data
@@ -132,26 +139,30 @@ class TestGetViews:
     def test_random_comment_with_id_endpoint(self, comments):
         comment = comments[1]
         path = (
-            BASE_URL
+            API_V1_URL
             + f"/conversations/{comment.conversation.id}/random-comment/?id={comment.id}"
         )
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
         assert data["content"] == comment.content
 
     def test_random_voted_comment_with_id_endpoint(self, comments):
         comment = comments[1]
-        voting_path = BASE_URL + "/votes/"
+        voting_path = API_V1_URL + "/votes/"
         post_data = {
             "choice": 1,
             "comment": comment.id,
             "channel": "telegram",
         }
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         api.post(voting_path, post_data)
 
         comment_path = (
-            BASE_URL
+            API_V1_URL
             + f"/conversations/{comment.conversation.id}/random-comment/?id={comment.id}"
         )
         data = api.get(comment_path, format="json").data
@@ -159,69 +170,77 @@ class TestGetViews:
         assert data["content"] != comment.content
 
     def test_get_promoted_conversations(self, conversation):
-        path = BASE_URL + "/conversations/?is_promoted=true"
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        path = API_V1_URL + "/conversations/?is_promoted=true"
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
         assert "card" in data[0]
 
     def test_search_conversation(self, conversation):
         path = (
-            BASE_URL
+            API_V1_URL
             + f"/conversations/?is_promoted=true&text_contains={conversation.text}"
         )
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
         assert "card" in data[0]
 
     def test_search_inexistent_conversation(self, conversation):
-        path = BASE_URL + "/conversations/?is_promoted=true&text_contains=asdfghjkl"
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        path = API_V1_URL + "/conversations/?is_promoted=true&text_contains=asdfghjkl"
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
         assert data == []
 
     def test_get_conversation_by_tags(self, conversation):
         tag = "tag"
         conversation.tags.set([tag])
-        path = BASE_URL + f"/conversations/?tags={tag}"
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        path = API_V1_URL + f"/conversations/?tags={tag}"
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
         assert "card" in data[0]
 
     def test_search_tag_in_text_contains(self, conversation):
         tag = "tag"
         conversation.tags.set([tag])
-        path = BASE_URL + f"/conversations/?is_promoted=true&text_contains={tag}"
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        path = API_V1_URL + f"/conversations/?is_promoted=true&text_contains={tag}"
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
         data = api.get(path, format="json").data
         assert "card" in data[0]
 
     def test_get_vote_endpoint(self, vote):
-        path = BASE_URL + f"/votes/{vote.id}/"
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
+        path = API_V1_URL + f"/votes/{vote.id}/"
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
 
         data = api.get(path, format="json").data
         del data["created"]
         assert data == VOTE
 
     def test_conversation_votes_endpoint_with_anonymous(self, conversation, vote, api):
-        path = BASE_URL + f"/conversations/{conversation.id}/votes/"
+        path = API_V1_URL + f"/conversations/{conversation.id}/votes/"
         api.get(path)
         assert api.response.status_code == 401
 
     def test_conversation_votes_endpoint(self, conversation, vote, api):
-        api = authenticate_user_api({"email": "email@server.com", "password": "password"})
-        path = BASE_URL + f"/conversations/{conversation.id}/votes/"
+        api = get_authorized_api_client(
+            {"email": "email@server.com", "password": "password"}
+        )
+        path = API_V1_URL + f"/conversations/{conversation.id}/votes/"
         response = api.get(path, format="json")
         data = response.data
         assert type(data) == list
         assert data[0].get("id") == VOTES[0].get("id")
         assert data[0].get("content") == VOTES[0].get("content")
-        assert data[0].get("author__metadata__mautic_id") == VOTES[0].get(
-            "author__metadata__mautic_id"
-        )
-        assert data[0].get("author__metadata__analytics_id") == VOTES[0].get(
-            "author__metadata__analytics_id"
-        )
         assert data[0].get("comment_id") == VOTES[0].get("comment_id")
 
 
@@ -230,7 +249,7 @@ class TestApiRoutes:
     EXCLUDES = dict(skip=["created", "modified"])
 
     def test_post_conversation(self, api, user):
-        path = BASE_URL + "/conversations/"
+        path = API_V1_URL + "/conversations/"
         board = Board.objects.create(
             slug="board1", title="My Board", owner=user, description="board"
         )
@@ -245,14 +264,12 @@ class TestApiRoutes:
         assert api.post(path, post_data) == self.AUTH_ERROR
 
         # # Authenticated user
-        token = Token.objects.create(user=user)
-        _api = APIClient()
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
-        response = _api.post(path, post_data, format="json")
+        api = get_authorized_api_client({"email": user.email, "password": "password"})
+        response = api.post(path, post_data, format="json")
         assert response.status_code == 403
 
     def test_delete_conversation(self, user):
-        path = BASE_URL + "/conversations/"
+        path = API_V1_URL + "/conversations/"
         board = Board.objects.create(
             slug="board1", title="My Board", owner=user, description="board"
         )
@@ -264,16 +281,14 @@ class TestApiRoutes:
         )
 
         # Authenticated user
-        token = Token.objects.create(user=user)
-        _api = APIClient()
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        api = get_authorized_api_client({"email": user.email, "password": "password"})
 
         # # attempts to create a conversation
-        response = _api.post(path, post_data, format="json")
+        response = api.post(path, post_data, format="json")
         assert response.status_code == 403
 
     def test_update_conversation(self, user):
-        path = BASE_URL + "/conversations/"
+        path = API_V1_URL + "/conversations/"
         board = Board.objects.create(
             slug="board1", title="My Board", owner=user, description="board"
         )
@@ -285,25 +300,22 @@ class TestApiRoutes:
         )
 
         # Authenticated user
-        token = Token.objects.create(user=user)
-        _api = APIClient()
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        api = get_authorized_api_client({"email": user.email, "password": "password"})
 
         # attempts to create a conversation
-        response = _api.post(path, post_data, format="json")
+        response = api.post(path, post_data, format="json")
         assert response.status_code == 403
 
         # attempts to update the conversation
         path = path + "1/"
-        response = _api.put(
+        response = api.put(
             path,
             data={"title": "updated title", "text": "updated text"},
-            HTTP_AUTHORIZATION=f"Token {token.key}",
         )
         assert response.status_code == 403
 
     def test_post_comment(self, api, conversation, user):
-        comments_path = BASE_URL + "/comments/"
+        comments_path = API_V1_URL + "/comments/"
         comment_data = dict(COMMENT, status="pending")
         post_data = dict(
             content=comment_data["content"],
@@ -314,23 +326,21 @@ class TestApiRoutes:
         assert api.post(comments_path, post_data) == self.AUTH_ERROR
 
         # Authenticated user
-        token = Token.objects.create(user=user)
-        _api = APIClient()
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
-        response = _api.post(comments_path, post_data, format="json")
+        api = get_authorized_api_client({"email": user.email, "password": "password"})
+        response = api.post(comments_path, post_data, format="json")
+
         data = response.data
         del data["created"]
         assert data == comment_data
 
         # Check if endpoint matches...
         comment = Comment.objects.first()
-        auth_token = api.post(
-            BASE_URL + "/login/", {"email": "email@server.com", "password": "password"}
+        api.post(
+            API_V1_URL + "/login/", {"email": "email@server.com", "password": "password"}
         )
-        data = api.client.get(
+        data = api.get(
             comments_path + f"{comment.id}/",
             {},
-            HTTP_AUTHORIZATION=f"Token {auth_token.get('token')}",
             format="json",
         ).data
 
@@ -338,7 +348,7 @@ class TestApiRoutes:
         assert data == comment_data
 
     def test_delete_comment(self, conversation, user):
-        comments_path = BASE_URL + "/comments/"
+        comments_path = API_V1_URL + "/comments/"
         comment_data = dict(COMMENT, status="pending")
         post_data = dict(
             content=comment_data["content"],
@@ -346,23 +356,22 @@ class TestApiRoutes:
         )
 
         # Authenticated user
-        token = Token.objects.create(user=user)
-        _api = APIClient()
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        api = get_authorized_api_client({"email": user.email, "password": "password"})
 
         # Creates a comment
-        _api.post(comments_path, post_data, format="json")
+        api.post(comments_path, post_data, format="json")
         comment = Comment.objects.first()
         assert comment
 
         # delete the comment
         path = comments_path + f"{comment.id}/"
-        _api.delete(path, HTTP_AUTHORIZATION=f"Token {token.key}")
+        api.delete(path)
+
         comment = Comment.objects.first()
         assert not comment
 
     def test_update_comment(self, conversation, user):
-        comments_path = BASE_URL + "/comments/"
+        comments_path = API_V1_URL + "/comments/"
         comment_data = dict(COMMENT, status="pending")
         post_data = dict(
             content=comment_data["content"],
@@ -370,12 +379,10 @@ class TestApiRoutes:
         )
 
         # Authenticated user
-        token = Token.objects.create(user=user)
-        _api = APIClient()
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        api = get_authorized_api_client({"email": user.email, "password": "password"})
 
         # Creates a comment
-        response = _api.post(comments_path, post_data, format="json")
+        response = api.post(comments_path, post_data, format="json")
         data = response.data
         del data["created"]
         assert data == comment_data
@@ -389,10 +396,9 @@ class TestApiRoutes:
             "rejection_reason_text": "updated rejection text",
             "status": "rejected",
         }
-        response = _api.put(
+        response = api.put(
             path,
             data=update_data,
-            HTTP_AUTHORIZATION=f"Token {token.key}",
         )
 
         comment = Comment.objects.first()
@@ -402,7 +408,7 @@ class TestApiRoutes:
         assert comment.status == "rejected"
 
     def test_post_vote(self, api, comment, user):
-        path = BASE_URL + "/votes/"
+        path = API_V1_URL + "/votes/"
         post_data = {
             "choice": 0,
             "comment": comment.id,
@@ -410,18 +416,14 @@ class TestApiRoutes:
         }
 
         # Authenticated user
-        token = Token.objects.create(user=user)
-        _api = APIClient()
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
-        _api.post(path, post_data, format="json")
+        api = get_authorized_api_client({"email": user.email, "password": "password"})
 
-        _api.post(path, post_data, format="json")
-
+        api.post(path, post_data, format="json")
         vote = comment.votes.last()
         assert vote
 
     def test_post_skipped_vote(self, api, comment, user):
-        path = BASE_URL + "/votes/"
+        path = API_V1_URL + "/votes/"
         post_data = {
             "choice": 0,
             "comment": comment.id,
@@ -429,11 +431,9 @@ class TestApiRoutes:
         }
 
         # Authenticated user
-        token = Token.objects.create(user=user)
-        _api = APIClient()
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        api = get_authorized_api_client({"email": user.email, "password": "password"})
 
-        _api.post(path, post_data, format="json")
+        api.post(path, post_data, format="json")
 
         post_data = {
             "choice": 1,
@@ -443,13 +443,13 @@ class TestApiRoutes:
 
         vote = comment.votes.last()
 
-        _api.post(path, post_data, format="json")
+        api.post(path, post_data, format="json")
 
         vote = comment.votes.last()
         assert vote
 
     def test_update_vote(self, comment, user):
-        path = BASE_URL + "/votes/"
+        path = API_V1_URL + "/votes/"
         post_data = {
             "choice": 1,
             "comment": comment.id,
@@ -457,23 +457,20 @@ class TestApiRoutes:
         }
 
         # Authenticated user
-        token = Token.objects.create(user=user)
-        _api = APIClient()
-        _api.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        api = get_authorized_api_client({"email": user.email, "password": "password"})
 
         # Creates a vote
-        _api.post(path, post_data, format="json")
+        api.post(path, post_data, format="json")
         vote = Vote.objects.first()
         assert vote
 
         # Updates the vote
         path = path + f"{vote.id}/"
         update_data = {"choice": "-1"}
-        _api.put(
+        api.put(
             path,
             data=update_data,
             format="json",
-            HTTP_AUTHORIZATION=f"Token {token.key}",
         )
 
         vote = Vote.objects.first()

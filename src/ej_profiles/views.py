@@ -91,6 +91,7 @@ class EditView(UpdateView):
             "form": self.form_class(instance=profile, request=self.request),
             "profile": profile,
             "current_page": "edit-profile",
+            "user_boards": Board.objects.filter(owner=self.request.user),
         }
 
 

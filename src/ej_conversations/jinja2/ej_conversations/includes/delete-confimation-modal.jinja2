@@ -1,15 +1,15 @@
 <div class="modal__overlay hide" id="delete-modal">
-    <div class="modal__container-alternative">
-        <form method="post" class="modal__content-alternative">
+    <div class="modal__container modal__container--center-content">
+        <form method="post" class="modal__container--quick-action">
             {{csrf_input }}
-            <div class="modal__title-alternative">{{_("Are you sure?")}}</div>
+            <h3 class="bold">{{_("Are you sure?")}}</h3>
             <span>{{_("Deleted conversations cannot be recovered")}}</span>
 
             <div class="modal__btn-alternative">
                 <button type="button"class="modal__btn-alternative--gray" onclick="closeModal()">
                     {{_("Return")}}
                 </button>
-                <button type="submit" class="modal__btn-alternative--red" 
+                <button type="submit" class="modal__btn-alternative--red"
                     formaction="{{ conversation.patch_url('conversation:delete') }}">
                     {{_("Delete")}}
                 </button>
@@ -20,15 +20,15 @@
 <script>
     function closeModal() {
         const modal = $('#delete-modal');
-        const body = $("body").removeClass('overflow-deactive');
+        const body = $("body").removeClass('modal--hide-overflow-y');
         modal.addClass('hide');
         modal.removeClass('form-modal-delete-show');
     }
 
     function showConfirmationDelete() {
         const modal = $('#delete-modal');
-        const body = $("body").addClass('overflow-deactive')
+        const body = $("body").addClass('modal--hide-overflow-y')
         modal.addClass('form-modal-delete-show');
-        modal.removeClass('hide');   
+        modal.removeClass('hide');
     }
 </script>

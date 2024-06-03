@@ -1,5 +1,5 @@
-<nav class="menu-profile-section divider">
-    <div class="user-profile-info">
+<nav class="floating-menu__section">
+    <div class="floating-menu__username">
         {% if request.user.profile|default(None) %}
         <img class="profile-avatar" src="{{ request.user.profile.image_url }}"
         alt="{{ _('Profile picture') }}">
@@ -13,15 +13,30 @@
     </div>
 </nav>
 
-<nav class="menu-profile-section divider">
+<nav class="floating-menu__section floating-menu__profile">
     <ul>
-        <li><a href="{{ url('profile:detail')}}">{{ _('Profile') }}</a></li>
+        <li>
+            <i class="fas fa-id-card"></i>
+            <a href="{{ url('profile:detail')}}">{{ _('Profile') }}</a>
+        </li>
     </ul>
 </nav>
 
-<nav class="menu-profile-section divider menu-profile-logout">
+{% if request.user.is_staff or request.user.is_superuser %}
+<nav class="floating-menu__section floating-menu__environment"> 
+    <ul>
+        <li>
+            <i class="fas fa-broadcast-tower"></i>
+            <a href="{{ url('administration:index')}}">{{ _('EJ Environment') }}</a>
+        </li>
+    </ul>
+</nav>
+{% endif %}
+
+<nav class="floating-menu__section floating-menu__logout">
     <form method="post" id="logout-form" action="{{ url('account:logout') }}">
         {{ csrf_input }}
+        <i class="fas fa-door-open"></i>
         <a onclick="logout()">{{ _('Logout')}}</a>
     </form>
 </nav>

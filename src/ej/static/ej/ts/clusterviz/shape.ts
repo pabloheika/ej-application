@@ -1,20 +1,9 @@
-import {
-  Color,
-  Group,
-  Item,
-  Path,
-  PlacedSymbol,
-  Point,
-  PointText,
-  Raster,
-  setup,
-  Symbol,
-  view,
-} from "paper";
+import { Color, Group, Path, Point, PointText, Symbol, view } from "paper";
 
 export type JSONShape = {
   size: number;
   name: string;
+  id: number;
   intersections: Array<number>;
   highlight?: boolean;
 };
@@ -53,6 +42,7 @@ export class Shape {
   textColor: Color = color("#052B47", 1);
   highlight: boolean = false;
   name: string = "Group";
+  cluster_id: number = 0;
   fontSize: number = view.size.width <= 414 ? 9 : 14;
   counterTextfontSize: number = 12;
   fontFamily: string = "Work Sans";
@@ -65,6 +55,7 @@ export class Shape {
     vel = null,
     isUserGroup = false,
     name = "Group",
+    cluster_id = 0,
   }) {
     this.size = size;
     this.intersections = intersections.slice();
@@ -98,6 +89,7 @@ export class Shape {
     // Creates group
     this.highlight = isUserGroup;
     this.name = name;
+    this.cluster_id = cluster_id;
     this.shape = new Group({
       children: [
         new Path.Arc({ from: from, through: up, to: to }),
@@ -109,6 +101,22 @@ export class Shape {
       strokeCap: "round",
       fillColor: this.highlight ? this.fillColorUser : this.fillColor,
     });
+
+    this.shape.onClick = function (event) {
+      htmx.trigger("body", "showClusterData", { cluster_id: cluster_id });
+    };
+
+    this.shape.onMouseEnter = function (event) {
+      this.strokeColor = color("#FF3E72");
+      this.fillColor = color("#FF3E72", 0.33);
+      document.body.style.cursor = "pointer";
+    };
+
+    this.shape.onMouseLeave = function (event) {
+      this.strokeColor = color("#00C2D4");
+      this.fillColor = color("#82ebf0", 0.33);
+      document.body.style.cursor = "default";
+    };
 
     // Creates text
     this.text = new PointText(this.pos);

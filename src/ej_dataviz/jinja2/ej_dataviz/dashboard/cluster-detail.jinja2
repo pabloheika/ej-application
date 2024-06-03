@@ -1,0 +1,100 @@
+{% macro expander(title, expand, prop) %}
+    {% if expand %}
+    <span data-prop={{prop}} class="{% if expand %}expand-details cursor-pointer{% endif %}">
+            <div class="flex">
+                {% if expand %}
+                    <input type="checkbox" class="isexpanded-cluster-comments" id="isexpanded-{{prop}}"/>
+                    <label for="isexpanded-cluster-comments"><i class="fa fa-chevron-down"></i></label>
+                {% endif %}
+                    <span data-prop={{prop}} class="bold">{{ title }}</span>
+            </div>
+        </span>
+    {% endif %}
+{% endmacro %}
+
+{% macro show_comments(comments, prop, error_msg) %}
+    {% if comments %}
+    <dl id={{prop}} class="hidden details margin-x3">
+            {% for comment in comments[:5] %}
+            <div class="margin-y3">
+                <div class="margin-y2 flex flex--gap-1">
+                    <div class="comment-stats">
+                        <i class="fas {{"fa-check" if prop == "agree" else "fa-times"}}"></i>
+                        {{ '%.1f%%' % (100 * comment.__getattribute__(prop)) }}
+                    </div>
+                    <div class="comment-stats">
+                        <i class="fas fa-users"></i>
+                        {{ '%.1f%%' % (100 * comment.__getattribute__("participation")) }}
+                    </div>
+                </div>
+                <div class="comment-content">
+                    {{ comment.content }}
+                </div>
+            </div>
+            {% endfor %}
+        </dl>
+    {% else %}
+        <span class="helptext text-accent"><i>{{ error_msg }}</i></span>
+    {% endif %}
+{% endmacro %}
+
+<div class="cluster-modal modal__overlay">
+    <div class="modal modal__container modal__container--text-align-unset modal__container--sm-height modal__container--lighter-bg modal--full-screen-mobile">
+        {% if cluster is defined %}
+            <div class="cluster-modal__header">
+                <h1 class="text-accent">{{cluster.name}}</h1>
+                <div>
+                    <span class="helptext">{{cluster.description}}</span>
+                </div>
+                <i onclick="closeClusterModal()" class="fas fa-times"></i>
+            </div>
+            <div class="cluster-modal__participants">
+                <i class="fas fa-users"></i>
+                <span>{{cluster.users.count()}} {{_("participants")}}</span>
+            </div>
+            <div class="cluster-modal__comments">
+                {% set agree = cluster_relevant_agreed_comments %}
+                {{ expander(_('Relevant positive comments'), agree, 'agree') }}
+                {{ show_comments(agree, 'agree', _('No positive comments in this cluster')) }}
+            </div>
+            <div class="cluster-modal__comments">
+                {% set disagree =  cluster_relevant_disagred_comments %}
+                {{ expander(_('Relevant negative comments'), disagree, 'disagree') }}
+                {{ show_comments(disagree, 'disagree', _('No relevant negative comments in this cluster')) }}
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+            $('.expand-details').on('click', function (e) {
+                let prop = e.target.dataset.prop;
+                $(`#${prop}`).toggle(200);
+                setChecked(`isexpanded-${prop}`);
+                e.preventDefault();
+            })
+        });
+
+        function closeClusterModal() {
+            const modal = $('#cluster-details');
+            const body = $("body").removeClass('modal--hide-overflow-y');
+            modalContainer = modal.find('.modal__container--sm-height');
+            modalContainer.removeClass('modal__container--sm-height-transition');
+            setTimeout(function() {
+                modal.addClass('hide');
+            }, 500)
+        }
+
+        function showClusterModal() {
+            const modal = $('#cluster-details');
+            const body = $("body").addClass('modal--hide-overflow-y')
+            modal.removeClass('hide');
+            setTimeout(function() {
+                modalContainer = modal.find('.modal__container--sm-height');
+                modalContainer.addClass('modal__container--sm-height-transition');
+            }, 100)
+        }
+
+    </script>
+</div>

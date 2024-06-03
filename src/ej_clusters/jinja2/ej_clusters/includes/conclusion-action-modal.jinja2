@@ -10,11 +10,11 @@
 
     <script>
         const body = document.getElementsByClassName("body")[0]
-        body.classList.add('overflow-deactive');
+        body.classList.add('modal--hide-overflow-y');
         function closeModal() {
             mainEditPage = "{{url('boards:cluster-edit',  **conversation.get_url_kwargs())}}";
             window.location.href = mainEditPage;
-            body.classList.remove('overflow-deactive');
+            body.classList.remove('modal--hide-overflow-y');
         }
     </script>
 {% endmacro %}

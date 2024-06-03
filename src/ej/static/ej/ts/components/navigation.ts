@@ -22,14 +22,14 @@ class MainHeader extends Component {
 
   openProfile() {
     this.isProfileOpen = true;
-    $("#show-profile-menu").removeClass("hide");
+    $("#show-floating-menu").removeClass("hide");
     this.closeMenu();
     this.createOverlay();
   }
 
   closeProfile() {
     this.isProfileOpen = false;
-    $("#show-profile-menu").addClass("hide");
+    $("#show-floating-menu").addClass("hide");
     if (!this.isMenuOpen) this.removeOverlay();
   }
 

@@ -44,7 +44,7 @@ describe('Managing a conversaion', () => {
 
   it('create conversation with banner', () => {
     cy.login()
-    cy.get('a[title="Nova conversa"]').click()
+    cy.get('a[title="Nova conversa"]').first().click()
     cy.get('#id_text').type("Que medidas devem ser feitas para melhorar a educação de jovens e adolescentes?")
     cy.get('input[name=title]').type("educacao e2e")
     cy.get('input[name=tags]').type("edu")

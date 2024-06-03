@@ -62,7 +62,7 @@ class ConversationMixin:
 
     def votes(self, conversation=None, comments=None):
         """
-        Return a queryset all all votes from the given authors.
+        Return a queryset of all votes from the given authors.
 
         Args:
             conversation:

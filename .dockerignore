@@ -74,3 +74,6 @@ $RECYCLE.BIN/
 
 # Ignore e2e tests
 e2e/
+
+# ignore ruff (linter tool) cache folder
+.ruff_cache

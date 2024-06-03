@@ -18,7 +18,7 @@ from ej_clusters.api import ClusterizationViewSet
 from ej_conversations.api import CommentViewSet, ConversationViewSet, VoteViewSet
 from ej_profiles.api import ProfileViewSet
 from ej_tools.api import OpinionComponentViewSet, RasaConversationViewSet
-from ej_users.api import UserAuthViewSet, UsersViewSet
+from ej_users.api import TokenViewSet, UsersViewSet
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
 
@@ -40,7 +40,7 @@ api_router.register(
 api_router.register(r"profiles", ProfileViewSet, basename="v1-profiles")
 api_router.register(r"boards", BoardViewSet, basename="v1-boards")
 api_router.register(r"users", UsersViewSet, basename="v1-users")
-api_router.register(r"", UserAuthViewSet, basename="v1-auth")
+api_router.register(r"", TokenViewSet, basename="v1-auth")
 
 log = logging.getLogger("ej")
 

@@ -20,9 +20,9 @@
             </div>
         </label>
             <span class="personas-list">{{ edit_cluster.form.stereotypes }}</span>
-        
+
         <p class="hint">{{_('You can select multiple personas for each group. "Personas" are reference users that you control and define the opinion profile of groups.')}}</p>
-        
+
         <div class="new-persona-shortcut">
             <input type="checkbox" disabled name="new_persona" id="new_persona_check" checked="">
             <div id="new-persona-text" class="disable-div">
@@ -78,15 +78,15 @@ function changeButton() {
 
 function closeModal() {
     const modal = document.getElementById('form-confirmation-modal');
-    const body = document.getElementsByClassName("body")[0].classList.remove('overflow-deactive');
+    const body = document.getElementsByClassName("body")[0].classList.remove('modal--hide-overflow-y');
     modal.classList.add('close-modal-btn');
     modal.classList.remove('form-modal-delete-show');
 }
 
 function showConfirmationDelete() {
     const modal = document.getElementById('form-confirmation-modal');
-    const body = document.getElementsByClassName("body")[0].classList.add('overflow-deactive');
+    const body = document.getElementsByClassName("body")[0].classList.add('modal--hide-overflow-y');
     modal.classList.add('form-modal-delete-show');
-    modal.classList.remove('close-modal-btn');   
+    modal.classList.remove('close-modal-btn');
 }
 </script>

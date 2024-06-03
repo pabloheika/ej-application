@@ -73,6 +73,7 @@ def cluster_shapes(clusterization, clusters=None, user=None):
         shape["intersections"] = [old[id] for id in ids]
         try:
             shape["name"] = names[k]
+            shape["id"] = k
         except KeyError:
             continue
         if k in user_cluster_id:

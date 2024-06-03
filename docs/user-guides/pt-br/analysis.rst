@@ -20,17 +20,21 @@ do ambiente podem acessar o Dashboard de uma conversa,
 basta clicar na conversa desejada que o botão de acesso ao
 Dashboard será apresentado. Ademais, o dashboard permite a exportação dos dados de votação,
 nos formatos "csv" e "json".
-   
+
 .. figure:: ../images/dashboard.png
    :align: center
 
-   Dashboard de uma conversa
+   Dashboard de uma conversa.
 
 .. figure:: ../images/dashboard-groups-scatter.png
    :align: center
 
-   Grupos de opinião e núvem de pontos
+   Grupos de opinião e núvem de pontos.
 
+.. figure:: ../images/dashboard-cluster-detail.png
+   :align: center
+
+   Visão detalhada de um grupo de opinião.
 
 .. note::
 
@@ -44,7 +48,7 @@ Relatório de comentários
 O relatório de comentários permite analisar a performance dos comentários,
 tanto no geral (considerando todos os participantes) tanto por grupo de opinião.
 É possível filtrar os comentarios pelo conteúdo, pelo nível de concordância, discordância,
-convergência entre outros. Também é possível exportar os dados apresentados, caso o usuário
+convergência, participação, entre outros. Também é possível exportar os dados apresentados, caso o usuário
 queira utilizar outras ferramentas de *dataviz* para realizar suas análises. É possível exportar
 os dados nos formatos "csv" e "json".
 
@@ -52,7 +56,7 @@ os dados nos formatos "csv" e "json".
 .. figure:: ../images/comments-report-2.png
    :align: center
 
-   Relatório de comentários 
+   Relatório de comentários
 
 .. figure:: ../images/comments-report-1.png
    :align: center
@@ -64,9 +68,9 @@ Relatório de participantes
 --------------------------
 
 O relatório de participantes permite analisar os dados dos participantes de uma coleta,
-apresentando dados do usuário e o grupo no qual ele pertence naquele contexto. 
+apresentando dados do usuário e o grupo no qual ele pertence naquele contexto.
 É possível filtrar os participantes pelo nome e email, pelo nível de concordância, discordância,
-participação, entre outros. 
+participação, entre outros.
 Com este relatório também é possível exportar os dados apresentados, caso o usuário
 queira utilizar outras ferramentas de *dataviz* para realizar suas análises.
 

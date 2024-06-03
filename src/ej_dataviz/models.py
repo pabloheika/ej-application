@@ -20,7 +20,7 @@ class ReportClustersFilter:
         self.clusters_filters = []
 
     def filter(self):
-        df = self.get_dataframe(self.conversation, "")
+        df = self.get_dataframe(self.conversation)
         if not self.cluster_ids:
             return df
         for cluster_id in self.cluster_ids:
@@ -33,7 +33,7 @@ class ReportClustersFilter:
         clusters = get_clusters(self.conversation)
         return dataframe_utils.filter_by_cluster(clusters, self.clusters_filters)
 
-    def get_dataframe(self, conversation: Conversation, page_number: int = 1):
+    def get_dataframe(self, conversation: Conversation, cluster_name: str = ""):
         pass
 
     def get_dataframe_utils(self, df):
@@ -41,8 +41,11 @@ class ReportClustersFilter:
 
 
 class CommentsReportClustersFilter(ReportClustersFilter):
-    def get_dataframe(self, conversation: Conversation, page_number: int = 1):
-        return get_comments_dataframe(conversation, page_number)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def get_dataframe(self, conversation: Conversation, cluster_name: str = ""):
+        return get_comments_dataframe(conversation, cluster_name)
 
     def get_dataframe_utils(self, df):
         return CommentsDataframeUtils(df)

@@ -164,16 +164,3 @@ def remove_profile(user):
 
     profile = user.profile.__class__(user=user, id=user.profile.id)
     profile.save()
-
-
-# TODO: Remove this class
-class MetaData(models.Model):
-    """
-    A model to stores user metadata.
-    """
-
-    # gid
-    analytics_id = models.CharField(max_length=100, blank=True, null=True)
-    # mtc_id
-    mautic_id = models.IntegerField(blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)

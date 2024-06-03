@@ -61,6 +61,11 @@ dataviz_urlpatterns = [
         name="dashboard",
     ),
     path(
+        conversation_url + "dashboard/cluster",
+        views_dataviz.ClusterDetailView.as_view(),
+        name="cluster-detail",
+    ),
+    path(
         conversation_url + "scatter/",
         views_dataviz.scatter,
         name="scatter",

@@ -18,7 +18,7 @@
         <img is-element="toggleProfile:click" class="main-header__avatar" src="{{ request.user.profile.image_url }}"
             alt="{{ _('Profile picture') }}"></a>
 
-        <div id="show-profile-menu" class="profile-menu hide">
+        <div id="show-floating-menu" class="floating-menu hide">
             {% include 'ej/includes/profile-menu.jinja2' %}
         </div>
     </div>

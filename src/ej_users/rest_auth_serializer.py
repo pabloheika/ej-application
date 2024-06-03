@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, MetaData
+from .models import User
 from ej_profiles.models import Profile
 
 try:
@@ -37,19 +37,6 @@ class RegistrationSerializer(serializers.Serializer):
         if phone_number:
             profile.phone_number = phone_number
         profile.save()
-
-    def check_user_metadata(self, user, request):
-        if not user.metadata_set.first():
-            self.save_metadata(user, request)
-
-    def save_metadata(self, user, request):
-        metadata = request.data.get("metadata")
-        if metadata:
-            MetaData.objects.create(
-                analytics_id=metadata.get("analytics_id"),
-                mautic_id=metadata.get("mautic_id"),
-                user=user,
-            )
 
     def validate_email(self, email):
         email = get_adapter().clean_email(email)

@@ -2,9 +2,16 @@
 {% from 'ej/includes/menu-item.jinja2' import menu_item %}
 
 {% block profile_menu %}
-<h3 class="participant-menu__item participant-menu__item--column-2">{{_('Profile')}}</h3>
+<h3 class="participant-menu__item grid-column-2 margin-top-2x">{{_('Profile')}}</h3>
+<ul class="participant-menu__item margin-x3">
+    {{ menu_item(current_page, "detail-profile", url('profile:detail'), _('Details')) }}
+    {{ menu_item(current_page, "edit-profile", url('profile:edit'), _('Edit profile')) }}
+</ul>
+
+{% if request.user.is_staff or request.user.is_superuser %}
+    <h3 class="participant-menu__item grid-column-2 margin-top-2x">{{_("Manage")}}</h3>
     <ul class="participant-menu__item margin-x3">
-        {{ menu_item(current_page, "detail-profile", url('profile:detail'), _('Details')) }}
-        {{ menu_item(current_page, "edit-profile", url('profile:edit'), _('Edit profile')) }}
+        {{ menu_item(current_page, "administration", url('administration:index'), _("EJ Environment")) }}
     </ul>
+{% endif %}
 {% endblock %}

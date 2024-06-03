@@ -1,41 +1,30 @@
 {% from 'ej/includes/menu-item.jinja2' import menu_item, board_menu_item %}
 
 <nav class="participant-menu">
-    <h1 class="participant-menu__welcome-title participant-menu__item  participant-menu__item--column-2 participant-menu__item--margin">{{_("Welcome, ")}} </h1>
-    <h1 class="participant-menu__welcome-title participant-menu__item--column-2 participant-menu__item">{{request.user.name}}!</h1>
+    <h1 class="participant-menu__welcome-title grid-column-2 margin-top-2x">{{_("Welcome, ")}} </h1>
+    <h1 class="participant-menu__welcome-title grid-column-2">{{request.user.name}}!</h1>
+
+    <div class="participant-menu__buttons-container grid-column-2">
+        <a title="{{_('New board')}}"
+            href="{{ url('boards:board-create') }}">
+            <button>{{_('Create board')}}</button>
+        </a>
+        <a title="{{_('New conversation')}}" class="is-primary"
+            href="{{ url('boards:conversation-create', board_slug=user_boards.first().slug) }}">
+            <button>{{_('Create conversation')}}</button>
+        </a>
+    </div>
 
     {{ menu_item(current_page, "home", url("profile:home"), _('Home')) }}
+    <div class="participant-menu__home-divider grid-column-2"></div>
 
     {% block profile_menu %}
-        <h3 class="participant-menu__item participant-menu__item--column-2">
-            {{ _('My Boards') }}
-            <a href="{{ url('boards:board-create') }}" class="add-button" title="{{_('New board')}}"><i class="fa fa-plus-square fa-lg"></i></a>
-        </h3>
-        {% if user_boards is defined %}
-            <ul class="board-list participant-menu__item">
-                {% for board in user_boards %}
-                    {{ board_menu_item(current_page, board.slug, url('boards:conversation-list', board_slug=board.slug), board) }}
-                {% endfor %}
-            </ul>
-        {% endif %}
+        {% include 'ej_conversations/includes/boards-section-menu.jinja2' %}
     {%endblock %}
 
-
-    {% if request.user.is_staff or request.user.is_superuser %}
-        <h3 class="participant-menu__item participant-menu__item--margin participant-menu__item--column-2">
-            {{_("Manage")}}
-        </h3>
-        <ul class="participant-menu__item">
-            {{ menu_item(current_page, "administration", url('administration:index'), _("EJ Environment")) }}
-        </ul>
-    {% endif %}
-
-    <h3 class="participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{_("Help")}}</h3>
-    <ul class="participant-menu__item">
+    <h3 class="participant-menu__item grid-column-2 margin-top-2x">{{_("Help")}}</h3>
+    <ul class="participant-menu__item participant-menu__help-section">
         <li><a href="{{ url("profile:tour")+'?completedTour=false' }}">{{_("Tour")}}</a></li>
         <li><a href="/docs" target="#blank">{{_("Documentation")}}</a></li>
     </ul>
-</nav>
-<nav class="menu-padding participant-menu__item--margin">
-    {{ page_menu.ACCESSIBILITY() }}
 </nav>

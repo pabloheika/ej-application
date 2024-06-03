@@ -78,7 +78,9 @@ class CommentReportFilterView(CommentReportBaseView):
         ascending = self.request.GET.get("sort", False) == "asc"
 
         cluster_ids = self.request.GET.getlist("clusters")
-        comments_df = CommentsReportClustersFilter(cluster_ids, conversation).filter()
+        comments_df = CommentsReportClustersFilter(
+            cluster_ids=cluster_ids, conversation=conversation
+        ).filter()
         comments_df = CommentsReportSearchFilter(search_text, comments_df).filter()
         comments_df = ReportOrderByFilter(
             order_by, comments_df, ascending, "comment"

@@ -1,4 +1,5 @@
 .modal {
+
     &__overlay {
         display: flex;
         position: fixed;
@@ -24,11 +25,43 @@
         position: relative;
         min-width: 25rem;
         z-index: 1250;
-        background-color: $color-theme-report-light-gray;
+        background-color: $color-modal-background;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         text-align: center;
+        border-radius: .5rem;
 
-        h3 {color: $color-black-alternative;}
+        h3 {
+            color: $color-black-alternative;
+        }
+
+        &--lighter-bg {
+            background-color: $color-modal-background-lighter;
+        }
+        &--text-align-unset {
+            text-align: unset !important;
+        }
+
+        &--sm-height {
+            @extend .modal__container;
+            max-height: 80vh;
+            max-width: 50rem;
+            width: 90%;
+            overflow: scroll;
+
+            @media (max-width: 414px) {
+                & {
+                    padding: 1rem;
+                    width: 95%;
+                    height: 0;
+                    max-height: unset;
+                    transition: height .5s;
+                }
+
+                &-transition {
+                    height: 70vh;
+                }
+            }
+        }
 
         &--sm {
             @extend .modal__container;
@@ -43,6 +76,20 @@
         &--lg {
             @extend .modal__container;
             min-width: 45rem;
+        }
+
+        &-center-content {
+            padding: 4.375rem 3.75rem;
+            min-width: 25rem;
+            text-align: center;
+        }
+
+        &--quick-action {
+            display: flex;
+            gap: 1.875rem;
+            margin: 0;
+            width: 17.438rem;
+            flex-direction: column;
         }
     }
 
@@ -76,7 +123,9 @@
         &:hover {box-shadow: none;}
     }
 
-    &__buttons {display: grid;}
+    &__buttons {
+        display: grid;
+    }
 
     &__btn {
         @extend .pad-3;
@@ -92,17 +141,17 @@
 
         font-size: .875rem;
 
-        i {margin: 0;}
+        i {
+            margin: 0;
+        }
 
         &--red {
             @extend .modal__btn;
-
             background-color: $color-red-negative;
         }
 
         &--blue {
             @extend .modal__btn;
-
             background-color: $color-theme-dark-blue;
         }
 
@@ -113,7 +162,9 @@
             background: none;
             padding: 0;
 
-            &:hover {box-shadow: none;}
+            &:hover {
+                box-shadow: none;
+            }
         }
 
         &--black {
@@ -121,31 +172,6 @@
             color: $color-white;
             border: none;
         }
-    }
-
-    &__container-alternative {
-        padding: 4.375rem 3.75rem;
-        position: relative;
-        min-width: 25rem;
-        z-index: 1250;
-        background-color: $color-theme-report-light-gray;
-        box-shadow: 0px 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
-        text-align: center;
-    }
-
-    &__content-alternative {
-        display: flex;
-        flex-direction: column;
-        gap: 1.875rem;
-        margin: 0;
-        width: 17.438rem;
-    }
-
-    &__title-alternative {
-        font-family: "Work Sans", sans-serif;
-        font-size: 1.25em;
-        font-weight: 600;
-        letter-spacing: 0;
     }
 
     &__btn-alternative {
@@ -175,6 +201,18 @@
             background-color: $color-gray-darker;
         }
     }
-}
 
-.overflow-deactive {overflow-y: hidden;}
+    &--full-screen-mobile {
+        @media (max-width: 414px) {
+            & {
+                position: fixed;
+                bottom: 0;
+                margin: unset !important;
+            }
+        }
+    }
+
+    &--hide-overflow-y {
+        overflow-y: hidden;
+    }
+}

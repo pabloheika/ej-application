@@ -77,8 +77,6 @@ VOTES = [
         "email": "email@server.com",
         "author": "",
         "author_id": 1,
-        "author__metadata__analytics_id": None,
-        "author__metadata__mautic_id": None,
         "comment": "content",
         "comment_id": 1,
         "choice": "agree",

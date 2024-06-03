@@ -1,41 +1,43 @@
 {% from 'ej/includes/menu-item.jinja2' import menu_item %}
 
-<nav aria-labelledby="menu-conversation">
-    <div class="page-menu__links">
-        <a href="{{ url('profile:home') }}">
-            <i class="fa fa-chevron-circle-up"></i>
-            {{ _('Home') }}
-        </a>
-        
-        <a href="{{ url('boards:conversation-list', board_slug=conversation.board.slug) }}">
-            <i class="fa fa-chevron-circle-left"></i>
-            {{ _('Board') }}
-        </a> 
-    </div>
-
-    <hr class="nav-divider">
-
-    <ul class="nav-header">
-        {% if request.user.has_perm('ej.can_edit_conversation', conversation) %}
-            <li class="menu-item">
-                <a class="menu-item__edit" href="{{ conversation.patch_url('conversation:edit') }}">
-                    {{ _('Edit conversation') }}
-                </a>
-                <a class="menu-item__delete" onclick="showConfirmationDelete()">
-                    <i class="fa fa-trash"></i>
-                </a>
-            </li>
-        {% else %}
-            <li>
-                <a href="{{ url('conversation:list') }}">{{ _('Back to conversations') }}</a>
-            </li>
-        {% endif %}
-    </ul>
-</nav>
-
-{% include 'ej_conversations/includes/delete-confimation-modal.jinja2' %}
 
 <nav class="participant-menu">
+    <div aria-labelledby="menu-conversation" class="grid-column-2">
+        <div class="page-menu__links">
+            <a href="{{ url('profile:home') }}">
+                <i class="fa fa-chevron-circle-up"></i>
+                {{ _('Home') }}
+            </a>
+
+            <a href="{{ url('boards:conversation-list', board_slug=conversation.board.slug) }}">
+                <i class="fa fa-chevron-circle-left"></i>
+                {{ _('Board') }}
+            </a>
+        </div>
+
+        <div class="menu-section__conversation-text">
+            <span>{{conversation.text}}</span>
+        </div>
+
+        <ul class="nav-header">
+            {% if request.user.has_perm('ej.can_edit_conversation', conversation) %}
+                <li class="menu-item">
+                    <a class="menu-item__edit" href="{{ conversation.patch_url('conversation:edit') }}">
+                        {{ _('Edit conversation') }}
+                    </a>
+                    <a class="menu-item__delete" onclick="showConfirmationDelete()">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ url('conversation:list') }}">{{ _('Back to conversations') }}</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
+    {% include 'ej_conversations/includes/delete-confimation-modal.jinja2' %}
     <h3 class="participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{ _('Collect opinions') }}</h3>
     <ul class="participant-menu__item">
         {{ menu_item(current_page, "dashboard", url('boards:dataviz-dashboard', **conversation.get_url_kwargs()), _('Dashboard')) }}
@@ -110,7 +112,7 @@
 
     <hr class="nav-divider">
     <h3 class="participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{_("Help")}}</h3>
-    <ul class="participant-menu__item">
+    <ul class="participant-menu__item participant-menu__help-section">
         <li><a href="{{ url("profile:tour")+'?completedTour=false' }}">{{_("Tour")}}</a></li>
         <li><a href="/docs" target="#blank">{{_("Documentation")}}</a></li>
     </ul>
@@ -119,7 +121,7 @@
 <script>
     function setChecked(check_id) {
         event.preventDefault();
-        let checkbox = document.getElementById(check_id);
+        let checkbox = $(`#${check_id}`)[0];
         checkbox.checked = !checkbox.checked;
     }
 
@@ -139,7 +141,7 @@
         menuItem.classList.add("selected");
         reports.click();
 
-        var menuProfile = document.getElementById("show-profile-menu");
+        var menuProfile = document.getElementById("show-floating-menu");
     };
 
     menuStarter();
