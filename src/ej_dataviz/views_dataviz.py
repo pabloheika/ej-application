@@ -5,13 +5,17 @@ from logging import getLogger
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.text import slugify
+from django.utils.timezone import make_aware
 from django.utils.translation import gettext as _, gettext_lazy as _
 from django.views.generic import DetailView
 from sidekick import import_later
+from sklearn import impute
+from sklearn.decomposition import PCA
 
 from ej.decorators import can_access_dataviz, can_view_report_details
 from ej_clusters.models.cluster import Cluster
@@ -20,7 +24,6 @@ from ej_conversations.models import Conversation
 from ej_conversations.utils import check_promoted
 from ej_dataviz.models import ToolsLinksHelper
 from ej_tools.utils import get_host_with_schema
-from django.core.cache import cache
 
 from .constants import *
 from .utils import (
@@ -127,8 +130,6 @@ def scatter(request, conversation_id, **kwargs):
 
 @can_access_dataviz
 def scatter_pca_json(request, conversation_id, **kwargs):
-    from sklearn.decomposition import PCA
-    from sklearn import impute
 
     conversation = Conversation.objects.get(id=conversation_id)
     check_promoted(conversation, request)
@@ -218,18 +219,15 @@ def words(request, conversation_id, **kwargs):
 
 @can_access_dataviz
 def votes_over_time(request, conversation_id, **kwargs):
-    from django.utils.timezone import make_aware
 
     conversation = Conversation.objects.get(pk=conversation_id)
     start_date = request.GET.get("startDate")
     end_date = request.GET.get("endDate")
     if start_date and end_date:
-        start_date = make_aware(
-            datetime.datetime.fromisoformat(start_date)
-        )  # convert js naive date
-        end_date = make_aware(
-            datetime.datetime.fromisoformat(end_date)
-        )  # # convert js naive date
+        # convert js naive date
+        start_date = make_aware(datetime.datetime.fromisoformat(start_date))
+        # convert js naive date
+        end_date = make_aware(datetime.datetime.fromisoformat(end_date))
         if start_date > end_date:
             return JsonResponse({"error": "end date must be gratter then start date."})
         votes = conversation.time_interval_votes(start_date, end_date)
@@ -237,8 +235,7 @@ def votes_over_time(request, conversation_id, **kwargs):
     else:
         first_vote = conversation.votes.first()
         last_vote = conversation.votes.last()
-        start_date, end_date = ["", ""]
-        votes = []
+        start_date, end_date, votes = ["", "", []]
         if first_vote and last_vote:
             votes = conversation.time_interval_votes(
                 first_vote.created, last_vote.created

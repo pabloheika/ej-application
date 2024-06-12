@@ -1,10 +1,10 @@
 {% from 'ej/includes/menu-item.jinja2' import menu_item, board_menu_item %}
 
 <nav class="participant-menu">
-    <h1 class="participant-menu__welcome-title grid-column-2 margin-top-2x">{{_("Welcome, ")}} </h1>
-    <h1 class="participant-menu__welcome-title grid-column-2">{{request.user.name}}!</h1>
+    <h1 class="participant-menu__item participant-menu__welcome-title participant-menu__item--margin">{{_("Welcome, ")}} </h1>
+    <h1 class="participant-menu__item participant-menu__welcome-title">{{request.user.name}}!</h1>
 
-    <div class="participant-menu__buttons-container grid-column-2">
+    <div class="participant-menu__item participant-menu__buttons">
         <a title="{{_('New board')}}"
             href="{{ url('boards:board-create') }}">
             <button>{{_('Create board')}}</button>
@@ -16,13 +16,13 @@
     </div>
 
     {{ menu_item(current_page, "home", url("profile:home"), _('Home')) }}
-    <div class="participant-menu__home-divider grid-column-2"></div>
+    <div class="participant-menu__home-divider participant-menu__item--margin"></div>
 
     {% block profile_menu %}
         {% include 'ej_conversations/includes/boards-section-menu.jinja2' %}
     {%endblock %}
 
-    <h3 class="participant-menu__item grid-column-2 margin-top-2x">{{_("Help")}}</h3>
+    <h3 class="text-accent participant-menu__item participant-menu__item--margin">{{_("Help")}}</h3>
     <ul class="participant-menu__item participant-menu__help-section">
         <li><a href="{{ url("profile:tour")+'?completedTour=false' }}">{{_("Tour")}}</a></li>
         <li><a href="/docs" target="#blank">{{_("Documentation")}}</a></li>

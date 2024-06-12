@@ -2,7 +2,7 @@
 
 
 <nav class="participant-menu">
-    <div aria-labelledby="menu-conversation" class="grid-column-2">
+    <div aria-labelledby="menu-conversation" class="participant-menu__item">
         <div class="page-menu__links">
             <a href="{{ url('profile:home') }}">
                 <i class="fa fa-chevron-circle-up"></i>
@@ -19,26 +19,28 @@
             <span>{{conversation.text}}</span>
         </div>
 
-        <ul class="nav-header">
+        <div class="conversation-menu__buttons flex">
             {% if request.user.has_perm('ej.can_edit_conversation', conversation) %}
-                <li class="menu-item">
-                    <a class="menu-item__edit" href="{{ conversation.patch_url('conversation:edit') }}">
-                        {{ _('Edit conversation') }}
-                    </a>
-                    <a class="menu-item__delete" onclick="showConfirmationDelete()">
-                        <i class="fa fa-trash"></i>
-                    </a>
-                </li>
+                    <div class="conversation-menu__edit-button">
+                        <a href="{{ conversation.patch_url('conversation:edit') }}">
+                            {{ _('Edit conversation') }}
+                        </a>
+                    </div>
+                    <div class="conversation-menu__delete-button">
+                        <a onclick="showConfirmationDelete()">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
             {% else %}
                 <li>
                     <a href="{{ url('conversation:list') }}">{{ _('Back to conversations') }}</a>
                 </li>
             {% endif %}
-        </ul>
+        </div>
     </div>
 
     {% include 'ej_conversations/includes/delete-confimation-modal.jinja2' %}
-    <h3 class="participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{ _('Collect opinions') }}</h3>
+    <h3 class="text-accent participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{ _('Collect opinions') }}</h3>
     <ul class="participant-menu__item">
         {{ menu_item(current_page, "dashboard", url('boards:dataviz-dashboard', **conversation.get_url_kwargs()), _('Dashboard')) }}
         {{ menu_item(current_page, "voting", conversation.patch_url('conversation:detail'), _('Voting')) }}
@@ -50,7 +52,7 @@
 
     <hr class="nav-divider">
 
-    <h3 class="participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{ _('Model and Analyze') }}</h3>
+    <h3 class="text-accent participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{ _('Model and Analyze') }}</h3>
     <ul class="participant-menu__item">
         {% if request.user.has_perm("ej.can_edit_conversation", conversation) %}
             {{ menu_item(current_page, "edit-groups", url('boards:cluster-edit', **conversation.get_url_kwargs()), _("Create/Edit groups")) }}
@@ -101,7 +103,7 @@
 
     {% for section in conversation.get_apps_links() %}
         <hr class="nav-divider">
-        <h3 class="participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{section["title"]}}</h3>
+        <h3 class="text-accent participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{section["title"]}}</h3>
         <ul class="participant-menu__item">
                 {% for link in section["links"] %}
                     {{ menu_item(current_page, link["current_page"], link["a"], link["text"]) }}
@@ -111,8 +113,8 @@
 
 
     <hr class="nav-divider">
-    <h3 class="participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{_("Help")}}</h3>
-    <ul class="participant-menu__item participant-menu__help-section">
+    <h3 class="text-accent participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{_("Help")}}</h3>
+    <ul class="text-accent participant-menu__item participant-menu__help-section">
         <li><a href="{{ url("profile:tour")+'?completedTour=false' }}">{{_("Tour")}}</a></li>
         <li><a href="/docs" target="#blank">{{_("Documentation")}}</a></li>
     </ul>
@@ -126,22 +128,22 @@
     }
 
     function showSection(check_id, section_id) {
-        let checkbox = document.getElementById(check_id)
-        let section = document.getElementById(section_id);
+        let checkbox = $(`#${check_id}`)[0];
+        let section = $(`#${section_id}`)[0];
         section.className = checkbox.checked ? "show" : "hide";
     }
 
     function menuStarter() {
-        let reports = document.getElementById('reports');
+        let reports = $('#reports')[0]
         let url = window.location.href.split("/");
         var menuItem = url[url.length-2].split("-")[0];
-        menuItem = document.querySelector("." + menuItem + "-item");
+        menuItem = $("." + menuItem + "-item")[0];
 
         if (!menuItem) return
-        menuItem.classList.add("selected");
+        menuItem.parentElement.classList.add("participant-menu__item--selected");
         reports.click();
 
-        var menuProfile = document.getElementById("show-floating-menu");
+        var menuProfile = $("#show-floating-menu")[0];
     };
 
     menuStarter();

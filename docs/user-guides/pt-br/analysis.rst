@@ -109,3 +109,13 @@ a partir dela que os grupos de opinião serão formados.
    :align: center
 
    Painel de modelagem das personas
+
+
+Algorítmos
+-----------
+
+Para uma leitura mais aprofundada sobre os algorítmos de clusterização e
+a arquitetura adotada pela plataforma,
+recomendamos a leitura da monografia :download:`Plataforma de Participação Social para
+Identificação de Grupos de Opinião Através de Modelos de
+Clusterização <./luan_tcc.pdf>`.

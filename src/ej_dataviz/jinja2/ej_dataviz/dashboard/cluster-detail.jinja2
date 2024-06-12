@@ -1,6 +1,6 @@
 {% macro expander(title, expand, prop) %}
     {% if expand %}
-    <span data-prop={{prop}} class="{% if expand %}expand-details cursor-pointer{% endif %}">
+        <span data-prop={{prop}} class="{% if expand %}expand-details cursor-pointer{% endif %}">
             <div class="flex">
                 {% if expand %}
                     <input type="checkbox" class="isexpanded-cluster-comments" id="isexpanded-{{prop}}"/>
@@ -16,21 +16,21 @@
     {% if comments %}
     <dl id={{prop}} class="hidden details margin-x3">
             {% for comment in comments[:5] %}
-            <div class="margin-y3">
-                <div class="margin-y2 flex flex--gap-1">
-                    <div class="comment-stats">
-                        <i class="fas {{"fa-check" if prop == "agree" else "fa-times"}}"></i>
-                        {{ '%.1f%%' % (100 * comment.__getattribute__(prop)) }}
+                <div class="margin-y3">
+                    <div class="margin-y1 flex flex--gap-1">
+                        <div class="comment-stats">
+                            <i class="fas {{"fa-check" if prop == "agree" else "fa-times"}}"></i>
+                            {{ '%.1f%%' % (100 * comment.__getattribute__(prop)) }}
+                        </div>
+                        <div class="comment-stats">
+                            <i class="fas fa-users"></i>
+                            {{ '%.1f%%' % (100 * comment.__getattribute__("participation")) }}
+                        </div>
                     </div>
-                    <div class="comment-stats">
-                        <i class="fas fa-users"></i>
-                        {{ '%.1f%%' % (100 * comment.__getattribute__("participation")) }}
+                    <div class="comment-content">
+                        {{ comment.content }}
                     </div>
                 </div>
-                <div class="comment-content">
-                    {{ comment.content }}
-                </div>
-            </div>
             {% endfor %}
         </dl>
     {% else %}
@@ -70,7 +70,8 @@
         $(document).ready(function () {
             $('.expand-details').on('click', function (e) {
                 let prop = e.target.dataset.prop;
-                $(`#${prop}`).toggle(200);
+                $(`#${prop}`).addClass("isexpanded-cluster-comments--overflow");
+                $(`#${prop}`).toggle();
                 setChecked(`isexpanded-${prop}`);
                 e.preventDefault();
             })

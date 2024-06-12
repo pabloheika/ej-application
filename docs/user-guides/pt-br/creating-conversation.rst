@@ -9,6 +9,13 @@ Para criar uma conversa, basta clicar no botão "CRIAR NOVA", disponível na hom
 
    Botão para criar uma nova conversa
 
+Esta conversa será criada dentro do mural padrão do usuário, o Explorar. Para adicionar uma nova conversa
+em um mural diferente, selecione a opção **Meus murais** no menu lateral e escolha o mural desejado.
+
+.. figure:: ../images/my-boards.png
+   :align: center
+
+   Opção para criar uma conversa em outros boards.
 
 O formulário de criação de conversa possui uma série de campos que irão definir o que será apresentado
 ao participante no momento da pesquisa. Dividiremos esses campos em **obrigatórios** e **opcionais**.

@@ -1,55 +1,51 @@
 <div class="time-chart">
     <div class="date-picker">
-      <h3 class="charts-section__title">{{_('Vote period')}}</h3>
-      <div class="date-picker__date-selector">
-        <input id="start-date" class="date-picker__input date-picker__input--margin-bottom " type="date">
-        <input id="end-date" class="date-picker__input" type="date">
-      </div>
+    <h3 class="charts-section__title">{{_('Vote period')}}</h3>
+    <div class="date-picker__input">
+        <input id="start-date" type="date">
+        <span>&#8208;</span>
+        <input id="end-date" type="date">
+    </div>
     </div>
 
     <div class="time-chart__container">
       <div class="time-chart--loading">
         <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
       </div>
-      <div id="voting-time-chart" style="height: 400px;"></div>
-    </div>
-
-    <div class="time-chart--invalid-dates">
-      <span class="helptext">{{ _('end date must be gratter then start date') }}</span>
+      <div id="voting-time-chart"></div>
+        <div class="time-chart--invalid-dates">
+            <span>{{ _('end date must be gratter then start date') }}</span>
+        </div>
     </div>
 </div>
 
 <script>
 
  function formatDate(unformatedDate, locale="") {
-
     unformatedDate = new Date(unformatedDate);
-
     let Day = unformatedDate.getUTCDate() >= 10 ? unformatedDate.getUTCDate() : `0${unformatedDate.getUTCDate()}`;
-    let Month = unformatedDate.getUTCMonth() >= 10 ? unformatedDate.getUTCMonth() : `0${unformatedDate.getUTCMonth()}`;
+    let Month = unformatedDate.getUTCMonth() + 1 >= 10 ? unformatedDate.getUTCMonth() + 1 : `0${unformatedDate.getUTCMonth() + 1}`;
     let Year = unformatedDate.getFullYear();
 
-     if (locale) {
-        return `${Day}/${Month}/${Year}`;
-     }
-
+    if (locale) {
+       return `${Day}/${Month}/${Year}`;
+    }
     return `${Year}-${Month}-${Day}`;
  }
 
  function renderVotingChart(votes) {
-    let chart = echarts.init($('#voting-time-chart')[0]);
+     let chart = echarts.init($('#voting-time-chart')[0], null);
      data = votes.data
      const X = data.map(d => formatDate(d.date, "pt-br"))
-    const Y = data.map(d => d.value)
+     const Y = data.map(d => d.value)
      let option = {
          textStyle: {
              fontFamily: "Work Sans"
          },
          color: ['#042A46'],
          grid: {
-             right: '0',
-             left: '3%',
-             top: '5%'
+             top: '5%',
+             width: '85%'
          },
          tooltip: {
             trigger: 'axis'
@@ -74,25 +70,23 @@
  }
 
 function setDateFilter(startDate, endDate) {
-    document.getElementById('end-date').value = formatDate(endDate);
-    document.getElementById('start-date').value = formatDate(startDate);
+    $('#end-date')[0].value = formatDate(endDate);
+    $('#start-date')[0].value = formatDate(startDate);
 }
 
-
 function listenToDateChanges() {
-    let startDateInput = document.getElementById("start-date");
-    let endDateInput = document.getElementById("end-date");
-
+    let startDateInput = $("#start-date")[0];
+    let endDateInput = $("#end-date")[0];
     startDateInput.onchange = updateVisualization
     endDateInput.onchange = updateVisualization
 }
 
 function showLoading() {
-  document.querySelector(".time-chart--loading").style.display = "block";
+  $(".time-chart--loading")[0].style.display = "block";
 }
 
 function hideLoading() {
-  document.querySelector(".time-chart--loading").style.display = "none";
+  $(".time-chart--loading")[0].style.display = "none";
 }
 
 async function updateVisualization() {
@@ -124,22 +118,22 @@ function parseDate(voteData) {
 }
 
 function startDateIsBiggerThenEndDate() {
-  var startDate = document.getElementById("start-date").value;
-  var endDate = document.getElementById("end-date").value;
+  var startDate = $("#start-date")[0].value;
+  var endDate = $("#end-date")[0].value;
   return startDate > endDate;
 }
 
 function showErrors() {
-  document.querySelector(".time-chart--invalid-dates").style.display = "block";
+  $(".time-chart--invalid-dates")[0].style.display = "block";
 }
 
 function hideErrors() {
-  document.querySelector(".time-chart--invalid-dates").style.display = "none";
+  $(".time-chart--invalid-dates")[0].style.display = "none";
 }
 
 async function requestData() {
-  var startDate = document.getElementById("start-date").value;
-  var endDate = document.getElementById("end-date").value;
+  var startDate = $("#start-date")[0].value;
+  var endDate = $("#end-date")[0].value;
 
   var url =
     "/conversations/{{conversation.id}}/{{conversation.slug}}/report/votes-over-time?startDate=" +
@@ -158,8 +152,8 @@ async function requestData() {
 }
 
 function showDatePickers () {
-  let startDate = document.getElementById("start-date");
-  let endDate = document.getElementById("end-date");
+  let startDate = $("#start-date")[0];
+  let endDate = $("#end-date")[0];
   startDate.addEventListener('click', () => {startDate.showPicker()});
   endDate.addEventListener('click', () => {endDate.showPicker()});
 }

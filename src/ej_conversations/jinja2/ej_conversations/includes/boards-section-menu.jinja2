@@ -1,10 +1,9 @@
-<div class="participant-menu__item board-section">
-    <a>
-        <h3 class="participant-menu__item board-section__toggle-section" onclick="toggleSection()">
-            {{ _('My Boards') }}
-            <i id="board-chevron-icon" class="fa fa-chevron-left"></i>
-        </h3>
-    </a>
+<div class="participant-menu__item participant-menu__item--margin">
+
+    <h3 class="text-accent participant-menu__item board-section__toggle-section" onclick="toggleSection()">
+        {{ _('My Boards') }}
+        <i id="board-chevron-icon" class="fa fa-chevron-left"></i>
+    </h3>
     <div id="board-list-container" class="hide">
         {% if user_boards is defined %}
             <ul class="board-list participant-menu__item">
@@ -15,7 +14,7 @@
         {% endif %}
     </div>
 </div>
-<div class="participant-menu__home-divider grid-column-2"></div>
+<div class="participant-menu__home-divider participant-menu__item--margin"></div>
 
 <script>
     function toggleSection() {

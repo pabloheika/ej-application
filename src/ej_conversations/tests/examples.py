@@ -58,7 +58,7 @@ CONVERSATION = {
         },
     },
     "text": "test",
-    "board": "My Board",
+    "board": "Explore",
 }
 
 VOTE = {

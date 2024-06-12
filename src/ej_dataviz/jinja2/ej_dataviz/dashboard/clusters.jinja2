@@ -1,10 +1,10 @@
 {% from "ej_clusters/includes/clusters-generator.jinja2" import clustersGenerator %}
 
 <div class="clusters-section content-grid">
+    <div class="conversation-dashboard-section__title clusters-section__title flex margin-y4">
+        <div><h1 class="text-accent">{{_('Opinion Groups')}}</h1></div>
+    </div>
     <div class="clusters-section__container {% if not json_data%}clusters-section__detail--padding{%endif%}">
-        <div class="conversation-dashboard-section__title clusters-section__title flex">
-            <div><h1 class="text-accent">{{_('Opinion Groups')}}</h1></div>
-        </div>
         {% if json_data %}
             <div class="clusters-section__chart">
                 <div id="clusters-canvas-container">

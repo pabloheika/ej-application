@@ -413,11 +413,6 @@ $clusters-button-height: 2.313rem;
         margin-left: unset;
     }
 
-    &__participants {
-        max-height: 50vh;
-        overflow: scroll;
-    }
-
     &__header {
         position: relative;
 
@@ -448,10 +443,13 @@ $clusters-button-height: 2.313rem;
     }
 
     &__comments {
-
         .comment-stats {
             font-size: 14px;
             color: $color-gray-500 !important;
+        }
+
+        .comment-content {
+            padding: 0 1em 0 0;
         }
     }
 }

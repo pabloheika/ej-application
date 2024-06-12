@@ -183,109 +183,6 @@ body {
         }
     }
 
-    .nav-header {
-        padding-top: 2.156rem;
-        #board-name i {
-            display: none;
-        }
-
-        .close-btn {
-            display: block;
-            position: absolute;
-            background-color: transparent;
-            border: none;
-            top: .75rem;
-            right: .75rem;
-            color: white;
-            padding: 0;
-        }
-
-        i {
-            margin-left: unset;
-            margin-right: unset;
-        }
-        li {
-            margin-top: unset;
-            margin-bottom: unset;
-            text-decoration: underline;
-        }
-        a {
-            color: white;
-        }
-
-        li:nth-of-type(1) {
-            font-family: "Work Sans", sans-serif;
-            line-height: 1.5rem;
-            padding-bottom: 0.25rem;
-            text-decoration: none;
-
-            grid-column: 1/span 2;
-            grid-row: 1/span 1;
-        }
-        li:nth-of-type(2) {
-            display: flex;
-            justify-content: space-between;
-
-            font-size: .875rem;
-            font-family: "Work Sans", sans-serif;
-            line-height: 1.5rem;
-
-            grid-column: 1/span 1;
-            grid-row: 2/span 1;
-        }
-
-        .menu-item {
-            display: flex;
-            gap: 0.938rem;
-            text-overflow: ellipsis;
-            -webkit-line-clamp: 4;
-            -webkit-box-orient: vertical;
-            overflow-wrap: anywhere;
-            padding-bottom: 0 !important;
-            margin-bottom: 0.25rem;
-            font-size: 1em;
-
-            a {
-                color: white;
-            }
-
-            &__edit, &__delete {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-radius: 0.313rem;
-                margin: 0;
-                color: $color-white;
-                height: 3.75rem;
-            }
-
-            &__edit {
-                background-color: $color-black;
-                border: $color-black;
-                width: 8.75rem;
-                text-transform: none;
-                letter-spacing: 0;
-                font-size: 1em;
-                line-height: 1.25rem;
-                font-weight: 400;
-                padding: 0 1.25rem;
-                text-align: center;
-            }
-
-            &__delete {
-                width: 3.875rem;
-                background-color: $color-red-negative;
-                border: $color-red-negative;
-                font-size: 1em;
-
-                i {
-                    font-size: 1.125em;
-                }
-            }
-
-        }
-    }
-
     .nav-categories {
         padding-top: 1.75rem !important;
         h3 {
@@ -359,8 +256,7 @@ body {
         &__toggle-section {
             display: flex !important;
             justify-content: space-between;
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
+            cursor: pointer;
         }
 
         #board-chevron-icon {
@@ -408,11 +304,8 @@ body {
         ul {
             display: none;
             position: relative;
-            width: 150%;
-            margin-left: -50px;
             li a {
                 font-weight: unset;
-                margin-left: 3.4em;
             }
         }
         .selected {
@@ -430,6 +323,13 @@ body {
 #isexpanded3,
 .isexpanded-cluster-comments {
     display: none !important;
+}
+
+.isexpanded-cluster-comments {
+    &--overflow {
+        overflow: scroll;
+        max-height: 50vh;
+    }
 }
 
 #isexpanded3:checked + label > i,
@@ -474,7 +374,7 @@ body {
 
     @media (max-width: 560px) {
         width: 13.5rem;
-    }  
+    }
 
     &__section {
         @include utilities("pad-2");
@@ -567,10 +467,62 @@ body {
 
 .conversation-menu {
     display: grid;
-    grid-template-columns: 0.75rem auto 0.75rem;
+    grid-template-columns: 0.63rem auto 0.63rem;
 
     @media only screen and (max-width: 900px){
         grid-template-columns: 5% auto 5%;
+    }
+
+    &__buttons {
+        margin-top: 1.5rem;
+        gap: .93rem;
+        justify-content: space-between;
+    }
+
+    &__edit-button a, &__delete-button a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0.313rem;
+        margin: 0;
+    }
+
+    &__delete-button {
+        a {
+            width: 3.125rem;
+            height: 2.625rem;
+            background-color: $color-red-negative;
+            border: $color-red-negative;
+        }
+    }
+
+    &__edit-button {
+        flex-grow: 1;
+        a {
+            color: $color-white;
+            background-color: $color-black;
+            border: $color-black;
+            height: 2.625rem;
+            text-transform: none;
+            letter-spacing: 0;
+            font-size: 1em;
+            line-height: 1.25rem;
+            font-weight: 400;
+            text-align: center;
+        }
+    }
+
+    &__delete-button {
+        a {
+            background-color: $color-red-negative;
+            border: $color-red-negative;
+            font-size: 1em;
+
+            i {
+                font-size: 1.125em;
+                color: $color-white;
+            }
+        }
     }
 
     &__links {
@@ -594,6 +546,7 @@ body {
         color: $color-gray-darker;
         line-height: 1.17rem;
         overflow-wrap: anywhere;
+        font-weight: 500;
     }
 
     &__conversation-text {
@@ -633,33 +586,24 @@ body {
     }
 
     &__user-section {
-        padding-bottom: 4.25rem;
-        margin-top: 1.76rem;
-        border-bottom: 1px solid $color-navigation-header;
+        margin: 1.76rem 0 4.25rem 0;
     }
 
-    &__item {
-        li {
-            padding: 0.32rem 0 0.32rem 0.25rem;
-            box-sizing: content-box;
-        }
+    &__buttons {
     }
 }
 
 .participant-menu {
     display: grid;
-    grid-template-columns: 0.75rem auto 0.75rem;
+    grid-template-columns: 1.2rem auto 1.2rem;
 
-    &__item {
-        li {
-            padding: 0.32rem 0 0.32rem 1.438rem;
-            box-sizing: content-box;
+    &__buttons {
+        margin: 2.25rem 0;
+        padding: unset !important;
+
+        & a:last-child button {
+            margin: unset !important;
         }
-    }
-
-    &__buttons-container {
-        margin-top: 3.5rem;
-        margin-bottom: 3.5rem;
 
         button {
             width: 100%;
@@ -670,48 +614,62 @@ body {
             border-color: $color-theme-dark-blue;
             font-size: 1em;
             font-weight: 400;
+            margin: 0 0 .625rem 0;
+        }
+    }
+
+    &__item {
+        h3 {
+            margin: unset !important;
         }
     }
 }
 
 .participant-menu, .conversation-menu {
-    .grid-column-2 {
-        grid-column: 2;
-    }
-
-    .margin-top-2x {
-        margin-top: 2rem !important;
-    }
-
 
     &__item {
         overflow: hidden;
         text-overflow: ellipsis;
-        grid-column: 1/4;
-        color: $color-accent;
+        grid-column: 2;
         font-size: 1em;
+        padding: 0.32rem 0;
+
+        i {
+            color: $color-theme-report-dark-gray;
+        }
+        li {
+            padding: .5rem;
+            box-sizing: content-box;
+            height: unset;
+        }
+
+        &--selected {
+            background-color: $color-navigation-header-with-opacity;
+            border-radius: .3rem;
+            height: 2.25rem;
+        }
 
         &--column-2 {
             grid-column: 2/3;
             padding: unset !important;
             font-weight: 400;
         }
-    }
 
-    &__item--margin {
-        margin-top: 2rem !important;
+        &--margin {
+            margin-top: 1.93rem !important;
 
-        &:last-child {
-            @media only screen and (min-height: 500px) {
-                margin-bottom: 2rem;
+            &:last-child {
+                @media only screen and (min-height: 500px) {
+                    margin-bottom: 2rem;
+                }
             }
         }
     }
 
     &__welcome-title {
-        font-size: 1.5rem !important;
+        font-size: 1.5em !important;
         line-height: 1.8rem !important;
-        color: black;
+        color: $color-black;
         margin-bottom: unset !important;
         padding: unset !important;
         font-weight: 400;
@@ -719,23 +677,13 @@ body {
         text-overflow: ellipsis;
     }
 
-    &__home-link {
-        margin-bottom: 2.25rem;
-        padding: 0.32rem 0 0.32rem 0.75rem;
-        color: $color-black;
-
-        i {
-            margin-left: unset !important;
-            color: $color-gray-darker;
-        }
-
-        &--selected {
-            background-color: $color-navigation-header-with-opacity;
-        }
-    }
-
     &__home-divider {
         border-bottom: 1px solid $color-gray-darker;
+        grid-column: 2;
+
+        &--lighter {
+            border-bottom: 1px solid $color-navigation-header;
+        }
     }
 
     &__help-section {
@@ -751,70 +699,7 @@ body {
 @include breakpoint("sm") {
     .page-menu {
         z-index: 750;
-        .nav-header {
-            background-color: $color-navigation-menu-background;
 
-            #board-name i {display: block;}
-
-            .menu-item {
-                &__edit, &__delete {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    border-radius: 0.313rem;
-                    margin: 0;
-                }
-
-                &__edit {
-                    width: 13.188rem;
-                    height: 2.625rem;
-                }
-
-                &__delete {
-                    width: 3.125rem;
-                    height: 2.625rem;
-                    background-color: $color-red-negative;
-                    border: $color-red-negative;
-                }
-            }
-
-            a {color: $color-navigation-header-text;}
-
-            li {
-                grid-column: 1/span 1;
-                grid-row: 1/span 1;
-                text-decoration: none;
-            }
-
-            li:nth-of-type(1) {
-                font-weight: bold;
-                font-family: "Work Sans", sans-serif;
-                padding-bottom: 0.25rem;
-                justify-self: flex-start;
-                line-height: 1.5rem;
-                overflow: hidden;
-
-                a {
-                    place-items: center;
-                }
-            }
-
-            li:nth-of-type(2) {
-                display: flex;
-                justify-content: space-between;
-
-                font-size: .875rem;
-                font-family: "Work Sans", sans-serif;
-                text-decoration: underline;
-                color: $color-navigation-header-text;
-
-                grid-row: 3/span 1;
-
-                a:first-child {
-                    font-weight: bold;
-                }
-            }
-        }
         li {
             margin-top: unset;
             margin-bottom: unset;

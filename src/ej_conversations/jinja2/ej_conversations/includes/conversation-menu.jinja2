@@ -1,15 +1,19 @@
 {% from 'ej/includes/menu-item.jinja2' import menu_item %}
 
 <nav class="conversation-menu">
-    <div class="page-menu__links conversation-menu__links grid-column-2">
-        <a href="{{ url('profile:home') }}">
-            <i class="fa fa-chevron-circle-up"></i>
-            {{ _('Home') }}
-        </a>
+    <div class="conversation-menu__item">
+        <div class="page-menu__links">
+            <a href="{{ url('profile:home') }}">
+                <i class="fa fa-chevron-circle-up"></i>
+                {{ _('Home') }}
+            </a>
+        </div>
+        <div class="menu-section__conversation-text">
+            <span>{{conversation.text}}</span>
+        </div>
     </div>
 
-    <span class="conversation-menu__conversation-text grid-column-2">{{conversation.text}}</span>
-    <div class="grid-column-2">
+    <div class="conversation-menu__item participant-menu__item--margin">
         <h3 class="menu-section__title">{{_("About the conversation")}}</h3>
         <div class="conversation-menu__conversation-info">
             <i class="fas fa-users"></i>
@@ -25,13 +29,15 @@
         </div>
     </div>
 
-    <div class="conversation-menu__user-section grid-column-2">
+    <div class="conversation-menu__user-section conversation-menu__item">
         <img class="conversation-menu__avatar" src="{{ conversation.author.profile.image_url }}">
         <span class="conversation-menu__username">{{_("created by")}} {{ conversation.author.name }}</span>
     </div>
 
-    <div class="grid-column-2 conversation-menu__help-section">
-        <h3 class="conversation-menu__item conversation-menu__item--margin">{{_("Help")}}</h3>
+    <div class="participant-menu__home-divider participant-menu__home-divider--lighter"></div>
+
+    <div class="conversation-menu__item conversation-menu__help-section">
+        <h3 class="text-accent conversation-menu__item conversation-menu__item--margin">{{_("Help")}}</h3>
         <ul class="conversation-menu__item participant-menu__bottom-divider">
             <li><a href="{{ url("profile:tour")+'?completedTour=false' }}">{{_("Tour")}}</a></li>
             <li><a href="/docs" target="#blank">{{_("Documentation")}}</a></li>

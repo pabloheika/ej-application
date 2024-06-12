@@ -56,7 +56,7 @@
                     },
                     (voteId) => {
                         updateButtonCollors(commentId, "create", getSelectedButton(value));
-                        updateVoteCardTypeToUpdate(voteId, commentId, stereotypeId, getSelectedButton(value))
+                        updateCardTypeToUpdate(voteId, commentId, stereotypeId, getSelectedButton(value))
                     }
                 );
             }
@@ -73,7 +73,7 @@
             function updateAfterFormSubmit(divId, selectedButton, commentId=null, stereotypeId=null){
                 updateButtonCollors(divId, "update", selectedButton);
                 if (selectedButton == DELETE_BUTTON) {
-                    updateVoteCardTypeToCreate(divId, commentId, stereotypeId)
+                    updateCardTypeToCreate(divId, commentId, stereotypeId)
                 }
             }
 
@@ -117,7 +117,7 @@
                 });
             }
 
-            function updateVoteCardTypeToCreate(voteId, commentId, stereotypeId) {
+            function updateCardTypeToCreate(voteId, commentId, stereotypeId) {
                 const newId = 'vote-buttons-create-'+ commentId;
                 document.getElementById('vote-buttons-update-'+ voteId).id = newId;
 
@@ -127,7 +127,6 @@
                 const commentCardElement = document.getElementById("given-vote-" + voteId);
                 const newCardId = 'comment-without-vote-' + commentId;
                 commentCardElement.id = newCardId;
-                document.getElementById("comments-without-vote").appendChild(commentCardElement);
 
                 for (let i = 0; i < divButtonElement.children.length; i++) {
                     divButtonElement.children[i].name = 'create';
@@ -137,7 +136,7 @@
                 }
             }
 
-            function updateVoteCardTypeToUpdate(voteId, commentId, stereotypeId, selectedButton) {
+            function updateCardTypeToUpdate(voteId, commentId, stereotypeId, selectedButton) {
                 const newId = 'vote-buttons-update-'+ voteId;
                 document.getElementById('vote-buttons-create-'+ commentId).id = newId;
                 const divButtonElement = document.getElementById(newId);
@@ -145,7 +144,6 @@
                 const commentCardElement = document.getElementById('comment-without-vote-' + commentId);
                 const newCardId = "given-vote-" + voteId;
                 commentCardElement.id = newCardId;
-                document.getElementById("given-votes").appendChild(commentCardElement);
 
                 for (let i = 0; i < divButtonElement.children.length; i++) {
                     divButtonElement.children[i].name = 'update';

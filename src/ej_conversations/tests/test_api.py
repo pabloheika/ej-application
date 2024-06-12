@@ -251,7 +251,7 @@ class TestApiRoutes:
     def test_post_conversation(self, api, user):
         path = API_V1_URL + "/conversations/"
         board = Board.objects.create(
-            slug="board1", title="My Board", owner=user, description="board"
+            slug="board1", title="Explore", owner=user, description="board"
         )
         post_data = dict(
             title=CONVERSATION["title"],
@@ -271,7 +271,7 @@ class TestApiRoutes:
     def test_delete_conversation(self, user):
         path = API_V1_URL + "/conversations/"
         board = Board.objects.create(
-            slug="board1", title="My Board", owner=user, description="board"
+            slug="board1", title="Explore", owner=user, description="board"
         )
         post_data = dict(
             title=CONVERSATION["title"],
@@ -290,7 +290,7 @@ class TestApiRoutes:
     def test_update_conversation(self, user):
         path = API_V1_URL + "/conversations/"
         board = Board.objects.create(
-            slug="board1", title="My Board", owner=user, description="board"
+            slug="board1", title="Explore", owner=user, description="board"
         )
         post_data = dict(
             title=CONVERSATION["title"],

@@ -1,4 +1,4 @@
-FROM python:3.8.18-bookworm
+FROM python:3.8.19-slim-bookworm
 RUN apt-get update \
     && apt-get install -y \
     curl \
@@ -20,5 +20,3 @@ COPY ./ /ej-application
 WORKDIR ej-application
 # Installs main and dev groups dependencies
 RUN /root/.local/bin/poetry install --with main,dev --no-root
-
-

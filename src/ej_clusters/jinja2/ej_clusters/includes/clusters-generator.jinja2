@@ -3,9 +3,16 @@
 <script>
     window.addEventListener('load', function () {
         let canvas = $('#cluster-canvas');
-        let size = Math.min($(window).width() * 0.95, 500);
-        if (size >= 500) {
-            $("#cluster-canvas")[0].classList.add("margin-auto");
+        let size = 0;
+        let windowSize = ($(window).width());
+        if (windowSize >= 1000) {
+            size = 500;
+        }
+        if (windowSize < 1000 && windowSize > 500) {
+            size = 400;
+        }
+        if (windowSize <= 500) {
+            size = 300;
         }
         canvas.css({width: size, height: size * 0.80});
         initializeForceLayout('#cluster-canvas', {{ json_data | safe }});

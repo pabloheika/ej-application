@@ -13,7 +13,6 @@
     }
 }
 
-
 .dashboard-balloon {
     &__container {
         margin: 2.5rem 0 3rem 0;
@@ -82,43 +81,53 @@
         color: $color-theme-dark-blue;
         font-family: "Work Sans", sans-serif;
         font-weight: bold;
+        flex-grow: 1;
+    }
+
+    #voting-time-chart {
+        height: 25rem;
+        div:first-child {
+            width: 100% !important;
+        }
     }
 
     .time-chart {
         width: 100%;
         svg {
             margin: 1rem auto auto auto;
-            width: 95%;
         }
 
         .date-picker {
             display: flex;
             flex-wrap: wrap;
-
-            &__date-selector {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: flex-end;
-                flex-grow: 2;
-                gap: 0.85rem;
-
-                @media (max-width: 1366px) {
-                    justify-content: unset;
-                }
-            }
+            gap: 1rem;
 
             &__input {
-                min-width: 8rem;
-                width: 8.6rem;
-                font-size: 0.875rem;
-                margin: 0 0 0 0;
+                display: flex;
+                gap: .5rem;
                 border: 1px solid $color-theme-report-dark-gray;
                 border-radius: 0.3125rem;
-                color: $color-black;
-                font-weight: 400;
-                height: 2.22rem;
-                padding-right: 0.5rem;
-                padding-left: 0.5rem;
+                padding: 0.25rem;
+                cursor: pointer;
+                color: $color-theme-report-dark-gray;
+                input {
+                    min-width: unset !important;
+                    max-width: 7.5rem !important;
+                    padding: unset;
+                    cursor: pointer;
+                    width: 100%;
+                    margin: auto;
+                    height: 1rem;
+                    border: unset !important;
+                    border-radius: unset !important;
+                    font-size: 0.875rem;
+                    font-weight: 400;
+                    text-align: center;
+                    color: $color-theme-report-dark-gray;
+                }
+                input:focus {
+                    box-shadow: unset !important;
+                }
             }
         }
 
@@ -139,7 +148,6 @@
 
     .channels-chart {
         width: 100%;
-
         &__header {
             display: flex;
             flex-wrap: wrap;
@@ -193,17 +201,6 @@
             .time-chart,
             .channels-chart {
                 width: 100% !important;
-            }
-
-            .time-chart {
-                .date-picker {
-                    flex-direction: column;
-                    gap: 0.85rem;
-
-                    &__date-selector {
-                        justify-content: flex-start !important;
-                    }
-                }
             }
         }
     }
@@ -282,8 +279,8 @@
     &__container {
         display: flex;
         flex-wrap: wrap;
-        padding: 3.75rem 0;
-        justify-content: space-between;
+        padding: 0 0 3rem 0;
+        justify-content: center;
     }
 }
 
@@ -303,7 +300,6 @@
     }
 
     &__chart {
-        width: 45%;
         text-align: center;
     }
 
@@ -341,7 +337,7 @@
             margin-bottom: unset !important;
         }
         &--padding {
-            padding: 3.125rem 0 3.125rem 0;
+            justify-content: unset;
         }
     }
     &__comment-percentage {
