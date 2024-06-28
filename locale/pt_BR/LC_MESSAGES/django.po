@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-10 15:45-0300\n"
+"POT-Creation-Date: 2024-06-17 02:05-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -643,7 +643,7 @@ msgstr " comentários"
 msgid " of "
 msgstr " de "
 
-#: src/ej_conversations/serializers.py:124
+#: src/ej_conversations/serializers.py:125
 msgid "Participate"
 msgstr "Participar"
 
@@ -689,13 +689,13 @@ msgstr ""
 msgid "Visualization"
 msgstr "Visualização"
 
-#: src/ej_dataviz/constants.py:185 src/ej_dataviz/views_dataviz.py:108
-#: src/ej_dataviz/views_dataviz.py:123
+#: src/ej_dataviz/constants.py:185 src/ej_dataviz/views_dataviz.py:104
+#: src/ej_dataviz/views_dataviz.py:119
 msgid "Gender"
 msgstr "Gênero"
 
-#: src/ej_dataviz/constants.py:195 src/ej_dataviz/views_dataviz.py:109
-#: src/ej_dataviz/views_dataviz.py:124 src/ej_profiles/models.py:32
+#: src/ej_dataviz/constants.py:195 src/ej_dataviz/views_dataviz.py:105
+#: src/ej_dataviz/views_dataviz.py:120 src/ej_profiles/models.py:32
 #: src/ej_profiles/tests/test_models.py:61
 msgid "Race"
 msgstr "Raça"
@@ -722,78 +722,78 @@ msgstr "Dados do PCA"
 msgid "You!"
 msgstr "Você!"
 
-#: src/ej_dataviz/views_dataviz.py:111 src/ej_dataviz/views_dataviz.py:126
+#: src/ej_dataviz/views_dataviz.py:107 src/ej_dataviz/views_dataviz.py:122
 msgid "https://en.wikipedia.org/wiki/Principal_component_analysis"
 msgstr "https://pt.wikipedia.org/wiki/An%C3%A1lise_de_componentes_principais"
 
-#: src/ej_dataviz/views_dataviz.py:145
+#: src/ej_dataviz/views_dataviz.py:143
 msgid "Not enough data"
 msgstr "Não há dados suficientes"
 
-#: src/ej_dataviz/views_dataviz.py:321
+#: src/ej_dataviz/views_dataviz.py:319
 msgid "agree"
 msgstr "concorda"
 
-#: src/ej_dataviz/views_dataviz.py:322
+#: src/ej_dataviz/views_dataviz.py:320
 msgid "author"
 msgstr "autor"
 
-#: src/ej_dataviz/views_dataviz.py:323
+#: src/ej_dataviz/views_dataviz.py:321
 msgid "author_id"
 msgstr "autor_id"
 
-#: src/ej_dataviz/views_dataviz.py:324
+#: src/ej_dataviz/views_dataviz.py:322
 msgid "choice"
 msgstr "escolha"
 
-#: src/ej_dataviz/views_dataviz.py:325
+#: src/ej_dataviz/views_dataviz.py:323
 #, fuzzy
 msgid "cluster"
 msgstr "Grupos"
 
-#: src/ej_dataviz/views_dataviz.py:326
+#: src/ej_dataviz/views_dataviz.py:324
 #, fuzzy
 msgid "cluster_id"
 msgstr "Grupo_id"
 
-#: src/ej_dataviz/views_dataviz.py:327
+#: src/ej_dataviz/views_dataviz.py:325
 #, fuzzy
 msgid "comment"
 msgstr "comentário"
 
-#: src/ej_dataviz/views_dataviz.py:328
+#: src/ej_dataviz/views_dataviz.py:326
 msgid "comment_id"
 msgstr "comentário_id"
 
-#: src/ej_dataviz/views_dataviz.py:329
+#: src/ej_dataviz/views_dataviz.py:327
 msgid "convergence"
 msgstr "convergência"
 
-#: src/ej_dataviz/views_dataviz.py:330
+#: src/ej_dataviz/views_dataviz.py:328
 msgid "disagree"
 msgstr "discorda"
 
-#: src/ej_dataviz/views_dataviz.py:331 src/ej_profiles/enums.py:71
+#: src/ej_dataviz/views_dataviz.py:329 src/ej_profiles/enums.py:71
 msgid "email"
 msgstr "email"
 
-#: src/ej_dataviz/views_dataviz.py:332
+#: src/ej_dataviz/views_dataviz.py:330
 msgid "id"
 msgstr "id"
 
-#: src/ej_dataviz/views_dataviz.py:333 src/ej_profiles/enums.py:70
+#: src/ej_dataviz/views_dataviz.py:331 src/ej_profiles/enums.py:70
 msgid "name"
 msgstr "nome"
 
-#: src/ej_dataviz/views_dataviz.py:334
+#: src/ej_dataviz/views_dataviz.py:332
 msgid "participation"
 msgstr "participação"
 
-#: src/ej_dataviz/views_dataviz.py:335
+#: src/ej_dataviz/views_dataviz.py:333
 msgid "skipped"
 msgstr "pulados"
 
-#: src/ej_dataviz/views_dataviz.py:336
+#: src/ej_dataviz/views_dataviz.py:334
 #, fuzzy
 msgid "channel"
 msgstr "canal"
@@ -1311,12 +1311,17 @@ msgstr "Permissões"
 msgid "Important dates"
 msgstr "Datas importantes"
 
-#: src/ej_users/api.py:71
+#: src/ej_users/api.py:74
+#, fuzzy
+msgid "Email or secret_id is required."
+msgstr "E-mail ou secret_id é obrigatório."
+
+#: src/ej_users/api.py:74
 #, fuzzy
 msgid "User was not found."
 msgstr "O usuário não foi encontrado."
 
-#: src/ej_users/api.py:75
+#: src/ej_users/api.py:77
 #, fuzzy
 msgid "The password is incorrect"
 msgstr "A senha está incorreta"
@@ -1333,7 +1338,7 @@ msgstr "Senha"
 msgid "Password confirmation"
 msgstr "Confirmação de senha"
 
-#: src/ej_users/forms.py:62 src/ej_users/serializers.py:22
+#: src/ej_users/forms.py:62 src/ej_users/serializers.py:23
 msgid "Passwords do not match"
 msgstr "As senhas não são iguais"
 
@@ -1462,21 +1467,26 @@ msgstr "Termos de uso"
 msgid "Agree with privacy policy"
 msgstr "Política de privacidade"
 
-#: src/ej_users/models.py:58
-msgid "Explore"
-msgstr "Explorar"
+#: src/ej_users/models.py:44
+msgid "Unique ID"
+msgstr ""
 
-#: src/ej_users/models.py:104
+#: src/ej_users/models.py:108
 msgid "User token"
 msgstr "Token do usuário"
 
-#: src/ej_users/models.py:151
+#: src/ej_users/models.py:155
 msgid "Anonymous"
 msgstr "Anônimo"
 
-#: src/ej_users/serializers.py:27
+#: src/ej_users/serializers.py:28
 #, fuzzy
 msgid "Email already exists"
+msgstr "Identificador já existe."
+
+#: src/ej_users/serializers.py:33
+#, fuzzy
+msgid "Secret ID already exists"
 msgstr "Identificador já existe."
 
 #: src/ej_users/views/account.py:58
@@ -2915,9 +2925,8 @@ msgid "Opinion Groups"
 msgstr "Grupos de opinião"
 
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/clusters.jinja2:16
-#, fuzzy
 msgid "Click on the cluster for more information."
-msgstr "Clique no grupo para mais informações."
+msgstr "Clique no cluster para mais informações."
 
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/clusters.jinja2:18
 #, fuzzy

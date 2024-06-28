@@ -150,12 +150,20 @@ def statistics_for_user(conversation, user):
     )
 
     e = 1e-50  # for numerical stability
+
+    user_is_anonymous = user.is_anonymous
+
+    if "opinion-bot@mail.com" in user.email:
+        user_is_anonymous = True
+
     return {
         "votes": given_votes,
         "missing_votes": approved_comments_count - given_votes,
         "participation_ratio": given_votes / (approved_comments_count + e),
         "total_comments": approved_comments_count,
         "comments": given_votes,
+        "anonymous_votes_limit": conversation.anonymous_votes_limit,
+        "is_anonymous": user_is_anonymous,
     }
 
 
