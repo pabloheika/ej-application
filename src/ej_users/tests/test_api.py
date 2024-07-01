@@ -206,8 +206,8 @@ class TestUserAPI:
         user = None
         try:
             user = User.objects.get(email=EMAIL_ANONYMOUS)
-        except:
-            user = None
+        except User.DoesNotExist:
+            pass
         assert user is None
 
     def test_create_auth_user_after_both_accounts(self, client, db):
@@ -272,8 +272,8 @@ class TestUserAPI:
         user = None
         try:
             user = User.objects.get(email=EMAIL_ANONYMOUS)
-        except:
-            user = None
+        except User.DoesNotExist:
+            pass
         assert user is None
 
     def test_get_token_by_secret_id(self, client, db):
