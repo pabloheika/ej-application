@@ -76,7 +76,7 @@ class UserCreateSerializer():
         self.user = user
         self.tokens = tokens
 
-    def response(self):
+    def __post_init__(self):
         return {
             "id": self.user.id,
             "name": self.user.name,
