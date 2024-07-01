@@ -70,3 +70,18 @@ class UserAuthSerializer(serializers.Serializer):
         required=True, write_only=True, style={"input_type": "password"}
     )
     secret_id = serializers.CharField(required=False)
+
+class UserCreateSerializer():
+    def __init__(self, user, tokens):
+        self.user = user
+        self.tokens = tokens
+
+    def response(self):
+        return {
+            "id": self.user.id,
+            "name": self.user.name,
+            "email": self.user.email,
+            "secret_id": self.user.secret_id,
+            "anonymous": self.user.anonymous,
+            **self.tokens.data,
+        }
