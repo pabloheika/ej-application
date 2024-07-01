@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-17 02:05-0300\n"
+"POT-Creation-Date: 2024-07-01 15:05-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -646,7 +646,7 @@ msgstr " comentários"
 msgid " of "
 msgstr " de "
 
-#: src/ej_conversations/serializers.py:125
+#: src/ej_conversations/serializers.py:124
 msgid "Participate"
 msgstr "Participar"
 
@@ -692,13 +692,13 @@ msgstr ""
 msgid "Visualization"
 msgstr "Visualização"
 
-#: src/ej_dataviz/constants.py:185 src/ej_dataviz/views_dataviz.py:104
-#: src/ej_dataviz/views_dataviz.py:119
+#: src/ej_dataviz/constants.py:185 src/ej_dataviz/views_dataviz.py:107
+#: src/ej_dataviz/views_dataviz.py:122
 msgid "Gender"
 msgstr "Gênero"
 
-#: src/ej_dataviz/constants.py:195 src/ej_dataviz/views_dataviz.py:105
-#: src/ej_dataviz/views_dataviz.py:120 src/ej_profiles/models.py:32
+#: src/ej_dataviz/constants.py:195 src/ej_dataviz/views_dataviz.py:108
+#: src/ej_dataviz/views_dataviz.py:123 src/ej_profiles/models.py:32
 #: src/ej_profiles/tests/test_models.py:61
 msgid "Race"
 msgstr "Raça"
@@ -725,78 +725,78 @@ msgstr "Dados do PCA"
 msgid "You!"
 msgstr "Você!"
 
-#: src/ej_dataviz/views_dataviz.py:107 src/ej_dataviz/views_dataviz.py:122
+#: src/ej_dataviz/views_dataviz.py:110 src/ej_dataviz/views_dataviz.py:125
 msgid "https://en.wikipedia.org/wiki/Principal_component_analysis"
 msgstr "https://pt.wikipedia.org/wiki/An%C3%A1lise_de_componentes_principais"
 
-#: src/ej_dataviz/views_dataviz.py:143
+#: src/ej_dataviz/views_dataviz.py:144
 msgid "Not enough data"
 msgstr "Não há dados suficientes"
 
-#: src/ej_dataviz/views_dataviz.py:319
+#: src/ej_dataviz/views_dataviz.py:316
 msgid "agree"
 msgstr "concorda"
 
-#: src/ej_dataviz/views_dataviz.py:320
+#: src/ej_dataviz/views_dataviz.py:317
 msgid "author"
 msgstr "autor"
 
-#: src/ej_dataviz/views_dataviz.py:321
+#: src/ej_dataviz/views_dataviz.py:318
 msgid "author_id"
 msgstr "autor_id"
 
-#: src/ej_dataviz/views_dataviz.py:322
+#: src/ej_dataviz/views_dataviz.py:319
 msgid "choice"
 msgstr "escolha"
 
-#: src/ej_dataviz/views_dataviz.py:323
+#: src/ej_dataviz/views_dataviz.py:320
 #, fuzzy
 msgid "cluster"
 msgstr "Grupos"
 
-#: src/ej_dataviz/views_dataviz.py:324
+#: src/ej_dataviz/views_dataviz.py:321
 #, fuzzy
 msgid "cluster_id"
 msgstr "Grupo_id"
 
-#: src/ej_dataviz/views_dataviz.py:325
+#: src/ej_dataviz/views_dataviz.py:322
 #, fuzzy
 msgid "comment"
 msgstr "comentário"
 
-#: src/ej_dataviz/views_dataviz.py:326
+#: src/ej_dataviz/views_dataviz.py:323
 msgid "comment_id"
 msgstr "comentário_id"
 
-#: src/ej_dataviz/views_dataviz.py:327
+#: src/ej_dataviz/views_dataviz.py:324
 msgid "convergence"
 msgstr "convergência"
 
-#: src/ej_dataviz/views_dataviz.py:328
+#: src/ej_dataviz/views_dataviz.py:325
 msgid "disagree"
 msgstr "discorda"
 
-#: src/ej_dataviz/views_dataviz.py:329 src/ej_profiles/enums.py:71
+#: src/ej_dataviz/views_dataviz.py:326 src/ej_profiles/enums.py:71
 msgid "email"
 msgstr "email"
 
-#: src/ej_dataviz/views_dataviz.py:330
+#: src/ej_dataviz/views_dataviz.py:327
 msgid "id"
 msgstr "id"
 
-#: src/ej_dataviz/views_dataviz.py:331 src/ej_profiles/enums.py:70
+#: src/ej_dataviz/views_dataviz.py:328 src/ej_profiles/enums.py:70
 msgid "name"
 msgstr "nome"
 
-#: src/ej_dataviz/views_dataviz.py:332
+#: src/ej_dataviz/views_dataviz.py:329
 msgid "participation"
 msgstr "participação"
 
-#: src/ej_dataviz/views_dataviz.py:333
+#: src/ej_dataviz/views_dataviz.py:330
 msgid "skipped"
 msgstr "pulados"
 
-#: src/ej_dataviz/views_dataviz.py:334
+#: src/ej_dataviz/views_dataviz.py:331
 #, fuzzy
 msgid "channel"
 msgstr "canal"
@@ -1306,25 +1306,25 @@ msgstr ""
 "de email. Útil para campanhas de marketing com ferramentas como mautic e "
 "mailchimp."
 
-#: src/ej_users/admin.py:14
+#: src/ej_users/admin.py:26
 msgid "Permissions"
 msgstr "Permissões"
 
-#: src/ej_users/admin.py:25
+#: src/ej_users/admin.py:37
 msgid "Important dates"
 msgstr "Datas importantes"
 
-#: src/ej_users/api.py:74
+#: src/ej_users/api.py:77
 #, fuzzy
 msgid "Email or secret_id is required."
 msgstr "E-mail ou secret_id é obrigatório."
 
-#: src/ej_users/api.py:74
+#: src/ej_users/api.py:80
 #, fuzzy
 msgid "User was not found."
 msgstr "O usuário não foi encontrado."
 
-#: src/ej_users/api.py:77
+#: src/ej_users/api.py:83
 #, fuzzy
 msgid "The password is incorrect"
 msgstr "A senha está incorreta"
@@ -1341,7 +1341,7 @@ msgstr "Senha"
 msgid "Password confirmation"
 msgstr "Confirmação de senha"
 
-#: src/ej_users/forms.py:62 src/ej_users/serializers.py:23
+#: src/ej_users/forms.py:62 src/ej_users/serializers.py:33
 msgid "Passwords do not match"
 msgstr "As senhas não são iguais"
 
@@ -1474,20 +1474,29 @@ msgstr "Política de privacidade"
 msgid "Unique ID"
 msgstr ""
 
-#: src/ej_users/models.py:108
+#: src/ej_users/models.py:48
+#, fuzzy
+msgid "Anonymous user"
+msgstr "Anônimo"
+
+#: src/ej_users/models.py:66
+msgid "Explore"
+msgstr ""
+
+#: src/ej_users/models.py:112
 msgid "User token"
 msgstr "Token do usuário"
 
-#: src/ej_users/models.py:155
+#: src/ej_users/models.py:159
 msgid "Anonymous"
 msgstr "Anônimo"
 
-#: src/ej_users/serializers.py:28
+#: src/ej_users/serializers.py:38
 #, fuzzy
 msgid "Email already exists"
 msgstr "Identificador já existe."
 
-#: src/ej_users/serializers.py:33
+#: src/ej_users/serializers.py:43
 #, fuzzy
 msgid "Secret ID already exists"
 msgstr "Identificador já existe."
@@ -1530,6 +1539,296 @@ msgstr "Você precisa concordar com os nossos termos antes de se cadastrar."
 msgid "Please reset your password"
 msgstr "Por favor reset sua senha"
 
+#: tmp/venv/lib/python3.12/site-packages/click/_termui_impl.py:516
+#, python-brace-format
+msgid "{editor}: Editing failed"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/_termui_impl.py:519
+#, python-brace-format
+msgid "{editor}: Editing failed: {e}"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:1114
+msgid "Aborted!"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:1303
+#: tmp/venv/lib/python3.12/site-packages/click/decorators.py:551
+msgid "Show this message and exit."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:1334
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:1364
+#, python-brace-format
+msgid "(Deprecated) {text}"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:1381
+#, fuzzy
+msgid "Options"
+msgstr "Opiniões"
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:1407
+#, python-brace-format
+msgid "Got unexpected extra argument ({args})"
+msgid_plural "Got unexpected extra arguments ({args})"
+msgstr[0] ""
+msgstr[1] ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:1422
+msgid "DeprecationWarning: The command {name!r} is deprecated."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:1629
+#, fuzzy
+msgid "Commands"
+msgstr "Comentários"
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:1661
+#, fuzzy
+msgid "Missing command."
+msgstr "Campanha de email"
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:1739
+msgid "No such command {name!r}."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:2295
+msgid "Value must be an iterable."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:2316
+#, python-brace-format
+msgid "Takes {nargs} values but 1 was given."
+msgid_plural "Takes {nargs} values but {len} were given."
+msgstr[0] ""
+msgstr[1] ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:2763
+#, python-brace-format
+msgid "env var: {var}"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:2793
+msgid "(dynamic)"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:2806
+#, python-brace-format
+msgid "default: {default}"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/core.py:2819
+msgid "required"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/decorators.py:457
+#, python-format
+msgid "%(prog)s, version %(version)s"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/decorators.py:520
+#, fuzzy
+msgid "Show the version and exit."
+msgstr "Compartilhe o link da conversa"
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:44
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:80
+#, fuzzy, python-brace-format
+msgid "Error: {message}"
+msgstr "Sua mensagem"
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:72
+#, python-brace-format
+msgid "Try '{command} {option}' for help."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:121
+#, python-brace-format
+msgid "Invalid value: {message}"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:123
+#, python-brace-format
+msgid "Invalid value for {param_hint}: {message}"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:179
+#, fuzzy
+msgid "Missing argument"
+msgstr "Faltando"
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:181
+#, fuzzy
+msgid "Missing option"
+msgstr "Faltando"
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:183
+msgid "Missing parameter"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:185
+#, python-brace-format
+msgid "Missing {param_type}"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:192
+#, python-brace-format
+msgid "Missing parameter: {param_name}"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:212
+#, python-brace-format
+msgid "No such option: {name}"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:224
+#, python-brace-format
+msgid "Did you mean {possibility}?"
+msgid_plural "(Possible options: {possibilities})"
+msgstr[0] ""
+msgstr[1] ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:262
+#, fuzzy
+msgid "unknown error"
+msgstr "Desconhecido"
+
+#: tmp/venv/lib/python3.12/site-packages/click/exceptions.py:269
+msgid "Could not open file {filename!r}: {message}"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/parser.py:232
+msgid "Argument {name!r} takes {nargs} values."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/parser.py:414
+msgid "Option {name!r} does not take a value."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/parser.py:475
+msgid "Option {name!r} requires an argument."
+msgid_plural "Option {name!r} requires {nargs} arguments."
+msgstr[0] ""
+msgstr[1] ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/shell_completion.py:319
+msgid "Shell completion is not supported for Bash versions older than 4.4."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/shell_completion.py:326
+msgid "Couldn't detect Bash version, shell completion is not supported."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/termui.py:156
+#, fuzzy
+msgid "Repeat for confirmation"
+msgstr "Confirmação de senha"
+
+#: tmp/venv/lib/python3.12/site-packages/click/termui.py:172
+msgid "Error: The value you entered was invalid."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/termui.py:174
+#, fuzzy, python-brace-format
+msgid "Error: {e.message}"
+msgstr "Sua mensagem"
+
+#: tmp/venv/lib/python3.12/site-packages/click/termui.py:185
+msgid "Error: The two entered values do not match."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/termui.py:241
+msgid "Error: invalid input"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/termui.py:771
+msgid "Press any key to continue..."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:266
+#, python-brace-format
+msgid ""
+"Choose from:\n"
+"\t{choices}"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:298
+msgid "{value!r} is not {choice}."
+msgid_plural "{value!r} is not one of {choices}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:392
+msgid "{value!r} does not match the format {format}."
+msgid_plural "{value!r} does not match the formats {formats}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:414
+msgid "{value!r} is not a valid {number_type}."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:470
+#, python-brace-format
+msgid "{value} is not in the range {range}."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:610
+msgid "{value!r} is not a valid boolean."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:632
+msgid "{value!r} is not a valid UUID."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:818
+#, fuzzy
+msgid "file"
+msgstr "Perfil"
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:820
+msgid "directory"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:822
+msgid "path"
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:873
+#, fuzzy
+msgid "{name} {filename!r} does not exist."
+msgstr "O usuário não existe"
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:882
+msgid "{name} {filename!r} is a file."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:890
+#, python-brace-format
+msgid "{name} '{filename}' is a directory."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:899
+msgid "{name} {filename!r} is not readable."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:908
+msgid "{name} {filename!r} is not writable."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:917
+msgid "{name} {filename!r} is not executable."
+msgstr ""
+
+#: tmp/venv/lib/python3.12/site-packages/click/types.py:984
+#, python-brace-format
+msgid "{len_type} values are required, but {len_value} was given."
+msgid_plural "{len_type} values are required, but {len_value} were given."
+msgstr[0] ""
+msgstr[1] ""
+
 #: src/ej/templates/jinja2/base.jinja2:58
 msgid "Please override the \"content\" block of your template!"
 msgstr "Por favor substitua o bloco \"content\" do seu template!"
@@ -1553,8 +1852,9 @@ msgstr "Varíaveis de contexto"
 #: src/ej_users/jinja2/ej_users/includes/account-menu.jinja2:9
 #: src/ej_users/jinja2/ej_users/includes/account-menu.jinja2:10
 #: src/ej_users/jinja2/ej_users/includes/account-menu.jinja2:13
+#, fuzzy
 msgid "Profile"
-msgstr "Perfil"
+msgstr "Perfis"
 
 #: src/ej/templates/jinja2/ej/includes/full-profile-menu.jinja2:7
 msgid "Details"
@@ -2366,8 +2666,9 @@ msgstr "Editar conversa"
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/comments.jinja2:2
 #: src/ej_tools/jinja2/ej_tools/edit-comments.jinja2:29
 #: src/ej_tools/jinja2/ej_tools/show-comments.jinja2:41
+#, fuzzy
 msgid "Comments"
-msgstr "Comentários"
+msgstr "Comentar"
 
 #: src/ej_conversations/jinja2/ej_conversations/conversation-moderate.jinja2:12
 msgid ""
@@ -3486,6 +3787,7 @@ msgstr ""
 "Você pode personalizar sua coleta utilizando uma mensagem para o seu público."
 
 #: src/ej_tools/jinja2/ej_tools/opinion-component.jinja2:41
+#, fuzzy
 msgid "Your message"
 msgstr "Sua mensagem"
 
@@ -4128,9 +4430,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 #~ msgid "Entropy"
 #~ msgstr "Entropia"
 
-#~ msgid "Missing"
-#~ msgstr "Faltando"
-
 #~ msgid "Participation ratio"
 #~ msgstr "Índice de participação"
 
@@ -4486,10 +4785,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 #~ msgid "The more people participating, the better!"
 #~ msgstr "Quanto mais gente participando, melhor!"
 
-#, fuzzy
-#~ msgid "Share the conversation link"
-#~ msgstr "Compartilhe o link da conversa"
-
 #~ msgid "Login using {}"
 #~ msgstr "Logue usando {}"
 
@@ -4624,10 +4919,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 #~ msgid "PARTICIPANT"
 #~ msgstr "PARTICIPANTE"
 
-#, fuzzy
-#~ msgid "User does not exist"
-#~ msgstr "O usuário não existe"
-
 #~ msgid "Opinion profiles"
 #~ msgstr "Perfis de opinião"
 
@@ -4640,9 +4931,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 
 #~ msgid "Select a filter bellow"
 #~ msgstr "Selecione um filtro abaixo"
-
-#~ msgid "Opinions"
-#~ msgstr "Opiniões"
 
 #~ msgid "PCA plot"
 #~ msgstr "Gráfico PCA"
