@@ -72,12 +72,12 @@ class UserAuthSerializer(serializers.Serializer):
     secret_id = serializers.CharField(required=False)
 
 
-class UserCreateSerializer:
+class UserCreateSerializer():
     def __init__(self, user, tokens):
         self.user = user
         self.tokens = tokens
 
-    def __post_init__(self):
+    def serialize(self):
         return {
             "id": self.user.id,
             "name": self.user.name,

@@ -124,9 +124,10 @@ class UsersViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(data=request.data)
 
         if not serializer.is_valid():
-            check_auth = SecretIdAuthentication()
+            check_auth = SecretIdAuthentication(self.serializer_class)
             secret_id_error = serializer.errors.get("secret_id")
             email_error = serializer.errors.get("email")
+            user = None
             if secret_id_error and not email_error:
                 # creating a new user with an existing secret_id
                 user = check_auth.handle_unique_secret_id_error(serializer, request)
@@ -135,7 +136,8 @@ class UsersViewSet(viewsets.ModelViewSet):
                 user = check_auth.handle_invalid_email_error(request)
 
             if user:
-                user_serializer = UserCreateSerializer(user, EJTokens(user))
+                self.check_profile(user, request)
+                user_serializer = UserCreateSerializer(user, EJTokens(user)).serialize()
                 return Response(user_serializer, status=201)
             else:
                 return Response(serializer.errors, status=400)
@@ -143,7 +145,7 @@ class UsersViewSet(viewsets.ModelViewSet):
         # creating a new user
         user = serializer.save()
         self.check_profile(user, request)
-        user_serializer = UserCreateSerializer(user, EJTokens(user))
+        user_serializer = UserCreateSerializer(user, EJTokens(user)).serialize()
         return Response(user_serializer, status=201)
 
     def check_profile(self, user, request):
