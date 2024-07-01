@@ -10,6 +10,7 @@ from ej.permissions import (
     IsSuperUser,
     IsAuthenticatedCreationView,
     IsViewRetrieve,
+    ParticipantCanAddComment,
 )
 from django.db.models import Q
 from ej.viewsets import RestAPIBaseViewSet
@@ -29,7 +30,7 @@ from ej_dataviz.utils import votes_as_dataframe
 class CommentViewSet(RestAPIBaseViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, ParticipantCanAddComment]
 
     def list(self, request):
         is_author = self.request.query_params.get("is_author", None)

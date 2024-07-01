@@ -211,7 +211,13 @@ class ConversationCommentView(ConversationCommonView, DetailView):
     def post(self, request, conversation_id, slug, board_slug, *args, **kwargs):
         conversation = self.get_object()
         request.user = User.get_or_create_from_session(conversation, request)
-        self.ctx = handle_detail_comment(request, conversation)
+
+        # TODO: create a rule for this check
+        if (
+            conversation.participants_can_add_comments
+            or request.user.id == conversation.author.id
+        ):
+            self.ctx = handle_detail_comment(request, conversation)
 
         return render(
             request,
@@ -431,7 +437,7 @@ class ConversationModerateView(UpdateView):
 @method_decorator(
     [login_required, can_edit_conversation, can_moderate_conversation], name="dispatch"
 )
-class NewCommentView(UpdateView):
+class CommentModerationView(UpdateView):
     model = Conversation
     template_name = "ej_conversations/conversation-moderate.jinja2"
 

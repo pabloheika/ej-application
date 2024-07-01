@@ -119,6 +119,11 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
         null=True,
         help_text=_("Text to be presented to participants in the end of voting."),
     )
+    participants_can_add_comments = models.BooleanField(
+        _("Participants will be able to add comments to this conversation."),
+        default=True,
+        help_text=_("Participants will be able to add comments to this conversation."),
+    )
 
     objects = ConversationQuerySet.as_manager()
     tags = TaggableManager(through="ConversationTag", blank=True)

@@ -335,7 +335,7 @@ msgid "Created {n} votes"
 msgstr "{n} votos criados"
 
 #: src/ej_conversations/apps.py:8
-#: src/ej_conversations/models/conversation.py:163
+#: src/ej_conversations/models/conversation.py:168
 msgid "Conversations"
 msgstr "Conversas"
 
@@ -374,18 +374,15 @@ msgstr "Conteúdo duplicado"
 msgid "Violates terms of service of the platform"
 msgstr "Viola os termos de uso da plataforma"
 
-#: src/ej_conversations/enums.py:25 src/ej_conversations/enums.py:35
-#: src/ej_conversations/roles/comments.py:36
+#: src/ej_conversations/enums.py:25 src/ej_conversations/roles/comments.py:36
 msgid "Skip"
 msgstr "Pular"
 
-#: src/ej_conversations/enums.py:26 src/ej_conversations/enums.py:36
-#: src/ej_conversations/roles/comments.py:37
+#: src/ej_conversations/enums.py:26 src/ej_conversations/roles/comments.py:37
 msgid "Agree"
 msgstr "Concorda"
 
-#: src/ej_conversations/enums.py:27 src/ej_conversations/enums.py:37
-#: src/ej_conversations/roles/comments.py:35
+#: src/ej_conversations/enums.py:27 src/ej_conversations/roles/comments.py:35
 msgid "Disagree"
 msgstr "Discorda"
 
@@ -419,7 +416,7 @@ msgstr "Imagem de fundo"
 msgid "Logo"
 msgstr "Logotipo"
 
-#: src/ej_conversations/forms.py:122
+#: src/ej_conversations/forms.py:123
 #, fuzzy
 msgid "This title already exists!"
 msgstr "Esse título já existe."
@@ -556,21 +553,27 @@ msgstr ""
 msgid "Text to be presented to participants in the end of voting."
 msgstr "Texto que será apresentado no final da votação."
 
-#: src/ej_conversations/models/conversation.py:162
+#: src/ej_conversations/models/conversation.py:123
+#: src/ej_conversations/models/conversation.py:125
+#, fuzzy
+msgid "Participants will be able to add comments to this conversation."
+msgstr "Os participantes poderão adicionar comentários à conversa."
+
+#: src/ej_conversations/models/conversation.py:167
 #: src/ej_conversations/roles/conversations.py:140
 #, fuzzy
 msgid "Conversation"
 msgstr "Conversa"
 
-#: src/ej_conversations/models/conversation.py:165
+#: src/ej_conversations/models/conversation.py:170
 msgid "Can publish promoted conversations"
 msgstr "Pode publicar conversas promovidas"
 
-#: src/ej_conversations/models/conversation.py:166
+#: src/ej_conversations/models/conversation.py:171
 msgid "Can moderate comments in any conversation"
 msgstr "Pode moderar comentários em qualquer conversa"
 
-#: src/ej_conversations/models/conversation.py:278
+#: src/ej_conversations/models/conversation.py:283
 msgid "User does not have permission to create a promoted conversation."
 msgstr "Usuário não tem permissão para criar uma conversa promovida."
 
@@ -647,7 +650,7 @@ msgstr " de "
 msgid "Participate"
 msgstr "Participar"
 
-#: src/ej_conversations/tests/test_api.py:248
+#: src/ej_conversations/tests/test_api.py:250
 msgid "Authentication credentials were not provided."
 msgstr ""
 
@@ -2198,6 +2201,7 @@ msgid "Ooops!"
 msgstr "Oooopa!"
 
 #: src/ej_conversations/jinja2/ej/role/conversation-comment-form.jinja2:6
+#, fuzzy
 msgid "You reached the limit of comments in this conversation."
 msgstr "Você atingiu o limite de comentários nesta conversa."
 
@@ -2292,7 +2296,7 @@ msgstr "Personalize"
 #: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:42
 #, fuzzy
 msgid ""
-"This image will be presented to your audience on the participation page, \n"
+"This image will be presented to your audience on the participation page,\n"
 "                                allowing you to give more context to the "
 "researched topic"
 msgstr ""
@@ -2337,12 +2341,14 @@ msgid "Create conversation"
 msgstr "Criar conversa"
 
 #: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:103
+#: src/ej_conversations/jinja2/ej_conversations/includes/comments-form.jinja2:35
 #, fuzzy
 msgid " Comment "
 msgstr "Comentário"
 
 #: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:104
 #: src/ej_conversations/jinja2/ej_conversations/includes/comments-form.jinja2:16
+#: src/ej_conversations/jinja2/ej_conversations/includes/comments-form.jinja2:36
 msgid "Type your comment here"
 msgstr "Escreva seu comentário aqui"
 
@@ -2536,17 +2542,17 @@ msgstr ""
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: src/ej_conversations/jinja2/ej_conversations/comments/card.jinja2:8
+#: src/ej_conversations/jinja2/ej_conversations/comments/card.jinja2:9
 #, fuzzy
 msgid "Add comment"
 msgstr "Adicionar comentário"
 
-#: src/ej_conversations/jinja2/ej_conversations/comments/card.jinja2:19
+#: src/ej_conversations/jinja2/ej_conversations/comments/card.jinja2:21
 #, fuzzy
 msgid "You have already voted on all the comments."
 msgstr "Você já votou em todos os comentários."
 
-#: src/ej_conversations/jinja2/ej_conversations/comments/card.jinja2:19
+#: src/ej_conversations/jinja2/ej_conversations/comments/card.jinja2:21
 #, fuzzy
 msgid "Thank you for your participation!"
 msgstr "Obrigada pela sua participação!"
@@ -2622,6 +2628,11 @@ msgstr "Comentário %(i)s"
 #: src/ej_conversations/jinja2/ej_conversations/includes/tab-moderate-add-comments.jinja2:9
 msgid "Add more comments"
 msgstr "Adicionar mais comentários"
+
+#: src/ej_conversations/jinja2/ej_conversations/includes/comments-form.jinja2:46
+#, fuzzy
+msgid "Comments added by participants"
+msgstr "Comentários adicionados pelos participantes"
 
 #: src/ej_conversations/jinja2/ej_conversations/includes/conversation-detail-content.jinja2:4
 #, fuzzy
@@ -2919,7 +2930,7 @@ msgstr "Comentários negativos mais relevantes"
 msgid "No relevant negative comments in this cluster"
 msgstr "Nenhum comentário negativo e relevante no grupo"
 
-#: src/ej_dataviz/jinja2/ej_dataviz/dashboard/clusters.jinja2:6
+#: src/ej_dataviz/jinja2/ej_dataviz/dashboard/clusters.jinja2:5
 #, fuzzy
 msgid "Opinion Groups"
 msgstr "Grupos de opinião"
@@ -3022,7 +3033,7 @@ msgstr "Carregando dados..."
 msgid "Vote period"
 msgstr "votação no período"
 
-#: src/ej_dataviz/jinja2/ej_dataviz/dashboard/time-chart.jinja2:19
+#: src/ej_dataviz/jinja2/ej_dataviz/dashboard/time-chart.jinja2:17
 msgid "end date must be gratter then start date"
 msgstr "data de fim deve ser maior que data de inicio"
 
@@ -3102,7 +3113,7 @@ msgstr "Comentário"
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:11
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:55
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:11
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:55
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:54
 msgid "Skipped"
 msgstr "Pulados"
 
@@ -3113,7 +3124,7 @@ msgstr "Convergência"
 
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:13
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:57
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:56
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:55
 #, fuzzy
 msgid "Participation"
 msgstr "Participação"
@@ -4566,10 +4577,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 
 #~ msgid "Complete your profile, it's quick"
 #~ msgstr "Complete seu perfil, é rapidinho"
-
-#, fuzzy
-#~ msgid "Your limit for commenting on this conversation has been reached."
-#~ msgstr "Você atingiu o limite de comentários nesta conversa."
 
 #, fuzzy
 #~ msgid "%(n)s comments added (Máx. 2)"

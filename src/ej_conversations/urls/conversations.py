@@ -17,7 +17,7 @@ urlpatterns = [
     ),
     path(
         f"{conversation_url}/comments/new/",
-        views.NewCommentView.as_view(),
+        views.CommentModerationView.as_view(),
         name="new_comment",
     ),
     path(

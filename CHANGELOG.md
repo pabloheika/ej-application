@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [3.4.0] - Jun 29, 2024
+
+### Added
+
+- New checkbox field in Conversation form to disable participants from adding comments.
+- SMTP module accepts configuring SMTP servers without using anymail package.
+- Upgrades to Python 3.9
+
+### Changed
+
+- Comments API returns 403 if conversation have comment addition disabled.
+
 ## [3.3.1] - Jun 12, 2024
 
 ### Changed

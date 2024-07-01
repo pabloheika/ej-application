@@ -27,6 +27,7 @@ class ConversationSerializer(BaseApiSerializer):
             "id",
             "board",
             "statistics",
+            "participants_can_add_comments",
         ]
 
     def get_links(self, obj):
@@ -106,10 +107,7 @@ class ConversationSerializer(BaseApiSerializer):
 class PartialConversationSerializer(BaseApiSerializer):
     class Meta:
         model = Conversation
-        fields = [
-            "text",
-            "statistics",
-        ]
+        fields = ["text", "statistics", "participants_can_add_comments"]
 
 
 class ParticipantConversationSerializer(BaseApiSerializer):

@@ -1,12 +1,14 @@
 <div id="voting-card" class="voting-card">
         <div class="voting-card__header">
             {% include 'ej_conversations/includes/conversation-progress.jinja2' %}
-            <a class="voting-card__label--bold voting-card__label voting-card__add-comment"
-            hx-get="{{ url('boards:conversation-comment', **conversation.get_url_kwargs()) }}"
-            hx-target="#voting-card"
-            hx-swap="outerHTML">
-                <i class="fa">&#xf055;</i> {{ _('Add comment') }}
-            </a>
+            {% if conversation.participants_can_add_comments %}
+                <a class="voting-card__label--bold voting-card__label voting-card__add-comment"
+                hx-get="{{ url('boards:conversation-comment', **conversation.get_url_kwargs()) }}"
+                hx-target="#voting-card"
+                hx-swap="outerHTML">
+                    <i class="fa">&#xf055;</i> {{ _('Add comment') }}
+                </a>
+            {% endif %}
         </div>
         {% if comment %}
             {% include 'ej_conversations/comments/voting-form.jinja2' %}
@@ -19,7 +21,7 @@
                     {{ _("You have already voted on all the comments.") }} {{_("Thank you for your participation!") }}
                     </p>
                 {% endif %}
-            </div> 
+            </div>
         {% endif %}
 </div>
 
