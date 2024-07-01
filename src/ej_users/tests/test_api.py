@@ -98,7 +98,7 @@ class TestUserAPI:
             content_type="application/json",
         )
         assert response.json()["access_token"]
-        assert response.status_code == 200
+        assert response.status_code == 201
 
     def test_missing_credentials_in_login_should_return_error(self, client, db):
         User.objects.create_user("user@user.com", "password")
@@ -135,3 +135,175 @@ class TestUserAPI:
 
         assert response.json()["access_token"]
         assert response.status_code == 200
+
+    def test_create_user_with_secret_id(self, client, db):
+        NAME = "Giovanni Giampauli"
+        EMAIL = "giovanni@example.com"
+        PASSWORD = "pass123"
+        SECRET_ID = "123456"
+        client.post(
+            API_V1_URL + "/users/",
+            data={
+                "name": NAME,
+                "email": EMAIL,
+                "password": PASSWORD,
+                "password_confirm": PASSWORD,
+                "secret_id": SECRET_ID,
+            },
+            content_type="application/json",
+        )
+        user = User.objects.get(email=EMAIL)
+        assert user.name == NAME
+        assert user.email == EMAIL
+        assert user.secret_id == SECRET_ID
+
+    def test_create_auth_user(self, client, db):
+        NAME_ANONYMOUS = "anonymous user"
+        NAME_AUTH = "Giovanni Giampauli"
+        EMAIL_AUTH = "giovanni@example.com"
+        EMAIL_ANONYMOUS = "anonymous@example.com"
+        PASSWORD = "pass123"
+        SECRET_ID = "123456"
+
+        response = client.post(
+            API_V1_URL + "/users/",
+            data={
+                "name": NAME_ANONYMOUS,
+                "email": EMAIL_ANONYMOUS,
+                "password": PASSWORD,
+                "password_confirm": PASSWORD,
+                "secret_id": SECRET_ID,
+            },
+            content_type="application/json",
+        )
+
+        assert response.status_code == 201
+
+        client.post(
+            API_V1_URL + "/users/",
+            data={
+                "name": NAME_AUTH,
+                "email": EMAIL_AUTH,
+                "password": PASSWORD,
+                "password_confirm": PASSWORD,
+                "secret_id": SECRET_ID,
+            },
+            content_type="application/json",
+        )
+
+        assert response.status_code == 201
+
+        user = User.objects.get(email=EMAIL_AUTH)
+        assert user.name == NAME_AUTH
+        assert user.email == EMAIL_AUTH
+        assert user.secret_id == SECRET_ID
+
+        user = User.objects.get(secret_id=SECRET_ID)
+        assert user.name == NAME_AUTH
+        assert user.email == EMAIL_AUTH
+        assert user.secret_id == SECRET_ID
+
+        user = None
+        try:
+            user = User.objects.get(email=EMAIL_ANONYMOUS)
+        except:
+            pass
+        assert user is None
+
+    def test_create_auth_user_after_both_accounts(self, client, db):
+        NAME_ANONYMOUS = "anonymous user"
+        NAME_AUTH = "Giovanni Giampauli"
+        EMAIL_AUTH = "giovanni@example.com"
+        EMAIL_ANONYMOUS = "anonymous@example.com"
+        PASSWORD = "pass123"
+        SECRET_ID = "123456"
+
+        response = client.post(
+            API_V1_URL + "/users/",
+            data={
+                "name": NAME_ANONYMOUS,
+                "email": EMAIL_ANONYMOUS,
+                "password": PASSWORD,
+                "password_confirm": PASSWORD,
+                "secret_id": SECRET_ID,
+            },
+            content_type="application/json",
+        )
+
+        assert response.status_code == 201
+
+        response = client.post(
+            API_V1_URL + "/users/",
+            data={
+                "name": NAME_AUTH,
+                "email": EMAIL_AUTH,
+                "password": PASSWORD,
+                "password_confirm": PASSWORD,
+            },
+            content_type="application/json",
+        )
+
+        assert response.status_code == 201
+
+        response = client.post(
+            API_V1_URL + "/users/",
+            data={
+                "name": NAME_AUTH,
+                "email": EMAIL_AUTH,
+                "password": PASSWORD,
+                "password_confirm": PASSWORD,
+                "secret_id": SECRET_ID,
+            },
+            content_type="application/json",
+        )
+
+        assert response.status_code == 201
+
+        user = User.objects.get(email=EMAIL_AUTH)
+        assert user.name == NAME_AUTH
+        assert user.email == EMAIL_AUTH
+        assert user.secret_id == SECRET_ID
+
+        user = User.objects.get(secret_id=SECRET_ID)
+        assert user.name == NAME_AUTH
+        assert user.email == EMAIL_AUTH
+        assert user.secret_id == SECRET_ID
+
+        user = None
+        try:
+            user = User.objects.get(email=EMAIL_ANONYMOUS)
+        except:
+            pass
+        assert user is None
+
+    def test_get_token_by_secret_id(self, client, db):
+        NAME = "anonymous user"
+        EMAIL = "anonymous@example.com"
+        PASSWORD = "pass123"
+        SECRET_ID = "123456"
+
+        response = client.post(
+            API_V1_URL + "/users/",
+            data={
+                "name": NAME,
+                "email": EMAIL,
+                "password": PASSWORD,
+                "password_confirm": PASSWORD,
+                "secret_id": SECRET_ID,
+            },
+            content_type="application/json",
+        )
+
+        assert response.status_code == 201
+
+        response = client.post(
+            API_V1_URL + "/token/",
+            data={
+                "secret_id": SECRET_ID,
+                "password": PASSWORD,
+            },
+            content_type="application/json",
+        )
+
+        assert response.status_code == 200
+        assert response.json()["access_token"]
