@@ -24,7 +24,6 @@ class SecretIdAuthentication:
             user.save()
             return user
         return None
-        
 
     def handle_invalid_email_error(self, request):
         user_secret = User.objects.get(secret_id=request.data["secret_id"])
@@ -35,7 +34,9 @@ class SecretIdAuthentication:
             user_email.secret_id = request.data["secret_id"]
             user_email.save()
 
-            user = convert_anonymous_participation_to_regular_user(user_secret, user_email)
+            user = convert_anonymous_participation_to_regular_user(
+                user_secret, user_email
+            )
             user.save()
             return user
         return None
