@@ -4,7 +4,6 @@ from .manager import convert_anonymous_participation_to_regular_user
 
 
 class SecretIdAuthentication:
-
     def __init__(self):
         pass
 
