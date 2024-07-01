@@ -68,9 +68,9 @@ class TokenViewSet(viewsets.ViewSet):
         user = None
         try:
             if "secret_id" in request.data:
-                user = User.objects.get(secret_id=request.data["secret_id"])
+                user = get_object_or_404(User, secret_id=request.data["secret_id"])
             elif "email" in request.data:
-                user = User.objects.get(email=request.data["email"])
+                user = get_object_or_404(User, email=request.data["email"])
             else:
                 return Response(
                     {"error": _("Email or secret_id is required.")}, status=400
