@@ -120,7 +120,6 @@ class UsersViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(user)
         return Response(serializer.data)
 
-
     def create(self, request, pk=None):
         serializer = self.get_serializer(data=request.data)
 
@@ -134,10 +133,10 @@ class UsersViewSet(viewsets.ModelViewSet):
             elif secret_id_error and email_error and email_error[0].code == "invalid":
                 # linking an existing user with a secret_id to an email
                 user = check_auth.handle_invalid_email_error(request)
-            
+
             if user:
-                    user_serializer = UserCreateSerializer(user, EJTokens(user))
-                    return Response(user_serializer, status=201)
+                user_serializer = UserCreateSerializer(user, EJTokens(user))
+                return Response(user_serializer, status=201)
             else:
                 return Response(serializer.errors, status=400)
 

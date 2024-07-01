@@ -2,7 +2,8 @@ from rest_framework.response import Response
 from .models import User
 from .manager import convert_anonymous_participation_to_regular_user
 
-class SecretIdAuthentication():
+
+class SecretIdAuthentication:
 
     def __init__(self):
         pass
