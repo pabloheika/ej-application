@@ -1,3 +1,4 @@
+from django.db.utils import IntegrityError
 from django.utils.translation import gettext_lazy as _
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -93,7 +94,11 @@ class UsersViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=400)
 
-        user = serializer.save()
+        try:
+            user = serializer.save()
+        except IntegrityError:
+            return Response({"error": _("Email already taken by another user.")}, status=400)
+
         self.check_profile(user, request)
         tokens = EJTokens(user)
         response = {"id": user.id, "name": user.name, "email": user.email, **tokens.data}

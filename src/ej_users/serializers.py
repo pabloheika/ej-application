@@ -2,7 +2,6 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from .models import User
 
-
 class UsersSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=50, min_length=5, required=True)
     email = serializers.EmailField(required=True)
@@ -23,8 +22,6 @@ class UsersSerializer(serializers.ModelSerializer):
         return data
 
     def validate_email(self, data):
-        if User.objects.filter(email=data).exists():
-            raise serializers.ValidationError(_("Email already exists"))
         return data
 
     def create(self, validated_data):
