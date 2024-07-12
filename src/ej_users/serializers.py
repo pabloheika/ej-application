@@ -2,6 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from .models import User
 
+
 class UsersSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=50, min_length=5, required=True)
     email = serializers.EmailField(required=True)

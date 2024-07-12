@@ -19,7 +19,6 @@ from typing import Any
 
 @dataclass
 class EJTokens:
-
     """
     Manage EJ API authentication tokens.
     """
@@ -97,7 +96,9 @@ class UsersViewSet(viewsets.ModelViewSet):
         try:
             user = serializer.save()
         except IntegrityError:
-            return Response({"error": _("Email already taken by another user.")}, status=400)
+            return Response(
+                {"error": _("Email already taken by another user.")}, status=400
+            )
 
         self.check_profile(user, request)
         tokens = EJTokens(user)
