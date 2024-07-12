@@ -1,3 +1,4 @@
+from django.core.validators import validate_email
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from .models import User
@@ -23,6 +24,8 @@ class UsersSerializer(serializers.ModelSerializer):
         return data
 
     def validate_email(self, data):
+        # Raises ValidationError if the email is invalid
+        validate_email(data)
         return data
 
     def create(self, validated_data):
