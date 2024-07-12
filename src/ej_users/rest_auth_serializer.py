@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import User
-from ej_profiles.models import Profile
 
 try:
     from allauth.account.adapter import get_adapter
@@ -21,22 +20,17 @@ class RegistrationSerializer(serializers.Serializer):
             password = request.data.get("password")
             user = User(email=email, name=name)
             user.set_password(password)
-            user.save()
+            # Specify profile_data when saving the user, so the profile
+            # is created with data, instead of being created empty, then
+            # updated with data.
+            profile_data = {}
+            phone_number = request.data.get("phone_number")
+            if phone_number:
+                profile_data = {"phone_number": phone_number}
+            user.save(profile_data=profile_data)
 
         self.check_user_metadata(user, request)
-        self.check_profile(user, request)
         return user
-
-    def check_profile(self, user, request):
-        phone_number = request.data.get("phone_number")
-        profile = None
-        try:
-            profile = Profile.objects.get(user=user)
-        except Exception:
-            profile = Profile(user=user)
-        if phone_number:
-            profile.phone_number = phone_number
-        profile.save()
 
     def validate_email(self, email):
         email = get_adapter().clean_email(email)
