@@ -97,6 +97,26 @@ class User(AbstractUser):
     def has_more_than_one_board(self):
         return self.boards.count() > 1
 
+    # Override save function to allow creating a filled in profile along
+    # with the User. Faster than creating an empty profile, to only
+    # then fill its data.
+    def save(self, profile_data={}, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        # Create self.update_or_create_profile() function, avoiding
+        # circular or multiple imports.
+        if not hasattr(self, "update_or_create_profile"):
+            from ej_profiles.models import Profile
+
+            def update_or_create_profile(user, profile_data):
+                Profile.objects.update_or_create(user=user, **profile_data)
+
+            self.update_or_create_profile = update_or_create_profile
+
+        # Creates a non-empty profile,
+        # avoiding another DB request to fill the profile data.
+        self.update_or_create_profile(self, profile_data)
+
 
 class PasswordResetToken(TimeStampedModel):
     """
