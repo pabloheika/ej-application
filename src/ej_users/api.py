@@ -4,7 +4,6 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
-from ej_profiles.models import Profile
 from ej_users.serializers import UserAuthSerializer, UsersSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -18,7 +17,6 @@ from typing import Any
 
 @dataclass
 class EJTokens:
-
     """
     Manage EJ API authentication tokens.
     """
@@ -88,24 +86,21 @@ class UsersViewSet(viewsets.ModelViewSet):
     permission_classes_by_action = {"create": [AllowAny], "list": [IsAdminUser]}
 
     def create(self, request, pk=None):
+        # Pass Profile data to the User Serializer, so the User Profile
+        # is created with its data. Faster than creating an empty Profile,
+        # to only then fill it.
+        phone_number = request.data.get("phone_number")
+        if phone_number:
+            request.data["profile_data"] = {"phone_number": phone_number}
         serializer = self.get_serializer(data=request.data)
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=400)
 
         user = serializer.save()
-        self.check_profile(user, request)
         tokens = EJTokens(user)
         response = {"id": user.id, "name": user.name, "email": user.email, **tokens.data}
         return Response(response)
-
-    def check_profile(self, user, request):
-        phone_number = request.data.get("phone_number", None)
-        profile, _ = Profile.objects.get_or_create(user=user)
-
-        if phone_number:
-            profile.phone_number = phone_number
-            profile.save()
 
     def get_permissions(self):
         try:
