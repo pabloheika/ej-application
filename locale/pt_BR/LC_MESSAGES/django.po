@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-13 15:10-0300\n"
+"POT-Creation-Date: 2024-07-16 14:57-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -1548,7 +1548,7 @@ msgid "Details"
 msgstr "Detalhamento"
 
 #: src/ej/templates/jinja2/ej/includes/full-profile-menu.jinja2:8
-#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:87
+#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:89
 msgid "Edit profile"
 msgstr "Editar perfil"
 
@@ -1834,7 +1834,7 @@ msgstr "Editar mural"
 #: src/ej_conversations/jinja2/ej_conversations/includes/tab-moderate-show-comments.jinja2:26
 #: src/ej_conversations/jinja2/ej_conversations/includes/tab-moderate-show-comments.jinja2:28
 #: src/ej_conversations/jinja2/ej_conversations/includes/tab-moderate-show-comments.jinja2:30
-#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:114
+#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:121
 #: src/ej_profiles/jinja2/ej_profiles/edit.jinja2:93
 #: src/ej_tools/jinja2/ej_tools/mautic-form.jinja2:23
 msgid "Save"
@@ -3068,23 +3068,23 @@ msgstr "participação"
 msgid "joined"
 msgstr "entrou em"
 
-#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:97
+#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:104
 #: src/ej_users/jinja2/ej_users/includes/account-menu.jinja2:5
 #, fuzzy
 msgid "Change password"
 msgstr "Alterar senha"
 
-#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:100
+#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:107
 #, fuzzy
 msgid "current password"
 msgstr "senha atual"
 
-#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:105
+#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:112
 #, fuzzy
 msgid "new password"
 msgstr "nova senha"
 
-#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:110
+#: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:117
 #, fuzzy
 msgid "confirm password"
 msgstr "confirmar senha"
