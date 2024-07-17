@@ -477,6 +477,12 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
         if logo_image_url:
             return f"{host}/media/{logo_image_url}"
         return None
+    
+    def get_filtered_comments(self, filter):
+        return self.comments.filter(content__icontains=filter)
+    
+    def get_filtered_votes(self, comments):
+        return self.votes.filter(comment__in=comments)
 
 
 #

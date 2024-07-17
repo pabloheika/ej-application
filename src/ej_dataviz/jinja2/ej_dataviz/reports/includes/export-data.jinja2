@@ -17,9 +17,9 @@
     <div class="export-button__card-content">
       <span>{{ _("Export") }}</span>
       <span>
-        <a href="{{url(report_url, **{"conversation_id": conversation.id, "slug": conversation.slug, "fmt": "json"})}}">json</a>
+        <a id="export_json_id" href="{{url(report_url, **{"conversation_id": conversation.id, "slug": conversation.slug, "fmt": "json"})}}">json</a>
         <span>{{_("or")}}</span>
-        <a href="{{url(report_url, **{"conversation_id": conversation.id, "slug": conversation.slug, "fmt": "csv"})}}">csv</a>
+        <a id="export_csv_id" href="{{url(report_url, **{"conversation_id": conversation.id, "slug": conversation.slug, "fmt": "csv"})}}">csv</a>
       </span>
     </div>
   </div>
