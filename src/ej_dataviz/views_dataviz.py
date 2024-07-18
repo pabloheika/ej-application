@@ -1,5 +1,5 @@
-from collections import defaultdict
 import datetime
+from collections import defaultdict
 from functools import lru_cache
 from logging import getLogger
 
@@ -11,7 +11,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.text import slugify
 from django.utils.timezone import make_aware
-from django.utils.translation import gettext as _, gettext_lazy as _
+from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView
 from sidekick import import_later
 from sklearn import impute
@@ -272,22 +273,21 @@ def votes_data_cluster(request, conversation, fmt, cluster_id, **kwargs):
 # ------------------------------------------------------------------------------
 @can_access_dataviz
 def comments_data(request, conversation_id, fmt, **kwargs):
-    
-    filter_=request.GET.get('filter')
-        
     conversation = Conversation.objects.get(pk=conversation_id)
-    if not filter_ is None:
-        comments=conversation.get_filtered_comments(filter_)
-    else:
-        comments=conversation.comments
-        
+    comments = conversation.comments
+
+    filter = request.GET.get("filter")
+    if filter is not None:
+        comments = comments.filter(content__icontains=filter)
+
     try:
         clusters = (
             Clusterization.objects.filter(conversation=conversation).last().clusters
         )
     except AttributeError:
         clusters = None
-    votes = conversation.get_filtered_votes(comments)
+
+    votes = conversation.votes.filter(comment__in=comments)
     filename = conversation.slug + "-comments"
     return comments_data_common(comments, votes, filename, fmt, clusters)
 
