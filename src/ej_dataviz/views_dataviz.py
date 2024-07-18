@@ -272,22 +272,21 @@ def votes_data_cluster(request, conversation, fmt, cluster_id, **kwargs):
 # ------------------------------------------------------------------------------
 @can_access_dataviz
 def comments_data(request, conversation_id, fmt, **kwargs):
-    
-    filter_=request.GET.get('filter')
-        
     conversation = Conversation.objects.get(pk=conversation_id)
-    if not filter_ is None:
-        comments=conversation.get_filtered_comments(filter_)
-    else:
-        comments=conversation.comments
-        
+    comments = conversation.comments
+
+    filter = request.GET.get("filter")
+    if filter is not None:
+        comments = comments.filter(content__icontains=filter)
+
     try:
         clusters = (
             Clusterization.objects.filter(conversation=conversation).last().clusters
         )
     except AttributeError:
         clusters = None
-    votes = conversation.get_filtered_votes(comments)
+
+    votes = conversation.votes.filter(comment__in=comments)
     filename = conversation.slug + "-comments"
     return comments_data_common(comments, votes, filename, fmt, clusters)
 
