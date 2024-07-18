@@ -17,17 +17,7 @@ class RejectionReason(IntEnum):
     VIOLATE_TERMS_OF_SERVICE = (50, _("Violates terms of service of the platform"))
 
 
-class Choice(IntEnum):
-    """
-    Options for a user vote.
-    """
-
-    SKIP = 0, _("Skip")
-    AGREE = 1, _("Agree")
-    DISAGREE = -1, _("Disagree")
-
-
-class NativeChoice(models.IntegerChoices):
+class Choice(models.IntegerChoices):
     """
     Options for a user vote.
     """

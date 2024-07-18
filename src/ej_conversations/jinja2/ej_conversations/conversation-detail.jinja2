@@ -17,7 +17,7 @@
         {% if conversation.author.id == request.user.id or request.user.is_staff or request.user.is_superuser %}
             {% include 'ej_conversations/includes/menu.jinja2' %}
         {% else %}
-            {% include 'ej_conversations/includes/participant-menu.jinja2' %}
+            {% include 'ej_conversations/includes/conversation-menu.jinja2' %}
         {% endif %}
     {% endblock %}
 {% endif %}

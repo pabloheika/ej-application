@@ -35,25 +35,28 @@ export class ForceLayout {
       rotation = Math.random() * 360,
       index = 0,
       totalSize = sum(data.shapes.map(({ size }) => size + reg)),
-      shapes = data.shapes.map(({ size, intersections, name, highlight }) => {
-        let radius =
-            (Math.sqrt((size + reg) / totalSize) * view.size.width) / 4,
-          pos = unity.rotate(
-            rotation + (360 * index) / nShapes,
-            new Point(0, 0)
-          );
-        pos = pos.add(new Point(view.size.width / 2, view.size.height / 2));
-        index++;
+      shapes = data.shapes.map(
+        ({ size, intersections, name, id, highlight }) => {
+          let radius =
+              (Math.sqrt((size + reg) / totalSize) * view.size.width) / 4,
+            pos = unity.rotate(
+              rotation + (360 * index) / nShapes,
+              new Point(0, 0)
+            );
+          pos = pos.add(new Point(view.size.width / 2, view.size.height / 2));
+          index++;
 
-        return new Shape({
-          size: size,
-          intersections: intersections.map((x) => x / size),
-          radius: radius,
-          pos: pos,
-          name: name,
-          isUserGroup: highlight,
-        });
-      });
+          return new Shape({
+            size: size,
+            intersections: intersections.map((x) => x / size),
+            radius: radius,
+            pos: pos,
+            name: name,
+            cluster_id: id,
+            isUserGroup: highlight,
+          });
+        }
+      );
     return new ForceLayout(shapes);
   }
 

@@ -10,7 +10,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.db import models
-from django.db.models import Q, Count
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _, gettext as __
 

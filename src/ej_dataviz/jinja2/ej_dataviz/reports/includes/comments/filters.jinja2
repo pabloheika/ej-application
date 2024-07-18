@@ -1,7 +1,8 @@
 {% from "ej_dataviz/reports/includes/filters-macro.jinja2" import filters %}
 {% set ordering_options = [["created", _("creation date")], 
     ["agree", _("agree")], ["disagree", _("disagree")], 
-    ["skipped", _("skipped")], ["convergence", _("convergence")]] 
+    ["skipped", _("skipped")], ["convergence", _("convergence")],
+    ["participation", _("participation")]] 
 %}
 {{ filters(clusters, ordering_options) }}
 

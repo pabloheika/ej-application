@@ -1,0 +1,35 @@
+<div class="participant-menu__item participant-menu__item--margin">
+
+    <h3 class="text-accent participant-menu__item board-section__toggle-section" onclick="toggleSection()">
+        {{ _('My Boards') }}
+        <i id="board-chevron-icon" class="fa fa-chevron-left"></i>
+    </h3>
+    <div id="board-list-container" class="hide">
+        {% if user_boards is defined %}
+            <ul class="board-list participant-menu__item">
+                {% for board in user_boards %}
+                    {{ board_menu_item(current_page, board.slug, url('boards:conversation-list', board_slug=board.slug), board) }}
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+</div>
+<div class="participant-menu__home-divider participant-menu__item--margin"></div>
+
+<script>
+    function toggleSection() {
+        let section = $("#board-list-container").toggleClass("hide");
+        let icon = $("#board-chevron-icon");
+        icon.toggleClass("board-section__chevron-transition");
+    }
+
+    function menuStarter() {
+        let url = window.location.href.split("/");
+
+        if (url[url.length-2] == "conversations") {
+            toggleSection();
+        }
+    }
+
+    menuStarter();
+</script>

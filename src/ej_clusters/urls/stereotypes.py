@@ -2,6 +2,7 @@ from django.urls import path
 from ..views import stereotypes
 
 app_name = "ej_cluster"
+stereotype_url = "<int:pk>"
 
 urlpatterns = [
     path(
@@ -15,8 +16,13 @@ urlpatterns = [
         name="create",
     ),
     path(
-        "<int:pk>/edit/",
+        f"{stereotype_url}/edit/",
         stereotypes.StereotypeEditView.as_view(),
         name="edit",
+    ),
+    path(
+        f"{stereotype_url}/delete/",
+        stereotypes.StereotypeDeleteView.as_view(),
+        name="delete",
     ),
 ]

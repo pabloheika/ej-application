@@ -1,5 +1,4 @@
 from constance import config
-from django.conf import settings
 
 from boogie import rules
 from .models import Board

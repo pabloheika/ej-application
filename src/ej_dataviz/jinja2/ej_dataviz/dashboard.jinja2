@@ -21,9 +21,7 @@
 
             {% include 'ej_dataviz/dashboard/clusters.jinja2' %}
 
-            <div class="scatter-section flex wrap center-grid">
-                {% include 'ej_dataviz/dashboard/scatter.jinja2' %}
-            </div>
+            {% include 'ej_dataviz/dashboard/scatter.jinja2' %}
             {% with comments_statistics = conversation.statistics().get('comments') %}
                 {% include 'ej_dataviz/dashboard/comments.jinja2' %}
                 {% include 'ej_dataviz/dashboard/comment-participants.jinja2' %}
@@ -31,6 +29,18 @@
             {% include 'ej_dataviz/dashboard/word-cloud-card.jinja2' %}
 
         </section>
+
+        <div class="hide"
+            hx-trigger="showClusterData from:body"
+            hx-vals="js:{cluster_id: event.detail.cluster_id}"
+            hx-get="{{url("dataviz:cluster-detail", **{"conversation_id": conversation.id, "slug": conversation.slug})}}"
+            hx-target="#cluster-details"
+            hx-on::after-request='showClusterModal()'
+            >
+        </div>
+        <div id="cluster-details" class="hide">
+            {% include 'ej_dataviz/dashboard/cluster-detail.jinja2' %}
+        </div>
 
     {% endblock %}
     </div>

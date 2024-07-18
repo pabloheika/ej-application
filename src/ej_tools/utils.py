@@ -1,5 +1,4 @@
 from requests import get
-from django.utils.translation import gettext_lazy as _
 from .constants import BASE_URL_NPM
 
 

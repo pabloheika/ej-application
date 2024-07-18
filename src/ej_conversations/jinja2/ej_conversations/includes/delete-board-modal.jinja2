@@ -1,0 +1,36 @@
+<div class="modal__overlay hide" id="delete-modal">
+    <div class="modal__container flex justify-center">
+        <form method="post" class="modal__container--quick-action align-center">
+            {{csrf_input }}
+            <h3 class="modal__question">{{_("Are you sure about this action?")}}</h3>
+            <span>{{_("Take some atention, deleting the board will remove all conversations associated with it.")}}</span>
+
+            <div class="modal__btn-board">
+                <button type="submit" class="modal__btn-alternative--red modal__btn-board-delete"
+                    formaction="{{ url('boards:board-delete', board_slug=board.slug) }}">
+                    <i class="fas fa-lg fa-times-circle"></i>
+                    {{_("yes, delete board")}}
+                </button>
+                <a onclick="closeModal()">
+                    <i class="fas fa-xs fa-arrow-left"></i>
+                    {{_("no, go back")}}
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function closeModal() {
+        const modal = $('#delete-modal');
+        const body = $("body").removeClass('modal--hide-overflow-y');
+        modal.addClass('hide');
+        modal.removeClass('form-modal-delete-show');
+    }
+
+    function showConfirmationDelete() {
+        const modal = $('#delete-modal');
+        const body = $("body").addClass('modal--hide-overflow-y')
+        modal.addClass('form-modal-delete-show');
+        modal.removeClass('hide');
+    }
+</script>

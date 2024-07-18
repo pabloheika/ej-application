@@ -3,7 +3,6 @@ from django.template.loader import get_template
 from django.utils.translation import gettext_lazy as _
 
 from django.core.exceptions import ValidationError
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.db.models import Q
 
 from ej_boards.forms import PaletteWidget
@@ -86,7 +85,7 @@ class RasaConversationForm(EjModelForm):
         domain = RasaConversation.objects.filter(
             Q(domain=incoming_domain) | Q(domain=incoming_domain + "/")
         ).first()
-        if domain == None:
+        if domain is None:
             return self.cleaned_data["domain"]
         if domain.conversation == self.cleaned_data["conversation"]:
             raise ValidationError(

@@ -1,6 +1,5 @@
 from django.urls import reverse
 import json
-import pytest
 from ej_conversations.mommy_recipes import ConversationRecipes
 from ej.testing import UrlTester
 from ej_users.models import User
@@ -32,7 +31,7 @@ class TestRoutes(UrlTester, ConversationRecipes):
             conversation.is_promoted = True
             board.save()
             conversation.save()
-        except Exception as e:
+        except Exception:
             pass
 
     def test_can_view_user_url(self, user_client, comment_db):
@@ -95,9 +94,9 @@ class TestRoutes(UrlTester, ConversationRecipes):
         url = reverse("boards:conversation-is-favorite-board", args=[board_1.slug])
         response = admin_client.get(url)
         response_json = json.loads(response.content)
-        assert response_json["is_favorite_board"] == True
+        assert response_json["is_favorite_board"]
 
         url = reverse("boards:conversation-is-favorite-board", args=[board_2.slug])
         response = admin_client.get(url)
         response_json = json.loads(response.content)
-        assert response_json["is_favorite_board"] == False
+        assert not response_json["is_favorite_board"]

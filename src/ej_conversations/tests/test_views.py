@@ -8,10 +8,11 @@ from django.core.files.base import File
 from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import reverse
 from django.test import Client
+from django.template.exceptions import TemplateDoesNotExist
 
 from ej_boards.models import Board
 from ej_conversations import create_conversation
-from ej_conversations.models import Comment, Conversation, FavoriteConversation
+from ej_conversations.models import Comment, Conversation, FavoriteConversation, Vote
 from ej_conversations.mommy_recipes import ConversationRecipes
 from ej_conversations.utils import votes_counter
 from ej_users.models import User
@@ -302,9 +303,6 @@ class TestConversationDetail(ConversationSetup):
 
         client = Client()
 
-        conversation_url = reverse(
-            "boards:conversation-detail", kwargs=first_conversation.get_url_kwargs()
-        )
         conversation_vote_url = reverse(
             "boards:conversation-vote", kwargs=first_conversation.get_url_kwargs()
         )
@@ -412,7 +410,7 @@ class TestConversationCreate(ConversationSetup):
         assert response.url == "/userboard/conversations/1/whatever/"
 
         conversation = Conversation.objects.first()
-        assert conversation.is_promoted == False
+        assert not conversation.is_promoted
         assert conversation.board == base_board
 
     def test_user_should_not_create_conversation_on_another_users_board(
@@ -515,7 +513,7 @@ class TestConversationCreate(ConversationSetup):
         assert response.url == reverse(
             "boards:conversation-detail", kwargs=conversation.get_url_kwargs()
         )
-        assert conversation.is_promoted == False
+        assert not conversation.is_promoted
         assert conversation.board == base_board
 
     def test_custom_conversation_with_mandatory_fields(self, base_board, base_user):
@@ -542,7 +540,7 @@ class TestConversationCreate(ConversationSetup):
         assert response.url == reverse(
             "boards:conversation-detail", kwargs=conversation.get_url_kwargs()
         )
-        assert conversation.is_promoted == False
+        assert not conversation.is_promoted
         assert conversation.board == base_board
 
     def test_conversation_with_custom_ending_message(self, base_board, base_user):
@@ -749,7 +747,7 @@ class TestConversationComments(ConversationSetup):
         client = Client()
         client.login(email="user1@email.br", password="password")
         conversation = create_conversation("foo", "conv1", user, board=board)
-        comment = conversation.create_comment(
+        conversation.create_comment(
             author=user, content="comment to check", status="approved"
         )
         url = f"/{board.slug}/conversations/{conversation.id}/{conversation.slug}/comments/check/"
@@ -996,6 +994,94 @@ class TestConversationEdit(ConversationSetup):
         assert new_conversation.text == "description"
 
 
+class TestConversationDelete(ConversationSetup):
+    @pytest.fixture
+    def conversation_with_comments(self, conversation, base_board, base_user):
+        user1 = User.objects.create_user("user1@email.br", "password")
+        user2 = User.objects.create_user("user2@email.br", "password")
+        user3 = User.objects.create_user("user3@email.br", "password")
+
+        conversation.author = base_user
+        base_board.owner = base_user
+        base_board.save()
+        conversation.board = base_board
+        conversation.save()
+
+        comment = conversation.create_comment(
+            base_user, "aa", status="approved", check_limits=False
+        )
+
+        conversation.create_comment(
+            base_user, "aaa", status="approved", check_limits=False
+        )
+        conversation.create_comment(
+            base_user, "aaaa", status="approved", check_limits=False
+        )
+
+        comment.vote(user1, "agree")
+        comment.vote(user2, "agree")
+        comment.vote(user3, "agree")
+
+        conversation.save()
+        return conversation
+
+    def test_get_access_delete_conversation_view(
+        self, base_user, conversation_with_comments
+    ):
+        url = conversation_with_comments.patch_url("conversation:delete")
+
+        client = Client()
+        client.force_login(base_user)
+
+        with pytest.raises(TemplateDoesNotExist):
+            client.get(url)
+        assert Conversation.objects.filter(id=conversation_with_comments.id).exists()
+
+    def test_delete_conversation_with_no_permission(self, conversation_with_comments):
+        url = conversation_with_comments.patch_url("conversation:delete")
+        user1 = User.objects.create_user("user1@email.com", "password")
+
+        client = Client()
+        client.force_login(user1)
+        response = client.post(url)
+
+        assert response.status_code == 302
+        assert "/login/" in response.url
+        assert Conversation.objects.filter(id=conversation_with_comments.id).exists()
+
+    def test_delete_conversation(self, base_user, conversation_with_comments):
+        url = conversation_with_comments.patch_url("conversation:delete")
+
+        client = Client()
+        client.force_login(base_user)
+        response = client.post(url)
+
+        comments_ids = list(conversation_with_comments.comments)
+        votes_ids = list(conversation_with_comments.votes)
+
+        assert response.status_code == 302
+        assert response.url == "/userboard/conversations/"
+        assert not Conversation.objects.filter(id=conversation_with_comments.id).exists()
+        assert not Comment.objects.filter(id__in=comments_ids).exists()
+        assert not Vote.objects.filter(id__in=votes_ids).exists()
+
+    def test_admin_delete_conversation(self, admin_user, conversation_with_comments):
+        url = conversation_with_comments.patch_url("conversation:delete")
+
+        client = Client()
+        client.force_login(admin_user)
+        response = client.post(url)
+
+        comments_ids = list(conversation_with_comments.comments)
+        votes_ids = list(conversation_with_comments.votes)
+
+        assert response.status_code == 302
+        assert response.url == "/userboard/conversations/"
+        assert not Conversation.objects.filter(id=conversation_with_comments.id).exists()
+        assert not Comment.objects.filter(id__in=comments_ids).exists()
+        assert not Vote.objects.filter(id__in=votes_ids).exists()
+
+
 class TestConversationModerate(ConversationSetup):
     def test_user_can_moderate_comments(self, logged_admin):
         user = User.objects.create_user("user1@email.br", "password")
@@ -1179,7 +1265,7 @@ class TestPrivateConversations(ConversationRecipes):
         second_conversation,
         third_conversation,
     ):
-        user_url = f"/userboard/conversations/"
+        user_url = "/userboard/conversations/"
 
         client = Client()
         client.login(email="tester@email.br", password="password")
@@ -1205,7 +1291,7 @@ class TestPrivateConversations(ConversationRecipes):
         first_conversation,
         second_conversation,
     ):
-        admin_url = f"/adminboard/conversations/"
+        admin_url = "/adminboard/conversations/"
         anonymous_user = Client()
         response = anonymous_user.get(admin_url)
         assert response.status_code == 302
@@ -1219,14 +1305,14 @@ class TestPrivateConversations(ConversationRecipes):
         first_conversation,
         second_conversation,
     ):
-        user_url = f"/userboard/conversations/"
+        user_url = "/userboard/conversations/"
         response = logged_admin.get(user_url)
 
         assert len(response.context["conversations"]) == 2
         assert first_conversation in response.context["conversations"]
         assert second_conversation in response.context["conversations"]
 
-        admin_url = f"/adminboard/conversations/"
+        admin_url = "/adminboard/conversations/"
         client = Client()
         client.login(email="tester@email.br", password="password")
         response = client.get(admin_url)
@@ -1285,7 +1371,7 @@ class TestPublicConversations(ConversationRecipes):
         not_promoted_conversation,
         hiden_conversation,
     ):
-        url = f"/conversations/"
+        url = "/conversations/"
         response = logged_admin.get(url)
 
         board1 = Board.objects.get(slug="admintestcom")
@@ -1312,11 +1398,11 @@ class TestPublicConversations(ConversationRecipes):
         not_promoted_conversation,
         hiden_conversation,
     ):
-        url = f"/conversations/"
+        url = "/conversations/"
         client = Client()
         response = client.get(url)
 
         assert response.status_code == 200
         assert response.context["user_boards"] == []
         assert promoted_conversation in response.context["conversations"]
-        assert response.context["conversations"][0].is_hidden == True
+        assert response.context["conversations"][0].is_hidden

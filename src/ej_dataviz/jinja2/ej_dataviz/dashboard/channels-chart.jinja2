@@ -1,18 +1,20 @@
-<div class="votes-by-channel-chart">
-    <h3 class="charts-section__title">{{ _('channel participation') }}</h3>
-    <div class="participant-filter">
-        <div class="participant-filter__label"><span>{{ _('filter by:') }}</span></div>
-        <button id="id_part_button" onclick="selectParticipation(event.target)"
-            class="participant-filter__button">{{ _('participants')}}</button>
-        <button id="id_vote_button" onclick="selectParticipation(event.target)"
-            class="participant-filter__button">{{ _('votes')}}</button>
+<div class="channels-chart">
+    <div class="channels-chart__header">
+        <h2 class="charts-section__title">{{ _('channel participation') }}</h3>
+        <div class="participant-filter">
+            <div class="participant-filter__buttons">
+                <button id="id_part_button" onclick="selectParticipation(event.target)"
+                    class="participant-filter__button">{{ _('participants')}}</button>
+                <button id="id_vote_button" onclick="selectParticipation(event.target)"
+                    class="participant-filter__button">{{ _('votes')}}</button>
+            </div>
+        </div>
     </div>
     <div id="pizza-chart-container">
-        <svg id="pizza-chart"></svg>
+        <div id="channels-chart" style="width: 100%; height: 400px;"></div>
     </div>
 </div>
 
-<script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
     let voteButton = document.getElementById('id_vote_button');
     let partButton = document.getElementById('id_part_button');
@@ -20,78 +22,54 @@
 
     window.addEventListener('load', loadVoteVisualization);
 
-    async function loadVoteVisualization() {
-        selectParticipation(voteButton);
-        d3jsPartVisualization(data);
+    function renderChannelsChart() {
+        let channels = [data[0].name, data[1].name, data[2].name, data[3].name, data[4].name];
+        let values = [
+            {value: data[0].value},
+            {value: data[1].value},
+            {value: data[2].value},
+            {value: data[3].value},
+            {value: data[4].value}
+        ]
+
+        let chart = echarts.init($('#channels-chart')[0]);
+        let options = {
+            color: "#0088cc",
+            tooltip: {
+                trigger: 'axis'
+            },
+            grid: {
+                top: '5%',
+                width: '85%'
+            },
+            xAxis: {
+                type: 'category',
+                data: channels
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [
+                {
+                data: values,
+                type: 'bar'
+                }
+            ]
+            };
+        chart.setOption(options);
     }
 
-    async function d3jsPartVisualization(data) {
-        data = data.filter(d => d.value != 0)
-        const width = document.getElementById('pizza-chart-container').clientWidth;
-        const height = 250;
-
-        var previusSvg = d3.select("#pizza-chart");
-        previusSvg.remove();
-
-        d3.select("#pizza-chart-container")
-            .append("svg")
-            .attr("id", 'pizza-chart')
-            .attr("width", width)
-            .attr("height", height)
-
-        const pie = d3.pie()
-            .sort(null)
-            .value(d => d.value)
-
-        const arc = d3.arc()
-            .innerRadius(0)
-            .outerRadius(Math.min(width, height) / 3 - 1)
-
-        const arcLabel = d3.arc().innerRadius(Math.min(width, height) / 3 * 0.8).outerRadius(Math.min(width, height) / 3 * 0.8);
-
-        const arcs = pie(data);
-
-        const svg = d3.select('#pizza-chart').attr("viewBox", [-width / 2, -height / 2, width, height]);
-
-        svg.append("g")
-        .attr("stroke", "white")
-        .selectAll("path")
-        .data(arcs)
-        .join("path")
-        .attr("fill", d => d.data.fill)
-        .attr("d", arc)
-        .append("title")
-        .text(d => `${d.data.name}: ${d.data.value? d.data.value.toLocaleString(): 'desconhecido'}`)
-
-        svg.append("g")
-            .attr("font-family", "sans-serif")
-            .attr("font-size", 12)
-            .attr("text-anchor", "middle")
-            .selectAll("text")
-            .data(arcs)
-            .join("text")
-            .attr("transform", d => `translate(${arcLabel.centroid(d)})`)
-            .call(text => text.append("tspan")
-                .attr("y", "-0.4em")
-                .attr("font-weight", "bold")
-                .text(d => d.data.name))
-            .call(text => text.filter(d => (d.endAngle - d.startAngle) > 0.25).append("tspan")
-                .attr("x", 0)
-                .attr("y", "0.7em")
-                .attr("fill-opacity", 0.7)
-                .text(d => d.data.value.toLocaleString()));
+    async function loadVoteVisualization() {
+        selectParticipation(voteButton);
     }
 
     function setData(option) {
         data = [
-            {name: "telegram", value: option.telegram, fill: "#0088cc" },
-            {name: "whatsapp", value: option.whatsapp, fill: "#128c7e" },
-            {name: "opinionComponent", value: option.opinion_component, fill: "#ff3e72" },
-            {name: "webchat", value: option.webchat, fill: "rgb(90, 22, 238)" },
-            {name: "unknown", value: option.unknown, fill: "#c4c4c4" },
-            {name: "ej", value: option.ej, fill: "#7758B3" },
-            {name: "rocketchat", value: option.rocketchat, fill: "#f5455c" },
-
+            {name: "Telegram", value: option.telegram, fill: "#0088cc" },
+            {name: "WhatsApp", value: option.whatsapp, fill: "#128c7e" },
+            {name: "EJ", value: option.ej, fill: "#7758B3" },
+            {name: "{{_('Opinion Component')}}", value: option.opinion_component, fill: "#ff3e72" },
+            {name: "{{_('Unknown')}}", value: option.unknown, fill: "#c4c4c4" },
         ]
     }
 
@@ -110,7 +88,6 @@
         selectedButton.classList.add('participant-filter__button--selected');
         notSelected.classList.remove('participant-filter__button--selected');
 
-        d3jsPartVisualization(data);
-
+        renderChannelsChart();
     }
 </script>

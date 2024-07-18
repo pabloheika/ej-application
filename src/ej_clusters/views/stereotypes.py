@@ -1,12 +1,13 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
 from django.shortcuts import redirect, render
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, DeleteView
+from django.urls import reverse_lazy
 
 from ej_clusters.forms import StereotypeForm
-from ej_clusters.utils import check_stereotype
+from ej_conversations.models.conversation import Conversation
 from ..models import Stereotype
 
 
@@ -56,17 +57,18 @@ class StereotypeEditView(UpdateView):
         stereotype = self.get_object()
         form = self.form_class(request=self.request, instance=stereotype)
 
-        if request.POST.get("action") == "delete":
-            stereotype.delete()
-        elif form.is_valid_post():
+        if form.is_valid_post():
             form.save()
-        else:
-            return render(request, self.template_name, self.get_context_data())
-
-        return redirect("stereotypes:list")
+        return render(request, self.template_name, self.get_context_data())
 
     def get_object(self) -> Stereotype:
-        return check_stereotype(super().get_object(), self.request.user)
+        stereotype = super().get_object()
+        user = self.request.user
+        is_superuser = user.is_staff or user.is_superuser
+
+        if stereotype.owner == user or is_superuser:
+            return stereotype
+        raise HttpResponseForbidden
 
     def get_context_data(self, **kwargs):
         stereotype = self.get_object()
@@ -74,3 +76,26 @@ class StereotypeEditView(UpdateView):
             "form", self.form_class(request=self.request, instance=stereotype)
         )
         return {"form": form, "stereotype": stereotype}
+
+
+@method_decorator([login_required], name="dispatch")
+class StereotypeDeleteView(DeleteView):
+    model = Stereotype
+
+    def get_object(self, queryset=None):
+        id = self.kwargs["pk"]
+        return self.get_queryset().filter(pk=id).get()
+
+    def get_success_url(self):
+        data = self.request.POST
+        conversation = Conversation.objects.get(id=data["conversation_id"])
+        return reverse_lazy(
+            "boards:stereotype-votes-list",
+            kwargs=conversation.get_url_kwargs(),
+        )
+
+    def form_valid(self, request, *args, **kwargs):
+        clusters = self.get_object().clusters
+        clusters.all().delete()
+
+        return super().delete(self, request, *args, **kwargs)

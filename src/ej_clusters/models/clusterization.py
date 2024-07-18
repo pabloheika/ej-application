@@ -65,7 +65,7 @@ class Clusterization(TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse(
-            "boards:cluster-index",
+            "boards:stereotype-votes-list",
             kwargs=self.conversation.get_url_kwargs(),
         )
 

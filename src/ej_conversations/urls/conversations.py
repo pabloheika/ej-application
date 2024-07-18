@@ -17,7 +17,7 @@ urlpatterns = [
     ),
     path(
         f"{conversation_url}/comments/new/",
-        views.NewCommentView.as_view(),
+        views.CommentModerationView.as_view(),
         name="new_comment",
     ),
     path(
@@ -71,12 +71,17 @@ urlpatterns = [
         name="create",
     ),
     path(
-        f"update-favorite-boards/",
+        f"{conversation_url}/delete/",
+        views.ConversationDeleteView.as_view(),
+        name="delete",
+    ),
+    path(
+        "update-favorite-boards/",
         views.update_favorite_boards,
         name="update-favorite-boards",
     ),
     path(
-        f"is-favorite-board/",
+        "is-favorite-board/",
         views.is_favorite_board,
         name="is-favorite-board",
     ),

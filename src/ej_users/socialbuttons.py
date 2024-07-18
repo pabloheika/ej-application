@@ -6,7 +6,6 @@ from allauth.socialaccount.providers.facebook.provider import FacebookProvider
 from django.apps import apps
 from django.core.exceptions import ImproperlyConfigured
 from django.urls import reverse
-from django.utils.translation import gettext as _
 
 log = logging.getLogger("ej")
 SOCIAL_BUTTON_REGISTRY = {}

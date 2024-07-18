@@ -5,7 +5,7 @@ from django.utils.timezone import now
 
 from boogie import rules
 from .enums import Choice
-from .models import Comment, Conversation
+from .models import Comment
 
 
 #

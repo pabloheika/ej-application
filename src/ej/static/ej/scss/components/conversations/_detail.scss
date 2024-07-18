@@ -27,10 +27,9 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
     .content-grid {
         grid-template-columns: minmax(4%, auto) minmax(auto, 1400px) minmax(14%, auto);
 
-        @media (max-width: 875px) {       
+        @media (max-width: 875px) {
             & {
                 grid-template-columns: 3% auto 3%;
-                padding: 1.5rem;
             }
         }
     }
@@ -41,7 +40,7 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
         text-align: left;
 
         #add-more-comments {
-            margin-bottom: 3.375rem;
+            margin-bottom: 1rem;
             color: $color-accent !important;
             text-transform: initial;
         }
@@ -65,9 +64,7 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
     textarea {
         background: $color-white;
         border-radius: 0.375rem;
-        height: 2rem;
         max-width: 100%;
-        min-width: 9em;
     }
     textarea {
         height: 4.5rem;
@@ -107,19 +104,29 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
     }
 }
 
-.conversation-balloon article label,
-.conversation-form div label,
+.conversation-balloon label,
+.conversation-form label,
 .board-form label
 {
     color: $color-theme-dark-blue;
     font-family: 'Work Sans', sans-serif;
+    font-size: 1.1em;
+    font-weight: 400;
 }
-.conversation-balloon article label:first-letter,
-.conversation-form div label:first-letter {
+
+.conversation-balloon label span {
+    display: inline-block;
+}
+.conversation-balloon label span::first-letter {
     text-transform: capitalize;
 }
 
-.conversation-form { 
+.conversation-balloon label:first-letter,
+.conversation-form div label:first-letter {
+    text-transform: capitalize !important;
+}
+
+.conversation-form {
     width: 100%;
     margin-top: 3.188rem;
     display: grid;
@@ -139,12 +146,11 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
         font-family: 'Work Sans', sans-serif;
         font-size: 1.125rem;
         font-weight: 700;
-        text-transform: uppercase;
         margin-bottom: 0;
     }
     &__duration {
         display: flex;
-        gap: 2.75rem;
+        gap: 1rem;
         flex-wrap: wrap;
         input {margin-bottom: 0;}
     }
@@ -217,7 +223,7 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
                 }
             }
         }
-            
+
         &__drop-box:nth-child(4) {
         margin-top: .813rem;
         }
@@ -237,12 +243,12 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
             margin-top: 1.813rem;
 
             &__label {
-                margin-bottom: .75rem; 
-                color: $color-theme-dark-blue; 
-                font-size: 1em; 
-                font-style: normal; 
-                font-weight: 700; 
-                line-height: 1.5rem; 
+                margin-bottom: .75rem;
+                color: $color-theme-dark-blue;
+                font-size: 1em;
+                font-style: normal;
+                font-weight: 700;
+                line-height: 1.5rem;
                 text-transform: initial;
             }
         }
@@ -251,13 +257,13 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
             display: flex;
             justify-content: center;
             gap: 1.875rem;
-            
+
             &--remove, &--view {
               text-transform: uppercase;
             }
             &--remove {
               color: $color-accent;
-              
+
             }
             &--view {
               color: $color-complementary-gray;
@@ -285,26 +291,26 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
         padding: .5rem .75rem;
         justify-content: center;
         align-items: center;
-        gap: .5rem; 
+        gap: .5rem;
         border-radius: 5px;
-        background: $color-theme-report-light-blue; 
+        background: $color-theme-report-light-blue;
         margin: auto;
         height: 2.5rem;
         text-transform: initial;
     }
 
     label {
-        text-align: center; 
-        margin-bottom: 1rem !important; 
+        text-align: center;
+        margin-bottom: 1rem !important;
         text-transform: initial;
     }
 
     &__hint-size {
-        color: $color-gray-500 !important; 
-        text-align: center; 
-        font-size: 0.85em; 
-        font-style: normal; 
-        font-weight: 700; 
+        color: $color-gray-500 !important;
+        text-align: center;
+        font-size: 0.85em;
+        font-style: normal;
+        font-weight: 700;
         line-height: normal;
     }
 
@@ -330,7 +336,7 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
         }
 
         &__hint {
-           font-weight: 400; 
+           font-weight: 400;
         }
     }
 

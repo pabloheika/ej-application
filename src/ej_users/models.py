@@ -55,7 +55,7 @@ class User(AbstractUser):
             board_default = Board(
                 slug=instance.email,
                 owner=instance,
-                title="My Board",
+                title=_("Explore"),
                 description="Default user board",
                 palette="brand",
             )
@@ -93,6 +93,9 @@ class User(AbstractUser):
                 },
             )
         return user
+
+    def has_more_than_one_board(self):
+        return self.boards.count() > 1
 
 
 class PasswordResetToken(TimeStampedModel):
@@ -164,16 +167,3 @@ def remove_profile(user):
 
     profile = user.profile.__class__(user=user, id=user.profile.id)
     profile.save()
-
-
-# TODO: Remove this class
-class MetaData(models.Model):
-    """
-    A model to stores user metadata.
-    """
-
-    # gid
-    analytics_id = models.CharField(max_length=100, blank=True, null=True)
-    # mtc_id
-    mautic_id = models.IntegerField(blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)

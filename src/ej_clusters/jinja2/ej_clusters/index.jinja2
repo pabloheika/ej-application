@@ -1,110 +1,69 @@
-{% extends 'ej_conversations/base.jinja2' %}
 {% from "ej_clusters/includes/clusters-generator.jinja2" import clustersGenerator %}
 {% set main_class = 'measure-wide margin-xauto pad-x2' %}
-
+<head><script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://unpkg.com/htmx.org@1.9.5"></script>
+{% block css %}{% include 'ej/includes/head/css.jinja2' %}{% endblock %}</head>
 
 {% block content %}
-<section>
-    <div class="content-grid">
-        <h1 class="text-accent header-space">{% trans %}Opinion groups{% endtrans %}</h1>
+<div class="grouping">
+    <section class="grouping__container">
+        <h2 class="header-space">{{_("Grouping")}}</h2>
         {% if clusters %}
             <p class="margin-y2 helptext">
-                {% trans %}We use votes to classify different users according to their opinions. Users who vote similarly tend to be in the same group.{% endtrans %}
-                {% if user_group|default(False) %}{{ ' ' }}
-                    {% trans %}You belong to group <strong>{{ user_group }}</strong>, for instance.{% endtrans %}
-                    {% else %}{{ ' ' }}
-                    {% trans %}We could not indentify your opinion group yet. Keep Voting!{% endtrans %}
-                {% endif %}
+                {{_("We use votes to rank users according to their opinions. 
+                    Users who vote in a similar way tend to be in the same group.")}}
             </p>
-
-            <div id="cluster-canvas-container">
-                <canvas id="cluster-canvas" class="block"></canvas>
-            </div>
-
-
-            {{ categories(groups, class_='margin-t3') }}
-            <script up-always-execute>
-                window.addEventListener('load', function () {
-                    $('.expand-details').off('click').on('click', function (e) {
-                        $(e.target.parentNode).find('.details').toggle(200);
-                        e.preventDefault();
-                    });
-                })
-            </script>
-            {% for cluster in clusters %}
-                <div id="cluster-{{ cluster.id }}">{{ show_cluster(cluster) }}</div>
-            {% endfor %}
-
-            {% if has_edit_perm %}
-                <div class="center bg-brand-lighter pad-2 rounded-2 margin-y4">
-                    <h2 class="h4 uppercase margin-t2">{{ _('Admin actions') }}</h2>
-                    <form class="margin-0" method="POST" action="./ctrl/">
-                        {{ csrf_input }}
-                        <button name="action" value="force-clusterization">{{ _('Force clusterization') }}</button>
-                    </form>
+        {% endif %}
+    </section>
+</div>
+<div class="clusters-section stereotypes-section">
+    <div class="clusters-section__container clusters-section__container--wide-center {% if not json_data%}clusters-section__detail--padding{%endif%}">
+        {% if json_data %}
+            <div class="clusters-section__chart">
+                <div id="clusters-canvas-container">
+                    <canvas id="cluster-canvas" class="block"></canvas>
                 </div>
-            {% endif %}
-        {% else %}
-            <div class="margin-y3">
-                <p class="helptext left">{{ _('Could not determine the opinion groups for this conversation.') }}
-                {% if has_edit_perm %}
-                    {% trans %}You can edit the clusterization options for this conversation {% endtrans %}
-                    <a class="text-accent" href="{{ url("boards:cluster-edit", **conversation.get_url_kwargs()) }}">{{_("here")}}</a>.
-                {% endif %}
-                </p>
-
+            </div>
+            <div class="clusters-section__detail clusters-section__detail--filled">
+                <div class="margin-y2">
+                    <span class="helptext">{{_("Click on the cluster for more information.")}}</span>
+                </div>
+                <h2> {{_("In the group")}} {{ biggest_cluster_data.get('name') }}</h2>
+                <div>
+                    <p class="clusters-section__comment-percentage">{{ biggest_cluster_data.get('percentage') }}%
+                        {{_("agree with")}} </p>
+                    <p class="clusters-section__main-comment"> {{ biggest_cluster_data.get('content') }}</p>
+                </div>
+            </div>
+            {% else %}
+            <div class="clusters-section__detail clusters-section__detail--empty">
+                <div>
+                    <p class="cluster-section__detail--null clusters-section__detail--no-margin">{{_("Your conversation does not have personas.")}}</p>
+                    <p class="bold clusters-section__detail--no-margin">{{_("Without personas, it's not possible to create opinion groups.")}}</p>
+                    <p>{{_("After modeling groups, you can check then here.")}}</p>
+                </div>
+                <div class="conversation-dashboard__button">
+                    <a class="button is-primary float-left"
+                        href="{{ url('boards:cluster-edit', **conversation.get_url_kwargs()) }}">{{_("Creates groups")}}</a>
+                </div>
             </div>
         {% endif %}
     </div>
-</section>
+</div>
+
+<div class="hide"
+    hx-trigger="showClusterData from:body"
+    hx-vals="js:{cluster_id: event.detail.cluster_id}"
+    hx-get="{{url("dataviz:cluster-detail", **{"conversation_id": conversation.id, "slug": conversation.slug})}}"
+    hx-target="#cluster-details"
+    hx-on::after-request='showClusterModal()'
+    >
+</div>
+<div id="cluster-details" class="hide">
+    {% include 'ej_dataviz/dashboard/cluster-detail.jinja2' %}
+</div>
 {% endblock %}
 
-
-{% macro show_cluster(cluster) %}
-    <div class="collapsible">
-        {% set agree = cluster.separated_comments[0] %}
-        {% set disagree = cluster.separated_comments[1] %}
-
-        <h2 class="h3 text-accent screen-reader">{{ cluster.name }}</h2>
-        <p class="center margin-y3">
-            {% trans cluster=cluster.name %}Typical comments cor cluster <strong>{{ cluster }}</strong>.{% endtrans %}</p>
-        <div>
-            {{ expander(_('Positive comments'), agree) }}
-            {{ show_comments(agree, 'agree', _('No positive comments in cluster')) }}
-        </div>
-
-        <div>
-            {{ expander(_('Negative comments'), disagree) }}
-            {{ show_comments(disagree, 'disagree', _('No negative comments in cluster')) }}
-        </div>
-    </div>
-{% endmacro %}
-
-
-{% macro expander(title, expand) %}
-    <h3 class="h4 uppercase text-accent{% if expand %} expand-details cursor-pointer{% endif %}">
-        {%- if expand %}<i class="fa fa-plus"></i> {% endif %}{{ title }}
-    </h3>
-{% endmacro %}
-
-
-{% macro show_comments(comments, prop, error_msg) %}
-    {% if comments %}
-        <dl class="hidden details margin-x3">
-            {% for comment in comments[:5] %}
-                <dt class="bold">{{ '%.1f%%' % (100 * comment.__getattribute__(prop)) }}</dt>
-                <dd>{{ comment.content }}</dd>
-            {% endfor %}
-        </dl>
-    {% else %}
-        <p>{{ error_msg }}</p>
-    {% endif %}
-{% endmacro %}
-
-
-{% block javascript %}
-    {{ super() }}
-    {% if json_data %}
-        {{ clustersGenerator(json_data) }}
-    {% endif %}
-{% endblock %}
+{% if json_data %}
+    {{ clustersGenerator(json_data) }}
+{% endif %}

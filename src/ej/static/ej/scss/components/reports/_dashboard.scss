@@ -8,10 +8,10 @@
         &__title {
             height: 1.875rem;
             margin-bottom: 1.813rem;
+            text-transform: capitalize;
         }
     }
 }
-
 
 .dashboard-balloon {
     &__container {
@@ -51,11 +51,6 @@
         color: $color-theme-report-blue;
     }
 
-    &__count {
-        font-size: 1.75rem;
-        color: white;
-    }
-
     &__button {
         padding: 1rem 0 0 0;
     }
@@ -71,59 +66,73 @@
 }
 
 
-.report-container .conversation-dashboard .charts-section {
+.charts-section {
     display: flex;
-    flex-wrap: wrap;
+    gap: 2rem;
     justify-content: space-between;
     margin-bottom: 1.875rem;
 
     &__title {
-        font-size: 1rem;
+        font-size: 1.1em;
         line-height: 1.3125rem;
         margin: unset;
         display: flex;
-        text-transform: lowercase;
+        text-transform: capitalize;
         color: $color-theme-dark-blue;
         font-family: "Work Sans", sans-serif;
         font-weight: bold;
+        flex-grow: 1;
+    }
+
+    #voting-time-chart {
+        height: 25rem;
+        div:first-child {
+            width: 100% !important;
+        }
     }
 
     .time-chart {
-        width: 60%;
+        width: 100%;
         svg {
             margin: 1rem auto auto auto;
-            width: 95%;
         }
 
         .date-picker {
             display: flex;
-
-            &__date-selector {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: flex-end;
-                flex-grow: 2;
-                gap: 0.85rem;
-            }
+            flex-wrap: wrap;
+            gap: 1rem;
 
             &__input {
-                min-width: 8rem;
-                width: 8.6rem;
-                font-size: 0.875rem;
-                margin: 0 0 0 0;
-                border-color: $color-theme-dark-blue !important;;
-                color: $color-black-alternative;
-                border-radius: 0.313rem;
-                font-weight: bold;
-                height: 2.22rem;
-                padding-right: 0.5rem;
-                padding-left: 0.5rem;
+                display: flex;
+                gap: .5rem;
+                border: 1px solid $color-theme-report-dark-gray;
+                border-radius: 0.3125rem;
+                padding: 0.25rem;
+                cursor: pointer;
+                color: $color-theme-report-dark-gray;
+                input {
+                    min-width: unset !important;
+                    max-width: 7.5rem !important;
+                    padding: unset;
+                    cursor: pointer;
+                    width: 100%;
+                    margin: auto;
+                    height: 1rem;
+                    border: unset !important;
+                    border-radius: unset !important;
+                    font-size: 0.875rem;
+                    font-weight: 400;
+                    text-align: center;
+                    color: $color-theme-report-dark-gray;
+                }
+                input:focus {
+                    box-shadow: unset !important;
+                }
             }
         }
 
         &__container {
             position: relative;
-            top: 1rem;
         }
 
         &--invalid-dates {
@@ -137,20 +146,22 @@
         }
     }
 
-    .votes-by-channel-chart {
-        width: 35%;
+    .channels-chart {
+        width: 100%;
+        &__header {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .85rem;
+            justify-content: space-between;
+        }
 
         .participant-filter {
-            margin-top: 0.5rem;
-            align-items: baseline;
+            display: flex;
+            gap: .3rem;
 
-            &__label {
-                width: 100%;
-                font-weight: bold;
-                margin-bottom: 0.5rem;
-                color: $color-navigation-header-text;
-                text-transform: lowercase;
-                font-size: 1rem;
+            &__buttons {
+                display: flex;
+                gap: .5rem;
             }
 
             &__button {
@@ -164,8 +175,8 @@
                 margin-right: 0.5625rem;
                 text-transform: lowercase;
                 height: 1.82rem;
-                font-weight: bold;
-                font-size: 1.125rem;
+                font-weight: 400;
+                font-size: 1rem;
 
                 &--selected {
                     background-color: $color-theme-report-dark-gray;
@@ -180,6 +191,17 @@
                 box-shadow: unset;
             }
 
+        }
+    }
+
+    @media (max-width: 1200px) {
+        & {
+            flex-wrap: wrap;
+
+            .time-chart,
+            .channels-chart {
+                width: 100% !important;
+            }
         }
     }
 }
@@ -218,14 +240,18 @@
 
     &__title {
         font-weight: bold;
-        font-size: 1rem;
+        font-size: 1em;
         color: $color-theme-report-blue;
     }
 
     &__value {
-        font-weight: bold;
-        font-size: 1.75rem;
+        font-weight: 400;
+        font-size: 1.5em;
         color: $color-theme-report-light-blue;
+
+        &--white {
+            color: $color-white;
+        }
     }
 
     &--blue {
@@ -253,14 +279,19 @@
     &__container {
         display: flex;
         flex-wrap: wrap;
-        padding-top: 3.75rem;
-        justify-content: space-between;
+        padding: 0 0 3rem 0;
+        justify-content: center;
+
+        &--wide-center {
+            align-items: center;
+            padding: 3rem 0;
+        }
     }
 }
 
-.report-container .conversation-dashboard .clusters-section {
+.report-container .conversation-dashboard .clusters-section, .clusters-section {
     background-color: $color-theme-report-gray-blue;
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
     grid-column: 1/4;
 
     &__title {
@@ -274,7 +305,6 @@
     }
 
     &__chart {
-        width: 45%;
         text-align: center;
     }
 
@@ -298,9 +328,9 @@
 
         &--filled {
             h2 {
-                font-size: 1.5rem;
+                font-size: 1.5em;
                 margin-top: unset;
-                font-weight: bold;
+                text-transform: capitalize;
             }
             max-width: 20rem;
         }
@@ -312,17 +342,59 @@
             margin-bottom: unset !important;
         }
         &--padding {
-            padding: 3.125rem 0 3.125rem 0;
+            justify-content: unset;
         }
     }
     &__comment-percentage {
-        font-size: 2.25rem;
+        font-size: 2.25em;
     }
 
     &__main-comment {
-        font-size: 1rem;
-        margin-bottom: 3rem;
-        font-weight: 500;
+        font-size: 1em;
+        margin-bottom: 1rem;
+    }
+}
+
+.scatter-section {
+    display: grid;
+    grid-template-columns: 30% auto auto auto;
+    grid-template-rows: 25rem;
+    @media (max-width: 414px) {
+        & {
+            grid-template-columns: auto;
+            grid-template-rows: auto auto;
+        }
+    }
+
+    &__filters {
+        grid-column: 1 / 2;
+        grid-row: 1;
+        display: block !important;
+
+        @media (max-width: 414px) {
+            & {
+                grid-column: 1;
+                grid-row: 1;
+            }
+        }
+
+        p {
+
+        }
+    }
+
+    &__chart {
+        grid-column: 2 / 5;
+        grid-row: 1;
+        height: 400px;
+
+        @media (max-width: 414px) {
+            & {
+                grid-column: 1;
+                grid-row: 2;
+            }
+        }
+
     }
 }
 
@@ -330,15 +402,10 @@
     gap: 2.5rem;
     margin-bottom: 3rem;
 
-    &--grow {
-        flex-grow: 1;
-    }
     &__title {
-        max-width: 18.75rem;
         display: flex;
         flex-wrap: wrap;
         text-align: left;
-        width: 20%;
         h2 {
             width: 100%;
         }
@@ -505,7 +572,7 @@
 
 @media (max-width: 375px) {
     .time-chart,
-    .votes-by-channel-chart {
+    .channels-chart {
         width: 100vw !important;
         min-width: unset !important;
     }
@@ -585,7 +652,8 @@
             font-size: 1.5rem;
         }
 
-        &__main-comment {
+        &__main-comment,
+        .helptext {
             font-size: 0.875rem;
             margin-bottom: 2rem;
         }
@@ -636,78 +704,5 @@
         width: 90% !important;
         max-width: unset !important;
     }
-
-
-    .report-container .conversation-dashboard .charts-section {
-        margin-bottom: 0rem;
-
-        &__title{
-            color: $color-theme-dark-blue;
-            margin: unset;
-        }
-
-        .time-chart,
-        .votes-by-channel-chart {
-            border-radius: 0px;
-        }
-
-        .time-chart .date-picker {
-            &__input--margin-bottom {
-                margin-bottom: 0.3rem !important;
-            }
-        }
-
-        .votes-by-channel-chart {
-            margin: 1.5625rem 0 0 0;
-            .participant-filter {
-                &__button {
-                    color: $color-navigation-header-text;
-                    border-color: $color-navigation-header-text;
-
-                    &--selected {
-                        background-color: $color-theme-report-dark-gray;
-                        color: $color-white;
-                    }
-                }
-            }
-        }
-    }
-
 }
 
-@media (max-width: 1366px) {
-    .charts-section {
-        .votes-by-channel-chart {
-            width: 22vw !important;
-
-            .participant-filter {
-                &__button {
-                    font-size: 1rem;
-                }
-            }
-        }
-    }
-}
-
-@media (max-width: 1200px) {
-    .charts-section {
-        .time-chart,
-        .votes-by-channel-chart {
-            width: 100% !important;
-        }
-
-        .time-chart {
-            margin: 0 0 1rem 0;
-        }
-        .time-chart {
-            .date-picker {
-                flex-direction: column;
-                gap: 0.85rem;
-
-                &__date-selector {
-                    justify-content: flex-start !important;
-                }
-            }
-        }
-    }
-}

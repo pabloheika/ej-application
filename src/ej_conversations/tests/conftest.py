@@ -6,7 +6,20 @@ from django.test.client import Client
 from django.contrib.auth.models import AnonymousUser
 
 from ej_conversations import create_conversation
+from ej_boards.models import Board
 from ej_users.models import User
+
+from rest_framework.test import APIClient
+
+API_V1_URL = "/api/v1"
+
+
+def get_authorized_api_client(user_info):
+    api = APIClient()
+    response = api.post(API_V1_URL + "/login/", user_info, format="json")
+    access_token = response.json()["access_token"]
+    api.credentials(HTTP_AUTHORIZATION="Bearer " + access_token)
+    return api
 
 
 @pytest.fixture
@@ -53,6 +66,12 @@ def vote(db, user, comment):
 
 
 @pytest.fixture
+def board(user):
+    board = Board.objects.create(slug="userboard", owner=user, description="board")
+    return board
+
+
+@pytest.fixture
 def post_request(rf):
     request = rf.post("")
     request.user = AnonymousUser()
@@ -89,6 +108,66 @@ def mk_user(db, email="default@user.com", is_staff=False):
 @pytest.fixture
 def api(client):
     return ApiClient(client)
+
+
+@pytest.fixture
+def conversation_with_comments(conversation, board):
+    user1 = User.objects.create_user("user1@email.br", "password")
+    user2 = User.objects.create_user("user2@email.br", "password")
+    user3 = User.objects.create_user("user3@email.br", "password")
+
+    board.save()
+    conversation.board = board
+    conversation.save()
+
+    comment = conversation.create_comment(
+        conversation.author, "aa", status="approved", check_limits=False
+    )
+    comment2 = conversation.create_comment(
+        conversation.author, "aaa", status="approved", check_limits=False
+    )
+    comment3 = conversation.create_comment(
+        conversation.author, "aaaa", status="approved", check_limits=False
+    )
+    comment4 = conversation.create_comment(
+        conversation.author, "test", status="approved", check_limits=False
+    )
+
+    comment.vote(user1, "agree")
+    comment.vote(user2, "agree")
+    comment.vote(user3, "agree")
+
+    comment2.vote(user1, "disagree")
+    comment2.vote(user2, "agree")
+    comment2.vote(user3, "agree")
+
+    comment3.vote(user1, "disagree")
+    comment3.vote(user2, "disagree")
+    comment3.vote(user3, "agree")
+
+    comment4.vote(user1, "disagree")
+    comment4.vote(user2, "disagree")
+    comment4.vote(user3, "disagree")
+    conversation.save()
+    return conversation
+
+
+@pytest.fixture()
+def conversation_with_votes(conversation, board):
+    user1 = User.objects.create_user("user1@email.br", "password")
+    user2 = User.objects.create_user("user2@email.br", "password")
+    user3 = User.objects.create_user("user3@email.br", "password")
+
+    conversation.board = board
+    conversation.save()
+
+    comment = conversation.create_comment(
+        conversation.author, "aa", status="approved", check_limits=False
+    )
+    comment.vote(user1, "agree")
+    comment.vote(user2, "agree")
+    comment.vote(user3, "disagree")
+    return conversation
 
 
 class ApiClient:

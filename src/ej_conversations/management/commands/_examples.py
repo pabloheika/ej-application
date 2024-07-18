@@ -132,7 +132,7 @@ class ExampleData:
                     return comment.vote(user, "agree", commit=False)
                 else:
                     return comment.vote(user, "disagree", commit=False)
-            except:
+            except Exception:
                 print(f"could not vote on comment {comment.content}")
 
     def make_all(self):

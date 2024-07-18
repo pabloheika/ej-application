@@ -8,7 +8,7 @@ from django.utils.text import slugify
 from django.utils.translation import gettext as __, gettext_lazy as _
 from sidekick import import_later
 
-from ej_clusters.models import Cluster
+from ej_clusters.models import Cluster, Clusterization
 from ej_conversations.utils import check_promoted
 from ej_conversations.models.conversation import Conversation
 
@@ -187,8 +187,6 @@ def votes_as_dataframe(votes):
         "author__email",
         "author__name",
         "author__id",
-        "author__metadata__analytics_id",
-        "author__metadata__mautic_id",
         "comment__content",
         "comment__id",
         "comment__conversation",
@@ -199,8 +197,6 @@ def votes_as_dataframe(votes):
         "email",
         "author",
         "author_id",
-        "author__metadata__analytics_id",
-        "author__metadata__mautic_id",
         "comment",
         "comment_id",
         "conversation_id",
@@ -229,16 +225,20 @@ def get_stop_words():
     return stop_words.get_stop_words("en")
 
 
-def conversation_has_stereotypes(clusterization):
-    if clusterization and clusterization.exists():
-        return clusterization.stereotypes().count() > 0
-    return False
-
-
 def get_biggest_cluster(clusterization):
     from django.db.models import Count, F
 
-    if conversation_has_stereotypes(clusterization):
+    if (
+        isinstance(clusterization, Clusterization)
+        and clusterization.stereotypes.count() > 0
+    ):
+        clusters = clusterization.clusters.annotate(size=Count(F("users")))
+        return clusters.order_by("-size").first()
+    if (
+        clusterization
+        and clusterization.exists()
+        and clusterization.stereotypes().count() > 0
+    ):
         clusters = clusterization.clusters().annotate(size=Count(F("users")))
         return clusters.order_by("-size").first()
     return None
@@ -254,7 +254,7 @@ def create_stereotype_coords(
             "name", index="users"
         )
         if labels.shape != (0, 0):
-            table["cluster"] = labels.loc[labels.index.values != None]
+            table["cluster"] = labels.loc[labels.index.values != None]  # noqa: E711
             table["cluster"].fillna(__("*Unknown*"), inplace=True)
             kwargs["labels"] = labels
 

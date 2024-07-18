@@ -3,13 +3,14 @@ from urllib import request
 from datetime import datetime
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from ej.permissions import (
     IsAuthor,
     IsAuthenticatedOnlyGetView,
     IsSuperUser,
     IsAuthenticatedCreationView,
     IsViewRetrieve,
+    ParticipantCanAddComment,
 )
 from django.db.models import Q
 from ej.viewsets import RestAPIBaseViewSet
@@ -29,7 +30,7 @@ from ej_dataviz.utils import votes_as_dataframe
 class CommentViewSet(RestAPIBaseViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, ParticipantCanAddComment]
 
     def list(self, request):
         is_author = self.request.query_params.get("is_author", None)
@@ -71,17 +72,6 @@ class VoteViewSet(RestAPIBaseViewSet):
     permission_classes = (
         IsAuthenticatedCreationView | IsAuthor | IsSuperUser | IsAdminUser,
     )
-
-    def list(self, request):
-        if request.user.is_superuser:
-            queryset = Vote.objects.all()
-        else:
-            queryset = Vote.objects.filter(author=request.user)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def delete_hook(self, request, instance):
-        delete_vote(request, instance)
 
 
 class ConversationViewSet(RestAPIBaseViewSet):

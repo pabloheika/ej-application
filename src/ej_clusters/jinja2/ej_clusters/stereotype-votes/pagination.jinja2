@@ -1,28 +1,26 @@
-<div class=footer-personas>
-    <p id="pagination-text"></p>
+<div class=footer-stereotypes>
     <div id="pagination"></div>
+    <p id="pagination-text"></p>
 </div>
 
 <script>
     let items = $(".stereotype-cards__card-comments");
     const numItems = items.length;
-    let itemsPerPage = 5;
+    let itemsPerPage = 4;
+
+    if (matchMedia('(min-width: 900px)').matches) {
+        itemsPerPage = 9999;
+    }
 
     items.slice(itemsPerPage).hide();
     const pagination = $('#pagination').pagination({
         items: numItems,
         itemsOnPage: itemsPerPage,
-        prevText: "Anterior",
-        nextText: "Próximo",
+        prevText: "<",
+        nextText: ">",
         onInit: showCurrentItems,
         onPageClick: showCurrentItems,       
     });
-    
-    function updateItemsPerPage(){
-        itemsPerPage = document.getElementById("pages-select").value;
-        showCurrentItems();
-        pagination.pagination('updateItemsOnPage', itemsPerPage);
-    }
 
     function showCurrentItems(pageNumber=1) {
         const showItemsBehind = itemsPerPage * (pageNumber - 1);
@@ -31,10 +29,10 @@
         currentSerie = showItemsBehind + 1
         
         if (showItemsBehind >= 0) {
-            text = " {{_('showing')}} " + currentSerie + " {{_('to')}} " + showItemsFoward + " {{_('from')}} " + numItems + " {{_('comments')}} ";
+            text = " {{_('showing')}} " + currentSerie + " {{_('to')}} " + showItemsFoward + " {{_('from')}} " + numItems;
         } 
         if (showItemsFoward >= numItems) {
-            text = " {{_('showing')}} " + currentSerie + " {{_('from')}} " + numItems + " {{_('comments')}} ";
+            text = " {{_('showing')}} " + currentSerie + " {{_('from')}} " + numItems;
         }
         paginationText = document.getElementById("pagination-text").textContent=text;
         

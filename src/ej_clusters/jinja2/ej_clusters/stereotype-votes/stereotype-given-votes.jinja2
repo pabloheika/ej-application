@@ -3,36 +3,43 @@
         <input type="hidden" name="vote" value="{{ vote.id }}">
         <p>{{ vote.comment.content }}</p>
         <div class="stereotype-cards__vote-buttons" id="vote-buttons-update-{{ vote.id }}">
-                <button type="button" 
-                        onclick="sendUpdateVoteInformation(this.value, '{{ vote.id }}', '{{stereotype.id}}', '{{ vote.comment.id }}')" 
-                        class="is-clear agree-{{vote.choice.value}}" 
-                        name="update" 
-                        value="agree-{{ vote.id }}">
-                    <i class="fa fa-check"></i> {{ _('Agree') }}
-                </button>
-                <button type="button"
-                        onclick="sendUpdateVoteInformation(this.value, '{{ vote.id }}', '{{stereotype.id}}', '{{ vote.comment.id }}')" 
-                        class="is-clear skip-{{vote.choice.value}}" 
-                        name="update" 
-                        value="skip-{{ vote.id }}">
-                    <i class="far fa-meh"></i> {{ _('Neutral') }}
-                </button>
-                <button type="button" 
-                        onclick="sendUpdateVoteInformation(this.value, '{{ vote.id }}', '{{stereotype.id}}', '{{ vote.comment.id }}')" 
-                        class="is-clear disagree-{{vote.choice.value}}" 
-                        name="update" 
-                        value="disagree-{{ vote.id }}">
-                    <i class="fa fa-times"></i> {{ _('Disagree') }}
-                </button>
-                <button class="stereotype-cards__vote-buttons__delete"
-                        name="update"
-                        type="button" 
-                        value="delete-{{ vote.id }}"
-                        onclick="sendUpdateVoteInformation(this.value, '{{ vote.id }}', '{{stereotype.id}}', '{{ vote.comment.id }}')" >
-                        {{ _('Clear vote') }}
-                </button>
+            <button type="button" 
+                    onclick="sendUpdateVoteInformation(this.value, '{{ vote.id }}', '{{stereotype.id}}', '{{ vote.comment.id }}')" 
+                    class="is-clear agree-{{vote.choice.value}}" 
+                    name="update" 
+                    value="agree-{{ vote.id }}">
+                <i class="fa fa-check"></i> {{ _('Agree') }}
+            </button>
+            <button type="button"
+                    onclick="sendUpdateVoteInformation(this.value, '{{ vote.id }}', '{{stereotype.id}}', '{{ vote.comment.id }}')" 
+                    class="is-clear skip-{{vote.choice.value}}" 
+                    name="update" 
+                    value="skip-{{ vote.id }}">
+                <i class="far fa-meh"></i> {{ _('Neutral') }}
+            </button>
+            <button type="button" 
+                    onclick="sendUpdateVoteInformation(this.value, '{{ vote.id }}', '{{stereotype.id}}', '{{ vote.comment.id }}')" 
+                    class="is-clear disagree-{{vote.choice.value}}" 
+                    name="update" 
+                    value="disagree-{{ vote.id }}">
+                <i class="fa fa-times"></i> {{ _('Disagree') }}
+            </button>
+            <button class="stereotype-cards__vote-buttons__delete"
+                    name="update"
+                    type="button" 
+                    value="delete-{{ vote.id }}"
+                    onclick="sendUpdateVoteInformation(this.value, '{{ vote.id }}', '{{stereotype.id}}', '{{ vote.comment.id }}')" >
+                    {{ _('Clear vote') }}
+            </button>
+            <button class="is-clear stereotype-cards__vote-buttons__delete--icon-{{vote.choice.value}}"
+                    name="update"
+                    type="button" 
+                    value="delete-{{ vote.id }}"
+                    onclick="sendUpdateVoteInformation(this.value, '{{ vote.id }}', '{{stereotype.id}}', '{{ vote.comment.id }}')" >
+                    <img src="{{static('img/icons/circle-xmark-regular.svg')}}">
+            </button>
         </div>
-        <hr class="divider-section hr--hide">
+        <hr class="divider-section">
     </div>
     
 {% endfor %}

@@ -1,5 +1,6 @@
 stages:
     - style
+    - linter
     - unit tests
     - build
     - deploy
@@ -11,7 +12,7 @@ variables:
 black:
     stage: style
     image:
-        name: python:3.8.18-slim-bullseye
+        name: python:3.9.19-slim-bookworm
         pull_policy: if-not-present
     before_script:
         - /bin/bash -c "pip install black==22.3.0"
@@ -20,16 +21,29 @@ black:
     tags:
         - k8s
 
+ruff:
+    stage: linter
+    image:
+        name: python:3.9.19-slim-bookworm
+        pull_policy: if-not-present
+    before_script:
+        - /bin/bash -c "pip install ruff==0.3.7"
+    script:
+        - /bin/bash -c "ruff check"
+    tags:
+        - k8s
+
 pytest:
     stage: unit tests
     image:
-        name: python:3.8.18-slim-bullseye
+        name: python:3.9.19-slim-bookworm
         pull_policy: if-not-present
     before_script:
-        - apt update && apt install git libpq-dev gcc  -y
+        - apt-get update && apt-get install curl libpq-dev gcc g++ libjpeg-dev zlib1g-dev git -y
     script:
         - cd /builds/pencillabs/ej/ej-application
-        - pip install poetry
+        - curl -sSL https://install.python-poetry.org | python3 -
+        - export PATH="/root/.local/bin:$PATH"
         - poetry install --with main,dev --no-root
         - poetry run inv docs
         - poetry run inv test
@@ -58,10 +72,10 @@ build_dev_image:
 deploy_dev_image:
     stage: deploy
     image:
-        name: python:3.8.18-slim-bullseye
+        name: python:3.9.19-slim-bookworm
         pull_policy: if-not-present
     before_script:
-        - apt update && apt install git curl -y
+        - apt-get update && apt-get install git curl -y
         - curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
     script:
         - helm version
@@ -78,7 +92,7 @@ e2e:
     stage: e2e tests
     image: cypress/base:18.16.0
     before_script:
-        - apt update && apt install curl -y
+        - apt-get update && apt-get install curl -y
     script:
         - cd /builds/pencillabs/ej/ej-application/src/ej/tests/e2e
         - ./run.sh https://ejplatform.pencillabs.tec.br

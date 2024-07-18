@@ -129,7 +129,7 @@ class TestProfile(ConversationRecipes):
         profile = other_user.get_profile()
         retrieved_conversation = profile.participated_public_conversations().first()
 
-        assert retrieved_conversation == None
+        assert retrieved_conversation is None
 
     def test_participated_promoted_conversation_comment(self, db, user, other_user):
         user.save()
@@ -157,7 +157,7 @@ class TestProfile(ConversationRecipes):
         profile = other_user.get_profile()
         retrieved_conversation = profile.participated_public_conversations().first()
 
-        assert retrieved_conversation == None
+        assert retrieved_conversation is None
 
     def test_participated_conversation_comment_vote(self, db, user, other_user):
         user.save()

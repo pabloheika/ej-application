@@ -105,9 +105,6 @@ def watch_path(app_name, func, poll_time=0.5, name=None, skip_first=False):
 
 
 def exec_watch(app_name, func, name, watch=False, background=False, poll_time=0.5):
-    app_root = f"{directory}/src/{app_name}"
-    app_static_root = f"{app_root}/static/{app_name}"
-    path = f"{app_static_root}/scss"
     if watch and background:
         go = lambda app_name: watch_path(app_name, func, name=name, poll_time=poll_time)
         return exec_watch(app_name, go, name, background=True)

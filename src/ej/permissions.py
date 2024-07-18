@@ -1,4 +1,5 @@
 from rest_framework import permissions
+from ej_conversations.models import Conversation
 
 
 class IsAuthor(permissions.BasePermission):
@@ -11,6 +12,23 @@ class IsAuthor(permissions.BasePermission):
             return True
 
         return False
+
+
+class ParticipantCanAddComment(permissions.BasePermission):
+    message = "participants are not allowed to add comments"
+
+    def has_permission(self, request, view):
+        if request.method == "POST":
+            conversation_id = request.data.get("conversation")
+            try:
+                conversation = Conversation.objects.get(id=conversation_id)
+                if not conversation.participants_can_add_comments:
+                    return False
+                return True
+            except Exception:
+                self.message = f"could not find conversation with ID {conversation_id}"
+                return False
+        return True
 
 
 class IsOwner(permissions.BasePermission):  # For model cluster

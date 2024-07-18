@@ -1,18 +1,22 @@
 {% macro menu_item(current_page, page, href, title) %}
     {% if page == 'home' %}
-        <a href={{ href }}
-            class="{{'participant-menu__item participant-menu__home-link participant-menu__home-link--selected' if current_page is defined and current_page == page else 'participant-menu__item participant-menu__home-link'}}">
-            <i class="fas fa-home"></i> {{ title }}
-        </a>
+        <div class="{{'participant-menu__item participant-menu__item--selected' if current_page is defined and current_page == page else 'participant-menu__item participant-menu__home-link'}}">
+            <a href={{ href }}
+                >
+                <i class="fas fa-home"></i> {{ title }}
+            </a>
+        </div>
     {% else %}
-        <li class={{"participant-menu__home-link--selected" if current_page is defined and current_page == page else ""}}>
-            <a href={{href}}>{{ title }}</a>
+        <li class={{"participant-menu__item--selected" if current_page is defined and current_page == page else ""}}>
+            <div>
+                <a href={{href}}>{{ title }}</a>
+            </div>
         </li>
     {% endif %}
 {% endmacro %}
 
 {% macro board_menu_item(current_page, page, href, board) %}
-        <li class={{"participant-menu__home-link--selected" if current_page is defined and current_page == page else ""}}>
+        <li class={{"participant-menu__item--selected" if current_page is defined and current_page == page else ""}}>
             <a href={{href}}>{{ board.title }}</a>
             <p>({{board.conversations.count()}})</p>
         </li>

@@ -1,9 +1,6 @@
 import os
-from ej_tools.models import OpinionComponent
 from jinja2 import Environment, FileSystemLoader
 
-from ej_boards.models import Board
-from ej_conversations.models import Conversation
 from .utils import get_host_with_schema
 
 
@@ -47,13 +44,13 @@ class TemplateGenerator:
     def get_template(self):
         try:
             return self._render_jinja_template()
-        except:
+        except Exception:
             raise
 
     def _get_palette_css(self):
         try:
             generator = self.PALETTE_CSS_GENERATORS[self.theme]
-        except:
+        except Exception:
             generator = self.PALETTE_CSS_GENERATORS["brand"]
         return generator.css()
 
@@ -95,7 +92,7 @@ class TemplateGenerator:
                     comment_id,
                     email_tag,
                 )
-            except:
+            except Exception:
                 url = "{}/conversations/{}/{}?comment_id={}&action=vote&origin=campaign{}"
                 return url.format(
                     self.vote_domain,
@@ -121,7 +118,7 @@ class MarketingTool:
             return "&email=*|EMAIL|*"
         elif template_type == "mautic":
             return "&email=|EMAIL|"
-        raise ValueError(f"Template type invalid")
+        raise ValueError("Template type invalid")
 
 
 class BaseCssGenerator:

@@ -1,0 +1,12 @@
+<div class="stereotype-cards votes-container">
+    <form id="edit-votes-formset" 
+        hx-post="{{ url('boards:stereotype-votes-votes',  pk=stereotype.id, **conversation.get_url_kwargs()) }}"
+        hx-swap="none"
+        hx-on::after-request='showCreateModal()'
+    >
+        {{ csrf_input }}
+        <input id="edit-stereotype-id" type="hidden" name="stereotype_id">
+        {{ stereotype_votes_formset }}
+        {{ non_voted_formset }}
+    </form>
+</div>

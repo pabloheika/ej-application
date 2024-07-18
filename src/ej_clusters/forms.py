@@ -23,11 +23,25 @@ class StereotypeForm(EjModelForm):
         kwargs["instance"] = instance
         kwargs["initial"] = {"owner": owner, **kwargs.get("initial", {})}
         super(StereotypeForm, self).__init__(*args, **kwargs)
+        self.fields["description"].widget.attrs["placeholder"] = _(
+            "Brief description if necessary"
+        )
 
     def full_clean(self):
         self.data = self.data.copy()
         self.data["owner"] = str(self.owner_instance.id)
         return super().full_clean()
+
+    def save(self, commit=True, **kwargs):
+        stereotype = super().save(commit, **kwargs)
+
+        if stereotype.id and commit:
+            cluster = stereotype.clusters.first()
+            if cluster:
+                cluster.name = stereotype.name
+                cluster.description = stereotype.description
+                cluster.save()
+        return stereotype
 
 
 class ClusterForm(EjModelForm):

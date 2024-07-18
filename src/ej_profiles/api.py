@@ -1,11 +1,10 @@
 from rest_framework.response import Response
-from rest_framework import status, viewsets
+from rest_framework import viewsets
 from rest_framework.decorators import action
 from django.http import JsonResponse
 
 from .models import Profile
 from .serializer import ProfileSerializer
-from rest_framework.authtoken.models import Token
 from ej.permissions import IsUser, IsSuperUser
 from rest_framework.permissions import IsAdminUser
 
@@ -29,7 +28,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
         profile = None
         try:
             profile = Profile.objects.get(user=user)
-        except Exception as e:
+        except Exception:
             profile = Profile(user=user)
         phone_number = request.data.get("phone_number")
         if phone_number:

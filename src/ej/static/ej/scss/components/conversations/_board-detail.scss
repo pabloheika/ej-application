@@ -1,0 +1,93 @@
+.board-detail {
+    .button-container {
+        display: flex;
+        gap: 2.1875rem;
+        margin-top: 1.5rem;
+    
+        &__edit-button, &__delete-button {
+            font-size: 0.75em;
+        }
+    
+        &__delete-button {
+            color: $color-red-negative;
+        }
+    }
+    
+    &__description {
+        color: $color-gray-darker;
+    }
+
+    &__statistics-container {
+        text-align: start;
+    }
+
+    &__board-statistics {
+        &--hide {
+            @media screen and (max-width: 559px) {
+                display: none;
+            }
+        }
+
+        &--show {
+            .cards-divider-header {
+                @media screen and (max-width: 559px) {
+                    display: flex;
+                }
+            }
+        }
+    }
+
+    &__title {
+        display: flex;
+        place-items: baseline;
+        justify-content: space-between;
+        padding-bottom: 1rem;
+    
+        &--left-side {
+            display: flex;
+            place-items: baseline;
+    
+            h1 {
+                margin-bottom: 0.1rem;
+                color: $color-black !important;
+                font-weight: 400;
+            }
+    
+            i {
+                font-size: 1em;
+                padding-bottom: 0.3125rem;
+            }
+        }
+    
+        &--right-side {
+            display: none;
+
+            @media screen and (max-width: 559px) {
+                display: flex;
+                place-items: center;
+                justify-content: center;
+                width: 1.5625rem;
+                height: 1.5625rem;
+                background: $color-primary;
+                border-radius: 50%;
+    
+                i {
+                    color: $color-white;
+                }
+            }
+
+        }
+    }
+}
+
+.cards-divider.board-detail__board-statistics--show {
+    @media screen and (max-width: 559px) {
+        display: flex;
+        bottom: 0;
+    }
+}
+
+#bg-modal.board-detail__board-statistics--show {
+    display: block;
+    opacity: .7;
+  }

@@ -26,7 +26,7 @@
 
     @media (max-width: 900px) and (min-width: 321px) {
         & {
-            padding: 1.875rem 1.625rem 1.938rem 2rem;    
+            padding: 1.875rem 1.625rem 1.938rem 2rem;
         }
     }
 
@@ -35,8 +35,8 @@
         height: 225px;
 
         @media (max-width: 900px) and (min-width: 321px) {
-            & { 
-                height: 258px;
+            & {
+                height: unset;
             }
         }
     }
@@ -99,12 +99,6 @@
             }
         }
 
-        @media (max-width: 900px) and (min-width: 321px) {
-            & {
-                max-height: 62px;
-                overflow-y: scroll;
-            }
-        }
 
         &--white {
             color: $color-white;

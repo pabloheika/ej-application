@@ -33,7 +33,7 @@
     },
     "scripts": {
         "watch": "parcel watch ts/*.ts --dist-dir js/ --no-source-maps",
-        "build": "parcel build ts/*.ts --dist-dir js/ --no-source-maps & parcel build ts/lib/datatables-css-dependencies.ts --dist-dir css/",
+        "build": "parcel build ts/*.ts --dist-dir js/ --no-source-maps $PARCEL_FLAGS & parcel build ts/lib/datatables-css-dependencies.ts --dist-dir css/ $PARCEL_FLAGS",
         "clusterviz": "parcel serve js/clusterviz.html --no-source-maps"
     },
     "resolutions": {

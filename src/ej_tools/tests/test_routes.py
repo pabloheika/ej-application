@@ -1,8 +1,5 @@
-import pytest
-from django.core.exceptions import PermissionDenied
 from django.test import Client
 
-from ej_conversations.models import conversation
 from ej_conversations.mommy_recipes import ConversationRecipes
 from ej_tools.views import *
 from ej_tools.tools import BotsWebchatTool, BotsWhatsappTool, MauticTool
@@ -20,7 +17,7 @@ class TestRoutes(ConversationRecipes):
         tools_url = conversation_db.patch_url("conversation-tools:index")
         response = client.get(tools_url)
 
-        assert response.context["tools"] != None
+        assert response.context["tools"] is not None
 
     def test_whatsapp_tool(self, conversation_db, rf):
         tools_url = conversation_db.patch_url("conversation-tools:whatsapp")

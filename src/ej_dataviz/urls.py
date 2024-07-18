@@ -3,8 +3,8 @@ from . import views_dataviz
 from . import views_report
 
 app_name = "ej_dataviz"
-conversation_url = f"<int:conversation_id>/<slug:slug>/"
-report_url = f"<int:conversation_id>/<slug:slug>/report/"
+conversation_url = "<int:conversation_id>/<slug:slug>/"
+report_url = "<int:conversation_id>/<slug:slug>/report/"
 
 reports_urlpatterns = [
     path(
@@ -59,6 +59,11 @@ dataviz_urlpatterns = [
         conversation_url + "dashboard/",
         views_dataviz.index,
         name="dashboard",
+    ),
+    path(
+        conversation_url + "dashboard/cluster",
+        views_dataviz.ClusterDetailView.as_view(),
+        name="cluster-detail",
     ),
     path(
         conversation_url + "scatter/",

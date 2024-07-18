@@ -18,7 +18,7 @@ Cypress.Commands.add('removesCypressUser', () => {
 })
 
 Cypress.Commands.add('createConversation', () => {
-    cy.get('a[title="Nova conversa"]').click()
+    cy.get('a[title="Nova conversa"]').first().click()
     cy.get('.conversation-balloon h1').should('contain', 'Configurações básicas')
     cy.get('#id_text').type("O que você acha do avanço da inteligência artificial na sociedade moderna?")
     cy.get('input[name=tags]').type("IA,machine learning")
@@ -31,7 +31,7 @@ Cypress.Commands.add('createConversation', () => {
 })
 
 Cypress.Commands.add('createCustomConversation', () => {
-  cy.get('a[title="Nova conversa"]').click()
+  cy.get('a[title="Nova conversa"]').first().click()
   cy.get('#id_text').type("O que você acha do financiamento das praças públicas?")
   cy.get('input[name=title]').type("praças públicas")
   cy.get('input[name=tags]').type("infraestrutura")

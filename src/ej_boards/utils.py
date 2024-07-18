@@ -4,7 +4,6 @@ from django.db.models import Count, Q
 from ej_users.models import User
 
 from django.http import Http404
-from django.core.paginator import EmptyPage, PageNotAnInteger
 
 
 PAGINATOR_START_PAGE = 1

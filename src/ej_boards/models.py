@@ -6,7 +6,6 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from .utils import statistics
 from model_utils.models import TimeStampedModel
-from boogie.rest import rest_api
 from ej_users.models import User
 
 from ej.utils.url import SafeUrl
@@ -14,7 +13,6 @@ from ej.utils.url import SafeUrl
 from .validators import validate_board_slug
 
 
-# @rest_api(["title", "slug", "owner", "description"])
 class Board(TimeStampedModel):
     """
     A board that contains a list of conversations.

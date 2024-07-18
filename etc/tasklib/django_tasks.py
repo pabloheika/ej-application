@@ -75,7 +75,7 @@ def collect(ctx, theme=None):
 
     # Select the correct minified build for CSS assets
     for file in ["main", "hicontrast"]:
-        from_path = f'{root_css}/{file + f".min.css"}'
+        from_path = f'{root_css}/{file + ".min.css"}'
         static_css_path = f"{directory}/local/static/css"
         if not os.path.exists(static_css_path):
             ctx.run(f"mkdir -p {static_css_path}")

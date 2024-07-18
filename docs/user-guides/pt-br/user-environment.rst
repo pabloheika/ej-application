@@ -4,13 +4,13 @@ Gestão dos conteúdos do ambiente
 
 A nossa plataforma disponibiliza uma área de gestão do ambiente, onde os administradores da página
 podem visualizar as estatísticas do ambiente e dados relacionados ao que é gerado na EJ.
-Para acessar essa área, clique no link "Ambiente EJ", no menu lateral.
+Para acessar essa área, clique no link "Ambiente EJ", no menu lateral do perfil ou no menu flutuante 
+no canto direito da página.
 
 .. figure:: ../images/ej-environment.png
    :align: center
 
    Menu lateral do perfil administrador do ambiente.
-
 
 Estatísticas do ambiente
 ------------------------

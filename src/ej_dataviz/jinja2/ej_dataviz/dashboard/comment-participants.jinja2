@@ -2,7 +2,7 @@
     <div class="report-card">
         <div class="flex-align flex wrap">
             <div class="report-card__label bold">{{_("Total of comments")}}</div>
-            <div class="report-card__count bold">{{comments_statistics.get('total')}}</div>
+            <div class="dashboard-card__value dashboard-card__value--white">{{comments_statistics.get('total')}}</div>
         </div>
         <div class="report-card__button conversation-dashboard__button">
             <a class="button is-primary" href="{{url('boards:dataviz-comments',  **conversation.get_url_kwargs())}}">{{_("comments report")}}</a>

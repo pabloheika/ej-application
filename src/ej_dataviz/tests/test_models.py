@@ -1,4 +1,3 @@
-import pytest
 from ej_dataviz.models import ToolsLinksHelper
 
 

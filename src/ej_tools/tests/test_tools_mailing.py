@@ -1,4 +1,3 @@
-import pytest
 import mock
 from pytest import raises
 from ej_conversations.mommy_recipes import ConversationRecipes
@@ -93,31 +92,6 @@ class TestTemplateGenerator(ConversationRecipes):
 
         assert vote_url == expected_url
 
-    def test_generate_vote_url_with_board_using_mailchimp(
-        self, mk_board, mk_conversation, mk_user
-    ):
-        request = mock.Mock()
-        request.META = self.REQUEST_META
-        request.POST = self.REQUEST_POST
-        board = mk_board()
-        user = mk_user(email="test@domain.com")
-        conversation = mk_conversation(author=user)
-        comment_1 = conversation.create_comment(user, "comment 1", "approved")
-        board.add_conversation(conversation)
-        form_data = {"template_type": "mautic"}
-        email_tag = MarketingTool.generate_email_tag(form_data["template_type"])
-        generator = TemplateGenerator(conversation, request, form_data)
-        vote_url = generator._get_voting_url()
-
-        expected_url = (
-            "http://ejplatform.local/{}/conversations/{}/{}"
-            "?comment_id={}&action=vote&origin=campaign{}".format(
-                board.slug, conversation.id, conversation.slug, comment_1.id, email_tag
-            )
-        )
-
-        assert vote_url == expected_url
-
     def test_apply_default_palette_on_mail_template(
         self, mk_conversation, mk_board, mk_user
     ):
@@ -125,7 +99,7 @@ class TestTemplateGenerator(ConversationRecipes):
         request.META = self.REQUEST_META
         conversation = mk_conversation()
         user = mk_user(email="test2@domain.com")
-        comment_1 = conversation.create_comment(user, "comment 1", "approved")
+        conversation.create_comment(user, "comment 1", "approved")
         form_data = {"template_type": "mautic"}
         generator = TemplateGenerator(conversation, request, form_data)
 
@@ -158,7 +132,7 @@ class TestTemplateGenerator(ConversationRecipes):
         assert generator1.template_type == "mautic"
         assert generator2.template_type == "mautic"
 
-    def test_apply_board_palette_on_campaign_template(
+    def test_apply_board_palette_on_campaign_template_with_empty_template_type(
         self, mk_board, mk_conversation, mk_user
     ):
         request = mock.Mock()
@@ -173,7 +147,7 @@ class TestTemplateGenerator(ConversationRecipes):
         assert generator1.template_type == "mautic"
         assert generator2.template_type == "mautic"
 
-    def test_apply_board_palette_on_campaign_template(
+    def test_apply_board_palette_on_campaign_template_with_palette(
         self, mk_board, mk_conversation, mk_user
     ):
         request = mock.Mock()
@@ -181,7 +155,7 @@ class TestTemplateGenerator(ConversationRecipes):
         board = mk_board(palette="orange")
         user = mk_user(email="test@domain.com")
         conversation = mk_conversation(author=user)
-        comment_1 = conversation.create_comment(user, "comment 1", "approved")
+        conversation.create_comment(user, "comment 1", "approved")
         form_data = {"template_type": "mautic", "theme": board.palette}
         generator = TemplateGenerator(conversation, request, form_data)
 
@@ -207,7 +181,7 @@ class TestTemplateGenerator(ConversationRecipes):
         board = mk_board(palette="campaign")
         user = mk_user(email="test@domain.com")
         conversation = mk_conversation(author=user)
-        comment_1 = conversation.create_comment(user, "comment 1", "approved")
+        conversation.create_comment(user, "comment 1", "approved")
         board.add_conversation(conversation)
         form_data = {"template_type": "mautic", "theme": "campaign"}
         campaign = TemplateGenerator(conversation, request, form_data)
@@ -263,7 +237,7 @@ class TestTemplateGenerator(ConversationRecipes):
 
 
 class TestMailingToolForm(ConversationRecipes):
-    def test_conversation_component_valid_mautic_form(self, conversation_db, mk_user):
+    def test_valid_mautic_form_for_conversation_component(self, conversation_db, mk_user):
         user = mk_user(email="test@domain.com")
         conversation_db.create_comment(
             user, "comment 1", status="approved", check_limits=False
@@ -271,7 +245,7 @@ class TestMailingToolForm(ConversationRecipes):
         form = MailingToolForm(
             {
                 "template_type": "mautic",
-                "theme": "default",
+                "theme": "icd",
                 "custom_title": None,
                 "custom_comment": None,
             },
@@ -279,7 +253,9 @@ class TestMailingToolForm(ConversationRecipes):
         )
         assert form.is_valid()
 
-    def test_conversation_component_valid_mautic_form(self, conversation_db, mk_user):
+    def test_valid_mailchimp_form_for_conversation_component(
+        self, conversation_db, mk_user
+    ):
         user = mk_user(email="test@domain.com")
         conversation_db.create_comment(
             user, "comment 1", status="approved", check_limits=False

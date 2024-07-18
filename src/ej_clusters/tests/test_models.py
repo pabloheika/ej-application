@@ -1,8 +1,6 @@
+import pytest
 from ej_clusters.mommy_recipes import ClusterRecipes
-from ej_clusters.models.cluster import Cluster
-from ej_clusters.models.stereotype import Stereotype
-from ej_conversations.models.vote import Vote
-from ej_users.models import User
+from ej_conversations.tests.test_views import ConversationSetup
 
 
 class TestClusterization(ClusterRecipes):
@@ -18,11 +16,32 @@ class TestClusterization(ClusterRecipes):
         assert str(clusterization) == f"{conversation_db} (0 clusters)"
         assert (
             f"{clusterization.get_absolute_url()}"
-            == f"{conversation_db.get_absolute_url()}clusters/"
+            == f"{conversation_db.get_absolute_url()}stereotypes/"
         )
 
 
-class TestCluster:
+class TestCluster(ConversationSetup):
+    @pytest.fixture
+    def conversation_without_votes(self, conversation, base_board, base_user):
+        conversation.author = base_user
+        base_board.owner = base_user
+        base_board.save()
+        conversation.board = base_board
+        conversation.save()
+
+        conversation.create_comment(
+            base_user, "aa", status="approved", check_limits=False
+        )
+
+        conversation.create_comment(
+            base_user, "aaa", status="approved", check_limits=False
+        )
+        conversation.create_comment(
+            base_user, "aaaa", status="approved", check_limits=False
+        )
+        conversation.save()
+        return conversation
+
     def test_concat_statistics_to_dataframe(self, clusterization, cluster, vote):
         clusterization.update_clusterization(force=True)
         cluster_df = cluster.concat_statistics_to_dataframe()
@@ -34,3 +53,8 @@ class TestCluster:
         assert cluster_df["agree"].any()
         assert cluster_df.iloc[0]["disagree"] == 0.0
         assert cluster_df.iloc[0]["skipped"] == 0.0
+
+    def test_clusterization_without_votes(self, conversation_without_votes):
+        clusterization = conversation_without_votes.get_clusterization()
+        clusterization.update_clusterization(force=True)
+        assert clusterization.stereotype_votes.count() == 0

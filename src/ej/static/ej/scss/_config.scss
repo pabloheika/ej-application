@@ -21,7 +21,7 @@ $color-brand-alternate: scale-color($color-brand, $lightness: 55%, $saturation: 
 }
 
 // Text and background
-$color-black: #042A46 !default;
+$color-black: #052b47 !default;
 $color-black-alternative: #000000 !default;
 $color-black-alternative-light: rgba(0, 0, 0, 0.8) !default;
 $color-white: white !default;
@@ -98,6 +98,7 @@ $color-gray-darker: #777777;
 $color-agree: rgba(24, 174, 0, 0.8);
 $color-disagree: #C70000;
 $color-base-pink: #FF3D72;
+$color-gray-white: #F0F0F0;
 
 // Action colors
 $color-action: $color-brand !default;
@@ -110,7 +111,11 @@ $color-navigation-text: $color-black !default;
 $color-navigation-header: #C4C4C4;
 $color-navigation-header-with-opacity: #C4C4C480;
 $color-navigation-header-text: #777;
-$color-navigation-menu-background: #F0F0F0;
+$color-navigation-menu-background: #F1F1F1;
+
+// modals items
+$color-modal-background: #E5E5E5;
+$color-modal-background-lighter: #f1f1f1;
 
 //Card shadows
 $color-card-shadow: rgba(0, 0, 0, 0.25) !default;

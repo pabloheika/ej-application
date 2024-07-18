@@ -44,7 +44,7 @@ class ConversationDateWidget(forms.DateInput):
         if isinstance(value, date):
             value = value.strftime("%Y-%m-%d")
 
-        if name == "start_date" and value == None:
+        if name == "start_date" and value is None:
             today = datetime.today()
             value = today.strftime("%Y-%m-%d")
 
@@ -98,6 +98,7 @@ class ConversationForm(forms.ModelForm):
             "background_image",
             "logo_image",
             "ending_message",
+            "participants_can_add_comments",
         ]
         widgets = {
             "start_date": ConversationDateWidget,

@@ -1,0 +1,24 @@
+<div class="manage-stereotypes__edit-stereotype">
+    <button type="button" form="stereotype-form" class="manage-stereotypes__edit-stereotype--delete" 
+        name="delete" value="{{_('delete')}}" onclick="showConfirmationDeleteStereotype()">
+        <i class="fa">&#xf057;</i>
+        {{_('delete persona')}}
+    </button>
+    <button type="submit" form="stereotype-form" 
+        class="manage-stereotypes__edit-stereotype--confirm manage-stereotypes__edit-stereotype--no-edit" 
+        id="confirm-edit-button" name="edit" value="{{_('edit')}}" disabled="disabled">
+        <i class="fa">&#xf058;</i>
+        {{_('save editions')}}
+    </button>
+</div>
+
+<script>
+    $("input, textarea").keyup(function(e) {
+        const saveEditButton = "#confirm-edit-button";
+        if ($(this).val() != $(this).data("value")) {
+            $(saveEditButton).prop("disabled", false);
+            $(saveEditButton).removeClass("manage-stereotypes__edit-stereotype--no-edit");
+            $(saveEditButton).addClass("manage-stereotypes__edit-stereotype--blue");
+        }
+    });
+</script>

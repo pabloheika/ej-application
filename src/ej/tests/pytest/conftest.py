@@ -6,7 +6,7 @@ from model_mommy.recipe import Recipe
 __all__ = ["user", "root"]
 
 User = get_user_model()
-user = Recipe(User, is_superuser=False, email="user@domain.com")
+user = Recipe(User, is_superuser=False, email="user@domain.com", password="password")
 root = Recipe(User, is_superuser=True, email="root@domain.com", is_staff=True)
 
 

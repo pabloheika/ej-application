@@ -28,6 +28,10 @@
         font-size: 12px;
         font-weight: 600;
     }
+
+    &--full-width {
+        grid-column: 1 / 4;
+    }
 }
 
 #report-filters-form {
@@ -72,6 +76,20 @@
     }
 
     &__comment, &__user {
+        div:nth-child(2),
+        div:nth-child(3),
+        div:nth-child(4),
+        {
+            font-size: .9em;
+        }
+
+        div:nth-child(4) {
+            color: $color-accent;
+            font-weight: 600;
+        }
+    }
+
+    &__comment, &__user {
         padding: 1rem;
         box-sizing: content-box;
         div:first-child {
@@ -82,8 +100,18 @@
             color: $color-brand;
             font-weight: 600;
         }
+    }
+
+    &__comment {
         div:nth-child(3) {
             color: $color-accent;
+            font-weight: 600;
+        }
+    }
+
+    &__user {
+        div:nth-child(3) {
+            color: $color-brand;
             font-weight: 600;
         }
     }
@@ -106,6 +134,7 @@
             gap: 1rem;
             display: flex;
             justify-content: space-between;
+            align-items: center;
 
             @media (max-width: 1200px) {
                 & {
@@ -156,8 +185,8 @@
         .ordering {
             display: flex;
             align-items: baseline;
-            gap: .5rem;
-            
+            gap: 1rem;
+
             select {
                 cursor: pointer;
                 border: transparent;
@@ -166,6 +195,7 @@
                 min-width: 15em;
                 background-color: $color-white;
                 padding-right: 1rem;
+                border-right: 8px solid transparent;
 
                 @media (max-width: 500px) {
                     min-width: unset;
@@ -174,7 +204,6 @@
         }
 
         .clusters-container {
-            padding-top: .6rem;
             display: flex;
         }
 
@@ -208,10 +237,10 @@
             display: flex;
             align-items: center;
             font-size: 0.75em;
-            
+
             #sort-up-icon {
-                top: 0.5rem;
-                right: -0.3rem;
+                top: 0.35rem;
+                right: -0.05rem;
             }
 
             #sort-down-icon {

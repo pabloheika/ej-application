@@ -8,11 +8,11 @@ from django.db.models import F
 from django.db.models.query import QuerySet
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, ListView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from ej.decorators import (
     can_acess_list_view,
@@ -178,6 +178,7 @@ class BoardConversationsView(ConversationView):
             "board": board,
             "user_boards": user_boards,
             "current_page": board.slug,
+            "can_delete_board": user.has_more_than_one_board(),
         }
 
 
@@ -211,7 +212,13 @@ class ConversationCommentView(ConversationCommonView, DetailView):
     def post(self, request, conversation_id, slug, board_slug, *args, **kwargs):
         conversation = self.get_object()
         request.user = User.get_or_create_from_session(conversation, request)
-        self.ctx = handle_detail_comment(request, conversation)
+
+        # TODO: create a rule for this check
+        if (
+            conversation.participants_can_add_comments
+            or request.user.id == conversation.author.id
+        ):
+            self.ctx = handle_detail_comment(request, conversation)
 
         return render(
             request,
@@ -342,7 +349,7 @@ class ConversationEditView(UpdateView):
     def get_redirect_url(self, conversation, page):
         if page == "stereotypes":
             args = conversation.get_url_kwargs()
-            return reverse("boards:cluster-stereotype_votes", kwargs=args)
+            return reverse("boards:stereotype-votes-list", kwargs=args)
         elif page == "moderate":
             return conversation.patch_url("conversation:moderate")
         elif conversation.is_promoted:
@@ -362,6 +369,21 @@ class ConversationEditView(UpdateView):
             "can_publish": user.has_perm("ej_conversations.can_publish_promoted"),
             "board": conversation.board,
         }
+
+
+@method_decorator([login_required, can_edit_conversation], name="dispatch")
+class ConversationDeleteView(DeleteView):
+    model = Conversation
+
+    def get_object(self, queryset=None):
+        conversation_id = self.kwargs["conversation_id"]
+        return self.get_queryset().filter(pk=conversation_id).get()
+
+    def get_success_url(self):
+        conversation = self.object
+        return reverse_lazy(
+            "boards:conversation-list", kwargs={"board_slug": conversation.board.slug}
+        )
 
 
 @method_decorator(
@@ -416,7 +438,7 @@ class ConversationModerateView(UpdateView):
 @method_decorator(
     [login_required, can_edit_conversation, can_moderate_conversation], name="dispatch"
 )
-class NewCommentView(UpdateView):
+class CommentModerationView(UpdateView):
     model = Conversation
     template_name = "ej_conversations/conversation-moderate.jinja2"
 
