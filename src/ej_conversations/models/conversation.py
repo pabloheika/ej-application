@@ -1,5 +1,5 @@
-import re
 from datetime import datetime
+import re
 
 from autoslug import AutoSlugField
 from boogie import models, rules
@@ -10,22 +10,19 @@ from django.core.exceptions import ValidationError
 from django.db.models.functions import Length
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from model_utils.models import TimeStampedModel
-from sidekick import lazy
-from sidekick import placeholder as this
-from sidekick import property as property
-from taggit.managers import TaggableManager
-from taggit.models import TaggedItemBase
-
 from ej.components.menu import CustomizeMenuMixin
 from ej.utils.functional import deprecate_lazy
 from ej.utils.url import SafeUrl
 from ej_boards.models import Board
+from ..validators import validate_file_size
+from model_utils.models import TimeStampedModel
+from sidekick import lazy, placeholder as this, property as property
+from taggit.managers import TaggableManager
+from taggit.models import TaggedItemBase
 
 from ..enums import Choice
 from ..signals import comment_moderated
 from ..utils import normalize_status
-from ..validators import validate_file_size
 from .comment import Comment
 from .conversation_queryset import ConversationQuerySet, log
 from .favorites import HasFavoriteMixin
@@ -480,6 +477,12 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
         if logo_image_url:
             return f"{host}/media/{logo_image_url}"
         return None
+    
+    def get_filtered_comments(self, filter):
+        return self.comments.filter(content__icontains=filter)
+    
+    def get_filtered_votes(self, comments):
+        return self.votes.filter(comment__in=comments)
 
 
 #
