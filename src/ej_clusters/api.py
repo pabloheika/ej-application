@@ -50,3 +50,20 @@ class ClusterizationViewSet(RestAPIBaseViewSet):
             clusterization.stereotypes.all(), context={"request": request}, many=True
         )
         return Response(serializer.data)
+
+    @action(detail=True)
+    def statistics(self, request, pk):
+        clusterization = self.get_object()
+        clusters = clusterization.clusters.all()
+        
+        # Calculate statistics
+        num_clusters = clusters.count()
+        avg_size = sum(cluster.members.count() for cluster in clusters) / num_clusters if num_clusters else 0
+        
+        stats = {
+            'num_clusters': num_clusters,
+            'average_cluster_size': avg_size,
+            # Add more statistics as needed
+        }
+        
+        return Response(stats)
