@@ -93,7 +93,7 @@ def export_data(data: pd.DataFrame, fmt: str, filename: str, translate=True):
         data.columns = [__(x) for x in data.columns]
     response["Content-Disposition"] = f"attachment; filename={filename}.{fmt}"
     if fmt == "json":
-        data.to_json(response, orient="records", date_format="iso")
+        data.to_json(response, orient="records", date_format="iso", force_ascii=False)
     elif fmt == "csv":
         data.to_csv(response, index=False, mode="a", float_format="%.3f")
     elif fmt == "msgpack":
@@ -152,8 +152,7 @@ def comments_data_common(comments, votes, filename, fmt, clusters=None):
     df = comments.extend_dataframe(df, "id", "author__email", "author__id", "created")
     if clusters:
         for cluster in clusters:
-            df = cluster.concat_statistics_to_dataframe(df)
-
+            df = cluster.concat_statistics_to_dataframe(comments, df)
     # Adjust column names
     columns = [
         "content",

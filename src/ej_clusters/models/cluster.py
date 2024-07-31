@@ -137,14 +137,14 @@ class Cluster(TimeStampedModel):
 
         return agree, disagree
 
-    def concat_statistics_to_dataframe(self, df: pd.DataFrame = pd.DataFrame()):
+    def concat_statistics_to_dataframe(self, comments, df: pd.DataFrame = pd.DataFrame()):
         """
         concat_results_to_dataframe adds cluster voting results to df argument.
         Useful for exporting comments raw data.
         """
-        cluster_df = self.comments.statistics_summary_dataframe(votes=self.votes)
+        cluster_df = comments.statistics_summary_dataframe(votes=self.votes)
         if not cluster_df.empty:
-            cluster_df["group"] = self.name
-            df = pd.concat([df, cluster_df])
-            df.sort_values(by=["content", "created"], inplace=True)
-        return df
+            df["group"] = self.name
+            df_merged = pd.merge(df,cluster_df, left_on='comment', right_on='comment', how='inner',suffixes=['', '_'])
+            df_merged.sort_values(by=["content", "created"], inplace=True)
+        return df_merged
