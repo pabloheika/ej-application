@@ -4,7 +4,7 @@
         <div class="report__filters-inputs">
             <div class="search">
                 <input
-                id="search_input_id"
+                id="search-input"
                 value=""
                 name="search"
                 type="text"
@@ -92,10 +92,10 @@
             }
         }
     }
-    let link_1 = document.getElementById('export_json_id')
-    let link_2 = document.getElementById('export_csv_id')
+    let link_1 = document.getElementById('export-json')
+    let link_2 = document.getElementById('export-csv')
 
-    let input = document.getElementById("search_input_id")
+    let input = document.getElementById("search-input")
 
     input.addEventListener("change", function(e){
         link_1.href = link_1.href.split('?')[0] + '?filter=' + e.target.value
