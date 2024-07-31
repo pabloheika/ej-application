@@ -92,15 +92,22 @@
             }
         }
     }
-    let link_1 = document.getElementById('export-json')
-    let link_2 = document.getElementById('export-csv')
 
-    let input = document.getElementById("search-input")
+    $("#search-input").change(function () {
+        let formValue = $(this).val();
+        let exportJsonHref = $("#export-json").attr("href");
+        let exportCsvHref = $("#export-csv").attr("href");
 
-    input.addEventListener("change", function(e){
-        link_1.href = link_1.href.split('?')[0] + '?filter=' + e.target.value
-        link_2.href = link_2.href.split('?')[0] + '?filter=' + e.target.value
-    })
+        $("#export-json").attr(
+            "href",
+            exportJsonHref.split("?")[0] + "?filter=" + formValue
+        );
+
+        $("#export-csv").attr(
+            "href",
+            exportCsvHref.split("?")[0] + "?filter=" + formValue
+        );
+    });
 
 </script>
 
