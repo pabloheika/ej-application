@@ -276,7 +276,7 @@ def comments_data(request, conversation_id, fmt, **kwargs):
     comments = conversation.comments
 
     filter = request.GET.get("filter")
-    if filter is not None:
+    if filter:
         comments = comments.filter(content__icontains=filter)
 
     try:
