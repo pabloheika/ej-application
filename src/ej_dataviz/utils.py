@@ -152,7 +152,7 @@ def comments_data_common(comments, votes, filename, fmt, clusters=None):
     df = comments.extend_dataframe(df, "id", "author__email", "author__id", "created")
     if clusters:
         for cluster in clusters:
-            df = cluster.concat_statistics_to_dataframe(comments, df)
+            df = cluster.concat_statistics_to_dataframe(filtered_comments=comments, df=df)
     # Adjust column names
     columns = [
         "content",

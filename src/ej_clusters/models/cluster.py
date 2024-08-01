@@ -4,9 +4,11 @@ from django.db.models import Subquery
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
-from sidekick import delegate_to, lazy, import_later, placeholder as this
+from sidekick import delegate_to, import_later, lazy
+from sidekick import placeholder as this
 
 from ej_conversations.models import Comment
+
 from .cluster_queryset import ClusterManager
 from .stereotype_vote import StereotypeVote
 
@@ -137,14 +139,22 @@ class Cluster(TimeStampedModel):
 
         return agree, disagree
 
-    def concat_statistics_to_dataframe(self, comments, df: pd.DataFrame = pd.DataFrame()):
+    def concat_statistics_to_dataframe(self, df: pd.DataFrame = pd.DataFrame(), filtered_comments = None):
         """
         concat_results_to_dataframe adds cluster voting results to df argument.
         Useful for exporting comments raw data.
         """
+        comments = filtered_comments if filtered_comments else self.comments
         cluster_df = comments.statistics_summary_dataframe(votes=self.votes)
         if not cluster_df.empty:
             df["group"] = self.name
-            df_merged = pd.merge(df,cluster_df, left_on='comment', right_on='comment', how='inner',suffixes=['', '_'])
+            df_merged = pd.merge(
+                df,
+                cluster_df,
+                left_on="comment",
+                right_on="comment",
+                how="inner",
+                suffixes=["", "_"],
+            )
             df_merged.sort_values(by=["content", "created"], inplace=True)
         return df_merged
