@@ -32,15 +32,3 @@ class StereotypeVote(models.Model):
 
     def __str__(self):
         return f"StereotypeVote({self.author}, value={self.choice})"
-
-    @staticmethod
-    def parse_choice_from_action(action: str):
-        """
-        Receives a string in the format "<choice> - <comment_id>", where choice is agree, disagree or skip.
-
-        Returns the comment_id and the vote choice.
-        """
-        choice_object = action.split("-")
-        id = choice_object[1]
-        choice = choice_object[0]
-        return id, choice

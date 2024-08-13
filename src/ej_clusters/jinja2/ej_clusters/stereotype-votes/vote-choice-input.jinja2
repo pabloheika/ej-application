@@ -1,0 +1,110 @@
+<div class="stereotype-cards__card-comments tab-{{stereotype_action}}" id="comment-{{stereotype_action}}-{{ comment_id }}">
+    <p>{{ comment_content }}</p>
+
+    <div class="stereotype-cards__vote-buttons" id="vote-buttons-{{stereotype_action}}-{{ comment_id }}">
+        <button type="button" 
+                onclick="updateButtonColors(this.value, '{{ comment_id }}', '{{stereotype_action}}')" 
+                class="is-clear agree-{{initial_vote}}" 
+                name="create"
+                value="agree">
+            <i class="fa fa-check"></i> {{ _('Agree') }}
+        </button>
+        <button type="button" 
+                onclick="updateButtonColors(this.value, '{{ comment_id }}', '{{stereotype_action}}')" 
+                class="is-clear skip-{{initial_vote}}" 
+                name="create" 
+                value="skip">
+            <i class="far fa-meh"></i> {{ _('Neutral') }}
+        </button>
+        <button type="button" 
+                onclick="updateButtonColors(this.value, '{{ comment_id }}', '{{stereotype_action}}')" 
+                class="is-clear disagree-{{initial_vote}}" 
+                name="create" 
+                value="disagree">
+            <i class="fa fa-times"></i> {{ _('Disagree') }}
+        </button>
+        <button class="stereotype-cards__vote-buttons__delete {% if not widget.value.0 %}hide{% endif %}"
+                name="update"
+                type="button" 
+                id="clear-button-{{stereotype_action}}-{{ comment_id }}"
+                onclick="clearVote('{{ comment_id }}', '{{stereotype_action}}')"
+        >
+                    {{ _('Clear vote') }}
+        </button>
+        <button class="is-clear stereotype-cards__vote-buttons__delete--icon-{{initial_vote}} {% if not widget.value.0 %}hide{% endif %}"
+                name="update"
+                type="button"
+                id="clear-icon-button-{{stereotype_action}}-{{ comment_id }}" onclick="clearVote('{{ comment_id }}', '{{stereotype_action}}')">
+                <img src="{{static('img/icons/circle-xmark-regular.svg')}}">
+        </button>
+    </div>
+    <hr class="divider-section">
+
+    <select name="{{ widget.name }}" id="select-{{stereotype_action}}-{{comment_id}}" class="hide" {% for name, value in widget.attrs.items() %}{% if value is not sameas False %} {{ name }}{% if value is not sameas True %}="{{ value }}"{% endif %}{% endif %}{% endfor %}>
+        <option value="" {% if widget.value is sameas "" %} selected {% endif %}>--------</option>
+        <option value="agree" {% if widget.value is sameas "agree" %} selected {% endif %}>agree</option>
+        <option value="disagree" {% if widget.value is sameas "disagree" %} selected {% endif %}>disagree</option>
+        <option value="skip" {% if widget.value is sameas "skip" %} selected {% endif %}>skip</option>
+    </select>
+</div>
+
+<script>
+function showClearButton(commentId, selectedButton, stereotypeAction){
+    const icon = $(`#clear-icon-button-${stereotypeAction}-${commentId}`);
+    const iconClass = "is-clear stereotype-cards__vote-buttons__delete--icon-";
+    let clearElement = $(`#clear-button-${stereotypeAction}-${commentId}`);
+
+    if($(window).width() < 900){
+        clearElement = icon;
+    } 
+    clearElement.removeClass('hide');
+
+    icon.attr('class', iconClass + selectedButton);
+}
+
+function updateButtonColors(value, commentId, stereotypeAction){
+    const selectedButton = getSelectedButton(value);
+    const choiceButtonCount = 3;
+    const divElement = $(`#vote-buttons-${stereotypeAction}-${commentId}`);
+
+    for (let i = 0; i < choiceButtonCount; i++) {
+        updateButtonColor(divElement.children().eq(i), selectedButton);
+    }
+
+    const select = $(`#select-${stereotypeAction}-${commentId}`);
+    select.val(value);
+    showClearButton(commentId, selectedButton, stereotypeAction);
+    updateDeleteButtonPosition(divElement, selectedButton)
+}
+
+function updateButtonColor(button, selectedButton){
+    button.attr('class', 'is-clear ' + button.val() + '-' + selectedButton);
+}
+
+function clearVote(commentId, stereotypeAction){
+    const select = $(`#select-${stereotypeAction}-${commentId}`);
+    const voteValue = select.val();
+
+    $(`#vote-buttons-${stereotypeAction}-${commentId}`).children(`[value=${voteValue}]`).attr('class', 'is-clear');
+    select.val('');
+    $(`#clear-icon-button-${stereotypeAction}-${commentId}`).addClass('hide');
+    $(`#clear-button-${stereotypeAction}-${commentId}`).addClass('hide');
+}
+
+function updateDeleteButtonPosition(divElement, selectedButton){
+    const deleteButtonClass = "is-clear stereotype-cards__vote-buttons__delete--icon-";
+    if (divElement.children.length > 4) {
+        divElement.children[4].attr('class', deleteButtonClass + selectedButton);
+    }
+}
+
+function getSelectedButton(value){
+    const buttonValues = {
+        agree: "1",
+        disagree: "-1",
+        skip: "0"
+    };
+    const selectedButtonValue = value.split("-")[0];
+    return buttonValues[selectedButtonValue];
+}
+</script>

@@ -1,5 +1,5 @@
 from django.http import HttpRequest, HttpResponse, HttpResponseForbidden
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import UpdateView
@@ -7,6 +7,7 @@ from django.views.generic import ListView, CreateView, DeleteView
 from django.urls import reverse_lazy
 
 from ej_clusters.forms import StereotypeForm
+from ej_clusters.models.clusterization import Clusterization
 from ej_conversations.models.conversation import Conversation
 from ..models import Stereotype
 
@@ -36,15 +37,26 @@ class StereotypeCreateView(CreateView):
     template_name = "ej_clusters/stereotypes/create.jinja2"
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        form = StereotypeForm(request=request, owner=request.user)
+        id = self.kwargs["clusterization_id"]
+        context = self.get_context_data()
+        clusterization = Clusterization.objects.filter(pk=id).get()
+        form = StereotypeForm(
+            owner=self.request.user, request=request, clusterization=clusterization
+        )
         if form.is_valid_post():
-            form.save()
-            return redirect("stereotypes:list")
-        return render(request, self.template_name, self.get_context_data())
+            stereotype = form.save()
+            response = HttpResponse("")
+            response["HX-Trigger"] = '{"integrateData": ' + str(stereotype.id) + "}"
+            return response
+        context["create_form"] = form
+        return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
         form = StereotypeForm(request=self.request, owner=self.request.user)
-        return {"form": form}
+        return {
+            "create_form": form,
+            "clusterization_id": self.kwargs["clusterization_id"],
+        }
 
 
 @method_decorator([login_required], name="dispatch")

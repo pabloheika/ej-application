@@ -29,13 +29,12 @@
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         text-align: center;
         border-radius: .5rem;
+        max-width: 29.25rem;
+        min-height: 14.625rem;
+        padding: 3.25rem 5.313rem;
 
         @media (max-width: 380px) {
             width: inherit !important;
-        }
-
-        h3 {
-            color: $color-black-alternative;
         }
 
         &--lighter-bg {
@@ -47,7 +46,7 @@
 
         h3 {
             color: $color-black-alternative;
-            font-weight: 600;
+            font-weight: 500;
         }
         
         &--sm-height {
@@ -113,6 +112,14 @@
         margin-bottom: 1rem;
     }
 
+    &__subtitle {
+        font-size: 1em;
+        font-weight: 500;
+        letter-spacing: 0;
+        color: $color-theme-dark-blue;
+        margin-bottom: 1.563rem;
+    }
+
     &__close-btn {
         position: absolute;
         right: 0;
@@ -133,6 +140,12 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 1.313rem;
+
+        a {
+            color: $color-complementary-gray;
+            text-transform: lowercase;
+        }
     }
 
     &__btn {
@@ -147,8 +160,9 @@
         border: none !important;
         border-radius: 3rem;
         height: 2.875rem;
-
-        font-size: .875rem;
+        text-transform: lowercase;
+        font-size: 1em;
+        margin: 0;
 
         i {
             margin: 0;

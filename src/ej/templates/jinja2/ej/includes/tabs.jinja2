@@ -1,4 +1,4 @@
-{% macro tabs(nav_items, classes='') %}
+{% macro tabs(nav_items, classes='', selectedIndex=0) %}
 
 <div class="tabs {{classes}}">
     <div class="tabs-container">
@@ -24,7 +24,7 @@
             $(`#${tabId}-tab`).attr('is-selected', '');
         }
         let values = {{nav_items.values()|list|safe}};
-        let firstTabId = values[0];
+        let firstTabId = values[{{selectedIndex}}];
         showFirstTab(firstTabId);
     })
 </script>

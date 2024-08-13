@@ -69,12 +69,21 @@ def docker_exec(ctx, command, dry_run=False, build=False):
 
 
 @task
-def docker_test(ctx, dry_run=False, build=False):
+def docker_test(ctx, dry_run=False, build=False, path=None):
     """
     Runs EJ tests;
     """
     do = runner(ctx, dry_run, pty=True)
-    do("docker exec --user=root -it  server /bin/bash -c 'inv test'")
+
+    # Monta o comando inv test com o arquivo de teste especificado
+    test_command = "inv test"
+    if path:
+        test_command += f" --path={path}"
+
+    # Monta o comando docker exec com o comando de teste
+    docker_command = f"docker exec --user=root -it server /bin/bash -c '{test_command}'"
+
+    do(docker_command)
 
 
 @task

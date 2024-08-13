@@ -20,7 +20,8 @@ de emails. Para isso será necessário configurar as seguintes variáveis de amb
 
 - EMAIL_HOST
 - EMAIL_PORT
+- EMAIL_HOST_USER
 - EMAIL_HOST_PASSWORD
 
 Ou seja, se as variáveis EMAIL_HOST e EMAIL_PORT estiverem preenchidas, será usado o EMAIL_BACKEND 
-`django.core.mail.backends.console.EmailBackend`, caso contrário, será usado o `anymail.backends.mailgun.EmailBackend`.
+`django.core.mail.backends.smtp.EmailBackend`, caso contrário, será usado o `anymail.backends.mailgun.EmailBackend`.

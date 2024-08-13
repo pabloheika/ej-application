@@ -130,3 +130,19 @@ class Clusterization(TimeStampedModel):
             )
 
         return {"json_data": shapes_json, "user_group": user_group, "clusters": clusters}
+
+    @staticmethod
+    def get_shape_data_by_groups(instance, user):
+        num_groups = instance.get_clusters_count()
+        if not instance or not num_groups:
+            return Clusterization.get_default_shape_data()
+        return instance.get_shape_data(user)
+
+    def get_clusters_count(self):
+        return self.clusters.count()
+
+    def get_biggest_cluster(self):
+        if self.get_clusters_count() > 0:
+            clusters = self.clusters.annotate(size=Count(F("users")))
+            return clusters.order_by("-size").first()
+        return None

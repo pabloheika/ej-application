@@ -9,6 +9,7 @@ env = environ.Env(
     MAILGUN_SENDER_DOMAIN=(str, ""),
     EMAIL_HOST=(str, ""),
     EMAIL_PORT=(int, ""),
+    EMAIL_HOST_USER=(str, ""),
     EMAIL_HOST_PASSWORD=(str, ""),
     EMAIL_USE_TLS=(bool, True),
 )
@@ -24,11 +25,12 @@ class EmailConf(Conf):
     }
     EMAIL_HOST = env("EMAIL_HOST")
     EMAIL_PORT = env("EMAIL_PORT")
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER")
     EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
     EMAIL_USE_TLS = env("EMAIL_USE_TLS")
 
     def get_email_backend(self):
         if self.EMAIL_HOST and self.EMAIL_PORT:
-            return "django.core.mail.backends.console.EmailBackend"
+            return "django.core.mail.backends.smtp.EmailBackend"
 
         return "anymail.backends.mailgun.EmailBackend"

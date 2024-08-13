@@ -3,72 +3,37 @@
 {% block menu %}{% include 'ej_conversations/includes/menu.jinja2' %}{% endblock %}
 {% from "ej/includes/tabs.jinja2" import tabs %}
 {% from "ej_clusters/includes/conclusion-action-modal.jinja2" import conclusion_action_modal %}
-
+{% from "ej_clusters/stereotype-votes/pagination.jinja2" import pagination %}
 
 {% block content %}
 <section class="content-grid header-space manage-stereotypes">
     <script src="/static/js/simplePagination.js"></script>
-    {% if groups %}
         <h1 class="text-accent">{{ _("Modeling") }}</h1>
         <h2 class="manage-stereotypes--margin-top-36">{{_("Personas")}}</h2>
-        {% if groups %}
             <p class="margin-y3 helptext">
                 {{_("We use votes to rank users according to their opinions. 
                     Users who vote in a similar way tend to be in the same group.")}}
             </p>
-        {% else %}
-            <div class="margin-y3">
-                <p class="helptext left">{{ _('Could not determine the opinion groups for this conversation.') }}
-                {% if has_edit_perm %}
-                    {% trans %}You can edit the clusterization options for this conversation {% endtrans %}
-                    <a class="text-accent" href="{{ url("boards:cluster-edit", **conversation.get_url_kwargs()) }}">{{_("here")}}</a>.
-                {% endif %}
-                </p>
-            </div>
-        {% endif %}
 
         {{ tabs({
-        _('See/Edit personas'): 'see-edit-personas'}, classes='tabs--smaller') }}
+            _('See/Edit personas'): 'see-edit-personas', 
+            _('Create persona'): 'create-persona'}, 
+            classes='tabs--smaller pointer-' ~ tab_index, selectedIndex=tab_index)}}
+        
+        {% include 'ej_clusters/stereotype-votes/edit-tab.jinja2' %}  
 
-        <div class="select-groups-filter">
-            {% include 'ej_clusters/stereotype-votes/select-groups-filter.jinja2' %}
-        </div>
+        {% include 'ej_clusters/stereotype-votes/create-tab.jinja2' %} 
 
-        <div class="manage-stereotypes__container">
-            <div class="manage-stereotypes__container-vote-section">
-                <div class="manage-stereotypes__container-header">
-                    {% include 'ej_clusters/stereotypes/edit.jinja2' %}
-
-                    <label>{{_("Votes")}}</label>
-                    <p class="manage-stereotypes__helptext-alt helptext">
-                        {{_("Select how the persona votes in this conversation.")}}
-                    </p>
-                </div>
-                <div class="stereotype-cards votes-container">
-                    <form method="post" action="#stereotype-{{ stereotype.id }}">
-                        {{ csrf_input }}
-                        <input type="hidden" name="stereotype" value="{{ stereotype.id }}">
-                        <div id="given-votes">
-                            {% include 'ej_clusters/stereotype-votes/stereotype-given-votes.jinja2' %}
-                        </div>
-                        <div id="comments-without-vote">
-                            {% include 'ej_clusters/stereotype-votes/stereotype-unvoted-votes.jinja2' %}
-                        </div>
-                    </form>
-                </div>
-                {% include 'ej_clusters/stereotype-votes/pagination.jinja2' %}
-                {% include 'ej_clusters/stereotype-votes/edit-stereotype-buttons.jinja2' %}            
-            </div>
-        </div>
-        <div class="opinion-groups" id="groups-container"></div>
+        <div id="groups-container" class="manage-stereotypes__grouping"></div>
         
         <div class="scroll-top scroll-top--full-width">
             <i class="fa">&#xf139;</i>
             <a id="stereotype-scroll-top">{{_("Back to top")}}</a>
         </div>
         
-        {% include 'ej_clusters/includes/delete-confimation-modal.jinja2' %}
-
+        <div id="confirm-create-stereotype" class="hide">
+            {{ conclusion_action_modal(static('/img/icons/circle-check-solid.svg'), _("Stereotype created"), conversation, True) }}
+        </div>
         <div id="confirm-edit-stereotype" class="hide">
             {{ conclusion_action_modal(static('/img/icons/circle-check-solid.svg'), _("Saved edits"), conversation, True) }}
         </div>
@@ -77,10 +42,13 @@
         </div>
         
         <script>
-            const DELETE_BUTTON = '2';
-            const buttonValues = ["agree", "skip", "disagree"];
-            const deleteButtonClass = "is-clear stereotype-cards__vote-buttons__delete--icon-";
-            
+            function showModal(id){
+                const body = $("body").addClass('overflow-deactive');
+                const modal = $(id);
+                modal.removeClass("hide");
+                modal.addClass("show");
+            }
+
             $(document).ready(function(){
                 updateClusters();
             });
@@ -91,164 +59,18 @@
                     context: document.body,
                     success: function(response){
                         $('#groups-container').html(response);
-                        renderCanvas();
+
+                        {% if groups %}
+                            renderCanvas();
+                        {% endif %}
                         htmx.process(document.body);
                     }
                 });
-            }
-            
-            function sendUpdateVoteInformation(value, voteId, stereotypeId, commentId) {
-                const choice = value.split('-')[0];
-                const baseUrl = `stereotype-votes/${voteId}/`
-                const voteUrls = {
-                    delete: baseUrl + "delete",
-                    default: baseUrl + "update"
-                }
-
-                $.post(voteUrls[choice] || voteUrls.default,
-                    {
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        choice: choice
-                    },
-                    () => { updateAfterFormSubmit(voteId, getSelectedButton(value), commentId, stereotypeId); updateClusters();}
-                );
-            }
-
-            function sendCreateVoteInformation(value, commentId, stereotypeId) {
-                $.post("{{ request.path }}stereotype-votes/create",
-                    {
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        comment: commentId,
-                        author: stereotypeId,
-                        choice: getSelectedButton(value)
-                    },
-                    (voteId) => {
-                        updateClusters();
-                        updateButtonCollors(commentId, "create", getSelectedButton(value));
-                        updateCardTypeToUpdate(voteId, commentId, stereotypeId, getSelectedButton(value));
-                    }
-                );
-            }
-
-            function updateButtonCollors(divId, type, selectedButton){
-                const choiceCountButton = 3
-                const divElement = document.getElementById("vote-buttons-" + type + "-" + divId);
-
-                for (let i = 0; i < choiceCountButton; i++) {
-                    updateButtonColor(divElement.children[i], selectedButton);
-                }
-                updateDeleteButtonPosition(divElement, selectedButton);
-            }
-
-            function updateDeleteButtonPosition(divElement, selectedButton){
-                if (divElement.children.length > 4) {
-                    divElement.children[4].className = deleteButtonClass + selectedButton;
-                }
-            }
-
-            function updateAfterFormSubmit(divId, selectedButton, commentId=null, stereotypeId=null){
-                updateButtonCollors(divId, "update", selectedButton);
-                if (selectedButton == DELETE_BUTTON) {
-                    updateCardTypeToCreate(divId, commentId, stereotypeId)
-                }
-            }
-
-            function updateButtonColor(button, selectedButton){
-                button.className = 'is-clear ' + button.value.split("-")[0] + '-' + selectedButton;
-            }
-
-            function getSelectedButton(value){
-                const buttonValues = {
-                    agree: "1",
-                    disagree: "-1",
-                    skip: "0",
-                    delete: "2"
-                };
-                const selectedButtonValue = value.split("-")[0];
-                return buttonValues[selectedButtonValue];
-            }
-
-            function updateCardTypeToCreate(voteId, commentId, stereotypeId) {
-                const newId = 'vote-buttons-create-'+ commentId;
-                document.getElementById('vote-buttons-update-'+ voteId).id = newId;
-
-                const divButtonElement = document.getElementById(newId);
-                $(`[value='delete-${voteId}']`).remove();
-
-                const commentCardElement = document.getElementById("given-vote-" + voteId);
-                const newCardId = 'comment-without-vote-' + commentId;
-                commentCardElement.id = newCardId;
-
-                for (let i = 0; i < divButtonElement.children.length; i++) {
-                    divButtonElement.children[i].name = 'create';
-                    divButtonElement.children[i].value = buttonValues[i] + "-" + commentId;
-                    divButtonElement.children[i].setAttribute('onclick',`sendCreateVoteInformation('${divButtonElement.children[i].value}', ${commentId}, ${stereotypeId})`);
-                    updateButtonColor(divButtonElement.children[i], null);
-                }
-            }
-
-            function updateCardTypeToUpdate(voteId, commentId, stereotypeId, selectedButton) {
-                const newId = 'vote-buttons-update-'+ voteId;
-                document.getElementById('vote-buttons-create-'+ commentId).id = newId;
-                const divButtonElement = document.getElementById(newId);
-
-                const commentCardElement = document.getElementById('comment-without-vote-' + commentId);
-                const newCardId = "given-vote-" + voteId;
-                commentCardElement.id = newCardId;
-
-                for (let i = 0; i < divButtonElement.children.length; i++) {
-                    divButtonElement.children[i].name = 'update';
-                    divButtonElement.children[i].value = buttonValues[i] + "-" + voteId;
-                    divButtonElement.children[i].setAttribute('onclick',`sendUpdateVoteInformation('${divButtonElement.children[i].value}', ${voteId}, ${stereotypeId}, ${commentId})`);
-
-                    updateButtonColor(divButtonElement.children[i], selectedButton);
-                }
-                createDeleteButton(voteId, divButtonElement, stereotypeId, commentId)
-                createDeleteIconButton(voteId, divButtonElement, stereotypeId, commentId, selectedButton);
-            }
-
-            function createShallowDeleteButton(voteId){
-                const deleteButton = document.createElement("button");
-                deleteButton.value = "delete-" + voteId;
-                deleteButton.type = "button";
-                deleteButton.name = "update";
-                return deleteButton;
-            }
-
-            function createDeleteButton(voteId, divButtonElement, stereotypeId, commentId) {
-                let deleteButton = createShallowDeleteButton(voteId);
-                deleteButton.innerHTML = "{{ _('Clear vote') }}";
-
-                deleteButton.classList.add("stereotype-cards__vote-buttons__delete");
-                deleteButton.setAttribute('onclick',`sendUpdateVoteInformation('${deleteButton.value}', ${voteId}, ${stereotypeId}, ${commentId})`);
-                divButtonElement.append(deleteButton);
-            }
-
-            function createDeleteIconButton(voteId, divButtonElement, stereotypeId, commentId, selectedButton) {
-                let deleteButton = createShallowDeleteButton(voteId);
-                deleteButton.innerHTML = `<img src="{{static('img/icons/circle-xmark-regular.svg')}}">`;
-
-                deleteButton.className = deleteButtonClass + selectedButton;
-                deleteButton.setAttribute('onclick',`sendUpdateVoteInformation('${deleteButton.value}', ${voteId}, ${stereotypeId}, ${commentId})`);
-                divButtonElement.append(deleteButton);
             }
 
             $("#stereotype-scroll-top").on("click", function() {
                 $('html, body').animate({ scrollTop: 0 }, 'smooth');
             });
         </script>
-
-    {% else %}
-        <div class="center">
-            <h1 class="h2 text-accent">
-                <br><small>{{ _('There are no personas defined for this conversation') }}</small>
-            </h1>
-            <p>{{_('Start by')}}
-                <a href="{{ url('boards:cluster-edit',  **conversation.get_url_kwargs()) }}">
-                    {{ _('creating personas')}}
-                </a> {{ _('for this conversation.')}}
-            </p>
-        </div>
-    {% endif %} 
 </section>
 {% endblock %}

@@ -2,7 +2,7 @@
         hx-post="{{ url('stereotypes:edit', **{'pk': stereotype.id}) }}"
         hx-swap="innerHTML"
         hx-target="#stereotype-form"
-        hx-on::after-request="showEditModal()"
+        hx-on::after-request="submitStereotypeVotes()"
 >
     {{ csrf_input }}
     <input type="hidden" name="stereotype" value="{{ stereotype.id }}">
@@ -22,12 +22,8 @@
 
 <script>
 
-function showEditModal(){
-    const body = document.getElementsByClassName("body")[0];
-    body.classList.add('overflow-deactive');
-    const editModal = $("#confirm-edit-stereotype");
-    editModal.removeClass("hide");
-    editModal.addClass("show");
+function submitStereotypeVotes(){
+    document.getElementById("edit-votes-formset").requestSubmit();
 }
 
 </script>

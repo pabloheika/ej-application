@@ -31,6 +31,23 @@ class ParticipantCanAddComment(permissions.BasePermission):
         return True
 
 
+class ParticipantCanAddVotesAnonymously(permissions.BasePermission):
+    message = "participants are not allowed to add more votes."
+
+    def has_permission(self, request, view):
+        if request.method == "POST":
+            conversation_id = request.data.get("conversation")
+            try:
+                conversation = Conversation.objects.get(id=conversation_id)
+                if conversation.reaches_anonymous_particiption_limit(request.user):
+                    return False
+                return True
+            except Exception:
+                self.message = f"could not find conversation with ID {conversation_id}"
+                return False
+        return True
+
+
 class IsOwner(permissions.BasePermission):  # For model cluster
     def has_permission(self, request, view):
         if request.user.is_authenticated:

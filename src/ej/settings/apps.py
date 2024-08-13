@@ -33,7 +33,6 @@ class InstalledAppsConf(Base, EjOptions):
         "ej_users",
         "rest_framework",
         "rest_framework.authtoken",
-        "dj_rest_auth",
         "corsheaders",
         "django.contrib.auth",
         "django.contrib.messages",
@@ -43,6 +42,7 @@ class InstalledAppsConf(Base, EjOptions):
         "constance.backends.database",
         "anymail",
         "ckeditor",
+        "drf_spectacular",
     ]
 
     def get_django_contrib_apps(self):

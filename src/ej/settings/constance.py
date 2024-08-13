@@ -56,6 +56,11 @@ class ConstanceConf:
                 "Redirect url for when the user is not logged in to the platform",
                 "charfield",
             ),
+            "RETURN_USER_SKIPED_COMMENTS": (
+                self.RETURN_USER_SKIPED_COMMENTS,
+                "Set this variable to 'False' if you don't want the user voting again in comments he already skiped. You can edit this value in Django admin, in the Constance page.",
+                bool,
+            ),
         }
 
     CONSTANCE_ADDITIONAL_FIELDS = {
@@ -77,6 +82,7 @@ class ConstanceConf:
             "EJ_LISTEN_TO_CITY_YEARLY_SIGNATURE_CONVERSATIONS_LIMIT",
             "EJ_PROFILE_STATE_CHOICES",
             "EJ_LANDING_PAGE_DOMAIN",
+            "RETURN_USER_SKIPED_COMMENTS",
         )
     }
 
@@ -93,6 +99,8 @@ class ConstanceConf:
     EJ_LISTEN_TO_CITY_YEARLY_SIGNATURE_CONVERSATIONS_LIMIT = os.getenv(
         "{attr}", 1000000000
     )
+
+    RETURN_USER_SKIPED_COMMENTS = os.getenv("{attr}", True)
 
     EJ_PROFILE_STATE_CHOICES = (
         ("AC", "Acre"),

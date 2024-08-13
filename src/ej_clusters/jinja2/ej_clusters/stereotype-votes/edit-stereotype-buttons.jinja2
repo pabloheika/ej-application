@@ -1,11 +1,12 @@
-<div class="manage-stereotypes__edit-stereotype">
-    <button type="button" form="stereotype-form" class="manage-stereotypes__edit-stereotype--delete" 
+<div class="manage-stereotypes__actions">
+    <button type="button" form="stereotype-form" 
+        class="manage-stereotypes__actions-button manage-stereotypes__actions-button--red" 
         name="delete" value="{{_('delete')}}" onclick="showConfirmationDeleteStereotype()">
         <i class="fa">&#xf057;</i>
         {{_('delete persona')}}
     </button>
     <button type="submit" form="stereotype-form" 
-        class="manage-stereotypes__edit-stereotype--confirm manage-stereotypes__edit-stereotype--no-edit" 
+        class="manage-stereotypes__actions-button manage-stereotypes__actions-button--gray" 
         id="confirm-edit-button" name="edit" value="{{_('edit')}}" disabled="disabled">
         <i class="fa">&#xf058;</i>
         {{_('save editions')}}
@@ -13,12 +14,20 @@
 </div>
 
 <script>
-    $("input, textarea").keyup(function(e) {
+    function enableEditButton() {
         const saveEditButton = "#confirm-edit-button";
+        
+        $(saveEditButton).prop("disabled", false);
+        $(saveEditButton).removeClass("manage-stereotypes__actions-button--gray");
+        $(saveEditButton).addClass("manage-stereotypes__actions-button--blue");
+    }
+    $("#edit-stereotype-container").keyup(function(e) {
         if ($(this).val() != $(this).data("value")) {
-            $(saveEditButton).prop("disabled", false);
-            $(saveEditButton).removeClass("manage-stereotypes__edit-stereotype--no-edit");
-            $(saveEditButton).addClass("manage-stereotypes__edit-stereotype--blue");
+            enableEditButton();
         }
+    });
+
+    $("#edit-stereotype-votes-container").click(function(e) {
+        enableEditButton();
     });
 </script>

@@ -1,4 +1,5 @@
 from random import randrange
+from constance import config
 
 from django.conf import settings
 from django.utils.timezone import now
@@ -69,13 +70,14 @@ def next_comment(conversation, user):
         except Comment.DoesNotExist:
             pass
 
-        # Comments the user has skip
-        comments = conversation.approved_comments.filter(
-            votes__author=user, votes__choice=Choice.SKIP
-        )
-        size = comments.count()
-        if size:
-            return comments[randrange(0, size)]
+        if config.RETURN_USER_SKIPED_COMMENTS:
+            # Comments the user has skip
+            comments = conversation.approved_comments.filter(
+                votes__author=user, votes__choice=Choice.SKIP
+            )
+            size = comments.count()
+            if size:
+                return comments[randrange(0, size)]
     return None
 
 

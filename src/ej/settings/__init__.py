@@ -101,7 +101,7 @@ class Conf(
         "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
         "PAGE_SIZE": 50,
         "DEFAULT_VERSION": "v1",
-        "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+        "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     }
 
     DB_HOST = os.getenv("DB_HOST", "db")
@@ -110,6 +110,9 @@ class Conf(
         DB_USER = os.getenv("DB_USER", "ej")
         DB_PASSWORD = os.getenv("DB_PASSWORD", "ej")
         DB_PORT = os.getenv("DB_PORT", 5432)
+        DISABLE_SERVER_SIDE_CURSORS = os.getenv("DISABLE_SERVER_SIDE_CURSORS", False)
+        CONN_MAX_AGE = os.getenv("CONN_MAX_AGE", 0)
+        ATOMIC_REQUESTS = os.getenv("ATOMIC_REQUESTS", False)
         DATABASES = {
             "default": {
                 "ENGINE": "django.db.backends.postgresql",
@@ -118,6 +121,9 @@ class Conf(
                 "PASSWORD": DB_PASSWORD,
                 "HOST": DB_HOST,
                 "PORT": DB_PORT,
+                "DISABLE_SERVER_SIDE_CURSORS": DISABLE_SERVER_SIDE_CURSORS,
+                "CONN_MAX_AGE": CONN_MAX_AGE,
+                "ATOMIC_REQUESTS": ATOMIC_REQUESTS,
             }
         }
 
@@ -151,6 +157,15 @@ class Conf(
             "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         }
     }
+
+    # Allow direct TIME_ZONE control, avoiding errors and performance
+    # degradation from Django attempting to run SQL SET statements.
+    # SQL SET statements are specific to DB poolers session mode, not
+    # working with the transaction mode.
+    # https://docs.djangoproject.com/en/4.1/topics/i18n/timezones/#postgresql
+    if os.getenv("TIME_ZONE"):
+        USE_TZ = os.getenv("USE_TZ", False)
+        TIME_ZONE = os.getenv("TIME_ZONE", "America/Sao_Paulo")
 
 
 Conf.save_settings(globals())

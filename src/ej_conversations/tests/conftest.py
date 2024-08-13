@@ -8,6 +8,7 @@ from django.contrib.auth.models import AnonymousUser
 from ej_conversations import create_conversation
 from ej_boards.models import Board
 from ej_users.models import User
+from ej.tests.pytest.conftest import user  # noqa: F403,F401
 
 from rest_framework.test import APIClient
 
@@ -23,35 +24,23 @@ def get_authorized_api_client(user_info):
 
 
 @pytest.fixture
-def user(db):
-    user = User.objects.create_user("email@server.com", "password")
-    user.board_name = "testboard"
-
-    # TODO: Fix this dirty way to set user permissions
-    user.has_perm = lambda x, y=None: True
-
-    user.save()
-    return user
-
-
-@pytest.fixture
-def conversation(db, user):
+def conversation(db, user):  # noqa: F811
     conversation_object = create_conversation(
-        text="test", title="title", author=user, is_promoted=True
+        text="test", title="title", author=user, is_promoted=True, anonymous_votes_limit=1
     )
     yield conversation_object
     conversation_object.delete()
 
 
 @pytest.fixture
-def comment(db, conversation, user):
+def comment(db, conversation, user):  # noqa: F811
     comment_object = conversation.create_comment(user, "content", "approved")
     yield comment_object
     comment_object.delete()
 
 
 @pytest.fixture
-def comments(db, conversation, user):
+def comments(db, conversation, user):  # noqa: F811
     comment_object_1 = conversation.create_comment(user, "content 1", "approved")
     comment_object_2 = conversation.create_comment(user, "content 2", "approved")
     yield [comment_object_1, comment_object_2]
@@ -59,14 +48,14 @@ def comments(db, conversation, user):
 
 
 @pytest.fixture
-def vote(db, user, comment):
+def vote(db, user, comment):  # noqa: F811
     vote_object = comment.vote(author=user, choice="agree")
     yield vote_object
     vote_object.delete()
 
 
 @pytest.fixture
-def board(user):
+def board(user):  # noqa: F811
     board = Board.objects.create(slug="userboard", owner=user, description="board")
     return board
 
@@ -86,7 +75,7 @@ def request_(rf):
 
 
 @pytest.fixture
-def request_with_user(rf, user):
+def request_with_user(rf, user):  # noqa: F811
     request = rf.get("/testboard/")
     request.user = user
     return request

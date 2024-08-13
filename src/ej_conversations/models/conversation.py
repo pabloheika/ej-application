@@ -29,7 +29,6 @@ from .favorites import HasFavoriteMixin
 from .util import (
     make_clean,
     statistics,
-    statistics_for_user,
     vote_count,
     vote_distribution_over_time,
 )
@@ -214,7 +213,6 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
     # Statistical methods
     vote_count = vote_count
     statistics = statistics
-    statistics_for_user = statistics_for_user
     time_interval_votes = vote_distribution_over_time
 
     @lazy
@@ -420,14 +418,13 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
 
     def reaches_anonymous_particiption_limit(self, user):
         """
-        reaches_anonymous_particiption_limit checks if anonymous user reaches the
-        limit for anonymous participation.
+        Check if user is anonymous and if him reached the anonymous participation limit.
         """
         user_is_anonymous = user.is_anonymous or re.match(
             r"^anonymoususer-.*", user.email
         )
         return (
-            user_is_anonymous
+            (user_is_anonymous or not user.has_completed_registration)
             and self.anonymous_votes_limit
             and self.votes.filter(author=user).count() == self.anonymous_votes_limit
         )

@@ -4,11 +4,12 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 
+
 from ej_profiles.models import Profile
 from ej_users.serializers import UserAuthSerializer, UsersSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User
+from .models import User, UserSecretIdManager
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
@@ -18,7 +19,6 @@ from typing import Any
 
 @dataclass
 class EJTokens:
-
     """
     Manage EJ API authentication tokens.
     """
@@ -27,6 +27,7 @@ class EJTokens:
     access_token: str = ""
     refresh_token: str = ""
     data = {}
+    user_data = {}
 
     def __post_init__(self):
         refresh = RefreshToken.for_user(self.user)
@@ -35,6 +36,13 @@ class EJTokens:
         self.data = {
             "access_token": self.access_token,
             "refresh_token": self.refresh_token,
+            "has_completed_registration": self.user.has_completed_registration,
+        }
+        self.user_data = {
+            "id": self.user.id,
+            "name": self.user.name,
+            "email": self.user.email,
+            **self.data,
         }
 
 
@@ -60,17 +68,21 @@ class TokenViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=["post"], permission_classes=[AllowAny])
     def token(self, request):
-
+        """
+        Returns an access_token and refresh_token for an user.
+        """
         serializer = UserAuthSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=400)
 
         try:
-            user = User.objects.get(email=request.data["email"])
+            user = UserSecretIdManager.get_user(request.data)
         except User.DoesNotExist:
-            return Response({"error": _("User was not found.")}, status=500)
+            return Response({"error": _("User was not found.")}, status=404)
 
-        checked_password = user.check_password(request.data["password"])
+        checked_password = UserSecretIdManager.check_password(
+            user, request.data.get("password")
+        )
         if not checked_password:
             return Response({"error": _("The password is incorrect")}, status=400)
 
@@ -78,14 +90,38 @@ class TokenViewSet(viewsets.ViewSet):
             tokens = EJTokens(user)
             return Response(tokens.data)
         except Exception as e:
-            return Response({"error": e}, status=500)
+            return Response({"error": str(e)}, status=500)
 
 
 class UsersViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UsersSerializer
 
-    permission_classes_by_action = {"create": [AllowAny], "list": [IsAdminUser]}
+    permission_classes_by_action = {
+        "create": [AllowAny],
+        "update": [AllowAny],
+        "list": [IsAdminUser],
+    }
+
+    def update(self, request, pk=None):
+
+        if pk.isdigit():
+            return Response(status=501)
+
+        try:
+            temporary_user: User = UserSecretIdManager.get_user({"secret_id": pk})
+        except User.DoesNotExist as e:
+            return Response({"error": str(e)}, status=404)
+
+        if temporary_user.is_linked:
+            return Response(
+                {"error": _("User is already linked to another account.")}, status=403
+            )
+
+        UserSecretIdManager.merge_unique_user_with(
+            temporary_user, request.data.get("email")
+        )
+        return Response({"status": "ok"}, status=200)
 
     def create(self, request, pk=None):
         serializer = self.get_serializer(data=request.data)
@@ -96,8 +132,7 @@ class UsersViewSet(viewsets.ModelViewSet):
         user = serializer.save()
         self.check_profile(user, request)
         tokens = EJTokens(user)
-        response = {"id": user.id, "name": user.name, "email": user.email, **tokens.data}
-        return Response(response)
+        return Response(tokens.user_data, status=201)
 
     def check_profile(self, user, request):
         phone_number = request.data.get("phone_number", None)

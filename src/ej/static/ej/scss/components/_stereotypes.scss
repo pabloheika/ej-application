@@ -22,7 +22,7 @@
     }
 }
 
-#pagination {
+#pagination-create, #pagination-edit {
     display: none;
 
     @media only screen and (max-width: 900px) {
@@ -81,7 +81,7 @@
         }
     }
 
-    #pagination-text {
+    #pagination-text-create, #pagination-text-edit {
         @media only screen and (max-width: 900px) {
             & {
                 color: $color-theme-report-blue;
@@ -160,8 +160,14 @@
         margin-top: 2.25rem;
     }
 
+    h1 {
+        @media only screen and (max-width: 900px) {
+            font-size: 1.25em;
+        }
+    }
+
     .helptext {
-        margin: 1.5rem 0 2.125rem;
+        margin: 1rem 0 2.125rem;
     }
 
     &__helptext-alt {
@@ -173,8 +179,8 @@
         padding: 0 1.5rem;
 
         @media only screen and (max-width: 900px) {
-            background-color: $color-gray-white; 
             grid-column: 1 / 4;
+            background-color: $color-gray-white; 
             padding: 0;
         }
 
@@ -202,8 +208,8 @@
 
     &__form {
         display: flex; 
-        gap: 2.25rem; 
-        margin: 2.25rem 0 2.25rem;
+        gap: 1.5rem; 
+        margin: 2.25rem 0 3.125rem;
         flex-direction: column;
 
         @media only screen and (max-width: 900px) {
@@ -230,7 +236,7 @@
         }
     }
 
-    &__edit-stereotype {
+    &__actions {
         display: flex;
         gap: 2.25rem;
         margin: 3rem 0;
@@ -243,7 +249,7 @@
             margin: 1.875rem 0 2.625rem;
         }
 
-        &--confirm, &--delete {
+        &-button {
             width: 15.375rem;
             height: 3.25rem;
             border-radius: 4.375rem; 
@@ -256,18 +262,30 @@
             align-items: center; 
             justify-content: center;
             margin: 0;
-        }
 
-        &--blue {
-            background-color: $color-theme-dark-blue; 
+            &--green {
+                background-color: $color-theme-report-green; 
+            }
+    
+            &--gray {
+                background-color: $color-gray-darker;
+            }
+    
+            &--red {
+                background-color: $color-red-negative; 
+            }
+    
+            &--blue {
+                background-color: $color-theme-dark-blue;
+            }
         }
+    }
 
-        &--no-edit {
-            background-color: $color-gray-darker;
-        }
-
-        &--delete {
-            background-color: $color-red-negative; 
+    &__grouping {
+        @media only screen and (max-width: 900px) {
+            display: grid; 
+            grid-template-columns: 3% auto 3%; 
+            grid-column: 1 / 4;
         }
     }
 }
@@ -310,12 +328,17 @@
         }
     }
 }
+
 .grouping {
     @media only screen and (max-width: 900px) {
         grid-column: 2;
     }
 
     &__container {
+        @media only screen and (max-width: 900px) {
+            grid-column: 2;
+        }
+        
         h2 {
             margin: 3rem 0 1.5rem;
         }
@@ -330,13 +353,25 @@
     @media only screen and (max-width: 900px) {
         margin-bottom: 0;
     }
-}
 
-.opinion-groups {
-    @media only screen and (max-width: 900px) {
-        display: grid;
-        grid-template-columns: 3% auto 3%;
-        grid-column: 1 / 4;
+    &__no-groups {
+        font-weight: 600;
+        color: $color-theme-dark-blue;
+        font-size: 0.75em;
+        text-transform: uppercase;
+        line-height: 162.6%;
+        padding: 9.688rem 8.5rem;
+        text-align: center;
+
+        @media only screen and (max-width: 900px) {
+            height: 18.75rem;
+            padding: 5.625rem 0;
+        }
+
+        p {
+            margin-bottom: 0;
+        }
+
     }
 }
 
@@ -494,5 +529,15 @@
 }
 
 .skip-0 {
-    background-color: $color-gray-middle !important;
+    background-color: $color-bright-blue !important;
+}
+
+.pointer-1 {
+    .tabs-container {
+        cursor: not-allowed;
+        
+        #see-edit-personas-tab {
+            pointer-events: none;
+        }
+    }
 }

@@ -2,7 +2,6 @@ from rest_framework import serializers
 from rest_framework.reverse import reverse
 from django.utils.translation import gettext_lazy as _
 
-from ej_conversations.roles.conversations import conversation_card
 from ej_conversations.roles.comments import comment_summary
 from ej.serializers import BaseApiSerializer
 from .models import Conversation, Comment, Vote
@@ -107,20 +106,32 @@ class ConversationSerializer(BaseApiSerializer):
 class PartialConversationSerializer(BaseApiSerializer):
     class Meta:
         model = Conversation
-        fields = ["text", "statistics", "participants_can_add_comments"]
+        fields = [
+            "text",
+            "statistics",
+            "participants_can_add_comments",
+            "anonymous_votes_limit",
+        ]
 
 
-class ParticipantConversationSerializer(BaseApiSerializer):
-    card = serializers.SerializerMethodField()
+class BoardConversationSerializer(BaseApiSerializer):
+    links = serializers.SerializerMethodField()
 
     class Meta:
         model = Conversation
-        fields = ["card"]
+        fields = [
+            "id",
+            "text",
+            "statistics",
+            "participants_can_add_comments",
+            "anonymous_votes_limit",
+            "links",
+        ]
 
-    def get_card(self, obj):
-        return conversation_card(
-            obj, request=self.context["request"], button_text=_("Participate")
-        )
+    def get_links(self, obj):
+        return {
+            "self": reverse("v1-boards-conversations", args=[obj.board.id, obj.id]),
+        }
 
 
 class CommentSerializer(BaseApiSerializer):
@@ -214,3 +225,30 @@ class VoteSerializer(BaseApiSerializer):
         else:
             vote.save(update_fields=["choice"])
         return vote
+
+
+class ConversationCardDataSerializer(BaseApiSerializer):
+    author = serializers.SlugRelatedField(read_only=True, slug_field="email")
+    url = serializers.SerializerMethodField()
+    button_text = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Conversation
+        fields = [
+            "url",
+            "title",
+            "text",
+            "author",
+            "is_hidden",
+            "first_tag",
+            "n_approved_comments",
+            "n_final_votes",
+            "n_favorites",
+            "button_text",
+        ]
+
+    def get_url(self, obj: Conversation):
+        return obj.get_absolute_url()
+
+    def get_button_text(self, obj):
+        return _("Participate")

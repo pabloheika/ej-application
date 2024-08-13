@@ -19,8 +19,8 @@ from ej_conversations.api import CommentViewSet, ConversationViewSet, VoteViewSe
 from ej_profiles.api import ProfileViewSet
 from ej_tools.api import OpinionComponentViewSet, RasaConversationViewSet
 from ej_users.api import TokenViewSet, UsersViewSet
-from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
+from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
 
 unregister_admin.unregister_apps()
 
@@ -156,11 +156,12 @@ def get_urlpatterns():
         #  REST API
         path("api/v1/", include(api_router.urls)),
         path("api/", include(rest_api.urls)),
-        path("api/v1/docs/", include_docs_urls(title="ej API Docs", public=False)),
-        #
-        #  REST API for user management
-        path("rest-auth/", include("dj_rest_auth.urls")),
-        path("rest-auth/registration/", include("dj_rest_auth.registration.urls")),
+        path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+        path(
+            "api/v1/swagger/",
+            SpectacularSwaggerView.as_view(url_name="schema"),
+            name="swagger",
+        ),
         # Static files for the dev server
         *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
         *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),

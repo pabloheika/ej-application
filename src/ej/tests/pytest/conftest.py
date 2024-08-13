@@ -1,3 +1,4 @@
+import pytest
 from django.contrib.auth import get_user_model
 from django.test import signals
 from jinja2 import Template as Jinja2Template
@@ -57,6 +58,30 @@ def patch_jinja2():
     if not getattr(Jinja2Template, "_render_patch", False):
         Jinja2Template.render = context_render
         Jinja2Template._render_patch = True
+
+
+@pytest.fixture
+def user(db):
+    user = User.objects.create_user("email@server.com", "password")
+    user.board_name = "testboard"
+
+    # TODO: Fix this dirty way to set user permissions
+    user.has_perm = lambda x, y=None: True
+
+    user.save()
+    return user
+
+
+@pytest.fixture
+def another_user(db):
+    user = User.objects.create_user("anotheruser@server.com", "password")
+    user.board_name = "testboard"
+
+    # TODO: Fix this dirty way to set user permissions
+    user.has_perm = lambda x, y=None: True
+
+    user.save()
+    return user
 
 
 patch_jinja2()
