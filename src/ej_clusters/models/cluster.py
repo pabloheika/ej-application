@@ -153,7 +153,7 @@ class Cluster(TimeStampedModel):
             df["group"] = self.name
 
             if len(df) != 0:
-                df_merged = pd.merge(
+                df = pd.merge(
                     df,
                     cluster_df,
                     left_on="comment",
@@ -162,5 +162,5 @@ class Cluster(TimeStampedModel):
                     suffixes=["", "_"],
                 )
 
-            df_merged.sort_values(by=["content", "created"], inplace=True)
-        return df_merged
+            df.sort_values(by=["content", "created"], inplace=True)
+        return df
