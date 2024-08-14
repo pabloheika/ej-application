@@ -161,9 +161,9 @@ class Cluster(TimeStampedModel):
                     how="inner",
                     suffixes=["", "_"],
                 )
-            
+
                 df.sort_values(by=["content", "created"], inplace=True)
-                
+
             else:
                 df = cluster_df.copy()
                 df.sort_values(by=["content", "created"], inplace=True)
