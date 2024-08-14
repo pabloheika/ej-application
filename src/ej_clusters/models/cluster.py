@@ -149,18 +149,18 @@ class Cluster(TimeStampedModel):
         comments = filtered_comments if filtered_comments else self.comments
         cluster_df = comments.statistics_summary_dataframe(votes=self.votes)
 
-        if len(df) == 0:
-            return cluster_df
-
         if not cluster_df.empty:
             df["group"] = self.name
-            df_merged = pd.merge(
-                df,
-                cluster_df,
-                left_on="comment",
-                right_on="comment",
-                how="inner",
-                suffixes=["", "_"],
-            )
+
+            if len(df) != 0:
+                df_merged = pd.merge(
+                    df,
+                    cluster_df,
+                    left_on="comment",
+                    right_on="comment",
+                    how="inner",
+                    suffixes=["", "_"],
+                )
+
             df_merged.sort_values(by=["content", "created"], inplace=True)
         return df_merged
