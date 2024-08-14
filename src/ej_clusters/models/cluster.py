@@ -162,5 +162,6 @@ class Cluster(TimeStampedModel):
                     suffixes=["", "_"],
                 )
 
-            df.sort_values(by=["content", "created"], inplace=True)
+                df.sort_values(by=["content", "created"], inplace=True)
+
         return df
