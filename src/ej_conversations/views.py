@@ -30,7 +30,12 @@ from . import forms
 from .decorators import redirect_to_conversation_detail, user_can_post_anonymously
 from .forms import CommentForm, ConversationForm
 from .models import Comment, Conversation
-from .utils import handle_detail_comment, handle_detail_favorite, handle_detail_vote
+from .utils import (
+    handle_detail_comment,
+    handle_detail_favorite,
+    handle_detail_vote,
+    handle_htmx_redirect,
+)
 
 log = getLogger("ej")
 
@@ -53,7 +58,6 @@ class ConversationCommonView:
         if self.request.method == 'POST', returns a random unvoted comment.
         """
         if self.request.method == "GET":
-            # on "GET" requests, returns always the same unvoted comment
             return conversation.next_comment(user, random=False)
         return conversation.next_comment(user, random=True)
 
@@ -326,7 +330,15 @@ class ConversationVoteView(ConversationCommonView, DetailView):
     def post(self, request, *args, **kwargs):
         conversation = self.get_object()
         request.user = User.get_or_create_from_session(conversation, request)
+
         self.ctx = handle_detail_vote(request)
+        conversation_url = reverse(
+            "boards:conversation-detail", kwargs=conversation.get_url_kwargs()
+        )
+        if conversation.reaches_anonymous_particiption_limit(request.user):
+            redirect_url = f"/register/?sessionKey={request.session.session_key}&next={conversation_url}"
+            return handle_htmx_redirect(redirect_url)
+
         return render(
             request, "ej_conversations/comments/card.jinja2", self.get_context_data()
         )

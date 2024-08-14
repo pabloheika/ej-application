@@ -1,6 +1,6 @@
-from django.http import HttpResponse
 from django.shortcuts import redirect, reverse
 from django.utils.translation import gettext_lazy as _
+from ej_conversations.utils import handle_htmx_redirect
 from ej_users.models import User
 
 
@@ -53,22 +53,12 @@ def user_can_post_anonymously(func):
         conversation_url = reverse(
             "boards:conversation-detail", kwargs=conversation.get_url_kwargs()
         )
-        if conversation.reaches_anonymous_particiption_limit(request.user):
-            redirect_url = f"/register/?sessionKey={request.session.session_key}&next={conversation_url}"
-        elif request.user.is_anonymous:
+
+        if request.user.is_anonymous:
             redirect_url = f"/register/?next={conversation_url}"
 
         if redirect_url:
-            """
-            Participation page uses HTMX library to make backend AJAX requests.
-            In order to make a redirect with HTMX,
-            we need to include HX-Redirect header to the response.
-            For more information, access https://htmx.org/reference/.
-            """
-            response = HttpResponse()
-            response["HX-Redirect"] = redirect_url
-            response.status_code = 302
-            return response
+            return handle_htmx_redirect(redirect_url)
 
         return func(self, request, conversation_id, slug, board_slug, *args, **kwargs)
 

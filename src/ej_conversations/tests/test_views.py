@@ -285,6 +285,7 @@ class TestConversationDetail(ConversationSetup):
         )
         assert response.status_code == 302
         assert response["HX-Redirect"] == f"/register/?next={conversation_url}"
+        assert not Vote.objects.filter(comment=comment).exists()
 
         first_conversation.anonymous_votes_limit = 1
         first_conversation.save()
@@ -293,7 +294,8 @@ class TestConversationDetail(ConversationSetup):
             conversation_vote_url,
             {"vote": "agree", "comment_id": comment.id},
         )
-        assert response.status_code == 200
+        assert response.status_code == 302
+        assert Vote.objects.filter(comment=comment).exists()
 
     def test_register_user_from_session_after_conversation_anonymous_limit(
         self, first_conversation
@@ -307,19 +309,12 @@ class TestConversationDetail(ConversationSetup):
             "boards:conversation-vote", kwargs=first_conversation.get_url_kwargs()
         )
         first_comment = first_conversation.comments.first()
-        last_comment = first_conversation.comments.last()
-
-        client.post(
-            conversation_vote_url,
-            {"vote": "agree", "comment_id": first_comment.id},
-        )
-
-        session_user_email = User.objects.last().email
 
         response = client.post(
             conversation_vote_url,
-            {"vote": "agree", "comment_id": last_comment.id},
+            {"vote": "agree", "comment_id": first_comment.id},
         )
+        session_user_email = User.objects.last().email
 
         register_url = response["HX-Redirect"]
         assert re.match(r"^.*sessionKey=.*", register_url)
