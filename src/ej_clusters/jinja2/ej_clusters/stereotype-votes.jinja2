@@ -1,184 +1,76 @@
 {% extends 'ej_conversations/base.jinja2' %}
 {% set main_class = 'measure-wide pad-x2 center margin-xauto' %}
 {% block menu %}{% include 'ej_conversations/includes/menu.jinja2' %}{% endblock %}
-
+{% from "ej/includes/tabs.jinja2" import tabs %}
+{% from "ej_clusters/includes/conclusion-action-modal.jinja2" import conclusion_action_modal %}
+{% from "ej_clusters/stereotype-votes/pagination.jinja2" import pagination %}
 
 {% block content %}
-<section class="content-grid content-grid--padding center">
+<section class="content-grid header-space manage-stereotypes">
     <script src="/static/js/simplePagination.js"></script>
+        <h1 class="text-accent">{{ _("Modeling") }}</h1>
+        <h2 class="manage-stereotypes--margin-top-36">{{_("Personas")}}</h2>
+            <p class="margin-y3 helptext">
+                {{_("We use votes to rank users according to their opinions. 
+                    Users who vote in a similar way tend to be in the same group.")}}
+            </p>
 
-        {% if groups  %}
-            <h1 class="h2 text-accent .title--big">{{ _('Define personas') }}</h1>
-            <p id="subtitle-persona">{% trans %}Mark the votes for each stereotype in your conversation.{% endtrans %}</p>
+        {{ tabs({
+            _('See/Edit personas'): 'see-edit-personas', 
+            _('Create persona'): 'create-persona'}, 
+            classes='tabs--smaller pointer-' ~ tab_index, selectedIndex=tab_index)}}
+        
+        {% include 'ej_clusters/stereotype-votes/edit-tab.jinja2' %}  
 
-            {% include 'ej_clusters/stereotype-votes/filter-section.jinja2' %}
-            {% include 'ej_clusters/stereotype-votes/select-groups-filter.jinja2' %}
+        {% include 'ej_clusters/stereotype-votes/create-tab.jinja2' %} 
 
-            <div class="stereotype-cards">
-                <form method="post" class="width-full" action="#stereotype-{{ stereotype.id }}">
-                    {{ csrf_input }}
-                    <input type="hidden" name="stereotype" value="{{ stereotype.id }}">
-                    <div id="given-votes">
-                        {% include 'ej_clusters/stereotype-votes/stereotype-given-votes.jinja2' %}
-                    </div>
-                    <div id="comments-without-vote">
-                        {% include 'ej_clusters/stereotype-votes/stereotype-unvoted-votes.jinja2' %}
-                    </div>
-                </form>
-            </div>
-            {% include 'ej_clusters/stereotype-votes/pagination.jinja2' %}
-
-
+        <div id="groups-container" class="manage-stereotypes__grouping"></div>
+        
+        <div class="scroll-top scroll-top--full-width">
+            <i class="fa">&#xf139;</i>
+            <a id="stereotype-scroll-top">{{_("Back to top")}}</a>
+        </div>
+        
+        <div id="confirm-create-stereotype" class="hide">
+            {{ conclusion_action_modal(static('/img/icons/circle-check-solid.svg'), _("Stereotype created"), conversation, True) }}
+        </div>
+        <div id="confirm-edit-stereotype" class="hide">
+            {{ conclusion_action_modal(static('/img/icons/circle-check-solid.svg'), _("Saved edits"), conversation, True) }}
+        </div>
+        <div id="confirm-delete-stereotype" class="hide">
+            {{ conclusion_action_modal(static('/img/icons/circle-x.svg'), _("Excluded stereotype"), conversation) }}
+        </div>
+        
         <script>
-            let orderByVoteChoice = 1;
-            let sortByVoteChoice = '-';
-            const DELETE_BUTTON = '2';
-            const buttonValues = ["agree", "skip", "disagree"];
-
-            function sendUpdateVoteInformation(value, voteId, stereotypeId, commentId) {
-                $.post("{{ request.path }}",
-                    {
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        stereotype: stereotypeId,
-                        update: value
-                    },
-                    () => { updateAfterFormSubmit(voteId, getSelectedButton(value), commentId, stereotypeId) }
-                );
+            function showModal(id){
+                const body = $("body").addClass('overflow-deactive');
+                const modal = $(id);
+                modal.removeClass("hide");
+                modal.addClass("show");
             }
 
-            function sendCreateVoteInformation(value, commentId, stereotypeId) {
-                $.post("{{ request.path }}stereotype-votes/create",
-                    {
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                        comment: commentId,
-                        author: stereotypeId,
-                        choice: getSelectedButton(value)
-                    },
-                    (voteId) => {
-                        updateButtonCollors(commentId, "create", getSelectedButton(value));
-                        updateCardTypeToUpdate(voteId, commentId, stereotypeId, getSelectedButton(value))
-                    }
-                );
-            }
+            $(document).ready(function(){
+                updateClusters();
+            });
 
-            function updateButtonCollors(divId, type, selectedButton){
-                const choiceCountButton = 3
-                const divElement = document.getElementById("vote-buttons-" + type + "-" + divId);
-
-                for (let i = 0; i < choiceCountButton; i++) {
-                    updateButtonColor(divElement.children[i], selectedButton);
-                }
-            }
-
-            function updateAfterFormSubmit(divId, selectedButton, commentId=null, stereotypeId=null){
-                updateButtonCollors(divId, "update", selectedButton);
-                if (selectedButton == DELETE_BUTTON) {
-                    updateCardTypeToCreate(divId, commentId, stereotypeId)
-                }
-            }
-
-            function updateButtonColor(button, selectedButton){
-                button.className = 'is-clear ' + button.value.split("-")[0] + '-' + selectedButton;
-            }
-
-            function getSelectedButton(value){
-                const buttonValues = {
-                    agree: "1",
-                    disagree: "-1",
-                    skip: "0",
-                    delete: "2"
-                };
-                const selectedButtonValue = value.split("-")[0];
-                return buttonValues[selectedButtonValue];
-            }
-
-            function updateSortFilter(sort, target, previous) {
-                let previousIcon = document.getElementById(previous);
-                sortByVoteChoice = sort;
-
-                target.classList.add("pink-selected-sort");
-                previousIcon.classList.remove("pink-selected-sort");
-                updateStereotypeVoteCards(sort);
-            }
-
-            function updateOrderByVote(orderByChoice){
-                orderByVoteChoice = orderByChoice;
-                updateStereotypeVoteCards();
-            }
-
-            function updateStereotypeVoteCards() {
+            function updateClusters() {
                 $.ajax({
-                    url: `stereotype-votes-ordenation?sort=${sortByVoteChoice}&orderBy=${orderByVoteChoice}&stereotypeId={{stereotype.id}}`,
-                    success: function(data) {
-                        $("#given-votes").html(data);
-                        items = $(".stereotype-cards__card-comments");
-                        showCurrentItems();
+                    url: "{{url('boards:cluster-index',  **conversation.get_url_kwargs())}}",
+                    context: document.body,
+                    success: function(response){
+                        $('#groups-container').html(response);
+
+                        {% if groups %}
+                            renderCanvas();
+                        {% endif %}
+                        htmx.process(document.body);
                     }
                 });
             }
 
-            function updateCardTypeToCreate(voteId, commentId, stereotypeId) {
-                const newId = 'vote-buttons-create-'+ commentId;
-                document.getElementById('vote-buttons-update-'+ voteId).id = newId;
-
-                const divButtonElement = document.getElementById(newId);
-                divButtonElement.removeChild(divButtonElement.children[3]);
-
-                const commentCardElement = document.getElementById("given-vote-" + voteId);
-                const newCardId = 'comment-without-vote-' + commentId;
-                commentCardElement.id = newCardId;
-
-                for (let i = 0; i < divButtonElement.children.length; i++) {
-                    divButtonElement.children[i].name = 'create';
-                    divButtonElement.children[i].value = buttonValues[i] + "-" + commentId;
-                    divButtonElement.children[i].setAttribute('onclick',`sendCreateVoteInformation('${divButtonElement.children[i].value}', ${commentId}, ${stereotypeId})`);
-                    updateButtonColor(divButtonElement.children[i], null);
-                }
-            }
-
-            function updateCardTypeToUpdate(voteId, commentId, stereotypeId, selectedButton) {
-                const newId = 'vote-buttons-update-'+ voteId;
-                document.getElementById('vote-buttons-create-'+ commentId).id = newId;
-                const divButtonElement = document.getElementById(newId);
-
-                const commentCardElement = document.getElementById('comment-without-vote-' + commentId);
-                const newCardId = "given-vote-" + voteId;
-                commentCardElement.id = newCardId;
-
-                for (let i = 0; i < divButtonElement.children.length; i++) {
-                    divButtonElement.children[i].name = 'update';
-                    divButtonElement.children[i].value = buttonValues[i] + "-" + voteId;
-                    divButtonElement.children[i].setAttribute('onclick',`sendUpdateVoteInformation('${divButtonElement.children[i].value}', ${voteId}, ${stereotypeId}, ${commentId})`);
-
-                    updateButtonColor(divButtonElement.children[i], selectedButton);
-                }
-                createDeleteButton(voteId, divButtonElement, stereotypeId, commentId)
-            }
-
-            function createDeleteButton(voteId, divButtonElement, stereotypeId, commentId) {
-                const deleteButton = document.createElement("button");
-                deleteButton.value = "delete-" + voteId;
-                deleteButton.type = "button";
-                deleteButton.name = "update";
-                deleteButton.innerHTML = "{{ _('Clear vote') }}";
-
-                deleteButton.classList.add("stereotype-cards__vote-buttons__delete");
-                deleteButton.setAttribute('onclick',`sendUpdateVoteInformation('${deleteButton.value}', ${voteId}, ${stereotypeId}, ${commentId})`);
-                divButtonElement.append(deleteButton);
-            }
-
+            $("#stereotype-scroll-top").on("click", function() {
+                $('html, body').animate({ scrollTop: 0 }, 'smooth');
+            });
         </script>
-
-        {% else %}
-            <h1 class="h2 text-accent">
-                <br><small>{{ _('There are no personas defined for this conversation') }}</small>
-            </h1>
-            <p>{{_('Start by')}}
-                <a href="{{ url('boards:cluster-edit',  **conversation.get_url_kwargs()) }}">
-                    {{ _('creating personas')}}
-                </a> {{ _('for this conversation.')}}
-            </p>
-        {% endif %}
-
 </section>
 {% endblock %}

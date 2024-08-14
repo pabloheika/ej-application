@@ -55,8 +55,7 @@
     <h3 class="text-accent participant-menu__item participant-menu__item--column-2 participant-menu__item--margin">{{ _('Model and Analyze') }}</h3>
     <ul class="participant-menu__item">
         {% if request.user.has_perm("ej.can_edit_conversation", conversation) %}
-            {{ menu_item(current_page, "edit-groups", url('boards:cluster-edit', **conversation.get_url_kwargs()), _("Create/Edit groups")) }}
-            {{ menu_item(current_page, "stereotypes", url("boards:cluster-stereotype_votes", **conversation.get_url_kwargs()), _("Manage personas")) }}
+            {{ menu_item(current_page, "stereotypes", url("boards:stereotype-votes-list", **conversation.get_url_kwargs()), _("Manage personas")) }}
         {% endif %}
 
         {% for link in page_menu.links('conversations:detail-admin', request, conversation) %}
@@ -85,13 +84,6 @@
                         <div id="participants-report" class="users-item">
                             <a href=" {{ url('boards:dataviz-users',  **conversation.get_url_kwargs()) }}">
                                 {{ _('Participants report') }}
-                            </a>
-                        </div>
-                    </li>
-                    <li>
-                        <div id="clusters" class="clusters-item">
-                            <a href=" {{ url('boards:cluster-index', **conversation.get_url_kwargs()) }}">
-                                {{ _('Opinion groups') }}
                             </a>
                         </div>
                     </li>

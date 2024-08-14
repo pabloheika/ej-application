@@ -141,6 +141,53 @@ class PublicConversationView(ConversationView):
         }
 
 
+@method_decorator([login_required], name="dispatch")
+class ConversationsFilterByTag(ListView):
+    template_name = "ej_conversations/includes/conversation-card-list.jinja2"
+    model = Conversation
+
+    def get_queryset(self) -> QuerySet[Any]:
+        queryset = Conversation.objects.all()
+        search_text = self.request.GET.get("search_text", None)
+        tags = self.request.GET.getlist("tags")
+
+        self.request.user.profile.filtered_home_tag = True
+        self.request.user.profile.save()
+        queryset = self.initial_queryset(queryset)
+        queryset = queryset.filter_by_tags(tags)
+
+        queryset = queryset.filter_by_text_and_tag(search_text)
+
+        return queryset
+
+    def get_button_text(self):
+        return _("Participate")
+
+    def initial_queryset(self, queryset):
+        return Conversation.objects.all()
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        return {
+            "conversations": self.get_queryset(),
+            "button_text": self.get_button_text(),
+        }
+
+
+@method_decorator([login_required], name="dispatch")
+class PromotedConversationsFilterByTag(ConversationsFilterByTag):
+    def initial_queryset(self, queryset):
+        return queryset.filter(is_promoted=True)
+
+
+@method_decorator([login_required], name="dispatch")
+class UserConversationsFilterByTag(ConversationsFilterByTag):
+    def get_button_text(self):
+        return _("Manage!")
+
+    def initial_queryset(self, queryset):
+        return queryset.filter(author=self.request.user)
+
+
 @method_decorator([login_required, can_acess_list_view], name="dispatch")
 class BoardConversationsView(ConversationView):
     template_name = "ej_conversations/board-conversations-list.jinja2"
@@ -178,6 +225,7 @@ class BoardConversationsView(ConversationView):
             "board": board,
             "user_boards": user_boards,
             "current_page": board.slug,
+            "can_delete_board": user.has_more_than_one_board(),
         }
 
 
@@ -211,7 +259,13 @@ class ConversationCommentView(ConversationCommonView, DetailView):
     def post(self, request, conversation_id, slug, board_slug, *args, **kwargs):
         conversation = self.get_object()
         request.user = User.get_or_create_from_session(conversation, request)
-        self.ctx = handle_detail_comment(request, conversation)
+
+        # TODO: create a rule for this check
+        if (
+            conversation.participants_can_add_comments
+            or request.user.id == conversation.author.id
+        ):
+            self.ctx = handle_detail_comment(request, conversation)
 
         return render(
             request,
@@ -342,7 +396,7 @@ class ConversationEditView(UpdateView):
     def get_redirect_url(self, conversation, page):
         if page == "stereotypes":
             args = conversation.get_url_kwargs()
-            return reverse("boards:cluster-stereotype_votes", kwargs=args)
+            return reverse("boards:stereotype-votes-list", kwargs=args)
         elif page == "moderate":
             return conversation.patch_url("conversation:moderate")
         elif conversation.is_promoted:
@@ -431,7 +485,7 @@ class ConversationModerateView(UpdateView):
 @method_decorator(
     [login_required, can_edit_conversation, can_moderate_conversation], name="dispatch"
 )
-class NewCommentView(UpdateView):
+class CommentModerationView(UpdateView):
     model = Conversation
     template_name = "ej_conversations/conversation-moderate.jinja2"
 

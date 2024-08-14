@@ -125,6 +125,18 @@ class ConversationQuerySet(ConversationMixin, WordCloudQuerySet):
 
         return Vote.objects.bulk_create(new_votes)
 
+    def filter_by_text_and_tag(self, search_text):
+        if search_text:
+            return self.filter(
+                Q(text__icontains=search_text) | Q(tags__name__icontains=search_text)
+            ).distinct()
+        return self
+
+    def filter_by_tags(self, tags):
+        if tags:
+            return self.filter(tags__name__in=tags).distinct()
+        return self
+
 
 #
 # Constants and configurations

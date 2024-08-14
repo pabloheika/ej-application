@@ -1,7 +1,7 @@
 {% macro clustersGenerator(json_data) %}
 <script src="{{ static('js/clusterviz.js') }}"></script>
 <script>
-    window.addEventListener('load', function () {
+    function renderCanvas(){
         let canvas = $('#cluster-canvas');
         let size = 0;
         let windowSize = ($(window).width());
@@ -16,7 +16,13 @@
         }
         canvas.css({width: size, height: size * 0.80});
         initializeForceLayout('#cluster-canvas', {{ json_data | safe }});
+    }
+
+    window.addEventListener('load', function () {
+        renderCanvas();
     });
+
+
 </script>
 {% endmacro %}
 

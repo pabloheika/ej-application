@@ -21,7 +21,6 @@ from ej_dataviz.models import (
     UsersReportSearchFilter,
 )
 from ej_dataviz.utils import (
-    conversation_has_stereotypes,
     get_comments_dataframe,
     get_user_dataframe,
 )
@@ -194,13 +193,6 @@ class TestReportRoutes:
         assert conversation_with_comments.comments.all()[2].content == comments[2][0]
         assert conversation_with_comments.comments.all()[3].content == comments[3][0]
 
-    def test_conversation_has_stereotypes(self, cluster, stereotype_vote):
-        cluster.stereotypes.add(stereotype_vote.author)
-        cluster.users.add(cluster.clusterization.conversation.author)
-        cluster.save()
-        clusterization = Clusterization.objects.filter(conversation=cluster.conversation)
-        assert conversation_has_stereotypes(clusterization)
-
     def test_get_dashboard_with_clusters(
         self, cluster, stereotype_vote, comment, logged_client
     ):
@@ -299,20 +291,20 @@ class TestCommentsReport(TestReportRoutes):
         assert sorted_comments_df.iloc[[0]].get("content").item() == "aa"
         assert round(sorted_comments_df.iloc[[0]].get("agree").item(), 1) == 100.0
         assert sorted_comments_df.iloc[[1]].get("content").item() == "aaa"
-        assert round(sorted_comments_df.iloc[[1]].get("agree").item(), 1) == 33.3
+        assert round(sorted_comments_df.iloc[[1]].get("agree").item(), 1) == 66.7
         assert sorted_comments_df.iloc[[2]].get("content").item() == "aaaa"
-        assert round(sorted_comments_df.iloc[[2]].get("agree").item(), 1) == 0.0
+        assert round(sorted_comments_df.iloc[[2]].get("agree").item(), 1) == 33.3
         assert sorted_comments_df.iloc[[3]].get("content").item() == "test"
         assert round(sorted_comments_df.iloc[[3]].get("agree").item(), 1) == 0.0
 
         orderby_filter = ReportOrderByFilter("disagree", comments_df)
         sorted_comments_df = orderby_filter.filter()
-        assert sorted_comments_df.iloc[[0]].get("content").item() == "aaaa"
+        assert sorted_comments_df.iloc[[0]].get("content").item() == "test"
         assert round(sorted_comments_df.iloc[[0]].get("disagree").item(), 1) == 100.0
-        assert sorted_comments_df.iloc[[1]].get("content").item() == "test"
-        assert round(sorted_comments_df.iloc[[1]].get("disagree").item(), 1) == 100.0
+        assert sorted_comments_df.iloc[[1]].get("content").item() == "aaaa"
+        assert round(sorted_comments_df.iloc[[1]].get("disagree").item(), 1) == 66.7
         assert sorted_comments_df.iloc[[2]].get("content").item() == "aaa"
-        assert round(sorted_comments_df.iloc[[2]].get("disagree").item(), 1) == 66.7
+        assert round(sorted_comments_df.iloc[[2]].get("disagree").item(), 1) == 33.3
         assert sorted_comments_df.iloc[[3]].get("content").item() == "aa"
         assert round(sorted_comments_df.iloc[[3]].get("disagree").item(), 1) == 0.0
 
@@ -324,12 +316,12 @@ class TestCommentsReport(TestReportRoutes):
 
         orderby_filter = ReportOrderByFilter("agree", comments_df, True)
         sorted_comments_df = orderby_filter.filter()
-        assert sorted_comments_df.iloc[[0]].get("content").item() == "aaaa"
+        assert sorted_comments_df.iloc[[0]].get("content").item() == "test"
         assert round(sorted_comments_df.iloc[[0]].get("agree").item(), 1) == 0.0
-        assert sorted_comments_df.iloc[[1]].get("content").item() == "test"
-        assert round(sorted_comments_df.iloc[[1]].get("agree").item(), 1) == 0.0
+        assert sorted_comments_df.iloc[[1]].get("content").item() == "aaaa"
+        assert round(sorted_comments_df.iloc[[1]].get("agree").item(), 1) == 33.3
         assert sorted_comments_df.iloc[[2]].get("content").item() == "aaa"
-        assert round(sorted_comments_df.iloc[[2]].get("agree").item(), 1) == 33.3
+        assert round(sorted_comments_df.iloc[[2]].get("agree").item(), 1) == 66.7
         assert sorted_comments_df.iloc[[3]].get("content").item() == "aa"
         assert round(sorted_comments_df.iloc[[3]].get("agree").item(), 1) == 100.0
 
@@ -338,9 +330,9 @@ class TestCommentsReport(TestReportRoutes):
         assert sorted_comments_df.iloc[[0]].get("content").item() == "aa"
         assert round(sorted_comments_df.iloc[[0]].get("disagree").item(), 1) == 0.0
         assert sorted_comments_df.iloc[[1]].get("content").item() == "aaa"
-        assert round(sorted_comments_df.iloc[[1]].get("disagree").item(), 1) == 66.7
+        assert round(sorted_comments_df.iloc[[1]].get("disagree").item(), 1) == 33.3
         assert sorted_comments_df.iloc[[2]].get("content").item() == "aaaa"
-        assert round(sorted_comments_df.iloc[[2]].get("disagree").item(), 1) == 100.0
+        assert round(sorted_comments_df.iloc[[2]].get("disagree").item(), 1) == 66.7
         assert sorted_comments_df.iloc[[3]].get("content").item() == "test"
         assert round(sorted_comments_df.iloc[[3]].get("disagree").item(), 1) == 100.0
 
@@ -399,7 +391,6 @@ class TestUsersReport(TestReportRoutes):
         assert len(users_df.index) == 3
 
     def test_get_cluster_users_dataframe(self, conversation_with_comments, user_cluster):
-
         clusters_filter = UsersReportClustersFilter(
             [user_cluster.id], conversation_with_comments
         )

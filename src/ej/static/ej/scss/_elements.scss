@@ -6,7 +6,7 @@ h2 {
 }
 
 h1 {
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-weight: 600;
 }
 
@@ -23,6 +23,11 @@ label + select + br {
 .flex {
     display: flex;
 }
+
+.flex--justify-center {
+    justify-content: center;
+}
+
 .flex--wrap {
     @extend .flex;
     flex-wrap: wrap;
@@ -43,6 +48,18 @@ label + select + br {
 }
 .inline-grid {
     display: inline-grid;
+}
+.align-center {
+    align-items: center;
+}
+.justify-center {
+    justify-content: center;
+}
+
+.full-width {
+    @media only screen and (max-width: 900px) {
+        grid-column: 1 / 4 !important;
+    }
 }
 
 

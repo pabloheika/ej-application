@@ -1,7 +1,5 @@
 from django.test import RequestFactory
 from django.test import Client
-import pytest
-
 from ej_clusters.models.cluster import Cluster
 from ej_clusters.models.clusterization import Clusterization
 from ej_clusters.models.stereotype import Stereotype
@@ -9,6 +7,7 @@ from ej_clusters.models.stereotype_vote import StereotypeVote
 from ej_conversations.enums import Choice
 from ej_conversations.tests.conftest import *
 from ej_users.models import User
+import pytest
 
 
 @pytest.fixture
@@ -60,61 +59,3 @@ def logged_client(user):
     client = Client()
     client.force_login(user)
     return client
-
-
-@pytest.fixture
-def conversation_with_comments(conversation, board):
-    user1 = User.objects.create_user("user1@email.br", "password")
-    user2 = User.objects.create_user("user2@email.br", "password")
-    user3 = User.objects.create_user("user3@email.br", "password")
-
-    board.save()
-    conversation.board = board
-    conversation.save()
-
-    comment = conversation.create_comment(
-        conversation.author, "aa", status="approved", check_limits=False
-    )
-    comment2 = conversation.create_comment(
-        conversation.author, "aaa", status="approved", check_limits=False
-    )
-    comment3 = conversation.create_comment(
-        conversation.author, "aaaa", status="approved", check_limits=False
-    )
-    comment4 = conversation.create_comment(
-        conversation.author, "test", status="approved", check_limits=False
-    )
-
-    comment.vote(user1, "agree")
-    comment.vote(user2, "agree")
-    comment.vote(user3, "agree")
-
-    comment2.vote(user1, "agree")
-    comment2.vote(user2, "disagree")
-    comment2.vote(user3, "disagree")
-
-    comment3.vote(user1, "disagree")
-    comment3.vote(user2, "disagree")
-    comment3.vote(user3, "disagree")
-
-    comment4.vote(user1, "disagree")
-    conversation.save()
-    return conversation
-
-
-@pytest.fixture()
-def conversation_with_votes(conversation, board):
-    user1 = User.objects.create_user("user1@email.br", "password")
-    user2 = User.objects.create_user("user2@email.br", "password")
-    user3 = User.objects.create_user("user3@email.br", "password")
-
-    conversation.board = board
-    conversation.save()
-
-    comment = conversation.create_comment(
-        conversation.author, "aa", status="approved", check_limits=False
-    )
-    comment.vote(user1, "agree")
-    comment.vote(user2, "agree")
-    comment.vote(user3, "disagree")
-    return conversation

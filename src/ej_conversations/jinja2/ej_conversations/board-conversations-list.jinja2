@@ -11,26 +11,26 @@
 {% block menu %}{% include 'ej_conversations/includes/participant-menu.jinja2' %}{% endblock %}
 
 {% block content %}
-<section class="content-grid">
-    <div class="board-statistics-container">
-        <div id="edit-board">
-            <div class="left-side">
+<section class="content-grid board-detail">
+    <div class="board-detail__statistics-container">
+
+        <div class="board-detail__title">
+            <div class="board-detail__title--left-side">
                 <h1 class="header-space text-accent">{{ board.title}}</h1>
-
-                {%- if request.user.has_perm('ej.can_edit_board', board) %}
-                    <a href="{{ url('boards:board-edit', board_slug=board.slug) }}"><i class="fas fa-pen"></i></a>
-                {% endif %}
-
             </div>
-            <div onclick="toggleStatisticsMenu()" class="right-side">
+            <div onclick="toggleStatisticsMenu()" class="board-detail__title--right-side">
                 <i class="fas fa-info"></i>
             </div>
         </div>
-        <div onclick="toggleStatisticsMenu()" id="bg-modal" class="hide-board-statistics"></div>
-        {%- if board.conversations.count() == 0 %}
-            <div class="helptext board-helptext">{{ _("Welcome to EJ. This is your personal board. Board is where your conversations will be available. Press 'New conversation' to starts collecting yours audience opinion.") }}</div>
-        {% endif %}
-        <div class="cards-divider hide-board-statistics">
+
+        <div class="board-detail__description">
+            <p>{{ _("Welcome to EJ. This is your personal board. Board is where your conversations will be available. Press 'New conversation' to starts collecting yours audience opinion.") }}</p>
+        </div>
+    
+        {% include 'ej_conversations/includes/remove-board-section.jinja2' %}
+
+        <div onclick="toggleStatisticsMenu()" id="bg-modal" class="board-detail__board-statistics--hide"></div>
+        <div class="cards-divider board-detail__board-statistics--hide">
             <div class="cards-divider-header">
                 <div class="close-btn">
                     <i onclick="toggleStatisticsMenu()" class="fas fa-times"></i>
@@ -69,8 +69,8 @@
     modalBg = document.getElementById('bg-modal');
 
     function toggleStatisticsMenu(){
-        let classToAdd = cards.classList.contains('hide-board-statistics') ? "hide-board-statistics" : "show-board-statistics";
-        let classToRemove = classToAdd === 'hide-board-statistics' ? "show-board-statistics" : "hide-board-statistics";
+        let classToAdd = cards.classList.contains('board-detail__board-statistics--hide') ? "board-detail__board-statistics--hide" : "board-detail__board-statistics--show";
+        let classToRemove = classToAdd === 'board-detail__board-statistics--hide' ? "board-detail__board-statistics--show" : "board-detail__board-statistics--hide";
 
         cards.classList.toggle(classToAdd);
         modalBg.classList.toggle(classToAdd);

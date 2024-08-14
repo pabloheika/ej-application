@@ -1,4 +1,4 @@
-from .enums import Choice, RejectionReason
+from .enums import Choice
 
 default_app_config = "ej_conversations.apps.EjConversationsConfig"
 

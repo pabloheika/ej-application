@@ -8,7 +8,11 @@ class RasaConversationSerializer(serializers.ModelSerializer):
         fields = ["conversation", "domain"]
 
 
-class OpinionComponentSerializer(serializers.BaseSerializer):
+class OpinionComponentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OpinionComponent
+        fields = ["final_voting_message"]
+
     def to_representation(self, instance: OpinionComponent):
         """
         to_representation customizes how Serializers returns data

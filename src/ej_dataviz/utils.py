@@ -8,7 +8,7 @@ from django.utils.text import slugify
 from django.utils.translation import gettext as __, gettext_lazy as _
 from sidekick import import_later
 
-from ej_clusters.models import Cluster
+from ej_clusters.models import Cluster, Clusterization
 from ej_conversations.utils import check_promoted
 from ej_conversations.models.conversation import Conversation
 
@@ -225,16 +225,17 @@ def get_stop_words():
     return stop_words.get_stop_words("en")
 
 
-def conversation_has_stereotypes(clusterization):
-    if clusterization and clusterization.exists():
-        return clusterization.stereotypes().count() > 0
-    return False
-
-
 def get_biggest_cluster(clusterization):
     from django.db.models import Count, F
 
-    if conversation_has_stereotypes(clusterization):
+    if isinstance(clusterization, Clusterization):
+        return clusterization.get_biggest_cluster()
+
+    if (
+        clusterization
+        and clusterization.exists()
+        and clusterization.stereotypes().count() > 0
+    ):
         clusters = clusterization.clusters().annotate(size=Count(F("users")))
         return clusters.order_by("-size").first()
     return None

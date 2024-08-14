@@ -9,6 +9,7 @@
         top: 0;
         left: 0;
         z-index: 750;
+        justify-content: center;
 
         &.hide {visibility: hidden;}
 
@@ -23,15 +24,17 @@
     &__container {
         @extend .pad-4;
         position: relative;
-        min-width: 25rem;
         z-index: 1250;
         background-color: $color-modal-background;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         text-align: center;
         border-radius: .5rem;
+        max-width: 29.25rem;
+        min-height: 14.625rem;
+        padding: 3.25rem 5.313rem;
 
-        h3 {
-            color: $color-black-alternative;
+        @media (max-width: 380px) {
+            width: inherit !important;
         }
 
         &--lighter-bg {
@@ -41,6 +44,11 @@
             text-align: unset !important;
         }
 
+        h3 {
+            color: $color-black-alternative;
+            font-weight: 500;
+        }
+        
         &--sm-height {
             @extend .modal__container;
             max-height: 80vh;
@@ -77,10 +85,8 @@
             min-width: 45rem;
         }
 
-        &-center-content {
-            padding: 4.375rem 3.75rem;
-            min-width: 25rem;
-            text-align: center;
+        form {
+            margin-bottom: 0;
         }
 
         &--quick-action {
@@ -106,6 +112,14 @@
         margin-bottom: 1rem;
     }
 
+    &__subtitle {
+        font-size: 1em;
+        font-weight: 500;
+        letter-spacing: 0;
+        color: $color-theme-dark-blue;
+        margin-bottom: 1.563rem;
+    }
+
     &__close-btn {
         position: absolute;
         right: 0;
@@ -123,12 +137,20 @@
     }
 
     &__buttons {
-        display: grid;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.313rem;
+
+        a {
+            color: $color-complementary-gray;
+            text-transform: lowercase;
+        }
     }
 
     &__btn {
         @extend .pad-3;
-        width: 100%;
+        width: fit-content;
 
         cursor: pointer;
         display: flex;
@@ -137,8 +159,10 @@
         gap: .5rem;
         border: none !important;
         border-radius: 3rem;
-
-        font-size: .875rem;
+        height: 2.875rem;
+        text-transform: lowercase;
+        font-size: 1em;
+        margin: 0;
 
         i {
             margin: 0;
@@ -160,6 +184,7 @@
             color: $color-navigation-header-text;
             background: none;
             padding: 0;
+            margin: auto !important;
 
             &:hover {
                 box-shadow: none;
@@ -171,6 +196,12 @@
             color: $color-white;
             border: none;
         }
+    }
+
+    &__btn-board-delete {
+        margin-bottom: 1.30rem !important;
+        width: 17.5625rem !important;
+        height: 3.25rem !important;
     }
 
     &__btn-alternative {
@@ -199,6 +230,26 @@
         &--gray {
             background-color: $color-gray-darker;
         }
+
+    }
+
+    &__btn-board {
+        a {
+            color: $color-gray-dark !important;
+        }
+        button {
+            text-transform: lowercase;
+            font-size: 1em;
+            font-weight: 500;
+            border-radius: 11.2rem;
+        }
+    }
+
+    &__question {
+        margin: unset;
+        font-size: 1em;
+        font-weight: 500;
+        color: $color-black !important;
     }
 
     &--full-screen-mobile {

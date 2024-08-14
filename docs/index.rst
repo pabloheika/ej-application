@@ -47,6 +47,7 @@ tamanhos à mapear as bolhas que compõe seu público-alvo e, a partir disso, tr
    user-guides/pt-br/voting
    user-guides/pt-br/analysis
    user-guides/pt-br/tools
+   user-guides/pt-br/user-boards
    user-guides/pt-br/user-environment
    user-guides/pt-br/terms-of-use
 

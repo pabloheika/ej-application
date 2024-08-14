@@ -20,6 +20,10 @@ class ReportClustersFilter:
         self.clusters_filters = []
 
     def filter(self):
+        """
+        Returns a dataframe with the conversation statistics, filtered by cluster_ids.
+        """
+
         df = self.get_dataframe(self.conversation)
         if not self.cluster_ids:
             return df
@@ -31,6 +35,7 @@ class ReportClustersFilter:
                 pass
         dataframe_utils = self.get_dataframe_utils(df)
         clusters = get_clusters(self.conversation)
+
         return dataframe_utils.filter_by_cluster(clusters, self.clusters_filters)
 
     def get_dataframe(self, conversation: Conversation, cluster_name: str = ""):
@@ -41,6 +46,10 @@ class ReportClustersFilter:
 
 
 class CommentsReportClustersFilter(ReportClustersFilter):
+    """
+    Implements get_dataframe method to return a dataframe with comments statistics.
+    """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
@@ -52,6 +61,10 @@ class CommentsReportClustersFilter(ReportClustersFilter):
 
 
 class UsersReportClustersFilter(ReportClustersFilter):
+    """
+    Implements get_dataframe method to return a dataframe with participants statistics.
+    """
+
     def get_dataframe(self, conversation: Conversation, page_number: int = 1):
         return get_user_dataframe(conversation, page_number)
 
@@ -84,12 +97,16 @@ class UsersReportSearchFilter:
 
 
 class ReportOrderByFilter:
+    """
+    Implements filter method to return a dataframe ordered by some column.
+    """
+
     def __init__(
         self,
         order,
         report_df: pd.DataFrame,
         ascending=False,
-        default_order="comment",
+        default_order: str = "comment",
     ):
         self.order = order
         self.report_df = report_df
@@ -97,6 +114,9 @@ class ReportOrderByFilter:
         self.default_order = default_order
 
     def filter(self):
+        """
+        Returns a dataframe ordered by some column.
+        """
         if not self.order or self.order == "created":
             return self.report_df.sort_values(
                 self.default_order, ascending=self.ascending
@@ -126,7 +146,6 @@ class ToolsLinksHelper:
 
 @dataclass
 class CommentsDataframeUtils:
-
     comments_df: pd.DataFrame
 
     def search_content(self, text):
@@ -164,7 +183,6 @@ class CommentsDataframeUtils:
 
 @dataclass
 class UsersDataframeUtils:
-
     users_df: pd.DataFrame
 
     def search_user(self, text):

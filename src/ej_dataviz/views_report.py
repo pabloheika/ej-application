@@ -3,8 +3,7 @@ from django.views.generic import DetailView
 from sidekick import import_later
 
 from ej.decorators import can_access_dataviz_class_view
-from ej_conversations.models import Conversation, Comment
-from ej_users.models import User
+from ej_conversations.models import Conversation
 from ej_dataviz.models import (
     CommentsReportClustersFilter,
     CommentsReportSearchFilter,
@@ -18,20 +17,25 @@ from .utils import get_clusters, get_comments_dataframe, get_user_dataframe
 pd = import_later("pandas")
 
 
-class CommentReportBaseView(DetailView):
+class ReportsBaseView(DetailView):
     """
-    Implements common behaviors for ej_dataviz views.
+    Common implementation for a conversation reports.
     """
 
-    template_name = "ej_dataviz/reports/includes/comments/table.jinja2"
     model = Conversation
-    report_type = None
 
-    def set_dataframe_by_report_type(self):
-        if self.report_type == Comment:
-            self.get_dataframe = get_comments_dataframe
-        if self.report_type == User:
-            self.get_dataframe = get_user_dataframe
+    def get_dataframe(self, conversation: Conversation):
+        pass
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        conversation = context["object"]
+        clusters = get_clusters(conversation)
+        context["clusters"] = clusters
+
+        dataframe = self.get_dataframe(conversation)
+        context["page"] = self.paginate(dataframe, self.request.GET.get("page") or 1)
+        return context
 
     @can_access_dataviz_class_view
     def get(self, *args, **kwargs):
@@ -39,36 +43,33 @@ class CommentReportBaseView(DetailView):
 
     def paginate(
         self,
-        conversation: Conversation,
         df=pd.DataFrame(),
         page_number: int = 1,
         page_size: int = 10,
     ):
         """
-        creates a Django Paginator instance using conversation comments as list of items.
+        creates a Django Paginator instance using dataframe rows.
 
         :param page_number: a integer with the Paginator page.
         :param conversation: a Conversation instance
         """
-        self.set_dataframe_by_report_type()
-
-        if not isinstance(df, pd.DataFrame):
-            df = self.get_dataframe(conversation, "")
-        objects = df.values
-        if len(objects) > 0:
-            paginator = Paginator(objects, page_size)
+        dataframe_rows = df.values
+        if len(dataframe_rows) > 0:
+            paginator = Paginator(dataframe_rows, page_size)
             return paginator.get_page(page_number)
-        return Paginator(objects, 1).page(1)
+        return Paginator(dataframe_rows, 1).page(1)
 
 
-class CommentReportFilterView(CommentReportBaseView):
+class CommentReportFilterView(ReportsBaseView):
     """
     Returns conversation comments based on filter params.
     """
 
     model = Conversation
     template_name = "ej_dataviz/reports/includes/comments/table.jinja2"
-    report_type = Comment
+
+    def get_dataframe(self, conversation):
+        return get_comments_dataframe(conversation, "")
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -85,51 +86,43 @@ class CommentReportFilterView(CommentReportBaseView):
         comments_df = ReportOrderByFilter(
             order_by, comments_df, ascending, "comment"
         ).filter()
-        context["page"] = self.paginate(
-            conversation, comments_df, self.request.GET.get("page") or 1
-        )
+        context["page"] = self.paginate(comments_df, self.request.GET.get("page") or 1)
         return context
 
 
-class ReportDetailView(CommentReportBaseView):
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        conversation = context["object"]
-        clusters = get_clusters(conversation)
-        context["clusters"] = clusters
-        context["page"] = self.paginate(
-            conversation, None, self.request.GET.get("page") or 1
-        )
-        return context
-
-
-class CommentReportDetailView(ReportDetailView):
+class CommentReportDetailView(ReportsBaseView):
     """
     Returns comment report page.
     """
 
     template_name = "ej_dataviz/reports/comments.jinja2"
-    report_type = Comment
+
+    def get_dataframe(self, conversation):
+        return get_comments_dataframe(conversation, "")
 
 
-class UsersReportDetailView(ReportDetailView):
+class UsersReportDetailView(ReportsBaseView):
     """
     Returns user report page.
     """
 
     template_name = "ej_dataviz/reports/users.jinja2"
     model = Conversation
-    report_type = User
+
+    def get_dataframe(self, conversation):
+        return get_user_dataframe(conversation)
 
 
-class UsersReportFilterView(CommentReportBaseView):
+class UsersReportFilterView(ReportsBaseView):
     """
     Returns conversation users based on filter params.
     """
 
     model = Conversation
     template_name = "ej_dataviz/reports/includes/users/table.jinja2"
-    report_type = User
+
+    def get_dataframe(self, conversation):
+        return get_user_dataframe(conversation)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -141,7 +134,5 @@ class UsersReportFilterView(CommentReportBaseView):
         users_df = UsersReportClustersFilter(cluster_ids, conversation).filter()
         users_df = UsersReportSearchFilter(search_text, users_df).filter()
         users_df = ReportOrderByFilter(order_by, users_df, ascending, "name").filter()
-        context["page"] = self.paginate(
-            conversation, users_df, self.request.GET.get("page") or 1
-        )
+        context["page"] = self.paginate(users_df, self.request.GET.get("page") or 1)
         return context

@@ -1,20 +1,23 @@
-{% macro conclusion_action_modal(icon, title, conversation) %}
+{% macro conclusion_action_modal(icon, title, conversation, stereotype_select=False) %}
     <div class="modal__overlay">
         <div class="modal__container">
                 <img class="modal__icon" src="{{icon}}"/>
                 <h3>{{title}}</h3>
-                <div class="modal__btn modal__btn--no-fill bold underline" onclick="closeModal()">{{_("close")}}</div>
+                <div class="modal__btn modal__btn--no-fill bold underline" onclick="closeConclusionModal('{{stereotype_select}}')">{{_("close")}}</div>
             </div>
         </div>
     </div>
 
     <script>
-        const body = document.getElementsByClassName("body")[0]
-        body.classList.add('modal--hide-overflow-y');
-        function closeModal() {
-            mainEditPage = "{{url('boards:cluster-edit',  **conversation.get_url_kwargs())}}";
-            window.location.href = mainEditPage;
-            body.classList.remove('modal--hide-overflow-y');
+    let closeConclusionModal = (stereotypeSelect) => {
+        let mainPage = "{{ url('boards:stereotype-votes-list',  **conversation.get_url_kwargs()) }}";
+
+        if(stereotypeSelect == 'True'){
+            const stereotypeId = $("#stereotype-id").val() || $("#stereotype-form input[name=stereotype]").val();
+            mainPage = mainPage + `?stereotype-select=${stereotypeId}`;
         }
+        window.location.href = mainPage;
+    };
+
     </script>
 {% endmacro %}

@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# includes poetry binary in $PATH
-export PATH="/root/.local/bin:$PATH"
-
 # prepare database
 inv db
 

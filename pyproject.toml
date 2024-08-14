@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "ej-platform"
-version = "3.3.1"
+version = "3.6.0"
 description = "A Django-powered participation platform"
 authors = ["Fábio Macêdo Mendes <fabiomacedomendes@gmail.com>, Pencillabs <contato@pencillabs.tec.br>"]
 license = "AGPL-3.0"
 
 [tool.poetry.dependencies]
-python = ">= 3.8.18, <4"
+python = ">= 3.9.19, <3.10"
 django = "4.1.13"
 django-constance = {version = "^2.3", extras = ["database"]}
 django-allauth = "0.59.0"
@@ -19,11 +19,9 @@ django-polymorphic = "^2.0"
 django-pandas = "^0.5.1"
 django-filter = "^1.1"
 django-model-utils = {git = "https://github.com/jazzband/django-model-utils.git", rev = "8e19699b0f8edbb93863de5c72256017080f2af0"}
-coreapi = "^2.3"
 hyperpython = "^1.1.1"
 rules = "<2.0"
 sidekick = "==0.5.2"
-numpy = "==1.18"
 scipy = "^1.2"
 pandas = "^1.2"
 scikit-learn = "^1.0"
@@ -34,12 +32,10 @@ stop-words = "^2018.7"
 djangorestframework = "3.14.0"
 django-cors-headers = "^3.3.0"
 babel = "^2.9.0"
-sphinx = "^1.8"
+sphinx = "5.0.2"
 psycopg2 = "==2.8.6"
-sphinx-rtd-theme = "^0.5.2"
-dj-rest-auth = ">=2.1.11"
+sphinx-rtd-theme = "<2.0.0"
 toml = "^0.10.0"
-libsass = "^0.19.0"
 gunicorn = "^19.9"
 jinja2 = "2.11.3"
 django-debug-toolbar = "3.2.0"
@@ -47,10 +43,14 @@ setuptools = "61.2.0"
 django-anymail = {extras = ["mailgun"], version = "^10.0"}
 django-ckeditor = "6.3.2"
 colorama = "^0.4.6"
-django-boogie = {git = "https://gitlab.com/pencillabs/ej/django-boogie.git", rev = "fixes-python38"}
+django-boogie = {git = "https://gitlab.com/pencillabs/ej/django-boogie.git", rev = "fixes-python39"}
 importlib-metadata = "^7.1.0"
 argon2-cffi = "^23.1.0"
 djangorestframework-simplejwt = "^5.3.1"
+pillow = "^10.3.0"
+numpy = "^1.26.4"
+libsass = "^0.23.0"
+drf-spectacular = "^0.27.2"
 
 [tool.poetry.dev-dependencies]
 bs4 = "^0.0.1"
@@ -64,7 +64,6 @@ ipython = "^7.2"
 watchdog = "^0.9.0"
 pre-commit = "^1.17"
 notebook = "^6.0"
-pillow = "^6.2.2"
 django-debug-toolbar = "3.2.0"
 faker = "^24.4.0"
 

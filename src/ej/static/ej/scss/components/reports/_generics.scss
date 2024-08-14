@@ -28,6 +28,10 @@
         font-size: 12px;
         font-weight: 600;
     }
+
+    &--full-width {
+        grid-column: 1 / 4;
+    }
 }
 
 #report-filters-form {
@@ -72,6 +76,20 @@
     }
 
     &__comment, &__user {
+        div:nth-child(2),
+        div:nth-child(3),
+        div:nth-child(4),
+        {
+            font-size: .9em;
+        }
+
+        div:nth-child(4) {
+            color: $color-accent;
+            font-weight: 600;
+        }
+    }
+
+    &__comment, &__user {
         padding: 1rem;
         box-sizing: content-box;
         div:first-child {
@@ -82,8 +100,18 @@
             color: $color-brand;
             font-weight: 600;
         }
+    }
+
+    &__comment {
         div:nth-child(3) {
             color: $color-accent;
+            font-weight: 600;
+        }
+    }
+
+    &__user {
+        div:nth-child(3) {
+            color: $color-brand;
             font-weight: 600;
         }
     }
@@ -158,7 +186,7 @@
             display: flex;
             align-items: baseline;
             gap: 1rem;
-            
+
             select {
                 cursor: pointer;
                 border: transparent;
@@ -209,7 +237,7 @@
             display: flex;
             align-items: center;
             font-size: 0.75em;
-            
+
             #sort-up-icon {
                 top: 0.35rem;
                 right: -0.05rem;

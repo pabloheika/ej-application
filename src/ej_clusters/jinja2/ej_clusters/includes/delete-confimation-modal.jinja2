@@ -1,0 +1,46 @@
+<div class="modal__overlay hide" id="delete-stereotype-modal">
+    <div class="modal__container">
+        <form method="post">
+            {{csrf_input }}
+            <input type="hidden" name="conversation_id" value="{{ conversation.id }}">
+            <div class="modal__subtitle">{{_("Are you sure about this action?")}}</div>
+
+            <div class="modal__buttons">
+                <button class="modal__btn modal__btn--red" type="submit" 
+                    hx-post="{{ url('stereotypes:delete', pk=stereotype.id) }}"
+                    hx-on::after-request="showDeleteModal()"
+                    hx-swap="none"
+                >
+                    <i class="fa">&#xf057;</i> {{ _('Yes, delete the persona') }}
+                </button>
+                <a onclick="closeStereotypeModal()">
+                    <i class="fa fa-arrow-left"></i> {{ _('No, go back') }}
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function closeStereotypeModal() {
+        const modal = $('#delete-stereotype-modal');
+        const body = $("body").removeClass('overflow-deactive');
+        modal.addClass('hide');
+        modal.removeClass('form-modal-delete-show');
+    }
+
+    function showConfirmationDeleteStereotype() {
+        const modal = $('#delete-stereotype-modal');
+        const body = $("body").addClass('overflow-deactive')
+        modal.addClass('form-modal-delete-show');
+        modal.removeClass('hide');   
+    }
+
+    function showDeleteModal(){
+        const body = $("body");
+        body.addClass('overflow-deactive');
+        const deleteModal = $("#confirm-delete-stereotype");
+        deleteModal.removeClass("hide");
+        deleteModal.addClass("show");
+        closeStereotypeModal();
+    }
+</script>

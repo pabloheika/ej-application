@@ -1,7 +1,14 @@
-from django.views.generic import ListView, CreateView, UpdateView, RedirectView
+from django.views.generic import (
+    ListView,
+    CreateView,
+    UpdateView,
+    RedirectView,
+    DeleteView,
+)
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from ej_boards.models import Board
@@ -74,6 +81,22 @@ class BoardEditView(UpdateView):
             "user_boards": Board.objects.filter(owner=self.request.user),
             "current_page": board.slug,
         }
+
+    def get_object(self) -> Board:
+        board_slug = self.kwargs["board_slug"]
+        return Board.objects.get(slug=board_slug)
+
+
+@method_decorator([login_required, can_edit_board], name="dispatch")
+class BoardDeleteView(DeleteView):
+    model = Board
+
+    def post(self, *args, **kwargs):
+        board = self.get_object()
+
+        if self.request.user.has_more_than_one_board():
+            board.delete()
+        return redirect(reverse_lazy("profile:home"))
 
     def get_object(self) -> Board:
         board_slug = self.kwargs["board_slug"]

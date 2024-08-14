@@ -1,0 +1,18 @@
+<div class="button-container">
+    {%- if request.user.has_perm('ej.can_edit_board', board) %}
+        <a class="button-container__edit-button" href="{{ url('boards:board-edit', board_slug=board.slug) }}">
+            <i class="fas fa-pen"></i>
+            {{_("Edit")}}
+        </a>
+        {% if can_delete_board %}
+        <a class="button-container__delete-button" onclick="showConfirmationDelete()">
+            <i class="fas fa-trash"></i>
+            {{_("Delete")}}
+        </a>
+        {% endif %}
+    {% endif %}
+</div>
+{% include 'ej_conversations/includes/delete-board-modal.jinja2' %}
+<script>
+
+</script>

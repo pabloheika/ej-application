@@ -1,6 +1,24 @@
 from django.utils.translation import gettext_lazy as _
 
 from boogie.fields import IntEnum
+from ej_conversations.enums import Choice
+
+
+VOTING_CHOICES = (
+    (None, "--------"),
+    ("agree", "agree"),
+    ("disagree", "disagree"),
+    ("skip", "skip"),
+)
+
+FORM_CHOICE_MAP = {
+    "1": "agree",
+    "-1": "disagree",
+    "0": "skip",
+    "": "--------",
+}
+
+CHOICE_MAP = {"agree": Choice.AGREE, "disagree": Choice.DISAGREE, "skip": Choice.SKIP}
 
 
 class ClusterStatus(IntEnum):

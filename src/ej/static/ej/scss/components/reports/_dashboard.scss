@@ -281,10 +281,16 @@
         flex-wrap: wrap;
         padding: 0 0 3rem 0;
         justify-content: center;
+
+        &--wide-center {
+            align-items: center;
+            padding: 3rem 0;
+            justify-content: center !important;
+        }
     }
 }
 
-.report-container .conversation-dashboard .clusters-section {
+.report-container .conversation-dashboard .clusters-section, .clusters-section {
     background-color: $color-theme-report-gray-blue;
     margin-bottom: 5rem;
     grid-column: 1/4;

@@ -16,7 +16,7 @@ class TestClusterization(ClusterRecipes):
         assert str(clusterization) == f"{conversation_db} (0 clusters)"
         assert (
             f"{clusterization.get_absolute_url()}"
-            == f"{conversation_db.get_absolute_url()}clusters/"
+            == f"{conversation_db.get_absolute_url()}stereotypes/"
         )
 
 

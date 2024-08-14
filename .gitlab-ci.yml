@@ -12,7 +12,7 @@ variables:
 black:
     stage: style
     image:
-        name: python:3.8.18-bookworm
+        name: python:3.9.19-slim-bookworm
         pull_policy: if-not-present
     before_script:
         - /bin/bash -c "pip install black==22.3.0"
@@ -24,7 +24,7 @@ black:
 ruff:
     stage: linter
     image:
-        name: python:3.8.18-bookworm
+        name: python:3.9.19-slim-bookworm
         pull_policy: if-not-present
     before_script:
         - /bin/bash -c "pip install ruff==0.3.7"
@@ -36,10 +36,10 @@ ruff:
 pytest:
     stage: unit tests
     image:
-        name: python:3.8.18-bookworm
+        name: python:3.9.19-slim-bookworm
         pull_policy: if-not-present
     before_script:
-        - apt-get clean && apt-get update && apt-get install curl libpq-dev gcc  -y
+        - apt-get update && apt-get install curl libpq-dev gcc g++ libjpeg-dev zlib1g-dev git -y
     script:
         - cd /builds/pencillabs/ej/ej-application
         - curl -sSL https://install.python-poetry.org | python3 -
@@ -72,7 +72,7 @@ build_dev_image:
 deploy_dev_image:
     stage: deploy
     image:
-        name: python:3.8.18-bookworm
+        name: python:3.9.19-slim-bookworm
         pull_policy: if-not-present
     before_script:
         - apt-get update && apt-get install git curl -y

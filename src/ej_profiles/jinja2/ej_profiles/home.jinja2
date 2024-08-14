@@ -27,7 +27,7 @@
     </div>
 
     <div id="public-conversations" class="content-grid tabs__tab-content">
-        {{ search_filter(all_tags, participated_tags, "public", has_filtered_tag, host, "is_promoted") }}
+        {{ search_filter(all_tags, participated_tags, "public", has_filtered_tag, host, "promoted") }}
         <div class="alternate-cards" id="public-current-cards">
             {% for conversation in public_conversations %}
                 <div class="margin-y3">{{ conversation|role('card', button_text=_("Participate")) }}</div>
@@ -37,7 +37,7 @@
 
     <div id="my-conversations" class="my_conversations content-grid tabs__tab-content">
         {% if created_conversations %}
-            {{ search_filter(my_tags, my_tags, "my", has_filtered_tag, host, "is_author") }}
+            {{ search_filter(my_tags, my_tags, "my", has_filtered_tag, host, "user") }}
         {% else %}
             <p class="my_conversations__message">{{_("You have not created any conversations.")}}</p>
         {% endif %}

@@ -73,6 +73,14 @@ i.fa, i.fas, i.fab, i.far {
         border-bottom: 0.25rem solid transparent;
     }
 
+    &--smaller {
+        font-size: 0.75em;
+        a {
+            padding-bottom: 0.813rem;
+            margin-right: 1rem;
+        }
+    }
+
     &--scroll-x {
         overflow-x: scroll;
     }

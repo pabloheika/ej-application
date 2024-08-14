@@ -22,7 +22,7 @@
                     <p class="clusters-section__main-comment"> {{ biggest_cluster_data.get('content') }}</p>
                 </div>
                 <div class="conversation-dashboard__button">
-                    <a class="button is-primary" href="{{url('boards:cluster-index', **conversation.get_url_kwargs())}}">
+                    <a class="button is-primary" href="{{url('boards:stereotype-votes-list', **conversation.get_url_kwargs())}}">
                         {{_("Manage groups")}}
                     </a>
                 </div>

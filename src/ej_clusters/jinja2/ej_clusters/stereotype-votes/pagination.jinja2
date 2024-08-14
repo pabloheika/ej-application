@@ -1,42 +1,55 @@
-<div class=footer-personas>
-    <p id="pagination-text"></p>
-    <div id="pagination"></div>
+{% macro pagination(tab) %}
+
+<script src="/static/js/simplePagination.js"></script>
+
+<div class="footer-stereotypes">
+    <div id="pagination-{{tab}}"></div>
+    <p id="pagination-text-{{tab}}"></p>
 </div>
 
 <script>
-    let items = $(".stereotype-cards__card-comments");
-    const numItems = items.length;
-    let itemsPerPage = 5;
+    let itemsPerPage{{tab}} = 4;
+    let numItems{{tab}};
 
-    items.slice(itemsPerPage).hide();
-    const pagination = $('#pagination').pagination({
-        items: numItems,
-        itemsOnPage: itemsPerPage,
-        prevText: "Anterior",
-        nextText: "Próximo",
-        onInit: showCurrentItems,
-        onPageClick: showCurrentItems,       
-    });
-    
-    function updateItemsPerPage(){
-        itemsPerPage = document.getElementById("pages-select").value;
-        showCurrentItems();
-        pagination.pagination('updateItemsOnPage', itemsPerPage);
+    if (matchMedia('(min-width: 900px)').matches) {
+        itemsPerPage{{tab}} = 9999;
     }
 
-    function showCurrentItems(pageNumber=1) {
-        const showItemsBehind = itemsPerPage * (pageNumber - 1);
-        const showItemsFoward = showItemsBehind + Number(itemsPerPage);
-        missingItems = items.hide().slice(showItemsBehind, showItemsFoward).show();
-        currentSerie = showItemsBehind + 1
-        
-        if (showItemsBehind >= 0) {
-            text = " {{_('showing')}} " + currentSerie + " {{_('to')}} " + showItemsFoward + " {{_('from')}} " + numItems + " {{_('comments')}} ";
-        } 
-        if (showItemsFoward >= numItems) {
-            text = " {{_('showing')}} " + currentSerie + " {{_('from')}} " + numItems + " {{_('comments')}} ";
-        }
-        paginationText = document.getElementById("pagination-text").textContent=text;
+    if ("{{tab}}" =='create'){
+        createPagination();
+    }
+    else {
+        setTimeout(() => { 
+        // timeout needed for htmx to trigger on load query
+            createPagination();
+        }, "300");
+    }
+
+
+    function createPagination(){
+        numItems{{tab}} = $(".tab-{{tab}}").length;
+
+        return $('#pagination-{{tab}}').pagination({
+            items: numItems{{tab}},
+            itemsOnPage: itemsPerPage{{tab}},
+            prevText: "<",
+            nextText: ">",
+            onInit: showCurrentItems{{tab}},
+            onPageClick: showCurrentItems{{tab}},       
+        });
+    }
+
+    function showCurrentItems{{tab}}(pageNumber=1) {
+        const items = $(".tab-{{tab}}");
+        const showItemsBehind = itemsPerPage{{tab}} * (pageNumber - 1);
+        const showItemsFoward = showItemsBehind + Number(itemsPerPage{{tab}});
+
+        let currentItems = items.hide().slice(showItemsBehind, showItemsFoward).show();
+        let currentSerie = showItemsBehind + 1;
+
+        text = " {{_('showing')}} " + currentSerie + " {{_('to')}} " + (showItemsBehind + currentItems.length).toString() + " {{_('from')}} " + numItems{{tab}};
+        document.getElementById("pagination-text-{{tab}}").textContent = text;
         
     }
 </script>
+{% endmacro %}

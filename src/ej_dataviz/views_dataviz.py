@@ -29,7 +29,6 @@ from .constants import *
 from .utils import (
     clusters,
     comments_data_common,
-    conversation_has_stereotypes,
     create_stereotype_coords,
     export_data,
     format_echarts_option,
@@ -100,7 +99,6 @@ def index(request, conversation_id, **kwargs):
         "conversation": conversation,
         "can_view_detail": can_view_detail,
         "statistics": statistics,
-        "conversation_has_stereotypes": conversation_has_stereotypes(clusterization),
         "bot": ToolsLinksHelper.get_bot_link(host),
         "json_data": clusters(request, conversation),
         "biggest_cluster_data": biggest_cluster_data,

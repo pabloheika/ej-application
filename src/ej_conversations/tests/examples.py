@@ -59,6 +59,7 @@ CONVERSATION = {
     },
     "text": "test",
     "board": "Explore",
+    "participants_can_add_comments": True,
 }
 
 VOTE = {

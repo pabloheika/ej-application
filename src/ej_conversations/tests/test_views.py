@@ -1406,3 +1406,188 @@ class TestPublicConversations(ConversationRecipes):
         assert response.context["user_boards"] == []
         assert promoted_conversation in response.context["conversations"]
         assert response.context["conversations"][0].is_hidden
+
+
+class TestFilterConversationByTag(TestPublicConversations):
+    def test_authenticated_user_can_access_promoted_conversations(
+        self,
+        logged_admin,
+        promoted_conversation,
+    ):
+        url = reverse("conversation:filter-promoted")
+        response = logged_admin.get(url)
+
+        assert response.status_code == 200
+        assert promoted_conversation.text.encode() in response.content
+
+    def test_anonymous_user_cannot_access_promoted_conversations(
+        self,
+    ):
+        url = reverse("conversation:filter-promoted")
+        client = Client()
+        response = client.get(url)
+
+        assert response.status_code == 302
+
+    def test_authenticated_user_can_filter_promoted_conversations_by_tag(
+        self,
+        admin_user,
+        logged_admin,
+        promoted_conversation,
+    ):
+        another_conversation = create_conversation("bar", "conv2", admin_user)
+        another_conversation.is_promoted = True
+        tag = "tag"
+        another_conversation.tags.set([tag])
+        another_conversation.save()
+
+        url = reverse("conversation:filter-promoted")
+        response = logged_admin.get(url, {"tags": [tag]})
+
+        assert response.status_code == 200
+        assert another_conversation.text.encode() in response.content
+        assert promoted_conversation.text.encode() not in response.content
+
+    def test_authenticated_user_can_filter_promoted_conversations_by_tag_and_search_text(
+        self,
+        admin_user,
+        logged_admin,
+        promoted_conversation,
+    ):
+        another_conversation = create_conversation("bar", "conv2", admin_user)
+        another_conversation.is_promoted = True
+        tag = "tag"
+        another_conversation.tags.set([tag])
+        another_conversation.save()
+
+        url = reverse("conversation:filter-promoted")
+        response = logged_admin.get(url, {"tags": [tag], "search_text": "ta"})
+
+        assert response.status_code == 200
+        assert another_conversation.text.encode() in response.content
+        assert promoted_conversation.text.encode() not in response.content
+
+    def test_authenticated_user_can_filter_promoted_conversations_by_search_text(
+        self,
+        admin_user,
+        logged_admin,
+        promoted_conversation,
+    ):
+        another_conversation = create_conversation("bar", "conv2", admin_user)
+        another_conversation.is_promoted = True
+        tag = "tag"
+        another_conversation.tags.set([tag])
+        another_conversation.save()
+
+        url = reverse("conversation:filter-promoted")
+        response = logged_admin.get(url, {"search_text": "ba"})
+
+        assert response.status_code == 200
+        assert another_conversation.text.encode() in response.content
+        assert promoted_conversation.text.encode() not in response.content
+
+    def test_authenticated_user_filter_non_existant_promoted_conversations_by_tag(
+        self,
+        logged_admin,
+    ):
+        url = reverse("conversation:filter-promoted")
+        response = logged_admin.get(url, {"tags": "nonexistanttag"})
+
+        assert response.status_code == 200
+        assert response.content == b""
+
+    def test_authenticated_user_can_access_authored_conversations(
+        self,
+        logged_admin,
+        promoted_conversation,
+    ):
+        url = reverse("conversation:filter-tags-user")
+        response = logged_admin.get(url)
+
+        assert response.status_code == 200
+        assert promoted_conversation.text.encode() in response.content
+
+    def test_anonymous_user_cannot_access_authored_conversations(
+        self,
+    ):
+        url = reverse("conversation:filter-tags-user")
+        client = Client()
+        response = client.get(url)
+
+        assert response.status_code == 302
+
+    def test_authenticated_user_can_filter_authored_conversations_by_tag(
+        self,
+        admin_user,
+        logged_admin,
+        promoted_conversation,
+    ):
+        another_conversation = create_conversation("bar", "conv2", admin_user)
+        tag = "tag"
+        another_conversation.tags.set([tag])
+        another_conversation.save()
+
+        url = reverse("conversation:filter-tags-user")
+        response = logged_admin.get(url, {"tags": [tag]})
+
+        assert response.status_code == 200
+        assert another_conversation.text.encode() in response.content
+        assert promoted_conversation.text.encode() not in response.content
+
+    def test_authenticated_user_filter_non_existant_authored_conversations_by_tag(
+        self,
+        logged_admin,
+    ):
+        url = reverse("conversation:filter-tags-user")
+        response = logged_admin.get(url, {"tags": "nonexistanttag"})
+
+        assert response.status_code == 200
+        assert response.content == b""
+
+    def test_authenticated_user_can_access_tag_conversations(
+        self,
+        logged_admin,
+        promoted_conversation,
+    ):
+        url = reverse("conversation:filter-tags")
+        response = logged_admin.get(url)
+
+        assert response.status_code == 200
+        assert promoted_conversation.text.encode() in response.content
+
+    def test_anonymous_user_cannot_access_tag_conversations(
+        self,
+    ):
+        url = reverse("conversation:filter-tags")
+        client = Client()
+        response = client.get(url)
+
+        assert response.status_code == 302
+
+    def test_authenticated_user_can_filter_tag_conversations_by_tag(
+        self,
+        admin_user,
+        logged_admin,
+        promoted_conversation,
+    ):
+        another_conversation = create_conversation("bar", "conv2", admin_user)
+        tag = "tag"
+        another_conversation.tags.set([tag])
+        another_conversation.save()
+
+        url = reverse("conversation:filter-tags")
+        response = logged_admin.get(url, {"tags": [tag]})
+
+        assert response.status_code == 200
+        assert another_conversation.text.encode() in response.content
+        assert promoted_conversation.text.encode() not in response.content
+
+    def test_authenticated_user_filter_non_existant_tag_conversations_by_tag(
+        self,
+        logged_admin,
+    ):
+        url = reverse("conversation:filter-tags")
+        response = logged_admin.get(url, {"tags": "nonexistanttag"})
+
+        assert response.status_code == 200
+        assert response.content == b""

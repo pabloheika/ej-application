@@ -2,7 +2,6 @@ import contextlib
 
 import sidekick as sk
 from django.db import transaction
-from django.http import Http404
 
 from ej_clusters.math import compute_cluster_affinities
 
@@ -31,12 +30,6 @@ def use_transaction(which=None, **kwargs):
         rest = {k: True for k in rest}
         with use_transaction(**rest, **kwargs), method(**kwargs) as handler:
             yield handler
-
-
-def check_stereotype(stereotype, user):
-    if stereotype.owner != user:
-        raise Http404
-    return stereotype
 
 
 def cluster_shapes(clusterization, clusters=None, user=None):
