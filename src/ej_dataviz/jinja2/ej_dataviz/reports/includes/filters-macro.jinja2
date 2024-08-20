@@ -79,8 +79,10 @@
         let cluster = $(`#cluster-${clusterId}`);
         if (cluster.hasClass("cluster--active")) {
             cluster.removeClass("cluster--active");
+            changeClusterFromFilter(clusterId, "remove");
         } else {
             cluster.addClass("cluster--active");
+            changeClusterFromFilter(clusterId, "add");
         }
 
         let select = $("#select-clusters")[0];
@@ -92,21 +94,46 @@
             }
         }
     }
+    function changeClusterFromFilter(clusterId, action) {
+        let exportJsonHref = $("#export-json").attr("href");    
+        let exportCsvHref = $("#export-csv").attr("href");
+
+        console.log(exportJsonHref.split("?")[1]);
+        let searchParams = new URLSearchParams(exportJsonHref.split("?")[1]);
+
+        let newSearch;
+        if (action == "add") {
+            let curr = searchParams.get("clusters");
+
+            if (curr) {
+                newSearch = curr + "," + clusterId;
+            } else {
+                newSearch = clusterId;
+            }
+        } else {
+            newSearch = searchParams.get("clusters")
+                .split(",")
+                .filter(cluster => cluster != clusterId)
+                .join(",");
+        }
+
+        searchParams.set("clusters", newSearch);
+
+        $("#export-json").attr("href", exportJsonHref.split("?")[0] + "?" + searchParams.toString());
+        $("#export-csv").attr("href", exportCsvHref.split("?")[0] + "?" + searchParams.toString());
+    }
 
     $("#search-input").change(function () {
         let formValue = $(this).val();
         let exportJsonHref = $("#export-json").attr("href");
         let exportCsvHref = $("#export-csv").attr("href");
 
-        $("#export-json").attr(
-            "href",
-            exportJsonHref.split("?")[0] + "?filter=" + formValue
-        );
+        let searchParams = new URLSearchParams(exportJsonHref.split("?")[1]);
 
-        $("#export-csv").attr(
-            "href",
-            exportCsvHref.split("?")[0] + "?filter=" + formValue
-        );
+        searchParams.set("search", formValue);
+
+        $("#export-json").attr("href", exportJsonHref.split("?")[0] + "?" + searchParams.toString());
+        $("#export-csv").attr("href", exportCsvHref.split("?")[0] + "?" + searchParams.toString());
     });
 
 </script>

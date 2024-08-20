@@ -279,11 +279,18 @@ def comments_data(request, conversation_id, fmt, **kwargs):
     if filter:
         comments = comments.filter(content__icontains=filter)
 
-    try:
-        clusters = (
-            Clusterization.objects.filter(conversation=conversation).last().clusters
-        )
-    except AttributeError:
+    clusterization = Clusterization.objects.filter(conversation=conversation).last()
+
+    if clusterization:
+        filter = request.GET.get("clusters")
+
+        if filter:
+            clusters = Cluster.objects.filter(
+                clusterization=clusterization, id__in=filter.split(",")
+            )
+        else:
+            clusters = Cluster.objects.filter(clusterization=clusterization)
+    else:
         clusters = None
 
     votes = conversation.votes.filter(comment__in=comments)

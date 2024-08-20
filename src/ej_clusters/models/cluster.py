@@ -149,23 +149,20 @@ class Cluster(TimeStampedModel):
         comments = filtered_comments if filtered_comments else self.comments
         cluster_df = comments.statistics_summary_dataframe(votes=self.votes)
 
-        if not cluster_df.empty:
-            cluster_df["group"] = self.name
+        if cluster_df.empty:
+            return df
 
-            if len(df) != 0:
-                df = pd.merge(
-                    df,
-                    cluster_df,
-                    left_on="comment",
-                    right_on="comment",
-                    how="inner",
-                    suffixes=["", "_"],
-                )
+        # Include in the cluster_df all columns from df that are not in cluster_df
+        for column in df.columns:
+            if column not in cluster_df.columns:
+                cluster_df[column] = df[column]
 
-                df.sort_values(by=["content", "created"], inplace=True)
+        # Replace NaN values in cluster_df with values from df
+        for column in cluster_df.columns:
+            if (cluster_df[column].isnull().all()) and (column in df.columns):
+                cluster_df[column] = df[column]
 
-            else:
-                df = cluster_df.copy()
-                df.sort_values(by=["content", "created"], inplace=True)
+        # Always replace the "group" column with the current cluster name
+        cluster_df["group"] = self.name
 
-        return df
+        return cluster_df.sort_values(by=["content", "created"])
