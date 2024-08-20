@@ -367,3 +367,104 @@ class TestStereotypeVoteDelete(ConversationSetup):
         assert response.status_code == 302
         assert response.url == "/"
         assert not StereotypeVote.objects.filter(id=stereotype_vote.id).exists()
+
+
+class TestCommentsData(ConversationSetup):
+    @pytest.fixture
+    def conversation_with_comments_(self, conversation, base_board, base_user):
+        conversation.author = base_user
+        base_board.owner = base_user
+        base_board.save()
+        conversation.board = base_board
+        conversation.slug = "participative-democracy"
+        conversation.title = "participative-democracy"
+        conversation.save()
+
+        comment = conversation.create_comment(
+            base_user, "aa", status="approved", check_limits=False
+        )
+
+        comment.vote(author=base_user, choice="agree")
+        comment = conversation.create_comment(
+            base_user, "bbb", status="approved", check_limits=False
+        )
+
+        comment.vote(author=base_user, choice="agree")
+
+        comment = conversation.create_comment(
+            base_user, "cccc", status="approved", check_limits=False
+        )
+        comment.vote(author=base_user, choice="agree")
+        conversation.save()
+        return conversation
+
+    def test_comments_data_json(self, client, conversation_with_comments_, base_user):
+        client.force_login(base_user)
+        url = reverse(
+            "ej_dataviz:comments_data",
+            kwargs={
+                "conversation_id": conversation_with_comments_.id,
+                "slug": conversation_with_comments_.slug,
+                "fmt": "json",
+            },
+        )
+        response = client.get(url)
+
+        assert response.status_code == 200
+
+        assert response["Content-Type"] in ["application/json", "text/json"]
+
+        content = response.content.decode()
+
+        assert "aa" in content
+        assert "bbb" in content
+        assert "cccc" in content
+
+    def test_comments_data_csv(self, client, conversation_with_comments_, base_user):
+        client.force_login(base_user)
+        url = reverse(
+            "ej_dataviz:comments_data",
+            kwargs={
+                "conversation_id": conversation_with_comments_.id,
+                "slug": conversation_with_comments_.slug,
+                "fmt": "csv",
+            },
+        )
+        response = client.get(url)
+
+        assert response.status_code == 200
+
+        assert response["Content-Type"] in ["application/csv", "text/csv"]
+
+        content = response.content.decode()
+
+        assert "aa" in content
+        assert "bbb" in content
+        assert "cccc" in content
+
+    def test_comments_data_with_filter(
+        self, client, conversation_with_comments_, base_user
+    ):
+        client.force_login(base_user)
+        url = (
+            reverse(
+                "ej_dataviz:comments_data",
+                kwargs={
+                    "conversation_id": conversation_with_comments_.id,
+                    "slug": conversation_with_comments_.slug,
+                    "fmt": "json",
+                },
+            )
+            + "?filter=bbb"
+        )
+        response = client.get(url)
+
+        assert response.status_code == 200
+
+        assert response["Content-Type"] in ["application/json", "text/json"]
+
+        content = response.content.decode()
+
+        assert "aa" not in content
+        assert "bbb" in content
+        assert "cccc" not in content
