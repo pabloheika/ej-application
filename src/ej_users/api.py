@@ -69,7 +69,7 @@ class TokenViewSet(viewsets.ViewSet):
     @action(detail=False, methods=["post"], permission_classes=[AllowAny])
     def token(self, request):
         """
-        Returns an access_token and refresh_token for an user.
+        Return an access_token and refresh_token for an user.
         """
         serializer = UserAuthSerializer(data=request.data)
         if not serializer.is_valid():

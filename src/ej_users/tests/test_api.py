@@ -1,6 +1,6 @@
 import pytest
 from ej_conversations.enums import Choice
-from ej_users.models import User
+from ej_users.models import User, UserSecretIdManager
 from ej_conversations.tests.conftest import API_V1_URL
 from rest_framework.test import APIClient
 from enum import Enum
@@ -243,6 +243,62 @@ class TestUserAPI:
         assert user.votes.get(comment__id=comment_1.id).choice == Choice.AGREE
         with pytest.raises(Exception):
             User.objects.get(id=another_user.id)
+
+    def test_create_user_secret_key_password(self, client, db):
+        import hashlib
+
+        def _get_client_password():
+            SECRET_KEY = "1234"
+            sender_id = "5561981178174"
+            combined = f"{sender_id}{SECRET_KEY}"
+            hash_object = hashlib.sha256(combined.encode())
+            return hash_object.hexdigest()
+
+        # BP user
+        client.post(
+            API_V1_URL + "/users/",
+            data={
+                "name": "tester 1",
+                "email": "tester1@example.com",
+                "password": _get_client_password(),
+                "password_confirm": _get_client_password(),
+            },
+            content_type="application/json",
+        )
+
+        # Bot user
+        client.post(
+            API_V1_URL + "/users/",
+            data={
+                "name": "tester 2",
+                "email": "tester2@example.com",
+                "password": _get_client_password(),
+                "password_confirm": _get_client_password(),
+                "secret_id": "54321abcd",
+            },
+            content_type="application/json",
+        )
+
+        # Bot user
+        response = client.put(
+            API_V1_URL + "/users/54321abcd/",
+            data={
+                "email": "tester2@example.com",
+                "password": _get_client_password(),
+            },
+            content_type="application/json",
+        )
+        assert response.status_code == 200
+
+        response = client.post(
+            API_V1_URL + "/token/",
+            data={
+                "email": "tester2@example.com",
+                "password": _get_client_password(),
+            },
+            content_type="application/json",
+        )
+        assert response.status_code == 200
 
     def test_create_users_with_null_secret_id(self, client, db):
         response = client.post(
