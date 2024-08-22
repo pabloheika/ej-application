@@ -1,0 +1,3 @@
+{% for conversation in conversations %}
+    <div class="margin-y3">{{ conversation|role('card', button_text=button_text) }}</div>
+{% endfor %}

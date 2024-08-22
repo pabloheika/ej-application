@@ -1,0 +1,39 @@
+<div id="create-persona" class="tabs__tab-content full-width">
+    <div class="manage-stereotypes__container">
+        <div class="manage-stereotypes__container-vote-section">
+            <div class="manage-stereotypes__container-header">
+                <div id="create-stereotype-container" 
+                    hx-trigger="load"
+                    hx-get="{{ url('stereotypes:create', **{'clusterization_id': clusterization_id}) }}"
+                    hx-swap="innerHTML"
+                    hx-target="#create-stereotype-container"> 
+                </div>
+                <label>{{_("Votes")}}</label>
+                <p class="helptext">
+                    {{_("Select how the persona votes in this conversation.")}}
+                </p>
+                <div class="stereotype-cards votes-container">
+                    <form id="votes-formset" 
+                        hx-post="{{ url('boards:stereotype-votes-list',  **conversation.get_url_kwargs()) }}"
+                        hx-swap="none"
+                        hx-on::after-request='showCreateModal()'
+                    >
+                        {{ csrf_input }}
+                        <input id="stereotype-id" type="hidden" name="stereotype_id">
+                        {{ stereotype_votes_formset }}
+                    </form>
+                </div>
+            </div>
+            {{pagination("create")}}
+        </div>
+        <div class="manage-stereotypes__actions">
+            <button type="submit" form="create-stereotype-form" 
+                class="manage-stereotypes__actions-button manage-stereotypes__actions-button--blue" 
+                name="create" value="{{_('create')}}">
+                <i class="fa">&#xf058;</i>
+                {{_('create persona')}}
+            </button>
+        </div>
+        
+    </div>
+</div>

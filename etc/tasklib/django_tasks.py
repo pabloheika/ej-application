@@ -104,7 +104,18 @@ def collect(ctx, theme=None):
 
 @task
 def gunicorn(
-    _ctx, debug=None, environment="production", port=8000, workers=0, theme=None
+    _ctx,
+    debug=None,
+    environment="production",
+    port=8000,
+    workers=0,
+    threads=0,
+    backlog=None,
+    keep_alive=None,
+    worker_class=None,
+    worker_connections=None,
+    log_level=None,
+    theme=None,
 ):
     """
     Run application using gunicorn for production deploys.
@@ -115,7 +126,15 @@ def gunicorn(
     from gunicorn.app.wsgiapp import run as run_gunicorn
 
     theme, _ = set_theme(theme)
-    workers = workers or os.cpu_count() or 1
+    workers = workers or os.getenv("GUNICORN_WORKERS") or os.cpu_count() or 1
+    threads = threads or os.getenv("GUNICORN_THREADS") or 1
+    backlog = backlog or os.getenv("GUNICORN_BACKLOG") or 2048
+    keep_alive = keep_alive or os.getenv("GUNICORN_KEEP_ALIVE") or 2
+    worker_class = worker_class or os.getenv("GUNICORN_WORKER_CLASS") or "gthread"
+    worker_connections = (
+        worker_connections or os.getenv("GUNICORN_WORKER_CONNECTIONS") or 1000
+    )
+    log_level = log_level or os.getenv("GUNICORN_LOG_LEVEL") or "info"
 
     env = {
         "DISABLE_DJANGO_DEBUG_TOOLBAR": str(not debug),
@@ -129,14 +148,24 @@ def gunicorn(
     args = [
         "--timeout=120",
         "ej.wsgi",
-        "-w",
+        "--workers",
         str(workers),
+        "--threads",
+        str(threads),
+        "--backlog",
+        str(backlog),
+        "--keep-alive",
+        str(keep_alive),
+        "--worker-class",
+        str(worker_class),
+        "--worker-connections",
+        str(worker_connections),
         "-b",
         f"0.0.0.0:{port}",
         "--error-logfile=-",
         "--access-logfile=-",
         "--log-level",
-        "info",
+        str(log_level),
         f"--pythonpath={directory}/src",
     ]
     sys.argv = ["gunicorn", *args]

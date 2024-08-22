@@ -4,11 +4,45 @@ from ej_conversations.enums import Choice, RejectionReason
 from ej_conversations.models import Vote
 from ej_conversations.mommy_recipes import ConversationRecipes
 import pytest
+from constance import config
 
 ConversationRecipes.update_globals(globals())
 
 
 class TestConversation(ConversationRecipes):
+    def test_random_comment_without_skiped(self, db, mk_conversation, mk_user):
+        conversation = mk_conversation()
+        user = mk_user(email="user@domain.com")
+        other = mk_user(email="other@domain.com")
+        mk_comment = conversation.create_comment
+        comments = [
+            mk_comment(user, "aa", status="approved", check_limits=False),
+            mk_comment(user, "bb", status="approved", check_limits=False),
+        ]
+        comments[0].vote(other, "skip")
+        comments[1].vote(other, "agree")
+
+        config.RETURN_USER_SKIPED_COMMENTS = False
+        cmt = conversation.next_comment(other)
+
+        assert not other.is_anonymous
+        assert cmt is None
+
+    def test_random_comment_with_skiped(self, db, mk_conversation, mk_user):
+        conversation = mk_conversation()
+        user = mk_user(email="user@domain.com")
+        other = mk_user(email="other@domain.com")
+        mk_comment = conversation.create_comment
+        comments = [
+            mk_comment(user, "aa", status="approved", check_limits=False),
+            mk_comment(user, "bb", status="approved", check_limits=False),
+        ]
+        comments[0].vote(other, "skip")
+        comments[1].vote(other, "agree")
+        cmt = conversation.next_comment(other)
+        assert not other.is_anonymous
+        assert cmt == comments[0]
+
     def test_random_comment_invariants(self, db, mk_conversation, mk_user):
         conversation = mk_conversation()
         user = mk_user(email="user@domain.com")

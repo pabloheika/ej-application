@@ -8,17 +8,16 @@
 <div class="grouping">
     <section class="grouping__container">
         <h2 class="header-space">{{_("Grouping")}}</h2>
-        {% if clusters %}
             <p class="margin-y2 helptext">
                 {{_("We use votes to rank users according to their opinions. 
                     Users who vote in a similar way tend to be in the same group.")}}
             </p>
-        {% endif %}
     </section>
 </div>
+
 <div class="clusters-section stereotypes-section">
     <div class="clusters-section__container clusters-section__container--wide-center {% if not json_data%}clusters-section__detail--padding{%endif%}">
-        {% if json_data %}
+        {% if json_data and num_groups > 1 %}
             <div class="clusters-section__chart">
                 <div id="clusters-canvas-container">
                     <canvas id="cluster-canvas" class="block"></canvas>
@@ -35,17 +34,10 @@
                     <p class="clusters-section__main-comment"> {{ biggest_cluster_data.get('content') }}</p>
                 </div>
             </div>
-            {% else %}
-            <div class="clusters-section__detail clusters-section__detail--empty">
-                <div>
-                    <p class="cluster-section__detail--null clusters-section__detail--no-margin">{{_("Your conversation does not have personas.")}}</p>
-                    <p class="bold clusters-section__detail--no-margin">{{_("Without personas, it's not possible to create opinion groups.")}}</p>
-                    <p>{{_("After modeling groups, you can check then here.")}}</p>
-                </div>
-                <div class="conversation-dashboard__button">
-                    <a class="button is-primary float-left"
-                        href="{{ url('boards:cluster-edit', **conversation.get_url_kwargs()) }}">{{_("Creates groups")}}</a>
-                </div>
+        {% else %}
+            <div class="stereotypes-section__no-groups">
+                <p>{{_("the graph will be generated and displayed here after")}}</p>
+                <p>{{_("creating the second persona")}}</p>
             </div>
         {% endif %}
     </div>

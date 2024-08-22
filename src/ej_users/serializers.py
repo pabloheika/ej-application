@@ -46,7 +46,7 @@ class UsersSerializer(serializers.ModelSerializer):
         user = User(
             email=validated_data["email"],
             name=validated_data["name"],
-            secret_id=User.encode_secret_id(validated_data.get("secret_id", "")),
+            secret_id=User.encode_secret_id(validated_data.get("secret_id", None)),
             has_completed_registration=validated_data["has_completed_registration"],
         )
         user.set_password(validated_data["password"])

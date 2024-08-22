@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from logging import getLogger
 import os
-from typing import Dict, Text
+from typing import Dict, Text, Any
 
 from boogie.apps.users.models import AbstractUser
 from django.db import models
@@ -115,7 +115,9 @@ class User(AbstractUser):
         self.set_password(User.decode_secret_id(self.secret_id))
 
     @staticmethod
-    def encode_secret_id(secret_id: Text) -> Text:
+    def encode_secret_id(secret_id: Text) -> Any:
+        if not secret_id:
+            return None
         return jwt.encode({"secret_id": secret_id}, JWT_SECRET, algorithm="HS256")
 
     @staticmethod

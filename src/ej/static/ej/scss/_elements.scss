@@ -56,6 +56,12 @@ label + select + br {
     justify-content: center;
 }
 
+.full-width {
+    @media only screen and (max-width: 900px) {
+        grid-column: 1 / 4 !important;
+    }
+}
+
 
 input + .helptext,
 textarea + .helptext,

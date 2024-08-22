@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db.models import OuterRef, Subquery
 from django.utils.translation import gettext_lazy as _
 
+from ej_clusters.enums import CHOICE_MAP
 from ej_conversations.enums import Choice
 from .querysets import StereotypeQuerySet
 from .stereotype_vote import StereotypeVote
@@ -32,8 +33,6 @@ class Stereotype(models.Model):
         ),
     )
     objects = StereotypeQuerySet.as_manager()
-
-    CHOICE_MAP = {"agree": Choice.AGREE, "disagree": Choice.DISAGREE, "skip": Choice.SKIP}
 
     class Meta:
         unique_together = [("name", "owner")]
@@ -90,4 +89,4 @@ class Stereotype(models.Model):
 
     @staticmethod
     def get_choice_value(choice_name: str):
-        return Stereotype.CHOICE_MAP[choice_name]
+        return CHOICE_MAP[choice_name]

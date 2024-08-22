@@ -29,7 +29,6 @@ from .favorites import HasFavoriteMixin
 from .util import (
     make_clean,
     statistics,
-    statistics_for_user,
     vote_count,
     vote_distribution_over_time,
 )
@@ -214,7 +213,6 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
     # Statistical methods
     vote_count = vote_count
     statistics = statistics
-    statistics_for_user = statistics_for_user
     time_interval_votes = vote_distribution_over_time
 
     @lazy

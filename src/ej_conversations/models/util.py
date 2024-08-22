@@ -130,35 +130,6 @@ def statistics(conversation, cache=True):
     }
 
 
-def statistics_for_user(conversation, user):
-    """
-    Get information about user.
-    """
-    approved_comments_count = conversation.comments.filter(
-        status=Comment.STATUS.approved
-    ).count()
-    given_votes = (
-        0
-        if user.id is None
-        else (
-            models.Vote.objects.filter(
-                comment__conversation_id=conversation.id, author=user
-            )
-            .exclude(choice=0)
-            .count()
-        )
-    )
-
-    e = 1e-50  # for numerical stability
-    return {
-        "votes": given_votes,
-        "missing_votes": approved_comments_count - given_votes,
-        "participation_ratio": given_votes / (approved_comments_count + e),
-        "total_comments": approved_comments_count,
-        "comments": given_votes,
-    }
-
-
 def set_date_range(start_date, end_date):
     """
     Set all date range values ​​with 0.

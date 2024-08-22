@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.0] - August 12, 2024
+
+### Added
+
+- Add an environment variable to disable returning skipped votes. This affects the API and the web platform.
+- Add a new form for creating personas.
+
+### Changed
+
+- Returns the conversation's id in the board endpoint.
+
+## [3.6.0] - August 01, 2024
+
+### Added
+
+- Adds drf-spectacular package to generate API documentation and schema.
+- Adds an endpoint to retrieve a board's conversations.
+- Adds more parameters to gunicorn server.
+- Adds more parameters to optimize PostgreSQL connections.
+- Adds a variable to avoid compiling assets if the server is API only.
+
+### Changed
+
+- Refactors conversations list endpoint to filter the response by tags.
+- fix: don't encode user secret_id with JWT_SECRET if it is null.
+
+### Removed
+
+- Removes coreapi and dj-rest-auth dependencies.
 
 ## [3.5.0] - Jul 19, 2024
 

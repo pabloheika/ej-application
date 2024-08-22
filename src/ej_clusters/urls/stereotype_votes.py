@@ -13,18 +13,8 @@ urlpatterns = [
         name="list",
     ),
     path(
-        conversation_url + "stereotypes/stereotype-votes/create",
-        stereotype_votes.StereotypeVotesCreateView.as_view(),
-        name="create",
-    ),
-    path(
-        conversation_url + "stereotypes/stereotype-votes/<int:pk>/delete",
-        stereotype_votes.StereotypeVotesDeleteView.as_view(),
-        name="delete",
-    ),
-    path(
-        conversation_url + "stereotypes/stereotype-votes/<int:pk>/update",
-        stereotype_votes.StereotypeVotesUpdateView.as_view(),
-        name="update",
+        conversation_url + "stereotypes/stereotype-votes/<int:pk>/manage",
+        stereotype_votes.ManageStereotypeVotesView.as_view(),
+        name="manage",
     ),
 ]

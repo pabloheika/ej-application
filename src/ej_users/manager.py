@@ -47,20 +47,6 @@ class UserManager(BaseUserManager.from_queryset(UserQuerySet)):
 
         return self.create_user(email, password, **extra_fields)
 
-    def merge_users(self, temporary_user, unique_user):
-        """
-        migrates temporary_user boards, conversations, votes and comments to unique_user.
-        """
-        temporary_user.boards.all().update(owner=unique_user)
-        temporary_user.conversations.all().update(author=unique_user)
-        temporary_user.votes.all().update(author=unique_user)
-        temporary_user.comments.all().update(author=unique_user)
-        try:
-            temporary_user.profile.delete()
-        except Exception:
-            pass
-        temporary_user.delete()
-
     def create_user_from_session(self, session_key, email, password, **extra_fields):
         """
         creates a regular user and converts votes and comments from anonymous participant, if it exists.
@@ -76,3 +62,20 @@ class UserManager(BaseUserManager.from_queryset(UserQuerySet)):
             except Exception as e:
                 log.error(f"Could not find anonymous user. Error: {e}")
         return user
+
+    def merge_users(self, temporary_user, unique_user):
+        """
+        migrates temporary_user boards, conversations, votes and comments to unique_user.
+        """
+        temporary_user.boards.all().update(owner=unique_user)
+        temporary_user.conversations.all().update(author=unique_user)
+        unique_comments_ids = unique_user.votes.select_related("comment").values_list(
+            "comment__id"
+        )
+        # removes votes from temporary_user that also exists in unique_user.
+        temporary_user.votes.filter(comment__id__in=unique_comments_ids).delete()
+        temporary_user.votes.all().update(author=unique_user)
+        temporary_user.comments.all().update(author=unique_user)
+        temporary_user.profile.delete()
+        temporary_user.delete()
+        return unique_user

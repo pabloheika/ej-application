@@ -1,10 +1,8 @@
 import hashlib
-import toolz
 import logging
-from boogie.fields import EnumField
-from rest_framework.authtoken.models import Token
-from sidekick import delegate_to, import_later
 
+from boogie.fields import EnumField
+from constance import config
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -12,10 +10,15 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _, gettext as __
+from django.utils.translation import gettext as __, gettext_lazy as _
+from rest_framework.authtoken.models import Token
+from sidekick import delegate_to, import_later
+import toolz
 
-from ej_conversations.models import Conversation, Comment, ConversationTag
-from .enums import Race, Gender, STATE_CHOICES_MAP
+from ej_conversations.models import Comment, Conversation, ConversationTag
+from ej_conversations.models.vote import Vote
+
+from .enums import Gender, Race, STATE_CHOICES_MAP
 from .utils import years_from
 
 SocialAccount = import_later("allauth.socialaccount.models:SocialAccount")
@@ -184,6 +187,33 @@ class Profile(models.Model):
             comments=self.user.comments.count(),
             conversations=self.user.conversations.count(),
         )
+
+    def conversation_statistics(self, conversation):
+        """
+        Get information about user.
+        """
+        approved_comments = conversation.comments.filter(
+            status=Comment.STATUS.approved
+        ).count()
+
+        user_votes = Vote.objects.filter(
+            comment__conversation_id=conversation.id, author=self.user
+        )
+        given_votes = 0
+        if self.user.id:
+            if config.RETURN_USER_SKIPED_COMMENTS:
+                given_votes = user_votes.exclude(choice=0).count()
+            else:
+                given_votes = user_votes.count()
+
+        e = 1e-50  # for numerical stability
+        return {
+            "votes": given_votes,
+            "missing_votes": approved_comments - given_votes,
+            "participation_ratio": given_votes / (approved_comments + e),
+            "total_comments": approved_comments,
+            "comments": given_votes,
+        }
 
     def badges(self):
         """

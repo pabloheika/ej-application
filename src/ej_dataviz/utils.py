@@ -228,12 +228,9 @@ def get_stop_words():
 def get_biggest_cluster(clusterization):
     from django.db.models import Count, F
 
-    if (
-        isinstance(clusterization, Clusterization)
-        and clusterization.stereotypes.count() > 0
-    ):
-        clusters = clusterization.clusters.annotate(size=Count(F("users")))
-        return clusters.order_by("-size").first()
+    if isinstance(clusterization, Clusterization):
+        return clusterization.get_biggest_cluster()
+
     if (
         clusterization
         and clusterization.exists()

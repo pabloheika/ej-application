@@ -6,21 +6,23 @@ export PATH="/root/.local/bin:$PATH"
 # prepare database
 inv db
 
-# install js dependencies
-(cd src/$EJ_THEME/static/$EJ_THEME/ && npm i)
+if [ "$SERVER_MODE" != "api" ]; then
+    # install js dependencies
+    (cd src/$EJ_THEME/static/$EJ_THEME/ && npm i)
 
-# prepare all assets (js, css)
-inv build-assets
+    # prepare all assets (js, css)
+    inv build-assets
 
-# generate translations
-inv i18n
-inv i18n --compile
+    # generate translations
+    inv i18n
+    inv i18n --compile
 
-# generates documentation
-inv docs
+    # generates documentation
+    inv docs
 
-# runs django collectstatic command
-inv collect
+    # runs django collectstatic command
+    inv collect
+fi
 
-# runs develop server
+# runs prod server
 inv gunicorn
