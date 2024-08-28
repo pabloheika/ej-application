@@ -1,0 +1,10 @@
+{% if not has_minimum_comments %}
+    <span>Dados insuficientes para visualizar os resultados</span>
+
+{% elif not has_minimum_participant_votes %}
+    <span>Continue participando para visualizar os resultados</span>
+
+{% else %}
+    gráfico
+    
+{% endif %}

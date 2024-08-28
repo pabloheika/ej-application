@@ -525,6 +525,19 @@ class CommentModerationView(UpdateView):
             "created": created_comments,
             "comment_saved": True,
         }
+    
+
+class ConversationParticipantResults(DetailView):
+    model = Conversation
+    template_name = "ej_conversations/participant-results.jinja2"
+
+
+    def get_context_data(self, **kwargs):
+        conversation = self.get_object()
+        user = self.request.user  
+        return {"has_minimum_comments":conversation.has_minimum_comments(), 
+                "has_minimum_participant_votes": conversation.has_minimum_participant_votes(user)}    
+
 
 
 @login_required

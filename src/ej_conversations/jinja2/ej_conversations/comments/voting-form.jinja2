@@ -12,7 +12,12 @@
     <p>{{ comment.content}}</p>
 </div>
 <div>
-    <form class="voting-form" hx-trigger="click delay:1.5s" hx-post="{{ url('boards:conversation-vote', **conversation.get_url_kwargs()) }}" hx-target="#voting-card" hx-swap="outerHTML">
+    <form class="voting-form" 
+        hx-trigger="click delay:1.5s" 
+        hx-post="{{ url('boards:conversation-vote', **conversation.get_url_kwargs()) }}" 
+        hx-target="#voting-card"
+        hx-swap="outerHTML"
+    >
         {{ csrf_input }}
         <input type="hidden" name="comment_id" value="{{ comment.id }}">
         <input type="hidden" name="vote" value="">
@@ -63,5 +68,10 @@ function showSpinner (choice) {
     let spinner = $(`#${choice}-spinner`)[0];
     spinner.classList.add("show")
     showConfirmationDialogFor('#voting-dialog-confirmation')
+    setTimeout(function(){
+        htmx.trigger("body", "updateResults", {});
+    }, 6000);
+    
+    //document.dispatchEvent(new Event("updateResults"));
 }
 </script>

@@ -9,6 +9,14 @@
     {% include 'ej_conversations/includes/conversation-detail-header.jinja2' %}
     <div class="content-grid">
         {% include 'ej_conversations/comments/card.jinja2' %}
+        <div id="conversation-participant-results" 
+            hx-get="{{ url('boards:conversation-results', **conversation.get_url_kwargs()) }}"
+            hx-target="#conversation-participant-results"
+            hx-trigger="load, updateResults from:body"
+            hx-swap="innerHTML">
+        </div>
         {% include 'ej_conversations/includes/conversation-detail-sharing.jinja2' %}
     </div>
 {% endif %}
+
+

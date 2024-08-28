@@ -35,6 +35,7 @@ from .util import (
 from .vote import Vote
 
 NOT_GIVEN = object()
+MINIMUM_COMMENTS = 3
 
 
 class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
@@ -475,6 +476,12 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
             return f"{host}/media/{logo_image_url}"
         return None
 
+    def has_minimum_comments(self):
+        return self.n_approved_comments >= MINIMUM_COMMENTS
+    
+    def has_minimum_participant_votes(self, user):
+        self.set_request(user)
+        return self.n_user_final_votes >= MINIMUM_COMMENTS
 
 #
 #  AUXILIARY MODELS

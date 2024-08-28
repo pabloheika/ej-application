@@ -85,4 +85,10 @@ urlpatterns = [
         views.is_favorite_board,
         name="is-favorite-board",
     ),
+    path(
+        f"{conversation_url}/results/",
+        views.ConversationParticipantResults.as_view(),
+        name="results",
+    ),
+
 ]
