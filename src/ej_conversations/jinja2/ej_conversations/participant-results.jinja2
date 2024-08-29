@@ -5,6 +5,29 @@
     <span>Continue participando para visualizar os resultados</span>
 
 {% else %}
-    gráfico
-    
+    <div id="scatter-containers" class="scatter-section__chart"><div class="size-y6p col flex-center"><p>{{ _('Loading data...') }}</p></div></div>
+
+    <script defer>
+        $(document).ready(function() {
+            // Load main data from json.
+            $.ajax("{{url('boards:dataviz-scatter_pca_json',  **conversation.get_url_kwargs())}}").then(function (data) {
+                // Prepare container
+            var $container = $("#scatter-containers");
+            var dom = $container[0], chart = echarts.init(dom);
+            dom['chart'] = chart;
+            var chartOptions = {};
+                if (!data.error) {
+                    // Init chart
+                    chart.visualMap = data.visualMap;
+                    delete data.option.tooltip;
+                    chart.option = data.option;
+                    chart.option.visualMap = [data.visualMap[data.visualMap.length - 1]];
+                    chart.setOption(chart.option, true);
+                } else {
+                    chart.setOption({series: [{data: [], type: "scatter"}], xAxis: {}, yAxis: {}}, true);
+                }
+                chart.resize();
+            });
+        })
+    </script>
 {% endif %}

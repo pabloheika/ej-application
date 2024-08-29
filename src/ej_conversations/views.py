@@ -534,9 +534,21 @@ class ConversationParticipantResults(DetailView):
 
     def get_context_data(self, **kwargs):
         conversation = self.get_object()
-        user = self.request.user  
+        user = self.request.user
+
+        comments = conversation.comments
+        df = comments.statistics_summary_dataframe(normalization=100)
+        least_convergent_comments = df.sort_values("convergence", ascending=True)[:3]
+        most_agreed_comments = df.sort_values("agree", ascending=False)[:3]
+        most_disagreed_comments = df.sort_values("disagree", ascending=False)[:3]
+
         return {"has_minimum_comments":conversation.has_minimum_comments(), 
-                "has_minimum_participant_votes": conversation.has_minimum_participant_votes(user)}    
+                "has_minimum_participant_votes": conversation.has_minimum_participant_votes(user),
+                "conversation": conversation,
+                "least_convergent_comments": least_convergent_comments,
+                "most_agreed_comments": most_agreed_comments,
+                "most_disagreed_comments": most_disagreed_comments
+                }    
 
 
 

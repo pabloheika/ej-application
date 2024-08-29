@@ -477,11 +477,11 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
         return None
 
     def has_minimum_comments(self):
-        return self.n_approved_comments >= MINIMUM_COMMENTS
+        return self.n_approved_comments > MINIMUM_COMMENTS
     
     def has_minimum_participant_votes(self, user):
         self.set_request(user)
-        return self.n_user_final_votes >= MINIMUM_COMMENTS
+        return self.n_user_final_votes > MINIMUM_COMMENTS
 
 #
 #  AUXILIARY MODELS
