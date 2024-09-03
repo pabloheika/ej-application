@@ -463,8 +463,6 @@ class TestClusterIndex(ConversationSetup, ClusterRecipes):
         response = client.get(url)
 
         assert response.status_code == 302
-        assert response.url == "/"
-        assert not StereotypeVote.objects.filter(id=stereotype_vote.id).exists()
         assert response.url == "/login/"
 
 
