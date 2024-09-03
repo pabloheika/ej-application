@@ -24,6 +24,7 @@ $_card-bg: config('ej.conversation-card.bg-image');
 
     @media screen and (max-width: 800px) {
         width: 20rem;
+        border-radius: 0.313rem;
     }
 
     &__tags {

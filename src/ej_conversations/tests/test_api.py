@@ -1,10 +1,11 @@
+from constance import config
 from django.utils.translation import gettext_lazy as _
 import pytest
 
 from ej_boards.models import Board
 from ej_conversations.enums import Choice
 from ej_conversations.models import Comment, Vote
-from ej_conversations.models.util import statistics, statistics_for_user, vote_count
+from ej_conversations.models.util import statistics, vote_count
 from ej_conversations.models.vote import VoteChannels
 from ej_conversations.mommy_recipes import ConversationRecipes
 from ej_conversations.roles.comments import comment_summary
@@ -49,10 +50,13 @@ class TestGetViews:
     def test_conversations_endpoint_not_authenticated(self, conversation, api):
         path = API_V1_URL + f"/conversations/{conversation.id}/"
         data = api.get(path)
-        assert len(data) == 3
+        assert len(data) == 6
         assert data.get("text") == conversation.text
         assert data.get("statistics")
-        assert data.get("participants_can_add_comments")
+        assert "participants_can_add_comments" in data.keys()
+        assert "anonymous_votes_limit" in data.keys()
+        assert "send_profile_question" in data.keys()
+        assert "votes_to_send_profile_question" in data.keys()
 
     def test_conversations_endpoint_other_user(self, conversation, other_user):
         path = API_V1_URL + f"/conversations/{conversation.id}/"
@@ -61,10 +65,13 @@ class TestGetViews:
         )
 
         data = api.get(path, format="json").data
-        assert len(data) == 3
+        assert len(data) == 6
         assert data.get("text") == conversation.text
         assert data.get("statistics")
-        assert data.get("participants_can_add_comments")
+        assert "participants_can_add_comments" in data.keys()
+        assert "anonymous_votes_limit" in data.keys()
+        assert "send_profile_question" in data.keys()
+        assert "votes_to_send_profile_question" in data.keys()
 
     def test_comments_endpoint(self, comment):
         path = API_V1_URL + f"/comments/{comment.id}/"
@@ -138,6 +145,12 @@ class TestGetViews:
         del data["created"]
         assert data
 
+    def test_unauthenticated_random_comments_endpoint(self, comment, api_client):
+        conversation = comment.conversation
+        path = API_V1_URL + f"/conversations/{conversation.id}/random-comment/"
+        data = api_client.get(path, format="json").data
+        assert data["content"] == conversation.approved_comments.first().content
+
     def test_random_comment_with_id_endpoint(self, comments):
         comment = comments[1]
         path = (
@@ -176,26 +189,53 @@ class TestGetViews:
         api = get_authorized_api_client(
             {"email": "email@server.com", "password": "password"}
         )
-        data = api.get(path, format="json").data
-        assert "card" in data[0]
+        expected_data = {
+            "url": "/emailservercom/conversations/1/title/",
+            "title": "title",
+            "text": "test",
+            "author": "email@server.com",
+            "is_hidden": False,
+            "first_tag": None,
+            "n_approved_comments": 0,
+            "n_final_votes": 0,
+            "n_favorites": 0,
+            "button_text": "Participate",
+        }
+
+        data = api.get(path).data
+        assert expected_data == data[0]
 
     def test_search_conversation(self, conversation):
         path = (
             API_V1_URL
-            + f"/conversations/?is_promoted=true&text_contains={conversation.text}"
+            + f"/conversations/?is_promoted=true&search_text={conversation.text}"
         )
         api = get_authorized_api_client(
             {"email": "email@server.com", "password": "password"}
         )
-        data = api.get(path, format="json").data
-        assert "card" in data[0]
+
+        expected_data = {
+            "url": "/emailservercom/conversations/1/title/",
+            "title": "title",
+            "text": "test",
+            "author": "email@server.com",
+            "is_hidden": False,
+            "first_tag": None,
+            "n_approved_comments": 0,
+            "n_final_votes": 0,
+            "n_favorites": 0,
+            "button_text": "Participate",
+        }
+
+        data = api.get(path).data
+        assert expected_data == data[0]
 
     def test_search_inexistent_conversation(self, conversation):
-        path = API_V1_URL + "/conversations/?is_promoted=true&text_contains=asdfghjkl"
+        path = API_V1_URL + "/conversations/?is_promoted=true&search_text=asdfghjkl"
         api = get_authorized_api_client(
             {"email": "email@server.com", "password": "password"}
         )
-        data = api.get(path, format="json").data
+        data = api.get(path).data
         assert data == []
 
     def test_get_conversation_by_tags(self, conversation):
@@ -205,18 +245,46 @@ class TestGetViews:
         api = get_authorized_api_client(
             {"email": "email@server.com", "password": "password"}
         )
-        data = api.get(path, format="json").data
-        assert "card" in data[0]
 
-    def test_search_tag_in_text_contains(self, conversation):
+        expected_data = {
+            "url": "/emailservercom/conversations/1/title/",
+            "title": "title",
+            "text": "test",
+            "author": "email@server.com",
+            "is_hidden": False,
+            "first_tag": "tag",
+            "n_approved_comments": 0,
+            "n_final_votes": 0,
+            "n_favorites": 0,
+            "button_text": "Participate",
+        }
+
+        data = api.get(path).data
+        assert expected_data == data[0]
+
+    def test_search_tag_in_search_text(self, conversation):
         tag = "tag"
         conversation.tags.set([tag])
-        path = API_V1_URL + f"/conversations/?is_promoted=true&text_contains={tag}"
+        path = API_V1_URL + f"/conversations/?is_promoted=true&search_text={tag}"
         api = get_authorized_api_client(
             {"email": "email@server.com", "password": "password"}
         )
-        data = api.get(path, format="json").data
-        assert "card" in data[0]
+
+        expected_data = {
+            "url": "/emailservercom/conversations/1/title/",
+            "title": "title",
+            "text": "test",
+            "author": "email@server.com",
+            "is_hidden": False,
+            "first_tag": "tag",
+            "n_approved_comments": 0,
+            "n_final_votes": 0,
+            "n_favorites": 0,
+            "button_text": "Participate",
+        }
+
+        data = api.get(path).data
+        assert expected_data == data[0]
 
     def test_get_vote_endpoint(self, vote):
         path = API_V1_URL + f"/votes/{vote.id}/"
@@ -596,13 +664,69 @@ class TestConversartionStatistics(ConversationRecipes):
     def test_statistics_for_user(self, db, mk_conversation, mk_user):
         conversation = mk_conversation()
         user = mk_user(email="user@domain.com")
-        statistics_for_user_result = statistics_for_user(conversation, user)
+        author = mk_user(email="anotherauthor@domain.com")
+
+        comment = conversation.create_comment(
+            author, "ad", status="approved", check_limits=False
+        )
+        comment2 = conversation.create_comment(
+            author, "ad2", status="approved", check_limits=False
+        )
+        comment3 = conversation.create_comment(
+            author, "ad3", status="approved", check_limits=False
+        )
+
+        comment.vote(user, "agree")
+        comment2.vote(user, "disagree")
+        comment3.vote(user, "skip")
+
+        statistics_for_user_result = user.profile.conversation_statistics(conversation)
 
         assert "votes" in statistics_for_user_result
+        assert statistics_for_user_result["votes"] == 2
+
         assert "missing_votes" in statistics_for_user_result
-        assert "participation_ratio" in statistics_for_user_result
+        assert statistics_for_user_result["missing_votes"] == 1
+
         assert "total_comments" in statistics_for_user_result
+        assert statistics_for_user_result["total_comments"] == 3
+
         assert "comments" in statistics_for_user_result
+        assert statistics_for_user_result["comments"] == 2
+
+    def test_statistics_for_user_without_skiped_votes(self, db, mk_conversation, mk_user):
+        conversation = mk_conversation()
+        user = mk_user(email="user@domain.com")
+        author = mk_user(email="anotherauthor@domain.com")
+
+        comment = conversation.create_comment(
+            author, "ad", status="approved", check_limits=False
+        )
+        comment2 = conversation.create_comment(
+            author, "ad2", status="approved", check_limits=False
+        )
+        comment3 = conversation.create_comment(
+            author, "ad3", status="approved", check_limits=False
+        )
+
+        comment.vote(user, "agree")
+        comment2.vote(user, "disagree")
+        comment3.vote(user, "skip")
+
+        config.RETURN_USER_SKIPED_COMMENTS = False
+        statistics_for_user_result = user.profile.conversation_statistics(conversation)
+
+        assert "votes" in statistics_for_user_result
+        assert statistics_for_user_result["votes"] == 3
+
+        assert "missing_votes" in statistics_for_user_result
+        assert statistics_for_user_result["missing_votes"] == 0
+
+        assert "total_comments" in statistics_for_user_result
+        assert statistics_for_user_result["total_comments"] == 3
+
+        assert "comments" in statistics_for_user_result
+        assert statistics_for_user_result["comments"] == 3
 
     def test_statistics_for_channel_votes(self, db, mk_conversation, mk_user):
         conversation = mk_conversation()

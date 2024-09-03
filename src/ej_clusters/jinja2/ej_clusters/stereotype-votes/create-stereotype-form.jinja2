@@ -1,0 +1,13 @@
+<form method="post" id="create-stereotype-form" class="manage-stereotypes__form">
+    {{ csrf_input }}
+    <input type="hidden" name="stereotype" value="{{ stereotype.id }}">
+    {{create_form.owner.as_hidden()}}
+    <div class="manage-stereotypes__form-input-container">
+        <label>{{create_form.name.label}}</label>
+        {{create_form.name}}
+    </div>
+    <div class="manage-stereotypes__form-input-container">
+        <label>{{create_form.description.label}}</label>
+        {{create_form.description}}
+    </div>
+</form>

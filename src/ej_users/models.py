@@ -1,15 +1,21 @@
 from datetime import datetime, timedelta
 from logging import getLogger
+import os
+from typing import Dict, Text, Any
 
 from boogie.apps.users.models import AbstractUser
-from django.utils.text import slugify
 from django.db import models
+from django.db.models import Q
 from django.utils import timezone
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
+import jwt
 from model_utils.models import TimeStampedModel
 
 from .manager import UserManager
 from .utils import random_name, token_factory
+
+JWT_SECRET = os.getenv("JWT_SECRET", "dummysecret")
 
 log = getLogger("ej")
 
@@ -39,6 +45,8 @@ class User(AbstractUser):
         help_text=_("Agree with privacy policy"),
         verbose_name=_("Agree with privacy policy"),
     )
+    secret_id = models.CharField(unique=True, null=True, max_length=200)
+    has_completed_registration = models.BooleanField(default=True)
 
     objects = UserManager()
 
@@ -96,6 +104,56 @@ class User(AbstractUser):
 
     def has_more_than_one_board(self):
         return self.boards.count() > 1
+
+    @staticmethod
+    def encode_secret_id(secret_id: Text) -> Any:
+        if not secret_id:
+            return None
+        return jwt.encode({"secret_id": secret_id}, JWT_SECRET, algorithm="HS256")
+
+
+class UserSecretIdManager:
+    @staticmethod
+    def get_user(request_data: Dict) -> User:
+        """
+        Get user using encoded secret_id or email.
+
+        request_data must have email or secret_id keys to get_user returns an User instance.
+        """
+        email = request_data.get("email")
+        secret_id = request_data.get("secret_id")
+        secret_id_query = {}
+        if secret_id:
+            secret_id_query = {"secret_id": User.encode_secret_id(secret_id)}
+        return User.objects.get(Q(email=email) | Q(**secret_id_query))
+
+    @staticmethod
+    def merge_unique_user_with(
+        temporary_user: User,
+        request_data: dict,
+    ):
+        """
+        Try to find a user using the the request_data email field. If so,
+        merge it with  temporary_user. If not, updates temporary_user email and password.
+
+        This is a necessary step to keep the consistence of the database, because a person
+        can vote on different channels, but must have only one user on EJ.
+        """
+        email = request_data.get("email")
+        password = request_data.get("password")
+        if not email or not password:
+            raise Exception("invalid email or password during user update")
+        try:
+            user = User.objects.get(email=email)
+            user.set_password(password)
+            user.secret_id = temporary_user.secret_id
+            user.has_completed_registration = True
+            return User.objects.merge_users(temporary_user, user)
+        except Exception:
+            temporary_user.email = email
+            temporary_user.has_completed_registration = True
+            temporary_user.save()
+            return temporary_user
 
 
 class PasswordResetToken(TimeStampedModel):

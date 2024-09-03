@@ -85,6 +85,8 @@ class ConversationForm(forms.ModelForm):
         required=False,
         label=_("Logo"),
     )
+    send_profile_question = forms.BooleanField(initial=False, required=False)
+    votes_to_send_profile_question = forms.IntegerField(initial=0, required=False)
 
     class Meta:
         model = Conversation
@@ -92,6 +94,8 @@ class ConversationForm(forms.ModelForm):
             "title",
             "text",
             "anonymous_votes_limit",
+            "send_profile_question",
+            "votes_to_send_profile_question",
             "start_date",
             "end_date",
             "welcome_message",

@@ -85,30 +85,33 @@
         cardsDiv.classList.remove("input-container__warn-message");
     }
 
+    function {{name}}updateCurrentCards(response){
+        document.getElementById("{{name}}-current-cards").innerHTML = response;
+    }
+
     function {{name}}getConversationByTag(){
         $.ajax({
-            url: "{{ host }}/api/v1/conversations",
-            data: {"tags": {{name}}selectedTags, {{api_args}}: true },
+            url: "{{ host }}/conversations/tags/{{api_args}}",
+            data: { "tags": {{name}}selectedTags },
             traditional: true,
             success: (retrievedConversations) => {
                 removeErrorMessage("{{name}}");
                 if (retrievedConversations.length == 0) {
                     {{name}}changeStateAllConversations();
                 } else {
-                    {{name}}updateConversations(retrievedConversations);
+                    {{name}}updateCurrentCards(retrievedConversations);
 
                 }
             }
         });
     }
 
-    function {{name}}getPromotedConversations(){
+    function {{name}}getConversations(){
         $.ajax({
-            url: "{{ host }}/api/v1/conversations",
-            data: { {{api_args}}: true },
+            url: "{{ host }}/conversations/tags/{{api_args}}/",
             success: (retrievedConversations) => {
                 removeErrorMessage("{{name}}");
-                {{name}}updateConversations(retrievedConversations)
+                {{name}}updateCurrentCards(retrievedConversations);
             }
         });
     }
@@ -129,22 +132,13 @@
             }
 
             {{name}}selectedTags = [];
-            {{name}}getPromotedConversations();
+            {{name}}getConversations();
 
             {{name}}replaceClass(allConversationsButton, "{{name}}-tag-header__tags--unselected", "{{name}}-tag-header__tags--selected");
         }
 
         allConversationsButton.dataset.selected = !isSelected;
 
-    }
-
-    function {{name}}updateConversations(conversations){
-        let fullHtml = ""
-        for (index in conversations) {
-            fullHtml += "<div class='margin-y3'>" + conversations[index].card + "</div>"
-        }
-        const parsedHtml = new DOMParser().parseFromString(fullHtml, "text/html");
-        document.getElementById("{{name}}-current-cards").innerHTML = fullHtml;
     }
 
     function {{name}}replaceClass(element, oldClass, newClass){
@@ -154,15 +148,15 @@
 
     function {{name}}filterConversationByTagAndName(input){
         $.ajax({
-            url: "{{ host }}/api/v1/conversations",
-            data: {"tags": {{name}}selectedTags, {{api_args}}: true, text_contains: input.value},
+            url: "{{ host }}/conversations/tags/{{api_args}}",
+            data: {"tags": {{name}}selectedTags, search_text: input.value},
             traditional: true,
             success: (retrievedConversations) => {
                 const warnMessage = "Não há conversas cadastradas com essas palavras-chave dentro deste tema. Por gentileza, refaça a busca."
                 let cardsDiv = document.getElementById("{{name}}-current-cards");
 
                 if (retrievedConversations.length >= 1) {
-                    {{name}}updateConversations(retrievedConversations);
+                    {{name}}updateCurrentCards(retrievedConversations);
                     cardsDiv.classList.remove("input-container__warn-message");
                 } else {
                     cardsDiv.innerHTML = warnMessage;
@@ -184,6 +178,7 @@
         
         }, 100);
     }
+
     function filterByTheme(type) {
         let sectionTags = document.getElementById(`${type}-tag-buttons`);
         let filterIconTheme = document.getElementById(`${type}filter-icon`);

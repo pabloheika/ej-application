@@ -37,13 +37,13 @@ class ClustersIndexView(ListView):
             self.request, conversation, clusterization
         )
 
-        if not clusterization or clusterization.clusters.count() == 0:
-            json_shape_user_group = Clusterization.get_default_shape_data()
-        else:
-            json_shape_user_group = clusterization.get_shape_data(user)
+        json_shape_user_group = Clusterization.get_shape_data_by_groups(
+            clusterization, user
+        )
 
         return {
             "conversation": conversation,
+            "num_groups": clusterization.get_clusters_count(),
             "biggest_cluster_data": biggest_cluster_data,
             **json_shape_user_group,
         }

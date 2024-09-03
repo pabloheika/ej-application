@@ -11,7 +11,7 @@ urlpatterns = [
         name="list",
     ),
     path(
-        "add/",
+        "create/<int:clusterization_id>",
         stereotypes.StereotypeCreateView.as_view(),
         name="create",
     ),

@@ -89,34 +89,42 @@ queira utilizar outras ferramentas de *dataviz* para realizar suas análises.
 Gestão de personas
 -------------------
 
-O estereótipo de uma conversa é uma generalização de um grupo de pessoas cujo as ações são similares, com base, no histórico comum de participação em uma conversa.  Seja curtindo, comentando ou pulando o sistema de votação. Exemplo: se temos uma conversa sobre uma temática de turismo, poderíamos definir como estereótipos os perfis de turistas: mochileiros, trabalho ou romântico, com base nos comentários ou participação nos comentários existentes.
+O estereótipo de uma conversa é uma generalização de um grupo de pessoas cujo as ações são similares, com base no histórico comum de participação em uma conversa. Seja votando, comentando ou pulando o sistema de votação. Exemplo: se temos uma conversa sobre uma temática de turismo, poderíamos definir como estereótipos os perfis de turistas: mochileiros, trabalho ou romântico, com base nos comentários ou participação nos comentários existentes.
 
 Podemos afirmar que os estereótipos de uma conversa são pressupostos sobre um determinado grupo de participantes. Eles não afetam a formação dos grupos de opinião, mas eles ajudam o nosso algoritmo a inferir os tipos de participantes que fazem parte de cada grupo. Por isso é importante, na criação de cada conversa, arriscar de 2 a 4 estereótipos iniciais. Sem eles, nosso algoritmo de clusterização não exibirá os grupos de opinião.
 
-Para criar uma persona, acesse a página de uma conversa e no menu lateral clique em "Criar/Editar grupos".
+Para criar uma persona, acesse a página de uma conversa e no menu lateral clique em "Gerenciar personas". Dê um nome à persona e se preferir uma descrição.
+
 
 .. figure:: ../images/personas.png
    :align: center
 
-   Acesso à criação/edição de grupos
+   Definição de nome e descrição de personas
 
-Criada a persona, você poderá definir como essa persona se comporta na conversa em questão. Isso é feito
-simulando os votos da persona nos comentários da conversa. É possível também editar e excluir a persona, além de visualizar o agrupamento destas personas por meio de gráfico de bolha. 
-Esses processos são feitos no painel "Gerenciar personas", que também pode ser acessado no menu lateral da conversa. Essa simulação é o que chamamos de modelagem e é
-a partir dela que os grupos de opinião serão formados.
+Defina então como a persona se comporta na conversa em questão. Isso é feito
+simulando os votos da persona nos comentários da conversa. 
+
+.. figure:: ../images/personas-voting.png
+   :align: center
+
+   Painel de criação de persona
 
 
-.. figure:: ../images/gerenciar-personas-form.png
+É possível também editar os dados e votos de uma persona e exclui-la. 
+
+.. figure:: ../images/personas-edit.png
    :align: center
 
    Suporte à edição de nome e descrição da persona
 
-.. figure:: ../images/gerenciar-personas-votos.png
+.. figure:: ../images/personas-edit-vote.png
    :align: center
 
-   Painel de modelagem das personas
+   Suporte à edição de votos e exclusão de persona
 
-.. figure:: ../images/gerenciar-personas-grupos.png
+Com pelo menos duas personas modeladas, é possível visualizar o agrupamento destas por meio de gráfico de bolha.
+
+.. figure:: ../images/personas-grouping.png
    :align: center
 
    Gráfico de bolhas que expressa os grupos de opinião 

@@ -29,7 +29,6 @@ from .favorites import HasFavoriteMixin
 from .util import (
     make_clean,
     statistics,
-    statistics_for_user,
     vote_count,
     vote_distribution_over_time,
 )
@@ -89,6 +88,16 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
         default=0,
         help_text=_("Configures how many anonymous votes participants can give."),
         verbose_name=_("Number of anonymous votes"),
+    )
+    send_profile_question = models.BooleanField(
+        default=False,
+        verbose_name=_("Send profile question?"),
+        help_text=_("Send a question to participants to complete their profile."),
+    )
+    votes_to_send_profile_question = models.IntegerField(
+        default=0,
+        verbose_name=_("Votes to send profile question"),
+        help_text=_("Number of votes to send profile question."),
     )
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
@@ -214,7 +223,6 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
     # Statistical methods
     vote_count = vote_count
     statistics = statistics
-    statistics_for_user = statistics_for_user
     time_interval_votes = vote_distribution_over_time
 
     @lazy
@@ -420,14 +428,13 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
 
     def reaches_anonymous_particiption_limit(self, user):
         """
-        reaches_anonymous_particiption_limit checks if anonymous user reaches the
-        limit for anonymous participation.
+        Check if user is anonymous and if him reached the anonymous participation limit.
         """
         user_is_anonymous = user.is_anonymous or re.match(
             r"^anonymoususer-.*", user.email
         )
         return (
-            user_is_anonymous
+            (user_is_anonymous or not user.has_completed_registration)
             and self.anonymous_votes_limit
             and self.votes.filter(author=user).count() == self.anonymous_votes_limit
         )

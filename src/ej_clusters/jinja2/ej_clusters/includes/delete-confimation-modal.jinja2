@@ -3,7 +3,7 @@
         <form method="post">
             {{csrf_input }}
             <input type="hidden" name="conversation_id" value="{{ conversation.id }}">
-            <div class="modal__title bold">{{_("Are you sure about this action?")}}</div>
+            <div class="modal__subtitle">{{_("Are you sure about this action?")}}</div>
 
             <div class="modal__buttons">
                 <button class="modal__btn modal__btn--red" type="submit" 
@@ -11,11 +11,11 @@
                     hx-on::after-request="showDeleteModal()"
                     hx-swap="none"
                 >
-                    <i class="fa">&#xf057;</i> {{ _('Yes, I want to delete the persona') }}
+                    <i class="fa">&#xf057;</i> {{ _('Yes, delete the persona') }}
                 </button>
-                <button class="modal__btn modal__btn--blue modal__btn--blue-small" type="button" onclick="closeStereotypeModal()">
-                    <i class="fa">&#xf056;</i> {{ _('No, I want to go back') }}
-                </button>
+                <a onclick="closeStereotypeModal()">
+                    <i class="fa fa-arrow-left"></i> {{ _('No, go back') }}
+                </a>
             </div>
         </form>
     </div>

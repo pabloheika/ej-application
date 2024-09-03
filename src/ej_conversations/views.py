@@ -141,6 +141,53 @@ class PublicConversationView(ConversationView):
         }
 
 
+@method_decorator([login_required], name="dispatch")
+class ConversationsFilterByTag(ListView):
+    template_name = "ej_conversations/includes/conversation-card-list.jinja2"
+    model = Conversation
+
+    def get_queryset(self) -> QuerySet[Any]:
+        queryset = Conversation.objects.all()
+        search_text = self.request.GET.get("search_text", None)
+        tags = self.request.GET.getlist("tags")
+
+        self.request.user.profile.filtered_home_tag = True
+        self.request.user.profile.save()
+        queryset = self.initial_queryset(queryset)
+        queryset = queryset.filter_by_tags(tags)
+
+        queryset = queryset.filter_by_text_and_tag(search_text)
+
+        return queryset
+
+    def get_button_text(self):
+        return _("Participate")
+
+    def initial_queryset(self, queryset):
+        return Conversation.objects.all()
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        return {
+            "conversations": self.get_queryset(),
+            "button_text": self.get_button_text(),
+        }
+
+
+@method_decorator([login_required], name="dispatch")
+class PromotedConversationsFilterByTag(ConversationsFilterByTag):
+    def initial_queryset(self, queryset):
+        return queryset.filter(is_promoted=True)
+
+
+@method_decorator([login_required], name="dispatch")
+class UserConversationsFilterByTag(ConversationsFilterByTag):
+    def get_button_text(self):
+        return _("Manage!")
+
+    def initial_queryset(self, queryset):
+        return queryset.filter(author=self.request.user)
+
+
 @method_decorator([login_required, can_acess_list_view], name="dispatch")
 class BoardConversationsView(ConversationView):
     template_name = "ej_conversations/board-conversations-list.jinja2"
@@ -315,7 +362,6 @@ class ConversationCreateView(CreateView):
     def get_context_data(self, form=None, **kwargs):
         user = self.request.user
         user_boards = Board.objects.filter(owner=user)
-
         return {
             "form": form or self.form_class(),
             "board": self.get_board(),
@@ -362,7 +408,6 @@ class ConversationEditView(UpdateView):
     def get_context_data(self, form=None, **kwargs: Any):
         conversation = self.get_object()
         user = self.request.user
-
         return {
             "conversation": conversation,
             "form": form or self.form_class(instance=conversation),
