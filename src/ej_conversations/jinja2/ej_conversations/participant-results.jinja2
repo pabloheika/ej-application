@@ -17,12 +17,12 @@
 
 {% else %}
 
-    <div style="display: flex; justify-content: space-between; margin: 41px">
+    <div class="results-section">
         <h1 class="text-accent">{{_("Find out")}}</h1>
         <a id="results-menu"><i style="color: #30BFD3; font-size: 28px;" class="fa">&#xf13a</i></a>
     </div>
 
-    <div class="results-container hide">
+    <div class="results-container invisivel">
 
         <div class="results">
 
@@ -30,7 +30,7 @@
                 <div class="scatter-analysis">
                     <p class="item-title">{{_("How do you position yourself in relation to the opinions of the other participants in this conversation?")}}</p>
         
-                    <div id="scatter-containers" class="scatter-section__chart item">
+                    <div id="scatter-containers" class="scatter-section__chart">
                         <div class="size-y6p col flex-center"><p>{{ _('Loading data...') }}</p></div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <div data-page="2" class="item-title item wipe hide"> 
+            <div data-page="2" class="item-title wipe hide"> 
                 <p>{{_("Three most comments with the lowest convergence index")}}</p>
                 <div class="item-unico">
                     {{ show_comments_results(least_convergent_comments)}}
@@ -120,13 +120,12 @@
 
         function viewResults(n) {
             $("div[data-page="+n+"]").removeClass("hide").addClass("show");
-            $("div.show[data-page!="+n+"]").removeClass("show").addClass("hide");
+            $("div.show.wipe[data-page!="+n+"]").removeClass("show").addClass("hide");
         }
 
-        $( "#results-menu" ).on( "click", function() {
-            console.log("entrou aqui")
-            $(".results-container").removeClass("hide").addClass("show");
-        } );
+        $(".results-section").click(function(){
+            $(".results-container").toggleClass("invisivel");
+        });
 
     </script>
 {% endif %}
