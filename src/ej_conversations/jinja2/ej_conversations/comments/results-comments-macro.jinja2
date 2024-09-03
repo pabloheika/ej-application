@@ -1,0 +1,29 @@
+{% macro show_comments_results(comments_df) %}
+    {% for key,comment in comments_df.iterrows() %}
+        <p>{{ comment["content"]}}</p>
+        <div style="display: flex; gap: 46px;">
+            <span>
+                <i class="fa fa-check" title={{_("Agree")}}></i>
+                {{"%s%%"|format(comment["agree"]|round)}}
+            </span>
+            <span>
+                <i class="fa fa-times" title={{_("Disagree")}}></i>
+                {{"%s%%"|format(comment["disagree"]|round)}}
+            </span>
+            <span>
+                <i class="fa fa-arrow-right" title={{_("Skipped")}}></i>
+                {{"%s%%"|format(comment["skipped"]|round)}}
+            </span>
+            <span>
+                <i class="fas fa-handshake" title={{_("Convergence")}}></i>
+                {{"%s%%"|format(comment["convergence"]|round)}}
+            </span>
+            <span>
+                <i class="fas fa-users" title={{_("Participation")}}></i>
+                {{"%s%%"|format(comment["participation"]|round)}}
+            </span>
+        </div>
+        
+    {% endfor %}
+
+{% endmacro %}

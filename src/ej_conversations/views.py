@@ -541,6 +541,9 @@ class ConversationParticipantResults(DetailView):
         least_convergent_comments = df.sort_values("convergence", ascending=True)[:3]
         most_agreed_comments = df.sort_values("agree", ascending=False)[:3]
         most_disagreed_comments = df.sort_values("disagree", ascending=False)[:3]
+        print(least_convergent_comments)
+        print(most_agreed_comments)
+        print(most_disagreed_comments)
 
         return {"has_minimum_comments":conversation.has_minimum_comments(), 
                 "has_minimum_participant_votes": conversation.has_minimum_participant_votes(user),

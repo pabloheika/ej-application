@@ -1,3 +1,14 @@
+<style>
+    .wipe {
+        height: 200px !important;
+        -webkit-transition: width 2s !important;
+        transition: width 2s !important;
+        float:left !important;
+    }
+</style>
+
+{% from "ej_conversations/comments/results-comments-macro.jinja2" import show_comments_results %}
+
 {% if not has_minimum_comments %}
     <span>Dados insuficientes para visualizar os resultados</span>
 
@@ -5,7 +16,84 @@
     <span>Continue participando para visualizar os resultados</span>
 
 {% else %}
-    <div id="scatter-containers" class="scatter-section__chart"><div class="size-y6p col flex-center"><p>{{ _('Loading data...') }}</p></div></div>
+
+    <div style="display: flex; justify-content: space-between; margin: 41px">
+        <h1 class="text-accent">{{_("Find out")}}</h1>
+        <a id="results-menu"><i style="color: #30BFD3; font-size: 28px;" class="fa">&#xf13a</i></a>
+    </div>
+
+    <div class="results-container hide">
+
+        <div class="results">
+
+            <div data-page="1" class="wipe show">
+                <div class="scatter-analysis">
+                    <p class="item-title">{{_("How do you position yourself in relation to the opinions of the other participants in this conversation?")}}</p>
+        
+                    <div id="scatter-containers" class="scatter-section__chart item">
+                        <div class="size-y6p col flex-center"><p>{{ _('Loading data...') }}</p></div>
+                    </div>
+                </div>
+                <div class="insights-link">
+                    <button onclick="viewResults(2);">
+                        {{_("See more insights")}}
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div data-page="2" class="item-title item wipe hide"> 
+                <p>{{_("Three most comments with the lowest convergence index")}}</p>
+                <div class="item-unico">
+                    {{ show_comments_results(least_convergent_comments)}}
+                    <div class="insights-link">
+                        <button onclick="viewResults(1);">
+                            <i class="fas fa-chevron-left"></i>
+                            {{_("Return")}}
+                        </button>
+                            
+                        <button onclick="viewResults(3);">
+                            {{_("See more insights")}}
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div data-page="3" class="item-title wipe hide"> 
+                <p>{{_("Three most agreed comments")}}</p>
+                <div class="item-unico">
+                    {{ show_comments_results(most_agreed_comments)}}
+                    <div class="insights-link">
+                        <button onclick="viewResults(2);">
+                            <i class="fas fa-chevron-left"></i>
+                            {{_("Return")}}
+                        </button>
+                            
+                        
+                        <button onclick="viewResults(4);">
+                            {{_("See more insights")}}
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div data-page="4" class="item-title wipe hide"> 
+                <p>{{_("Three most disagreed comments")}}</p>
+                <div class="item-unico">
+                    {{ show_comments_results(most_disagreed_comments)}}
+                    <div class="insights-link">
+                        <button onclick="viewResults(3);">
+                            <i class="fas fa-chevron-left"></i>
+                            {{_("Return")}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <script defer>
         $(document).ready(function() {
@@ -29,5 +117,16 @@
                 chart.resize();
             });
         })
+
+        function viewResults(n) {
+            $("div[data-page="+n+"]").removeClass("hide").addClass("show");
+            $("div.show[data-page!="+n+"]").removeClass("show").addClass("hide");
+        }
+
+        $( "#results-menu" ).on( "click", function() {
+            console.log("entrou aqui")
+            $(".results-container").removeClass("hide").addClass("show");
+        } );
+
     </script>
 {% endif %}

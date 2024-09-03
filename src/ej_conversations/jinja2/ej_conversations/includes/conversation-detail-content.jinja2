@@ -10,6 +10,7 @@
     <div class="content-grid">
         {% include 'ej_conversations/comments/card.jinja2' %}
         <div id="conversation-participant-results" 
+            class="participant-results"
             hx-get="{{ url('boards:conversation-results', **conversation.get_url_kwargs()) }}"
             hx-target="#conversation-participant-results"
             hx-trigger="load, updateResults from:body"
