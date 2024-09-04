@@ -1,7 +1,7 @@
 {% macro show_comments_results(comments_df) %}
     {% for key,comment in comments_df.iterrows() %}
         <p>{{ comment["content"]}}</p>
-        <div style="display: flex; gap: 46px;">
+        <div class="results__statistics">
             <span>
                 <i class="fa fa-check" title={{_("Agree")}}></i>
                 {{"%s%%"|format(comment["agree"]|round)}}

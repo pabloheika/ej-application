@@ -1,97 +1,88 @@
-<style>
-    .wipe {
-        height: 200px !important;
-        -webkit-transition: width 2s !important;
-        transition: width 2s !important;
-        float:left !important;
-    }
-</style>
-
 {% from "ej_conversations/comments/results-comments-macro.jinja2" import show_comments_results %}
 
 {% if not has_minimum_comments %}
-    <span>Dados insuficientes para visualizar os resultados</span>
+    <p>{{_("Insufficient data to view results")}}</p>
 
 {% elif not has_minimum_participant_votes %}
-    <span>Continue participando para visualizar os resultados</span>
+    <p>{{_("Keep participating to see the results")}}</p>
 
 {% else %}
 
-    <div class="results-section">
+    <div class="collapse-section">
         <h1 class="text-accent">{{_("Find out")}}</h1>
-        <a id="results-menu"><i style="color: #30BFD3; font-size: 28px;" class="fa">&#xf13a</i></a>
+        <a id="results-menu"><i class="fa">&#xf13a</i></a>
     </div>
 
-    <div class="results-container invisivel">
-
-        <div class="results">
-
-            <div data-page="1" class="wipe show">
-                <div class="scatter-analysis">
-                    <p class="item-title">{{_("How do you position yourself in relation to the opinions of the other participants in this conversation?")}}</p>
-        
-                    <div id="scatter-containers" class="scatter-section__chart">
-                        <div class="size-y6p col flex-center"><p>{{ _('Loading data...') }}</p></div>
-                    </div>
+    <div class="results results--hidden">
+        <div data-page="1" class="show results__item">
+            <div class="results__scatter-analysis">
+                <div class="results__scatter-analysis-text">
+                    <p class="results__title">
+                        {{_("How do you position yourself in relation to the opinions of the other 
+                        participants in this conversation?")}}
+                    </p>
+                    <p class="results__text">{{_("90 of the participants in the conversation have similar opinions to yours")}}</p>
                 </div>
-                <div class="insights-link">
-                    <button onclick="viewResults(2);">
-                        {{_("See more insights")}}
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
+    
+                <div id="scatter-containers" class="results__scatter-chart">
+                    <div class="size-y6p col flex-center"><p>{{ _('Loading data...') }}</p></div>
                 </div>
             </div>
-
-            <div data-page="2" class="item-title wipe hide"> 
-                <p>{{_("Three most comments with the lowest convergence index")}}</p>
-                <div class="item-unico">
-                    {{ show_comments_results(least_convergent_comments)}}
-                    <div class="insights-link">
-                        <button onclick="viewResults(1);">
-                            <i class="fas fa-chevron-left"></i>
-                            {{_("Return")}}
-                        </button>
-                            
-                        <button onclick="viewResults(3);">
-                            {{_("See more insights")}}
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
+            <div class="results__link">
+                <a onclick="viewResults(2);">
+                    {{_("See more insights")}}
+                    <i class="fas fa-chevron-right"></i>
+                </a>
             </div>
+        </div>
 
-            <div data-page="3" class="item-title wipe hide"> 
-                <p>{{_("Three most agreed comments")}}</p>
-                <div class="item-unico">
-                    {{ show_comments_results(most_agreed_comments)}}
-                    <div class="insights-link">
-                        <button onclick="viewResults(2);">
-                            <i class="fas fa-chevron-left"></i>
-                            {{_("Return")}}
-                        </button>
-                            
-                        
-                        <button onclick="viewResults(4);">
-                            {{_("See more insights")}}
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                </div>
+        <div data-page="2" class="results__title hide results__item"> 
+            <p>{{_("Three most comments with the lowest convergence index")}}</p>
+            <div class="results__comments">
+                {{ show_comments_results(least_convergent_comments)}}
             </div>
-
-            <div data-page="4" class="item-title wipe hide"> 
-                <p>{{_("Three most disagreed comments")}}</p>
-                <div class="item-unico">
-                    {{ show_comments_results(most_disagreed_comments)}}
-                    <div class="insights-link">
-                        <button onclick="viewResults(3);">
-                            <i class="fas fa-chevron-left"></i>
-                            {{_("Return")}}
-                        </button>
-                    </div>
-                </div>
+            <div class="results__link">
+                <a onclick="viewResults(1);">
+                    <i class="fas fa-chevron-left"></i>
+                    {{_("Return")}}
+                </a>
+                    
+                <a onclick="viewResults(3);">
+                    {{_("See more insights")}}
+                    <i class="fas fa-chevron-right"></i>
+                </a>
             </div>
+        </div>
 
+        <div data-page="3" class="results__title hide results__item"> 
+            <p>{{_("Three most agreed comments")}}</p>
+            <div class="results__comments">
+                {{ show_comments_results(most_agreed_comments)}}
+            </div>
+            <div class="results__link">
+                <a onclick="viewResults(2);">
+                    <i class="fas fa-chevron-left"></i>
+                    {{_("Return")}}
+                </a>
+                    
+                <a onclick="viewResults(4);">
+                    {{_("See more insights")}}
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div data-page="4" class="results__title hide results__item"> 
+            <p>{{_("Three most disagreed comments")}}</p>
+            <div class="results__comments">
+                {{ show_comments_results(most_disagreed_comments)}}
+            </div>
+            <div class="results__link">
+                <a onclick="viewResults(3);">
+                    <i class="fas fa-chevron-left"></i>
+                    {{_("Return")}}
+                </a>
+            </div>
         </div>
     </div>
 
@@ -100,7 +91,7 @@
             // Load main data from json.
             $.ajax("{{url('boards:dataviz-scatter_pca_json',  **conversation.get_url_kwargs())}}").then(function (data) {
                 // Prepare container
-            var $container = $("#scatter-containers");
+            var $container = $(".results__scatter-chart");
             var dom = $container[0], chart = echarts.init(dom);
             dom['chart'] = chart;
             var chartOptions = {};
@@ -120,11 +111,11 @@
 
         function viewResults(n) {
             $("div[data-page="+n+"]").removeClass("hide").addClass("show");
-            $("div.show.wipe[data-page!="+n+"]").removeClass("show").addClass("hide");
+            $("div.show.results__item[data-page!="+n+"]").removeClass("show").addClass("hide");
         }
 
-        $(".results-section").click(function(){
-            $(".results-container").toggleClass("invisivel");
+        $(".collapse-section").click(function() {
+            $(".results").toggleClass("results--hidden");
         });
 
     </script>

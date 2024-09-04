@@ -90,5 +90,4 @@ urlpatterns = [
         views.ConversationParticipantResults.as_view(),
         name="results",
     ),
-
 ]

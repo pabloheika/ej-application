@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-07 21:03-0300\n"
+"POT-Creation-Date: 2024-09-03 23:03-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -151,7 +151,7 @@ msgid "Slug already exists."
 msgstr "Identificador já existe."
 
 #: src/ej_boards/tests/test_api.py:15
-#: src/ej_conversations/tests/test_api.py:307
+#: src/ej_conversations/tests/test_api.py:308
 msgid "Authentication credentials were not provided."
 msgstr "Credenciais de autenticação não foram fornecidas."
 
@@ -583,7 +583,7 @@ msgstr "Pode publicar conversas promovidas"
 msgid "Can moderate comments in any conversation"
 msgstr "Pode moderar comentários em qualquer conversa"
 
-#: src/ej_conversations/models/conversation.py:283
+#: src/ej_conversations/models/conversation.py:282
 msgid "User does not have permission to create a promoted conversation."
 msgstr "Usuário não tem permissão para criar uma conversa promovida."
 
@@ -656,7 +656,7 @@ msgstr " comentários"
 msgid " of "
 msgstr " de "
 
-#: src/ej_conversations/serializers.py:234 src/ej_conversations/views.py:164
+#: src/ej_conversations/serializers.py:254 src/ej_conversations/views.py:164
 msgid "Participate"
 msgstr "Participar"
 
@@ -709,12 +709,12 @@ msgid "Gender"
 msgstr "Gênero"
 
 #: src/ej_dataviz/constants.py:195 src/ej_dataviz/views_dataviz.py:106
-#: src/ej_dataviz/views_dataviz.py:121 src/ej_profiles/models.py:32
+#: src/ej_dataviz/views_dataviz.py:121 src/ej_profiles/models.py:35
 #: src/ej_profiles/tests/test_models.py:61
 msgid "Race"
 msgstr "Raça"
 
-#: src/ej_dataviz/constants.py:205 src/ej_profiles/models.py:39
+#: src/ej_dataviz/constants.py:205 src/ej_profiles/models.py:42
 #: src/ej_profiles/tests/test_models.py:54
 msgid "State"
 msgstr "Estado"
@@ -964,76 +964,76 @@ msgstr "limita_conversas_do_board"
 msgid "limit board conversations"
 msgstr "limita conversas do board"
 
-#: src/ej_profiles/models.py:33 src/ej_profiles/tests/test_models.py:59
+#: src/ej_profiles/models.py:36 src/ej_profiles/tests/test_models.py:59
 msgid "Ethnicity"
 msgstr "Etnia"
 
-#: src/ej_profiles/models.py:34 src/ej_profiles/tests/test_models.py:58
+#: src/ej_profiles/models.py:37 src/ej_profiles/tests/test_models.py:58
 msgid "Education"
 msgstr "Escolaridade"
 
-#: src/ej_profiles/models.py:35 src/ej_profiles/tests/test_models.py:60
+#: src/ej_profiles/models.py:38 src/ej_profiles/tests/test_models.py:60
 msgid "Gender identity"
 msgstr "Identidade de gênero"
 
-#: src/ej_profiles/models.py:36
+#: src/ej_profiles/models.py:39
 msgid "User provided gender"
 msgstr "Gênero fornecido pelo usuário"
 
-#: src/ej_profiles/models.py:37
+#: src/ej_profiles/models.py:40
 msgid "Birth Date"
 msgstr "Data de Nascimento"
 
-#: src/ej_profiles/models.py:38 src/ej_profiles/tests/test_models.py:55
+#: src/ej_profiles/models.py:41 src/ej_profiles/tests/test_models.py:55
 msgid "Country"
 msgstr "País"
 
-#: src/ej_profiles/models.py:40 src/ej_profiles/tests/test_models.py:53
+#: src/ej_profiles/models.py:43 src/ej_profiles/tests/test_models.py:53
 msgid "City"
 msgstr "Cidade"
 
-#: src/ej_profiles/models.py:41 src/ej_profiles/tests/test_models.py:63
+#: src/ej_profiles/models.py:44 src/ej_profiles/tests/test_models.py:63
 msgid "Biography"
 msgstr "Biografia"
 
-#: src/ej_profiles/models.py:42 src/ej_profiles/tests/test_models.py:57
+#: src/ej_profiles/models.py:45 src/ej_profiles/tests/test_models.py:57
 msgid "Occupation"
 msgstr "Ocupação"
 
-#: src/ej_profiles/models.py:43 src/ej_profiles/tests/test_models.py:62
+#: src/ej_profiles/models.py:46 src/ej_profiles/tests/test_models.py:62
 msgid "Political activity"
 msgstr "Atividade política"
 
-#: src/ej_profiles/models.py:45
+#: src/ej_profiles/models.py:48
 msgid "Profile Photo"
 msgstr "Foto de Perfil"
 
-#: src/ej_profiles/models.py:47 src/ej_profiles/tests/test_models.py:64
+#: src/ej_profiles/models.py:50 src/ej_profiles/tests/test_models.py:64
 msgid "Phone number"
 msgstr "Número de telefone"
 
-#: src/ej_profiles/models.py:165 src/ej_profiles/tests/test_models.py:56
+#: src/ej_profiles/models.py:168 src/ej_profiles/tests/test_models.py:56
 msgid "Age"
 msgstr "Idade"
 
-#: src/ej_profiles/models.py:169 src/ej_users/forms.py:98
+#: src/ej_profiles/models.py:172 src/ej_users/forms.py:98
 #: src/ej_users/forms.py:107
 msgid "E-mail"
 msgstr "E-mail"
 
-#: src/ej_profiles/models.py:205
+#: src/ej_profiles/models.py:235
 msgid "Root"
 msgstr "Raiz"
 
-#: src/ej_profiles/models.py:207
+#: src/ej_profiles/models.py:237
 msgid "Administrative user"
 msgstr "Usuário administrativo"
 
-#: src/ej_profiles/models.py:208 src/ej_profiles/tests/test_models.py:70
+#: src/ej_profiles/models.py:238 src/ej_profiles/tests/test_models.py:70
 msgid "Regular user"
 msgstr "Usuário regular"
 
-#: src/ej_profiles/models.py:211
+#: src/ej_profiles/models.py:241
 msgid "(Not Filled)"
 msgstr "(Não preenchido)"
 
@@ -2410,6 +2410,69 @@ msgstr "Conversas públicas"
 msgid "Participate!"
 msgstr "Participar!"
 
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:4
+msgid "Insufficient data to view results"
+msgstr "Dados insuficientes para visualizar os resultados"
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:7
+#, fuzzy
+msgid "Keep participating to see the results"
+msgstr "Continue participando para visualizar os resultados"
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:12
+msgid "Find out"
+msgstr "Descubra"
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:21
+#, fuzzy
+msgid ""
+"How do you position yourself in relation to the opinions of the other \n"
+"                        participants in this conversation?"
+msgstr ""
+"Como você se posiciona em relação às opiniões dos outros participantes dessa "
+"conversa?"
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:24
+#, fuzzy
+msgid ""
+"90 of the participants in the conversation have similar opinions to yours"
+msgstr "90 dos participantes da conversa têm opiniões parecidas com as suas"
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:28
+#: src/ej_dataviz/jinja2/ej_dataviz/dashboard/scatter.jinja2:28
+msgid "Loading data..."
+msgstr "Carregando dados..."
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:33
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:51
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:69
+msgid "See more insights"
+msgstr "Veja mais insights"
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:40
+#, fuzzy
+msgid "Three most comments with the lowest convergence index"
+msgstr "Os três comentários com o menor índice de convergência"
+
+#: src/ej_conversations/jinja2/ej_conversations/comments/add-comment.jinja2:40
+#: src/ej_conversations/jinja2/ej_conversations/includes/delete-confimation-modal.jinja2:10
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:47
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:65
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:83
+#: src/ej_tools/jinja2/ej_tools/mautic-form.jinja2:25
+msgid "Return"
+msgstr "Voltar"
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:58
+#, fuzzy
+msgid "Three most agreed comments"
+msgstr "Os três comentários mais concordados"
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:76
+#, fuzzy
+msgid "Three most disagreed comments"
+msgstr "Os três comentários mais discordados"
+
 #: src/ej_conversations/jinja2/ej_conversations/comments/add-comment.jinja2:5
 msgid ""
 "Thank you! Your comment was sent to moderation and will be evaluated soon."
@@ -2434,12 +2497,6 @@ msgstr "Adicione sua opinião sobre a pergunta: "
 #, fuzzy
 msgid "Characters remaining)"
 msgstr "Caracteres restantes)"
-
-#: src/ej_conversations/jinja2/ej_conversations/comments/add-comment.jinja2:40
-#: src/ej_conversations/jinja2/ej_conversations/includes/delete-confimation-modal.jinja2:10
-#: src/ej_tools/jinja2/ej_tools/mautic-form.jinja2:25
-msgid "Return"
-msgstr "Voltar"
 
 #: src/ej_conversations/jinja2/ej_conversations/comments/add-comment.jinja2:43
 #: src/ej_conversations/jinja2/ej_conversations/comments/add-comment.jinja2:63
@@ -2495,6 +2552,28 @@ msgstr "rejeitar"
 #: src/ej_conversations/jinja2/ej_conversations/comments/moderation-macros.jinja2:15
 msgid "Approve"
 msgstr "aprovar"
+
+#: src/ej_conversations/jinja2/ej_conversations/comments/results-comments-macro.jinja2:14
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:11
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:55
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:11
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:54
+msgid "Skipped"
+msgstr "Pulados"
+
+#: src/ej_conversations/jinja2/ej_conversations/comments/results-comments-macro.jinja2:18
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:12
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:56
+msgid "Convergence"
+msgstr "Convergência"
+
+#: src/ej_conversations/jinja2/ej_conversations/comments/results-comments-macro.jinja2:22
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:13
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:57
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:55
+#, fuzzy
+msgid "Participation"
+msgstr "Participação"
 
 #: src/ej_conversations/jinja2/ej_conversations/comments/voting-form.jinja2:3
 #, fuzzy
@@ -2958,10 +3037,6 @@ msgstr "Opinião"
 msgid "Create some personas to visualize this graph."
 msgstr "Cadastre personas para visualizar esse gráfico."
 
-#: src/ej_dataviz/jinja2/ej_dataviz/dashboard/scatter.jinja2:28
-msgid "Loading data..."
-msgstr "Carregando dados..."
-
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/time-chart.jinja2:3
 msgid "Vote period"
 msgstr "votação no período"
@@ -3037,25 +3112,6 @@ msgstr "data de criação"
 #, fuzzy
 msgid "Comment content"
 msgstr "Comentário"
-
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:11
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:55
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:11
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:54
-msgid "Skipped"
-msgstr "Pulados"
-
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:12
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:56
-msgid "Convergence"
-msgstr "Convergência"
-
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:13
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:57
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:55
-#, fuzzy
-msgid "Participation"
-msgstr "Participação"
 
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:13
 #, fuzzy
@@ -3963,6 +4019,9 @@ msgstr "Logar com conta "
 msgid "By clicking, you agree with our user terms."
 msgstr "Ao clicar, você concorda com nossos termos de uso."
 
+#~ msgid "Results"
+#~ msgstr "Resultados"
+
 #, fuzzy
 #~ msgid "you don't have groups yet"
 #~ msgstr "você ainda não tem grupos"
@@ -4282,10 +4341,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 #~ msgstr "grupo"
 
 #, fuzzy
-#~ msgid "greater disagreement"
-#~ msgstr "maior discordância"
-
-#, fuzzy
 #~ msgid "greater agreement"
 #~ msgstr "maior concordância"
 
@@ -4584,9 +4639,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 #~ msgid "Access the dashboard and follow along"
 #~ msgstr "Acesse o dashboard e acompanhe"
 
-#~ msgid "The more people participating, the better!"
-#~ msgstr "Quanto mais gente participando, melhor!"
-
 #, fuzzy
 #~ msgid "Share the conversation link"
 #~ msgstr "Compartilhe o link da conversa"
@@ -4842,10 +4894,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 #, fuzzy
 #~ msgid "Total access to component (engagement)"
 #~ msgstr "Total de acessos ao componente (engajamento)"
-
-#, fuzzy
-#~ msgid "Participants on the conversation (aquisition)"
-#~ msgstr "Participantes na conversa (aquisição)"
 
 #~ msgid "Trigger Collect"
 #~ msgstr "Iniciar coleta"
