@@ -1,19 +1,18 @@
 {% from "ej_conversations/comments/results-comments-macro.jinja2" import show_comments_results %}
 
-{% if not has_minimum_comments %}
-    <p>{{_("Insufficient data to view results")}}</p>
+<div class="collapse-section">
+    <h1 class="text-accent">{{_("Find out")}}</h1>
+    <a id="results-menu"><i class="fa">&#xf13a</i></a>
+</div>
 
-{% elif not has_minimum_participant_votes %}
-    <p>{{_("Keep participating to see the results")}}</p>
+<div class="results results--hidden">
+    {% if not has_minimum_comments %}
+        <p>{{_("Insufficient data to view results")}}</p>
 
-{% else %}
+    {% elif not has_minimum_participant_votes %}
+        <p>{{_("Keep participating to see the results")}}</p>
 
-    <div class="collapse-section">
-        <h1 class="text-accent">{{_("Find out")}}</h1>
-        <a id="results-menu"><i class="fa">&#xf13a</i></a>
-    </div>
-
-    <div class="results results--hidden">
+    {% else %}
         <div data-page="1" class="show results__item">
             <div class="results__scatter-analysis">
                 <div class="results__scatter-analysis-text">
@@ -84,9 +83,8 @@
                 </a>
             </div>
         </div>
-    </div>
 
-    <script defer>
+        <script defer>
         $(document).ready(function() {
             // Load main data from json.
             $.ajax("{{url('boards:dataviz-scatter_pca_json',  **conversation.get_url_kwargs())}}").then(function (data) {
@@ -113,10 +111,12 @@
             $("div[data-page="+n+"]").removeClass("hide").addClass("show");
             $("div.show.results__item[data-page!="+n+"]").removeClass("show").addClass("hide");
         }
-
-        $(".collapse-section").click(function() {
-            $(".results").toggleClass("results--hidden");
-        });
-
     </script>
+</div>
 {% endif %}
+
+<script>
+    $(".collapse-section").click(function() {
+        $(".results").toggleClass("results--hidden");
+    });
+</script>

@@ -86,6 +86,42 @@ class TestConversation(ConversationRecipes):
         conversation.toggle_favorite(user)
         assert conversation.is_favorite(user)
 
+    def test_has_not_suficient_comments(self, mk_conversation):
+        conversation = mk_conversation()
+        assert not conversation.has_minimum_comments()
+
+    def test_has_suficient_comments(self, mk_conversation, mk_user):
+        conversation = mk_conversation()
+        user = mk_user(email="user@domain.com")
+        mk_comment = conversation.create_comment
+
+        mk_comment(user, "aa", status="approved", check_limits=False),
+        mk_comment(user, "bb", status="approved", check_limits=False),
+        mk_comment(user, "cc", status="approved", check_limits=False),
+        mk_comment(user, "dd", status="approved", check_limits=False),
+        assert conversation.has_minimum_comments()
+
+    def test_has_minimum_participant_votes(self, mk_conversation, mk_user):
+        conversation = mk_conversation()
+        user = mk_user(email="user@domain.com")
+        mk_comment = conversation.create_comment
+        comments = [
+            mk_comment(user, "aa", status="approved", check_limits=False),
+            mk_comment(user, "bb", status="approved", check_limits=False),
+            mk_comment(user, "cc", status="approved", check_limits=False),
+            mk_comment(user, "dd", status="approved", check_limits=False),
+        ]
+
+        for comment in comments:
+            comment.vote(user, "agree")
+
+        assert conversation.has_minimum_participant_votes(user)
+
+    def test_has_not_minimum_participant_votes(self, mk_conversation, mk_user):
+        conversation = mk_conversation()
+        user = mk_user(email="user@domain.com")
+        assert not conversation.has_minimum_participant_votes(user)
+    
 
 class TestVote:
     def test_unique_vote_per_comment(self, mk_user, comment_db):

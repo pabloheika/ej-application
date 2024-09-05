@@ -7,7 +7,7 @@ import pytest
 from django.core.files.base import File
 from django.contrib.auth.models import AnonymousUser
 from django.shortcuts import reverse
-from django.test import Client
+from django.test import Client, RequestFactory
 from django.template.exceptions import TemplateDoesNotExist
 
 from ej_boards.models import Board
@@ -15,6 +15,7 @@ from ej_conversations import create_conversation
 from ej_conversations.models import Comment, Conversation, FavoriteConversation, Vote
 from ej_conversations.mommy_recipes import ConversationRecipes
 from ej_conversations.utils import votes_counter
+from ej_conversations.views import ConversationParticipantResults
 from ej_users.models import User
 from ..enums import Choice
 
@@ -1591,3 +1592,71 @@ class TestFilterConversationByTag(TestPublicConversations):
 
         assert response.status_code == 200
         assert response.content == b""
+
+
+class TestConversationParticipantResults(ConversationRecipes):
+    @pytest.fixture
+    def conversation_with_min_comments(self, mk_user):
+        conversation = self.conversation.make()
+        conversation.board.slug = "newname"
+        conversation.board.save()
+        user = mk_user(email="userdot@domain.com")
+        mk_comment = conversation.create_comment
+        mk_comment(user, "aa", status="approved", check_limits=False),
+        mk_comment(user, "bb", status="approved", check_limits=False),
+        mk_comment(user, "cc", status="approved", check_limits=False),
+        mk_comment(user, "dd", status="approved", check_limits=False),
+        return conversation
+
+    def test_context_with_results(self, conversation_with_min_comments, mk_user):
+        user = mk_user(email="user@domain.com")
+        
+        for comment in conversation_with_min_comments.comments.all():
+            comment.vote(user, "agree")
+
+        factory = RequestFactory()
+        kwargs = conversation_with_min_comments.get_url_kwargs()
+        url = reverse(
+            "boards:conversation-results",
+            kwargs=kwargs,
+        )
+        request = factory.get(url)
+        request.user = user
+        response = ConversationParticipantResults.as_view()(request, **kwargs)
+        data = response.context_data
+
+        assert data['has_minimum_comments']
+        assert data['has_minimum_participant_votes']
+        assert data['conversation'] == conversation_with_min_comments
+        assert len(data['least_convergent_comments']) == 3
+        assert len(data['most_agreed_comments']) == 3
+        assert len(data['most_disagreed_comments']) == 3
+
+    def test_show_insufficient_participation_message(self, conversation_with_min_comments, mk_user):
+        user = mk_user(email="user1@email.br")
+        profile = user.get_profile()
+        profile.save()
+        client = Client()
+        client.force_login(user)
+        url = reverse(
+             "boards:conversation-results",
+             kwargs=conversation_with_min_comments.get_url_kwargs(),
+        )
+        response = client.get(url)
+        assert response.status_code == 200
+        assert b'Keep participating to see the results' in response.content
+    
+    def test_show_insufficient_comments_message(self, mk_user):
+        user = mk_user(email="user1@email.br")
+        profile = user.get_profile()
+        profile.save()
+        client = Client()
+        client.force_login(user)
+        conversation = self.conversation.make()
+        url = reverse(
+             "boards:conversation-results",
+             kwargs=conversation.get_url_kwargs(),
+        )
+        response = client.get(url)
+        assert response.status_code == 200
+        assert b'Insufficient data to view results' in response.content
