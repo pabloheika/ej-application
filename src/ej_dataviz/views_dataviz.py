@@ -6,6 +6,7 @@ from logging import getLogger
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.shortcuts import render
@@ -126,7 +127,7 @@ def scatter(request, conversation_id, **kwargs):
     return render(request, "ej_dataviz/scatter.jinja2", render_context)
 
 
-@can_access_dataviz
+@login_required
 def scatter_pca_json(request, conversation_id, **kwargs):
 
     conversation = Conversation.objects.get(id=conversation_id)

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-03 23:03-0300\n"
+"POT-Creation-Date: 2024-09-06 17:45-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -656,7 +656,7 @@ msgstr " comentários"
 msgid " of "
 msgstr " de "
 
-#: src/ej_conversations/serializers.py:254 src/ej_conversations/views.py:164
+#: src/ej_conversations/serializers.py:254 src/ej_conversations/views.py:165
 msgid "Participate"
 msgstr "Participar"
 
@@ -677,12 +677,12 @@ msgstr "Campo não pode estar vazio!"
 msgid "The maximum file size must be 5MB"
 msgstr "O tamanho máximo do arquivo deve ser 5 MB"
 
-#: src/ej_conversations/views.py:185
+#: src/ej_conversations/views.py:186
 #, fuzzy
 msgid "Manage!"
 msgstr "Gerenciar!"
 
-#: src/ej_conversations/views.py:224
+#: src/ej_conversations/views.py:225
 msgid "Participate voting and creating comments!"
 msgstr "Participe com votos e comentários!"
 
@@ -703,13 +703,13 @@ msgstr ""
 msgid "Visualization"
 msgstr "Visualização"
 
-#: src/ej_dataviz/constants.py:185 src/ej_dataviz/views_dataviz.py:105
-#: src/ej_dataviz/views_dataviz.py:120
+#: src/ej_dataviz/constants.py:185 src/ej_dataviz/views_dataviz.py:106
+#: src/ej_dataviz/views_dataviz.py:121
 msgid "Gender"
 msgstr "Gênero"
 
-#: src/ej_dataviz/constants.py:195 src/ej_dataviz/views_dataviz.py:106
-#: src/ej_dataviz/views_dataviz.py:121 src/ej_profiles/models.py:35
+#: src/ej_dataviz/constants.py:195 src/ej_dataviz/views_dataviz.py:107
+#: src/ej_dataviz/views_dataviz.py:122 src/ej_profiles/models.py:35
 #: src/ej_profiles/tests/test_models.py:61
 msgid "Race"
 msgstr "Raça"
@@ -736,78 +736,78 @@ msgstr "Dados do PCA"
 msgid "You!"
 msgstr "Você!"
 
-#: src/ej_dataviz/views_dataviz.py:108 src/ej_dataviz/views_dataviz.py:123
+#: src/ej_dataviz/views_dataviz.py:109 src/ej_dataviz/views_dataviz.py:124
 msgid "https://en.wikipedia.org/wiki/Principal_component_analysis"
 msgstr "https://pt.wikipedia.org/wiki/An%C3%A1lise_de_componentes_principais"
 
-#: src/ej_dataviz/views_dataviz.py:142
+#: src/ej_dataviz/views_dataviz.py:143
 msgid "Not enough data"
 msgstr "Não há dados suficientes"
 
-#: src/ej_dataviz/views_dataviz.py:314
+#: src/ej_dataviz/views_dataviz.py:315
 msgid "agree"
 msgstr "concorda"
 
-#: src/ej_dataviz/views_dataviz.py:315
+#: src/ej_dataviz/views_dataviz.py:316
 msgid "author"
 msgstr "autor"
 
-#: src/ej_dataviz/views_dataviz.py:316
+#: src/ej_dataviz/views_dataviz.py:317
 msgid "author_id"
 msgstr "autor_id"
 
-#: src/ej_dataviz/views_dataviz.py:317
+#: src/ej_dataviz/views_dataviz.py:318
 msgid "choice"
 msgstr "escolha"
 
-#: src/ej_dataviz/views_dataviz.py:318
+#: src/ej_dataviz/views_dataviz.py:319
 #, fuzzy
 msgid "cluster"
 msgstr "Grupos"
 
-#: src/ej_dataviz/views_dataviz.py:319
+#: src/ej_dataviz/views_dataviz.py:320
 #, fuzzy
 msgid "cluster_id"
 msgstr "Grupo_id"
 
-#: src/ej_dataviz/views_dataviz.py:320
+#: src/ej_dataviz/views_dataviz.py:321
 #, fuzzy
 msgid "comment"
 msgstr "comentário"
 
-#: src/ej_dataviz/views_dataviz.py:321
+#: src/ej_dataviz/views_dataviz.py:322
 msgid "comment_id"
 msgstr "comentário_id"
 
-#: src/ej_dataviz/views_dataviz.py:322
+#: src/ej_dataviz/views_dataviz.py:323
 msgid "convergence"
 msgstr "convergência"
 
-#: src/ej_dataviz/views_dataviz.py:323
+#: src/ej_dataviz/views_dataviz.py:324
 msgid "disagree"
 msgstr "discorda"
 
-#: src/ej_dataviz/views_dataviz.py:324 src/ej_profiles/enums.py:71
+#: src/ej_dataviz/views_dataviz.py:325 src/ej_profiles/enums.py:71
 msgid "email"
 msgstr "email"
 
-#: src/ej_dataviz/views_dataviz.py:325
+#: src/ej_dataviz/views_dataviz.py:326
 msgid "id"
 msgstr "id"
 
-#: src/ej_dataviz/views_dataviz.py:326 src/ej_profiles/enums.py:70
+#: src/ej_dataviz/views_dataviz.py:327 src/ej_profiles/enums.py:70
 msgid "name"
 msgstr "nome"
 
-#: src/ej_dataviz/views_dataviz.py:327
+#: src/ej_dataviz/views_dataviz.py:328
 msgid "participation"
 msgstr "participação"
 
-#: src/ej_dataviz/views_dataviz.py:328
+#: src/ej_dataviz/views_dataviz.py:329
 msgid "skipped"
 msgstr "pulados"
 
-#: src/ej_dataviz/views_dataviz.py:329
+#: src/ej_dataviz/views_dataviz.py:330
 #, fuzzy
 msgid "channel"
 msgstr "canal"
@@ -2411,19 +2411,19 @@ msgid "Participate!"
 msgstr "Participar!"
 
 #: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:4
+msgid "Find out"
+msgstr "Descubra"
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:10
 msgid "Insufficient data to view results"
 msgstr "Dados insuficientes para visualizar os resultados"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:7
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:13
 #, fuzzy
 msgid "Keep participating to see the results"
 msgstr "Continue participando para visualizar os resultados"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:12
-msgid "Find out"
-msgstr "Descubra"
-
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:21
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:20
 #, fuzzy
 msgid ""
 "How do you position yourself in relation to the opinions of the other \n"
@@ -2432,43 +2432,42 @@ msgstr ""
 "Como você se posiciona em relação às opiniões dos outros participantes dessa "
 "conversa?"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:24
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:25
 #, fuzzy
-msgid ""
-"90 of the participants in the conversation have similar opinions to yours"
-msgstr "90 dos participantes da conversa têm opiniões parecidas com as suas"
+msgid " of the participants in the conversation have similar opinions to yours"
+msgstr " dos participantes da conversa têm opiniões parecidas com as suas"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:28
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:30
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/scatter.jinja2:28
 msgid "Loading data..."
 msgstr "Carregando dados..."
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:33
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:51
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:69
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:35
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:53
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:71
 msgid "See more insights"
 msgstr "Veja mais insights"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:40
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:42
 #, fuzzy
 msgid "Three most comments with the lowest convergence index"
 msgstr "Os três comentários com o menor índice de convergência"
 
 #: src/ej_conversations/jinja2/ej_conversations/comments/add-comment.jinja2:40
 #: src/ej_conversations/jinja2/ej_conversations/includes/delete-confimation-modal.jinja2:10
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:47
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:65
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:83
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:49
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:67
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:85
 #: src/ej_tools/jinja2/ej_tools/mautic-form.jinja2:25
 msgid "Return"
 msgstr "Voltar"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:58
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:60
 #, fuzzy
 msgid "Three most agreed comments"
 msgstr "Os três comentários mais concordados"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:76
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:78
 #, fuzzy
 msgid "Three most disagreed comments"
 msgstr "Os três comentários mais discordados"

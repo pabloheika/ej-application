@@ -22,6 +22,7 @@ from ej.decorators import (
     is_superuser,
 )
 from ej_boards.models import Board
+from ej_clusters.models.cluster import Cluster
 from ej_conversations.rules import max_comments_per_conversation
 from ej_tools.utils import get_host_with_schema
 from ej_users.models import User
@@ -541,6 +542,10 @@ class ConversationParticipantResults(DetailView):
         most_agreed_comments = df.sort_values("agree", ascending=False)[:3]
         most_disagreed_comments = df.sort_values("disagree", ascending=False)[:3]
 
+        conversation.clusterization.update_clusterization(force=True)
+        user_cluster = user.clusters.filter(clusterization__conversation=conversation)
+        clusters_user_count = user_cluster.users().all().count()
+        
         return {
             "has_minimum_comments": conversation.has_minimum_comments(),
             "has_minimum_participant_votes": conversation.has_minimum_participant_votes(
@@ -550,6 +555,7 @@ class ConversationParticipantResults(DetailView):
             "least_convergent_comments": least_convergent_comments,
             "most_agreed_comments": most_agreed_comments,
             "most_disagreed_comments": most_disagreed_comments,
+            "similar_opinion": clusters_user_count/conversation.n_participants * 100,
         }
 
 

@@ -20,7 +20,10 @@
                         {{_("How do you position yourself in relation to the opinions of the other 
                         participants in this conversation?")}}
                     </p>
-                    <p class="results__text">{{_("90 of the participants in the conversation have similar opinions to yours")}}</p>
+                    <p class="results__text">
+                        {{"%s%%"|format(similar_opinion|round(1))}}
+                        {{_(" of the participants in the conversation have similar opinions to yours")}}
+                    </p>
                 </div>
     
                 <div id="scatter-containers" class="results__scatter-chart">
