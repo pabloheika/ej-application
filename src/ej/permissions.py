@@ -1,18 +1,13 @@
 from rest_framework import permissions
 from ej_conversations.models import Conversation
 
+
 class BaseAuthenticatedPermission(permissions.BasePermission):
-    """
-    Base permission class that checks if the user is authenticated.
-    """
     def has_permission(self, request, view):
         return request.user.is_authenticated
 
 
 class BaseObjectPermission(BaseAuthenticatedPermission):
-    """
-    Base class for object-level permissions that compares object attributes with the request user.
-    """
     user_attribute = None
 
     def has_object_permission(self, request, view, obj):
@@ -22,29 +17,23 @@ class BaseObjectPermission(BaseAuthenticatedPermission):
 
 
 class IsAuthor(BaseObjectPermission):
-    user_attribute = 'author'
+    user_attribute = "author"
 
 
 class IsOwner(BaseObjectPermission):
-    user_attribute = 'owner'
+    user_attribute = "owner"
 
 
 class IsUser(BaseObjectPermission):
-    user_attribute = 'user'
+    user_attribute = "user"
 
 
 class IsSuperUser(BaseAuthenticatedPermission):
-    """
-    Permission class that checks if the user is a superuser.
-    """
     def has_object_permission(self, request, view, obj):
         return request.user.is_superuser
 
 
 class IsAuthenticatedCreationView(BaseAuthenticatedPermission):
-    """
-    Permission class that allows access if the user is authenticated and the action is 'create'.
-    """
     def has_permission(self, request, view):
         if super().has_permission(request, view):
             return view.action == "create"
@@ -52,9 +41,7 @@ class IsAuthenticatedCreationView(BaseAuthenticatedPermission):
 
 
 class IsAuthenticatedOnlyGetView(BaseAuthenticatedPermission):
-    """
-    Permission class that allows access only to safe methods for authenticated users.
-    """
+
     forbidden_endpoints = ["create", "update", "partial_update", "destroy"]
 
     def has_permission(self, request, view):
@@ -64,9 +51,6 @@ class IsAuthenticatedOnlyGetView(BaseAuthenticatedPermission):
 
 
 class IsViewRetrieve(permissions.BasePermission):
-    """
-    Permission class that allows access only to the 'retrieve' action.
-    """
     def has_permission(self, request, view):
         return view.action == "retrieve"
 
@@ -86,6 +70,7 @@ class ParticipantCanAddComment(permissions.BasePermission):
                 self.message = f"could not find conversation with ID {conversation_id}"
                 return False
         return True
+
 
 class IsRandomCommentAndNotAuthenticated(BaseObjectPermission):
     def has_permission(self, request, view):
