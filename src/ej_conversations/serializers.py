@@ -27,6 +27,8 @@ class ConversationSerializer(BaseApiSerializer):
             "board",
             "statistics",
             "participants_can_add_comments",
+            "send_profile_question",
+            "votes_to_send_profile_question",
         ]
 
     def get_links(self, obj):
@@ -111,6 +113,9 @@ class PartialConversationSerializer(BaseApiSerializer):
             "statistics",
             "participants_can_add_comments",
             "anonymous_votes_limit",
+            "participants_can_add_comments",
+            "send_profile_question",
+            "votes_to_send_profile_question",
         ]
 
 

@@ -29,6 +29,20 @@
                         <legend>{{form.anonymous_votes_limit.help_text}}</legend>
                     </div>
 
+                    <h4 class="conversation-form__h4">{{_("Send a profile queston")}}</h4>
+                    <div class="block">
+                        <label class="margin-y3">
+                            {{form.send_profile_question}}
+                            <span class="checkbox-label">{{form.send_profile_question.label}}</span>
+                        </label>
+                        <legend>{{form.send_profile_question.help_text}}</legend>
+                    </div>
+                    <div class="block">
+                        <label for="">{{form.votes_to_send_profile_question.label}}</label>
+                        {{form.votes_to_send_profile_question}}
+                        <legend>{{form.votes_to_send_profile_question.help_text}}</legend>
+                    </div>
+
                     <h4 class="conversation-form__h4">{{_("Conversation duration")}}</h4>
                     <div class="conversation-form__duration">
                         <div>{{form.start_date}}</div>
@@ -91,7 +105,24 @@
     {{ super() }}
     <!--suppress SpellCheckingInspection -->
     <script>
-        window.addEventListener('load', function () {
+        $(document).ready(function() {
+            const $sendProfileQuestionCheckbox = $('#id_send_profile_question');
+            const $votesToSendProfileQuestion = $('#id_votes_to_send_profile_question');
+    
+            function toggleVotesToSendProfileQuestion() {
+                if ($sendProfileQuestionCheckbox.is(':checked')) {
+                    $votesToSendProfileQuestion.prop('disabled', false).css('opacity', 1);
+                } else {
+                    $votesToSendProfileQuestion.prop('disabled', true).css('opacity', 0.5);
+                }
+            }
+    
+            $sendProfileQuestionCheckbox.on('change', toggleVotesToSendProfileQuestion);
+    
+            toggleVotesToSendProfileQuestion();
+        });
+    
+        $(window).on('load', function () {
             $('#add-more-comments')
                 .on('click keypress', function (ev) {
                     // keycodes: 13 = return; 32 = space

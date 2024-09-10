@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.8.0] - Sep 09, 2024
+
+### Added
+
+- [API]: Improves the Profile endpoint to give API clients the capability to update the user profile.
+- [Web and API]: Add a checkbox and an input field in the conversation form to control when to send to the user questions about their profile.
+
+### Changed
+
+- [API]: Refactors the Comments endpoint to return at least one comment for an unauthenticated request.
+
+### Removed
+
+- [API]: do not use the secret_id as the user's password when receiving a PUT request in the User update action.
+
 ## [3.7.0] - August 12, 2024
 
 ### Added

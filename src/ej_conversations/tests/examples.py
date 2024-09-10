@@ -60,6 +60,8 @@ CONVERSATION = {
     "text": "test",
     "board": "Explore",
     "participants_can_add_comments": True,
+    "send_profile_question": False,
+    "votes_to_send_profile_question": 0,
 }
 
 VOTE = {

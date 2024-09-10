@@ -50,11 +50,13 @@ class TestGetViews:
     def test_conversations_endpoint_not_authenticated(self, conversation, api):
         path = API_V1_URL + f"/conversations/{conversation.id}/"
         data = api.get(path)
-        assert len(data) == 4
+        assert len(data) == 6
         assert data.get("text") == conversation.text
         assert data.get("statistics")
-        assert data.get("participants_can_add_comments")
-        assert data.get("anonymous_votes_limit")
+        assert "participants_can_add_comments" in data.keys()
+        assert "anonymous_votes_limit" in data.keys()
+        assert "send_profile_question" in data.keys()
+        assert "votes_to_send_profile_question" in data.keys()
 
     def test_conversations_endpoint_other_user(self, conversation, other_user):
         path = API_V1_URL + f"/conversations/{conversation.id}/"
@@ -63,11 +65,13 @@ class TestGetViews:
         )
 
         data = api.get(path, format="json").data
-        assert len(data) == 4
+        assert len(data) == 6
         assert data.get("text") == conversation.text
         assert data.get("statistics")
-        assert data.get("participants_can_add_comments")
-        assert data.get("anonymous_votes_limit")
+        assert "participants_can_add_comments" in data.keys()
+        assert "anonymous_votes_limit" in data.keys()
+        assert "send_profile_question" in data.keys()
+        assert "votes_to_send_profile_question" in data.keys()
 
     def test_comments_endpoint(self, comment):
         path = API_V1_URL + f"/comments/{comment.id}/"
@@ -140,6 +144,12 @@ class TestGetViews:
         data = api.get(path, format="json").data
         del data["created"]
         assert data
+
+    def test_unauthenticated_random_comments_endpoint(self, comment, api_client):
+        conversation = comment.conversation
+        path = API_V1_URL + f"/conversations/{conversation.id}/random-comment/"
+        data = api_client.get(path, format="json").data
+        assert data["content"] == conversation.approved_comments.first().content
 
     def test_random_comment_with_id_endpoint(self, comments):
         comment = comments[1]

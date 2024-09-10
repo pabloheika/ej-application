@@ -63,19 +63,29 @@ class UserManager(BaseUserManager.from_queryset(UserQuerySet)):
                 log.error(f"Could not find anonymous user. Error: {e}")
         return user
 
-    def merge_users(self, temporary_user, unique_user):
+    def merge_users(self, temporary_user, user):
         """
-        migrates temporary_user boards, conversations, votes and comments to unique_user.
+        migrates temporary_user boards, conversations, votes and comments to user.
         """
-        temporary_user.boards.all().update(owner=unique_user)
-        temporary_user.conversations.all().update(author=unique_user)
-        unique_comments_ids = unique_user.votes.select_related("comment").values_list(
+
+        temporary_user.boards.all().update(owner=user)
+        temporary_user.conversations.all().update(author=user)
+
+        # removes votes from temporary_user that also exists in unique_user.
+        unique_comments_ids = user.votes.select_related("comment").values_list(
             "comment__id"
         )
-        # removes votes from temporary_user that also exists in unique_user.
         temporary_user.votes.filter(comment__id__in=unique_comments_ids).delete()
-        temporary_user.votes.all().update(author=unique_user)
-        temporary_user.comments.all().update(author=unique_user)
-        temporary_user.profile.delete()
+
+        temporary_user.votes.all().update(author=user)
+        temporary_user.comments.all().update(author=user)
+
+        # migrate profile fields
+        for field, value in temporary_user.profile.__dict__.items():
+            if field not in ["id", "user_id", "_state"]:
+                setattr(user.profile, field, value)
+
         temporary_user.delete()
-        return unique_user
+        user.save()
+        user.profile.save()
+        return user

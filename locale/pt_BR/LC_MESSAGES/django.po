@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-07 21:03-0300\n"
+"POT-Creation-Date: 2024-08-18 19:14-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -125,7 +125,7 @@ msgstr "Roxa"
 msgid "Slug"
 msgstr "Identificador"
 
-#: src/ej_boards/models.py:33 src/ej_conversations/models/conversation.py:47
+#: src/ej_boards/models.py:33 src/ej_conversations/models/conversation.py:46
 msgid "Title"
 msgstr "Título"
 
@@ -151,7 +151,7 @@ msgid "Slug already exists."
 msgstr "Identificador já existe."
 
 #: src/ej_boards/tests/test_api.py:15
-#: src/ej_conversations/tests/test_api.py:307
+#: src/ej_conversations/tests/test_api.py:308
 msgid "Authentication credentials were not provided."
 msgstr "Credenciais de autenticação não foram fornecidas."
 
@@ -345,7 +345,7 @@ msgid "Created {n} votes"
 msgstr "{n} votos criados"
 
 #: src/ej_conversations/apps.py:8
-#: src/ej_conversations/models/conversation.py:168
+#: src/ej_conversations/models/conversation.py:177
 msgid "Conversations"
 msgstr "Conversas"
 
@@ -417,8 +417,8 @@ msgid "Tags, separated by commas."
 msgstr "Temas, separados por vírgula."
 
 #: src/ej_conversations/forms.py:78 src/ej_conversations/forms.py:81
-#: src/ej_conversations/models/conversation.py:100
-#: src/ej_conversations/models/conversation.py:107
+#: src/ej_conversations/models/conversation.py:109
+#: src/ej_conversations/models/conversation.py:116
 msgid "Background image"
 msgstr "Imagem de fundo"
 
@@ -426,7 +426,7 @@ msgstr "Imagem de fundo"
 msgid "Logo"
 msgstr "Logotipo"
 
-#: src/ej_conversations/forms.py:123
+#: src/ej_conversations/forms.py:127
 #, fuzzy
 msgid "This title already exists!"
 msgstr "Esse título já existe."
@@ -493,17 +493,17 @@ msgstr "Deve fornecer uma razão para rejeitar o comentário"
 msgid "Cannot vote on pending comment"
 msgstr ""
 
-#: src/ej_conversations/models/conversation.py:49
+#: src/ej_conversations/models/conversation.py:48
 msgid "Short description used to create URL slugs (e.g. School system)."
 msgstr ""
 "Uma breve descrição sobre essa conversa. Isso é usado internamente para "
 "criar identificadores de URL (slugs. Ex: sistema de ensino)"
 
-#: src/ej_conversations/models/conversation.py:52
+#: src/ej_conversations/models/conversation.py:51
 msgid "Question"
 msgstr "Pergunta"
 
-#: src/ej_conversations/models/conversation.py:54
+#: src/ej_conversations/models/conversation.py:53
 #, fuzzy
 msgid ""
 "What do you want to know from participants? The question is the central part "
@@ -512,33 +512,33 @@ msgstr ""
 "O que você quer saber dos participantes? A pergunta é a parte central da "
 "conversa, a partir dela você poderá elaborar comentários mais específicos."
 
-#: src/ej_conversations/models/conversation.py:62
+#: src/ej_conversations/models/conversation.py:61
 msgid "Only the author and administrative staff can edit this conversation."
 msgstr "Apenas o autor e o administrador podem editar esta conversa."
 
-#: src/ej_conversations/models/conversation.py:69
+#: src/ej_conversations/models/conversation.py:68
 msgid "Moderators can accept and reject comments."
 msgstr "Os moderadores podem aceitar e rejeitar comentários."
 
-#: src/ej_conversations/models/conversation.py:74
+#: src/ej_conversations/models/conversation.py:73
 msgid "Promote conversation?"
 msgstr "Promover conversa?"
 
-#: src/ej_conversations/models/conversation.py:77
+#: src/ej_conversations/models/conversation.py:76
 msgid "Promoted conversations appears in the main /conversations/ endpoint."
 msgstr "Conversas promovidas aparecem no mural principal /conversations."
 
-#: src/ej_conversations/models/conversation.py:81
+#: src/ej_conversations/models/conversation.py:80
 msgid "Hide conversation?"
 msgstr "Esconder conversa?"
 
-#: src/ej_conversations/models/conversation.py:84
+#: src/ej_conversations/models/conversation.py:83
 msgid ""
 "Hidden conversations does not appears in boards or in the main /"
 "conversations/ endpoint."
 msgstr "Conversas ocultas não aparecem no mural principal /conversations/."
 
-#: src/ej_conversations/models/conversation.py:90
+#: src/ej_conversations/models/conversation.py:89
 msgid "Configures how many anonymous votes participants can give."
 msgstr ""
 "Defina quantos votos anônimos o participante poderá registrar antes de "
@@ -547,43 +547,62 @@ msgstr ""
 "apresentado após o segundo voto na conversa. Caso o input tenha valor 0, a "
 "conversa não poderá receber votos anônimos."
 
-#: src/ej_conversations/models/conversation.py:91
+#: src/ej_conversations/models/conversation.py:90
 #, fuzzy
 msgid "Number of anonymous votes"
 msgstr "Quantidade de votos anônimos"
 
-#: src/ej_conversations/models/conversation.py:114
+#: src/ej_conversations/models/conversation.py:94
+#, fuzzy
+msgid "Send profile question?"
+msgstr "Enviar questões de perfil durante a enquete?"
+
+#: src/ej_conversations/models/conversation.py:95
+msgid "Send a question to participants to complete their profile."
+msgstr "Envia questões de perfil para o usuário responder durante as enquetes"
+
+#: src/ej_conversations/models/conversation.py:99
+msgid "Votes to send profile question"
+msgstr "Votos necessários para iniciar as perguntas"
+
+#: src/ej_conversations/models/conversation.py:100
+msgid "Number of votes to send profile question."
+msgstr ""
+"Numero de votos realizados pelo usuário antes de iniciar as perguntas sobre "
+"perfil"
+
+#: src/ej_conversations/models/conversation.py:123
 msgid "A message to be presented to participants before starting voting."
 msgstr ""
 "Um texto que poderá ser apresentado antes da tela de votação. A página "
 "ficará na rota /welcome da conversa."
 
-#: src/ej_conversations/models/conversation.py:120
+#: src/ej_conversations/models/conversation.py:129
 #, fuzzy
 msgid "Text to be presented to participants in the end of voting."
 msgstr "Texto que será apresentado no final da votação."
 
-#: src/ej_conversations/models/conversation.py:123
-#: src/ej_conversations/models/conversation.py:125
+#: src/ej_conversations/models/conversation.py:132
+#: src/ej_conversations/models/conversation.py:134
 #, fuzzy
 msgid "Participants will be able to add comments to this conversation."
 msgstr "Os participantes poderão adicionar comentários à conversa."
 
-#: src/ej_conversations/models/conversation.py:167
+#: src/ej_conversations/models/conversation.py:176
 #: src/ej_conversations/roles/conversations.py:140
 #, fuzzy
 msgid "Conversation"
 msgstr "Conversa"
 
-#: src/ej_conversations/models/conversation.py:170
+#: src/ej_conversations/models/conversation.py:179
 msgid "Can publish promoted conversations"
 msgstr "Pode publicar conversas promovidas"
 
-#: src/ej_conversations/models/conversation.py:171
+#: src/ej_conversations/models/conversation.py:180
 msgid "Can moderate comments in any conversation"
 msgstr "Pode moderar comentários em qualquer conversa"
 
-#: src/ej_conversations/models/conversation.py:283
+#: src/ej_conversations/models/conversation.py:291
 msgid "User does not have permission to create a promoted conversation."
 msgstr "Usuário não tem permissão para criar uma conversa promovida."
 
@@ -656,7 +675,7 @@ msgstr " comentários"
 msgid " of "
 msgstr " de "
 
-#: src/ej_conversations/serializers.py:234 src/ej_conversations/views.py:164
+#: src/ej_conversations/serializers.py:254 src/ej_conversations/views.py:164
 msgid "Participate"
 msgstr "Participar"
 
@@ -709,12 +728,12 @@ msgid "Gender"
 msgstr "Gênero"
 
 #: src/ej_dataviz/constants.py:195 src/ej_dataviz/views_dataviz.py:106
-#: src/ej_dataviz/views_dataviz.py:121 src/ej_profiles/models.py:32
+#: src/ej_dataviz/views_dataviz.py:121 src/ej_profiles/models.py:35
 #: src/ej_profiles/tests/test_models.py:61
 msgid "Race"
 msgstr "Raça"
 
-#: src/ej_dataviz/constants.py:205 src/ej_profiles/models.py:39
+#: src/ej_dataviz/constants.py:205 src/ej_profiles/models.py:45
 #: src/ej_profiles/tests/test_models.py:54
 msgid "State"
 msgstr "Estado"
@@ -787,7 +806,7 @@ msgstr "convergência"
 msgid "disagree"
 msgstr "discorda"
 
-#: src/ej_dataviz/views_dataviz.py:324 src/ej_profiles/enums.py:71
+#: src/ej_dataviz/views_dataviz.py:324 src/ej_profiles/enums.py:119
 msgid "email"
 msgstr "email"
 
@@ -795,7 +814,7 @@ msgstr "email"
 msgid "id"
 msgstr "id"
 
-#: src/ej_dataviz/views_dataviz.py:326 src/ej_profiles/enums.py:70
+#: src/ej_dataviz/views_dataviz.py:326 src/ej_profiles/enums.py:118
 msgid "name"
 msgstr "nome"
 
@@ -828,212 +847,276 @@ msgstr "Avançado"
 msgid "Profiles"
 msgstr "Perfis"
 
-#: src/ej_profiles/enums.py:19
-msgid "Black"
-msgstr "Preto"
-
-#: src/ej_profiles/enums.py:20
-msgid "Brown"
-msgstr "Pardo"
-
-#: src/ej_profiles/enums.py:21
-msgid "White"
-msgstr "Branco"
-
-#: src/ej_profiles/enums.py:22
-msgid "Yellow"
-msgstr "Amarelo"
-
-#: src/ej_profiles/enums.py:23 src/ej_profiles/tests/test_models.py:61
+#: src/ej_profiles/enums.py:22 src/ej_profiles/enums.py:41
+#: src/ej_profiles/tests/test_models.py:61
 msgid "Indigenous"
 msgstr "Indígena"
 
-#: src/ej_profiles/enums.py:24 src/ej_profiles/enums.py:36
+#: src/ej_profiles/enums.py:23 src/ej_profiles/enums.py:37
+msgid "Black"
+msgstr "Preto"
+
+#: src/ej_profiles/enums.py:24 src/ej_profiles/enums.py:38
+msgid "Brown"
+msgstr "Pardo"
+
+#: src/ej_profiles/enums.py:25 src/ej_profiles/enums.py:39
+msgid "White"
+msgstr "Branco"
+
+#: src/ej_profiles/enums.py:26 src/ej_profiles/enums.py:40
+msgid "Yellow"
+msgstr "Amarelo"
+
+#: src/ej_profiles/enums.py:27
+msgid "Prefer not to say"
+msgstr "Prefiro não dizer"
+
+#: src/ej_profiles/enums.py:42 src/ej_profiles/enums.py:69
 msgid "Other"
 msgstr "Outro"
 
-#: src/ej_profiles/enums.py:34 src/ej_profiles/tests/test_models.py:60
+#: src/ej_profiles/enums.py:52
+#, fuzzy
+msgid "North"
+msgstr "Norte"
+
+#: src/ej_profiles/enums.py:53
+msgid "Northeast"
+msgstr "Nordeste"
+
+#: src/ej_profiles/enums.py:54
+msgid "Midwest"
+msgstr "Centro-Oeste"
+
+#: src/ej_profiles/enums.py:55
+msgid "Southeast"
+msgstr "Sudeste"
+
+#: src/ej_profiles/enums.py:56
+msgid "South"
+msgstr "Sul"
+
+#: src/ej_profiles/enums.py:66 src/ej_profiles/tests/test_models.py:60
 msgid "Female"
 msgstr "Feminino"
 
-#: src/ej_profiles/enums.py:35
+#: src/ej_profiles/enums.py:67
 msgid "Male"
 msgstr "Masculino"
 
-#: src/ej_profiles/enums.py:52
+#: src/ej_profiles/enums.py:68
+msgid "Non-binary"
+msgstr "Não binário"
+
+#: src/ej_profiles/enums.py:79
+msgid "Less than 17 years"
+msgstr "Menos que 17 anos"
+
+#: src/ej_profiles/enums.py:80
+msgid "Between 17-20 years"
+msgstr "Entre 17-20 anos"
+
+#: src/ej_profiles/enums.py:81
+msgid "Between 21-29 years"
+msgstr "Entre 21-29 anos"
+
+#: src/ej_profiles/enums.py:82
+msgid "Between 30-45 years"
+msgstr "Entre 30-45 anos"
+
+#: src/ej_profiles/enums.py:83
+msgid "Between 45-60 years"
+msgstr "Entre 45-60 anos"
+
+#: src/ej_profiles/enums.py:84
+msgid "Over 60 years"
+msgstr "Mais que 60 anos"
+
+#: src/ej_profiles/enums.py:100
 msgid "user"
 msgstr "usuário"
 
-#: src/ej_profiles/enums.py:53
+#: src/ej_profiles/enums.py:101
 msgid "race"
 msgstr "raça"
 
-#: src/ej_profiles/enums.py:54 src/ej_profiles/tests/test_models.py:59
+#: src/ej_profiles/enums.py:102 src/ej_profiles/tests/test_models.py:59
 msgid "ethnicity"
 msgstr "etnia"
 
-#: src/ej_profiles/enums.py:55
+#: src/ej_profiles/enums.py:103
 msgid "education"
 msgstr "escolaridade"
 
-#: src/ej_profiles/enums.py:56
+#: src/ej_profiles/enums.py:104
 msgid "gender"
 msgstr "expressão e identidade de gênero"
 
-#: src/ej_profiles/enums.py:57
+#: src/ej_profiles/enums.py:105
 msgid "gender_other"
 msgstr "gênero (outro)"
 
-#: src/ej_profiles/enums.py:58
+#: src/ej_profiles/enums.py:106
 msgid "gender other"
 msgstr "gênero (outro)"
 
-#: src/ej_profiles/enums.py:59
+#: src/ej_profiles/enums.py:107
 msgid "birth_date"
 msgstr "data de nascimento"
 
-#: src/ej_profiles/enums.py:60
+#: src/ej_profiles/enums.py:108
 msgid "birth date"
 msgstr "data de Nascimento"
 
-#: src/ej_profiles/enums.py:61 src/ej_profiles/tests/test_models.py:55
+#: src/ej_profiles/enums.py:109 src/ej_profiles/tests/test_models.py:55
 msgid "country"
 msgstr "país"
 
-#: src/ej_profiles/enums.py:62 src/ej_profiles/tests/test_models.py:54
+#: src/ej_profiles/enums.py:110 src/ej_profiles/tests/test_models.py:54
 msgid "state"
 msgstr "estado"
 
-#: src/ej_profiles/enums.py:63 src/ej_profiles/tests/test_models.py:53
+#: src/ej_profiles/enums.py:111 src/ej_profiles/tests/test_models.py:53
 msgid "city"
 msgstr "cidade"
 
-#: src/ej_profiles/enums.py:64 src/ej_profiles/tests/test_models.py:63
+#: src/ej_profiles/enums.py:112 src/ej_profiles/tests/test_models.py:63
 msgid "biography"
 msgstr "biografia"
 
-#: src/ej_profiles/enums.py:65 src/ej_profiles/tests/test_models.py:57
+#: src/ej_profiles/enums.py:113 src/ej_profiles/tests/test_models.py:57
 msgid "occupation"
 msgstr "ocupação"
 
-#: src/ej_profiles/enums.py:66 src/ej_profiles/tests/test_models.py:62
+#: src/ej_profiles/enums.py:114 src/ej_profiles/tests/test_models.py:62
 msgid "political_activity"
 msgstr "atividade política"
 
-#: src/ej_profiles/enums.py:67
+#: src/ej_profiles/enums.py:115
 msgid "political activity"
 msgstr "atividade política"
 
-#: src/ej_profiles/enums.py:68
+#: src/ej_profiles/enums.py:116
 msgid "profile_photo"
 msgstr "foto de perfil"
 
-#: src/ej_profiles/enums.py:69
+#: src/ej_profiles/enums.py:117
 msgid "profile photo"
 msgstr "foto de perfil"
 
-#: src/ej_profiles/enums.py:72
+#: src/ej_profiles/enums.py:120
 msgid "is_active"
 msgstr "ativo"
 
-#: src/ej_profiles/enums.py:73
+#: src/ej_profiles/enums.py:121
 msgid "is active"
 msgstr "é ativo"
 
-#: src/ej_profiles/enums.py:74
+#: src/ej_profiles/enums.py:122
 msgid "is_staff"
 msgstr "é da equipe"
 
-#: src/ej_profiles/enums.py:75
+#: src/ej_profiles/enums.py:123
 msgid "is staff"
 msgstr "é da equipe"
 
-#: src/ej_profiles/enums.py:76
+#: src/ej_profiles/enums.py:124
 msgid "is_superuser"
 msgstr "é super-usuário"
 
-#: src/ej_profiles/enums.py:77
+#: src/ej_profiles/enums.py:125
 msgid "is superuser"
 msgstr "é super-usuário"
 
-#: src/ej_profiles/enums.py:78
+#: src/ej_profiles/enums.py:126
 msgid "limit_board_conversations"
 msgstr "limita_conversas_do_board"
 
-#: src/ej_profiles/enums.py:79
+#: src/ej_profiles/enums.py:127
 msgid "limit board conversations"
 msgstr "limita conversas do board"
 
-#: src/ej_profiles/models.py:33 src/ej_profiles/tests/test_models.py:59
+#: src/ej_profiles/models.py:36 src/ej_profiles/models.py:37
+#: src/ej_profiles/tests/test_models.py:59
 msgid "Ethnicity"
 msgstr "Etnia"
 
-#: src/ej_profiles/models.py:34 src/ej_profiles/tests/test_models.py:58
+#: src/ej_profiles/models.py:38 src/ej_profiles/tests/test_models.py:58
 msgid "Education"
 msgstr "Escolaridade"
 
-#: src/ej_profiles/models.py:35 src/ej_profiles/tests/test_models.py:60
+#: src/ej_profiles/models.py:39 src/ej_profiles/tests/test_models.py:60
 msgid "Gender identity"
 msgstr "Identidade de gênero"
 
-#: src/ej_profiles/models.py:36
+#: src/ej_profiles/models.py:40
 msgid "User provided gender"
 msgstr "Gênero fornecido pelo usuário"
 
-#: src/ej_profiles/models.py:37
+#: src/ej_profiles/models.py:41
 msgid "Birth Date"
 msgstr "Data de Nascimento"
 
-#: src/ej_profiles/models.py:38 src/ej_profiles/tests/test_models.py:55
+#: src/ej_profiles/models.py:42
+#, fuzzy
+msgid "Age range"
+msgstr "Faixa etária"
+
+#: src/ej_profiles/models.py:43 src/ej_profiles/tests/test_models.py:55
 msgid "Country"
 msgstr "País"
 
-#: src/ej_profiles/models.py:40 src/ej_profiles/tests/test_models.py:53
+#: src/ej_profiles/models.py:44
+msgid "Region"
+msgstr "Região"
+
+#: src/ej_profiles/models.py:46 src/ej_profiles/tests/test_models.py:53
 msgid "City"
 msgstr "Cidade"
 
-#: src/ej_profiles/models.py:41 src/ej_profiles/tests/test_models.py:63
+#: src/ej_profiles/models.py:47 src/ej_profiles/tests/test_models.py:63
 msgid "Biography"
 msgstr "Biografia"
 
-#: src/ej_profiles/models.py:42 src/ej_profiles/tests/test_models.py:57
+#: src/ej_profiles/models.py:48 src/ej_profiles/tests/test_models.py:57
 msgid "Occupation"
 msgstr "Ocupação"
 
-#: src/ej_profiles/models.py:43 src/ej_profiles/tests/test_models.py:62
+#: src/ej_profiles/models.py:49 src/ej_profiles/tests/test_models.py:62
 msgid "Political activity"
 msgstr "Atividade política"
 
-#: src/ej_profiles/models.py:45
+#: src/ej_profiles/models.py:51
 msgid "Profile Photo"
 msgstr "Foto de Perfil"
 
-#: src/ej_profiles/models.py:47 src/ej_profiles/tests/test_models.py:64
+#: src/ej_profiles/models.py:53 src/ej_profiles/tests/test_models.py:64
 msgid "Phone number"
 msgstr "Número de telefone"
 
-#: src/ej_profiles/models.py:165 src/ej_profiles/tests/test_models.py:56
+#: src/ej_profiles/models.py:171 src/ej_profiles/tests/test_models.py:56
 msgid "Age"
 msgstr "Idade"
 
-#: src/ej_profiles/models.py:169 src/ej_users/forms.py:98
+#: src/ej_profiles/models.py:175 src/ej_users/forms.py:98
 #: src/ej_users/forms.py:107
 msgid "E-mail"
 msgstr "E-mail"
 
-#: src/ej_profiles/models.py:205
+#: src/ej_profiles/models.py:238
 msgid "Root"
 msgstr "Raiz"
 
-#: src/ej_profiles/models.py:207
+#: src/ej_profiles/models.py:240
 msgid "Administrative user"
 msgstr "Usuário administrativo"
 
-#: src/ej_profiles/models.py:208 src/ej_profiles/tests/test_models.py:70
+#: src/ej_profiles/models.py:241 src/ej_profiles/tests/test_models.py:70
 msgid "Regular user"
 msgstr "Usuário regular"
 
-#: src/ej_profiles/models.py:211
+#: src/ej_profiles/models.py:244
 msgid "(Not Filled)"
 msgstr "(Não preenchido)"
 
@@ -2211,15 +2294,20 @@ msgstr "Participação anônima"
 
 #: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:32
 #, fuzzy
+msgid "Send a profile queston"
+msgstr "Coleta de perfil"
+
+#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:46
+#, fuzzy
 msgid "Conversation duration"
 msgstr "Duração da conversa"
 
-#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:38
+#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:52
 #, fuzzy
 msgid "Customize"
 msgstr "Personalize"
 
-#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:42
+#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:56
 #, fuzzy
 msgid ""
 "This image will be presented to your audience on the participation page,\n"
@@ -2229,17 +2317,17 @@ msgstr ""
 "Essa imagem será apresentada para o seu público na página de participação, "
 "permitindo dar mais contexto ao tema pesquisado."
 
-#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:53
+#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:67
 msgid "This image will be presented to your audience on the welcome page"
 msgstr ""
 "Esta imagem será apresentada para sua audiência na página de boas-vindas"
 
-#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:61
+#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:75
 #, fuzzy
 msgid "Text to be displayed as welcome"
 msgstr "Texto adicional a ser apresentado na tela de boas-vindas."
 
-#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:65
+#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:79
 #, fuzzy
 msgid ""
 "This text will be presented to new participants who access\n"
@@ -2248,12 +2336,12 @@ msgstr ""
 "Esse texto será apresentado para os novos participantes que acessarem o link "
 "compartilhado dessa conversa."
 
-#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:70
+#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:84
 #, fuzzy
 msgid "Text to be presented at the end of the collection"
 msgstr "Texto a ser apresentado no final da coleta"
 
-#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:74
+#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:88
 #, fuzzy
 msgid ""
 "This text will be presented to participants who have\n"
@@ -2261,18 +2349,18 @@ msgid ""
 msgstr ""
 "Esse texto será apresentado para os participantes que finalizarem a coleta."
 
-#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:80
+#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:94
 #: src/ej_conversations/jinja2/ej_conversations/includes/participant-menu.jinja2:14
 msgid "Create conversation"
 msgstr "Criar conversa"
 
-#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:103
+#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:134
 #: src/ej_conversations/jinja2/ej_conversations/includes/comments-form.jinja2:35
 #, fuzzy
 msgid " Comment "
 msgstr "Comentário"
 
-#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:104
+#: src/ej_conversations/jinja2/ej_conversations/conversation-create.jinja2:135
 #: src/ej_conversations/jinja2/ej_conversations/includes/comments-form.jinja2:16
 #: src/ej_conversations/jinja2/ej_conversations/includes/comments-form.jinja2:36
 msgid "Type your comment here"
@@ -2445,7 +2533,7 @@ msgstr "Voltar"
 #: src/ej_conversations/jinja2/ej_conversations/comments/add-comment.jinja2:63
 #, fuzzy
 msgid "Send to moderation"
-msgstr "Enviar para moderação"
+msgstr "aguardando moderação"
 
 #: src/ej_conversations/jinja2/ej_conversations/comments/add-comment.jinja2:51
 #, fuzzy
@@ -5399,9 +5487,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 #~ msgid_plural "You need at least {n} level 1 conversations"
 #~ msgstr[0] "Você precisa de pelo menos mais uma conversa no nível 1"
 #~ msgstr[1] "Você precisa de pelo menos {n} conversas nível 1"
-
-#~ msgid "Noteworthy"
-#~ msgstr "Digno de nota"
 
 #~ msgid "Debate"
 #~ msgstr "Debate"

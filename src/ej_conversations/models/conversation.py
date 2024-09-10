@@ -89,6 +89,16 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
         help_text=_("Configures how many anonymous votes participants can give."),
         verbose_name=_("Number of anonymous votes"),
     )
+    send_profile_question = models.BooleanField(
+        default=False,
+        verbose_name=_("Send profile question?"),
+        help_text=_("Send a question to participants to complete their profile."),
+    )
+    votes_to_send_profile_question = models.IntegerField(
+        default=0,
+        verbose_name=_("Votes to send profile question"),
+        help_text=_("Number of votes to send profile question."),
+    )
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
 

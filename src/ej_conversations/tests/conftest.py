@@ -24,6 +24,11 @@ def get_authorized_api_client(user_info):
 
 
 @pytest.fixture
+def api_client():
+    return APIClient()
+
+
+@pytest.fixture
 def conversation(db, user):  # noqa: F811
     conversation_object = create_conversation(
         text="test", title="title", author=user, is_promoted=True, anonymous_votes_limit=1

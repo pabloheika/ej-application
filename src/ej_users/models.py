@@ -46,7 +46,6 @@ class User(AbstractUser):
         verbose_name=_("Agree with privacy policy"),
     )
     secret_id = models.CharField(unique=True, null=True, max_length=200)
-    is_linked = models.BooleanField(default=False)
     has_completed_registration = models.BooleanField(default=True)
 
     objects = UserManager()
@@ -106,24 +105,11 @@ class User(AbstractUser):
     def has_more_than_one_board(self):
         return self.boards.count() > 1
 
-    def get_dummy_password(self):
-        return self.email.split("@")[0]
-
-    def set_jwt_password(self):
-        if not self.secret_id:
-            raise Exception
-        self.set_password(User.decode_secret_id(self.secret_id))
-
     @staticmethod
     def encode_secret_id(secret_id: Text) -> Any:
         if not secret_id:
             return None
         return jwt.encode({"secret_id": secret_id}, JWT_SECRET, algorithm="HS256")
-
-    @staticmethod
-    def decode_secret_id(secret_id: Text) -> Text:
-        decoded_secret_id = jwt.decode(secret_id, JWT_SECRET, algorithms=["HS256"])
-        return decoded_secret_id.get("secret_id")
 
 
 class UserSecretIdManager:
@@ -142,51 +128,32 @@ class UserSecretIdManager:
         return User.objects.get(Q(email=email) | Q(**secret_id_query))
 
     @staticmethod
-    def check_password(user: User, password: Text) -> bool:
-        """
-        check user password using the request data password field.
-        If the password is invalid, try to recreate the user password using the JWT_SECRET
-        key with the secret_id field.
-
-        The secret_id field enables EJ to identify a person voting on different channels.
-        """
-        default_password_is_valid = user.check_password(password)
-        if default_password_is_valid:
-            return True
-        if user.secret_id:
-            return user.check_password(User.decode_secret_id(user.secret_id))
-        return False
-
-    @staticmethod
     def merge_unique_user_with(
         temporary_user: User,
-        email: Text,
+        request_data: dict,
     ):
         """
-        Try to find unique_user using email argument and check if it exists. If so,
+        Try to find a user using the the request_data email field. If so,
         merge it with  temporary_user. If not, updates temporary_user email and password.
 
         This is a necessary step to keep the consistence of the database, because a person
         can vote on different channels, but must have only one user on EJ.
         """
-        unique_user_query = User.objects.filter(email=email)
-        if not unique_user_query.exists():
+        email = request_data.get("email")
+        password = request_data.get("password")
+        if not email or not password:
+            raise Exception("invalid email or password during user update")
+        try:
+            user = User.objects.get(email=email)
+            user.set_password(password)
+            user.secret_id = temporary_user.secret_id
+            user.has_completed_registration = True
+            return User.objects.merge_users(temporary_user, user)
+        except Exception:
             temporary_user.email = email
-            temporary_user.set_jwt_password()
-            temporary_user.is_linked = True
             temporary_user.has_completed_registration = True
             temporary_user.save()
             return temporary_user
-        else:
-            unique_user = unique_user_query.first()
-            secret_id = temporary_user.secret_id
-            User.objects.merge_users(temporary_user, unique_user)
-            unique_user.secret_id = secret_id
-            unique_user.set_jwt_password()
-            unique_user.is_linked = True
-            unique_user.has_completed_registration = True
-            unique_user.save()
-            return unique_user
 
 
 class PasswordResetToken(TimeStampedModel):

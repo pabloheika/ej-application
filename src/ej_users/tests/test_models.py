@@ -26,27 +26,74 @@ class TestUserSecretIdManager:
     def test_merge_temp_user_with_unique_user(
         self, db, vote, comments, user, another_user
     ):
+
+        temporary_user = user
         unique_user = another_user
 
-        user.secret_id = User.encode_secret_id("someothersecretid")
-        user.save()
+        temporary_user.secret_id = User.encode_secret_id("someothersecretid")
+        temporary_user.save()
 
-        user_votes_count = user.votes.all().count()
-        user_comments_count = user.comments.all().count()
+        user_votes_count = temporary_user.votes.all().count()
+        user_comments_count = temporary_user.comments.all().count()
 
         assert unique_user.votes.all().count() == 0
         assert unique_user.comments.all().count() == 0
         assert unique_user.secret_id is None
 
-        UserSecretIdManager.merge_unique_user_with(user, unique_user.email)
+        user = UserSecretIdManager.merge_unique_user_with(
+            temporary_user, {"email": unique_user.email, "password": "password"}
+        )
 
         with pytest.raises(User.DoesNotExist):
-            User.objects.get(email=user.email)
+            User.objects.get(email=temporary_user.email)
 
-        unique_user = User.objects.get(email=unique_user.email)
-        assert User.decode_secret_id(unique_user.secret_id) == "someothersecretid"
-        assert unique_user.votes.all().count() == user_votes_count
-        assert unique_user.comments.all().count() == user_comments_count
+        assert user.votes.all().count() == user_votes_count
+        assert user.comments.all().count() == user_comments_count
+
+    def test_merge_users_with_profile_data(self, db, vote, comments, user, another_user):
+
+        temporary_user = user
+        unique_user = another_user
+
+        temporary_user.secret_id = User.encode_secret_id("someothersecretid")
+        temporary_user.profile.race = 1
+        temporary_user.profile.gender = 2
+        temporary_user.profile.region = 5
+        temporary_user.profile.biography = "Software Engineer"
+        temporary_user.save()
+
+        user = UserSecretIdManager.merge_unique_user_with(
+            temporary_user, {"email": unique_user.email, "password": "password"}
+        )
+
+        with pytest.raises(User.DoesNotExist):
+            User.objects.get(email=temporary_user.email)
+
+        assert user.profile.race == 1
+        assert user.profile.gender == 2
+        assert user.profile.region == 5
+        assert user.profile.biography == "Software Engineer"
+
+    def test_merge_users_with_invalid_data(self, db, vote, comments, user, another_user):
+
+        temporary_user = user
+
+        temporary_user.secret_id = User.encode_secret_id("someothersecretid")
+        temporary_user.profile.race = 1
+        temporary_user.profile.gender = 2
+        temporary_user.profile.region = 5
+        temporary_user.profile.biography = "Software Engineer"
+        temporary_user.save()
+
+        with pytest.raises(Exception):
+            user = UserSecretIdManager.merge_unique_user_with(
+                temporary_user, {"email": None, "password": "password"}
+            )
+
+        with pytest.raises(Exception):
+            user = UserSecretIdManager.merge_unique_user_with(
+                temporary_user, {"email": user.email, "password": None}
+            )
 
 
 class TestUserManager(EjRecipes):

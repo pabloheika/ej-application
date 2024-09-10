@@ -362,7 +362,6 @@ class ConversationCreateView(CreateView):
     def get_context_data(self, form=None, **kwargs):
         user = self.request.user
         user_boards = Board.objects.filter(owner=user)
-
         return {
             "form": form or self.form_class(),
             "board": self.get_board(),
@@ -409,7 +408,6 @@ class ConversationEditView(UpdateView):
     def get_context_data(self, form=None, **kwargs: Any):
         conversation = self.get_object()
         user = self.request.user
-
         return {
             "conversation": conversation,
             "form": form or self.form_class(instance=conversation),

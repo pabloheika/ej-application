@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from ej.permissions import (
     IsAuthor,
     IsAuthenticatedOnlyGetView,
+    IsRandomCommentAndNotAuthenticated,
     IsSuperUser,
     IsAuthenticatedCreationView,
     IsViewRetrieve,
@@ -77,7 +78,9 @@ class VoteViewSet(RestAPIBaseViewSet):
 class ConversationViewSet(RestAPIBaseViewSet):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
-    permission_classes = (IsAuthenticatedOnlyGetView | IsViewRetrieve,)
+    permission_classes = (
+        IsAuthenticatedOnlyGetView | IsViewRetrieve | IsRandomCommentAndNotAuthenticated,
+    )
 
     def retrieve(self, request, pk):
         conversation = self.get_object()
@@ -185,11 +188,17 @@ class ConversationViewSet(RestAPIBaseViewSet):
     @action(detail=True, url_path="random-comment")
     def random_comment(self, request, pk):
         conversation = self.get_object()
-        comment_id = request.GET.get("id")
-        if comment_id:
-            comment = conversation.next_comment_with_id(request.user, comment_id)
+
+        comment: Comment = None
+        if not request.user.is_authenticated:
+            comment = conversation.approved_comments.first()
         else:
-            comment = conversation.next_comment(request.user)
+            comment_id = request.GET.get("id")
+            if comment_id:
+                comment = conversation.next_comment_with_id(request.user, comment_id)
+            else:
+                comment = conversation.next_comment(request.user)
+
         serializer = CommentSerializer(comment, context={"request": request})
         return Response(serializer.data)
 
