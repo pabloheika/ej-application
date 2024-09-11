@@ -60,3 +60,29 @@ o número total de votos que a conversa recebeu de todos os participantes.
    :align: center
 
    Card de dados da conversa
+
+Além disso, é possível que o participante da coleta visualize resultados daquela conversa na seção "Descubra", na área inferior da página.
+
+.. figure:: ../images/section-results.png
+   :align: center
+
+   Seção "Descubra" para visualização de resultados
+
+   
+Dados como visualização de nuvem de pontos e os comentários com menor índice de convergência, mais concordados, discordados são apresentados
+se o participante votar em pelo menos quatro comentários.
+
+.. figure:: ../images/section-cloud-results.png
+   :align: center
+
+   Apresentação de nuvem de pontos com posição do usuário participante
+
+.. figure:: ../images/section-results-comments.png
+   :align: center
+
+   Apresentação de comentários com menor índice de convergência
+
+
+.. note::
+
+   Somente é possível visualizar estes dados se a conversa possuir mais que três comentários.

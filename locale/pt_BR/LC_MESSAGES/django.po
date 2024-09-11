@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-06 17:45-0300\n"
+"POT-Creation-Date: 2024-09-10 21:41-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -2410,20 +2410,20 @@ msgstr "Conversas públicas"
 msgid "Participate!"
 msgstr "Participar!"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:4
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:5
 msgid "Find out"
 msgstr "Descubra"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:10
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:13
 msgid "Insufficient data to view results"
 msgstr "Dados insuficientes para visualizar os resultados"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:13
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:16
 #, fuzzy
 msgid "Keep participating to see the results"
 msgstr "Continue participando para visualizar os resultados"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:20
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:23
 #, fuzzy
 msgid ""
 "How do you position yourself in relation to the opinions of the other \n"
@@ -2432,42 +2432,53 @@ msgstr ""
 "Como você se posiciona em relação às opiniões dos outros participantes dessa "
 "conversa?"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:25
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:28
 #, fuzzy
 msgid " of the participants in the conversation have similar opinions to yours"
 msgstr " dos participantes da conversa têm opiniões parecidas com as suas"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:30
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:33
 #: src/ej_dataviz/jinja2/ej_dataviz/dashboard/scatter.jinja2:28
 msgid "Loading data..."
 msgstr "Carregando dados..."
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:35
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:53
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:71
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:40
+#, fuzzy
 msgid "See more insights"
 msgstr "Veja mais insights"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:42
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:49
 #, fuzzy
 msgid "Three most comments with the lowest convergence index"
 msgstr "Os três comentários com o menor índice de convergência"
 
 #: src/ej_conversations/jinja2/ej_conversations/comments/add-comment.jinja2:40
 #: src/ej_conversations/jinja2/ej_conversations/includes/delete-confimation-modal.jinja2:10
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:49
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:67
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:85
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:59
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:82
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:105
 #: src/ej_tools/jinja2/ej_tools/mautic-form.jinja2:25
 msgid "Return"
 msgstr "Voltar"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:60
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:63
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:86
+#, fuzzy
+msgid "See more"
+msgstr "Veja mais"
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:64
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:87
+#, fuzzy
+msgid " insights"
+msgstr " insights"
+
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:72
 #, fuzzy
 msgid "Three most agreed comments"
 msgstr "Os três comentários mais concordados"
 
-#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:78
+#: src/ej_conversations/jinja2/ej_conversations/participant-results.jinja2:95
 #, fuzzy
 msgid "Three most disagreed comments"
 msgstr "Os três comentários mais discordados"
