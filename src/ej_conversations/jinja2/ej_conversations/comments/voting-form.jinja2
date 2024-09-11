@@ -71,7 +71,5 @@ function showSpinner (choice) {
     setTimeout(function(){
         htmx.trigger("body", "updateResults", {});
     }, 6000);
-    
-    //document.dispatchEvent(new Event("updateResults"));
 }
 </script>

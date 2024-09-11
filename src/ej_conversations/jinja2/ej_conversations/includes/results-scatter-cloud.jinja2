@@ -1,0 +1,123 @@
+<div data-page="1" class="show results__item">
+    <div class="results__scatter-analysis">
+        <div class="results__scatter-analysis-text">
+            <p class="results__title">
+                {{_("How do you position yourself in relation to the opinions of the other 
+                participants in this conversation?")}}
+            </p>
+            <p class="results__text">
+                {{"%s%%"|format(similar_opinion|round(1))}}
+                {{_(" of the participants in the conversation have similar opinions to yours")}}
+            </p>
+        </div>
+
+        <div id="scatter-containers" class="results__scatter-chart">
+            <div class="size-y6p col flex-center"><p>{{ _('Loading data...') }}</p></div>
+        </div>
+    </div>
+    <div class="results__footer">
+        {{show_progress()}}
+        <div class="results__footer-link">
+            <a onclick="viewResults(2);">
+                {{_("See more insights")}}
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+    
+</div>
+
+<div data-page="2" class="results__title hide results__item"> 
+    <p>{{_("Three most comments with the lowest convergence index")}}</p>
+    <div class="results__comments">
+        {{ show_comments_results(least_convergent_comments)}}
+    </div>
+
+    <div class="results__footer">
+        {{show_progress()}}
+        <div class="results__footer-link">
+            <a onclick="viewResults(1);">
+                <i class="fas fa-chevron-left"></i>
+                <span>{{_("Return")}}</span>
+            </a>
+                
+            <a onclick="viewResults(3);">
+                {{_("See more")}} 
+                <span>{{_(" insights")}}</span>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div data-page="3" class="results__title hide results__item"> 
+    <p>{{_("Three most agreed comments")}}</p>
+    <div class="results__comments">
+        {{ show_comments_results(most_agreed_comments)}}
+    </div>
+
+    <div class="results__footer">
+        {{show_progress()}}
+        <div class="results__footer-link">
+            <a onclick="viewResults(2);">
+                <i class="fas fa-chevron-left"></i>
+                <span>{{_("Return")}}</span>
+            </a>
+                
+            <a onclick="viewResults(4);">
+                {{_("See more")}}
+                <span>{{_(" insights")}}</span>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div data-page="4" class="results__title hide results__item"> 
+    <p>{{_("Three most disagreed comments")}}</p>
+    <div class="results__comments">
+        {{ show_comments_results(most_disagreed_comments)}}
+    </div>
+
+    <div class="results__footer">
+        {{show_progress()}}
+        <div class="results__footer-link">
+            <a onclick="viewResults(3);">
+                <i class="fas fa-chevron-left"></i>
+                {{_("Return")}}
+            </a>
+        </div>
+    </div>
+</div>
+
+<script defer>
+$(document).ready(function() {
+    // Load main data from json.
+    $.ajax("{{url('boards:dataviz-scatter_pca_json',  **conversation.get_url_kwargs())}}").then(function (data) {
+        // Prepare container
+    var $container = $(".results__scatter-chart");
+    var dom = $container[0], chart = echarts.init(dom);
+    dom['chart'] = chart;
+    var chartOptions = {};
+        if (!data.error) {
+            // Init chart
+            chart.visualMap = data.visualMap;
+            delete data.option.tooltip;
+            chart.option = data.option;
+            chart.option.visualMap = [data.visualMap[data.visualMap.length - 1]];
+            chart.setOption(chart.option, true);
+        } else {
+            chart.setOption({series: [{data: [], type: "scatter"}], xAxis: {}, yAxis: {}}, true);
+        }
+        chart.resize();
+    });
+})
+
+function viewResults(n) {
+    $("div[data-page="+n+"]").removeClass("hide").addClass("show");
+    $("div.show.results__item[data-page!="+n+"]").removeClass("show").addClass("hide");
+    
+    $("div[data-step="+n+"]").addClass("results__progress-step--active");
+    $("div[data-step!="+n+"]").removeClass("results__progress-step--active");
+}
+</script>
