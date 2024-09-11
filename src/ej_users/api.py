@@ -80,10 +80,7 @@ class TokenViewSet(viewsets.ViewSet):
         except User.DoesNotExist:
             return Response({"error": _("User was not found.")}, status=404)
 
-        checked_password = UserSecretIdManager.check_password(
-            user, request.data.get("password")
-        )
-        if not checked_password:
+        if not user.check_password(request.data.get("password")):
             return Response({"error": _("The password is incorrect")}, status=400)
 
         try:
@@ -113,14 +110,13 @@ class UsersViewSet(viewsets.ModelViewSet):
         except User.DoesNotExist as e:
             return Response({"error": str(e)}, status=404)
 
-        if temporary_user.is_linked:
+        if temporary_user.has_completed_registration:
             return Response(
-                {"error": _("User is already linked to another account.")}, status=403
+                {"error": _("User already has completed the registration process.")},
+                status=403,
             )
 
-        UserSecretIdManager.merge_unique_user_with(
-            temporary_user, request.data.get("email")
-        )
+        UserSecretIdManager.merge_unique_user_with(temporary_user, request.data)
         return Response({"status": "ok"}, status=200)
 
     def create(self, request, pk=None):

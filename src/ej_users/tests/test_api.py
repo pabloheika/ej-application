@@ -9,7 +9,7 @@ from enum import Enum
 class UserType(Enum):
     ANONYMOUS = "anonymous"
     AUTH = "auth"
-    AUTH_LINKED = "auth_linked"
+    COMPLETED_REGISTRATION = "auth_linked"
     ANOTHER_AUTH_LINKED = "another_auth_linked"
 
 
@@ -21,24 +21,25 @@ class UserFake:
             "email": "anonymous@mail.com",
             "password": OFFICIAL_PASSWORD,
             "password_confirm": OFFICIAL_PASSWORD,
+            "has_completed_registration": False,
         },
         UserType.AUTH: {
             "name": "Auth User",
             "email": "auth.user@mail.com",
             "password": "pass123@123",
             "password_confirm": "pass123@123",
+            "has_completed_registration": False,
         },
-        UserType.AUTH_LINKED: {
-            "name": "Auth User",
+        UserType.COMPLETED_REGISTRATION: {
             "email": "auth.user@mail.com",
             "password": OFFICIAL_PASSWORD,
-            "password_confirm": OFFICIAL_PASSWORD,
         },
         UserType.ANOTHER_AUTH_LINKED: {
             "name": "Another User",
             "email": "another.user@mail.com",
             "password": OFFICIAL_PASSWORD,
             "password_confirm": OFFICIAL_PASSWORD,
+            "has_completed_registration": False,
         },
     }
 
@@ -331,9 +332,8 @@ class TestUserAPI:
         user = User.objects.get(email=UserFake.USERS[UserType.AUTH]["email"])
         assert user.name == UserFake.USERS[UserType.AUTH]["name"]
         assert user.email == UserFake.USERS[UserType.AUTH]["email"]
-        assert User.decode_secret_id(user.secret_id) == TestUserAPI.SECRET_ID
 
-    def test_create_auth_user_and_link(self, client, db):
+    def test_user_has_completed_the_registration(self, client, db):
         ej_requests = EJRequests(client)
 
         # Create anonymous user
@@ -346,28 +346,22 @@ class TestUserAPI:
         response = ej_requests.create_user(UserType.AUTH)
         assert response.status_code == 201
 
-        # Link secret_id to auth user
-        response = ej_requests.update_user(UserType.AUTH_LINKED, TestUserAPI.SECRET_ID)
+        # Send request to merge users
+        response = ej_requests.update_user(
+            UserType.COMPLETED_REGISTRATION, TestUserAPI.SECRET_ID
+        )
         assert response.status_code == 200
 
         user = User.objects.get(secret_id=User.encode_secret_id(TestUserAPI.SECRET_ID))
         assert user.name == UserFake.USERS[UserType.AUTH]["name"]
         assert user.email == UserFake.USERS[UserType.AUTH]["email"]
         assert user.secret_id == User.encode_secret_id(TestUserAPI.SECRET_ID)
+        assert user.has_completed_registration
 
-        user = User.objects.get(email=UserFake.USERS[UserType.AUTH]["email"])
-        assert user.name == UserFake.USERS[UserType.AUTH]["name"]
-        assert user.email == UserFake.USERS[UserType.AUTH]["email"]
-        assert user.secret_id == User.encode_secret_id(TestUserAPI.SECRET_ID)
-
-        user = None
-        try:
+        with pytest.raises(User.DoesNotExist):
             user = User.objects.get(email=UserFake.USERS[UserType.ANONYMOUS]["email"])
-        except User.DoesNotExist:
-            pass
-        assert user is None
 
-    def test_get_token_by_secret_id(self, client, db):
+    def test_get_token_by_email_and_password(self, client, db):
         ej_requests = EJRequests(client)
 
         response = ej_requests.create_user(
@@ -375,29 +369,31 @@ class TestUserAPI:
         )
         assert response.status_code == 201
 
-        access_token = ej_requests.get_token(
-            UserType.ANONYMOUS, secret_id=TestUserAPI.SECRET_ID
-        )
+        access_token = ej_requests.get_token(UserType.ANONYMOUS)
         assert access_token
 
-    def test_get_token_by_secret_id_after_link(self, client, db):
+    def test_get_token_by_email_and_password_after_complete_registration(
+        self, client, db
+    ):
         ej_requests = EJRequests(client)
 
-        # Create anonymous user
+        # Create whatsapp user
         response = ej_requests.create_user(
             UserType.ANONYMOUS, secret_id=TestUserAPI.SECRET_ID
         )
         assert response.status_code == 201
 
-        # Create auth user
+        # Create regular user
         response = ej_requests.create_user(UserType.AUTH)
         assert response.status_code == 201
 
-        # Link secret_id to auth user
-        response = ej_requests.update_user(UserType.AUTH_LINKED, TestUserAPI.SECRET_ID)
+        # Merge WhatsApp user with Regular user
+        response = ej_requests.update_user(
+            UserType.COMPLETED_REGISTRATION, TestUserAPI.SECRET_ID
+        )
         assert response.status_code == 200
 
-        # Get token by secret_id
+        # WhatsApp user request a new token
         access_token = ej_requests.get_token(
             UserType.ANONYMOUS, secret_id=TestUserAPI.SECRET_ID
         )
@@ -418,7 +414,9 @@ class TestUserAPI:
         assert response.status_code == 201
 
         # Link secret_id to auth user
-        response = ej_requests.update_user(UserType.AUTH_LINKED, TestUserAPI.SECRET_ID)
+        response = ej_requests.update_user(
+            UserType.COMPLETED_REGISTRATION, TestUserAPI.SECRET_ID
+        )
         assert response.status_code == 200
 
         # Create another user
@@ -433,7 +431,9 @@ class TestUserAPI:
     def test_external_service_try_to_update_nonexistent_user(self, client, db):
         ej_requests = EJRequests(client)
 
-        response = ej_requests.update_user(UserType.AUTH_LINKED, TestUserAPI.SECRET_ID)
+        response = ej_requests.update_user(
+            UserType.COMPLETED_REGISTRATION, TestUserAPI.SECRET_ID
+        )
         assert response.status_code == 404
 
     def test_external_service_try_to_request_token_for_nonexistent_user(self, client, db):

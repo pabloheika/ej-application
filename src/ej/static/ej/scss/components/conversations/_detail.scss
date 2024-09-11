@@ -21,6 +21,11 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
     position: relative;
 }
 
+.checkbox-label{
+    text-transform: none !important;
+    margin-left: 0.5rem;
+}
+
 .conversation-balloon {
     @extend .center;
 
@@ -164,6 +169,14 @@ $color-brand-conversation-form: rgba(48, 191, 215 , .15);
             width: 100%;
         }
     }
+
+    .checkbox {
+        display: flex;
+        gap: 1rem;
+        align-items: baseline;
+        padding-left: 0.5rem;
+    }
+    
 
     label {
         margin-top: 1rem;

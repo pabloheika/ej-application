@@ -93,6 +93,16 @@ class IsAuthenticatedCreationView(permissions.BasePermission):
         return False
 
 
+class IsRandomCommentAndNotAuthenticated(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if view.action == "random_comment":
+            return True
+        return False
+
+    def has_object_permission(self, request, view, obj):
+        return self.has_permission(request, view)
+
+
 class IsAuthenticatedOnlyGetView(permissions.BasePermission):
     def has_permission(self, request, view):
         forbidden_endpoints = ["create", "update", "partial_update", "destroy"]

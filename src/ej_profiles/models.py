@@ -18,7 +18,7 @@ import toolz
 from ej_conversations.models import Comment, Conversation, ConversationTag
 from ej_conversations.models.vote import Vote
 
-from .enums import Gender, Race, STATE_CHOICES_MAP
+from .enums import Ethnicity, Gender, Race, Region, AgeRange, STATE_CHOICES_MAP
 from .utils import years_from
 
 SocialAccount = import_later("allauth.socialaccount.models:SocialAccount")
@@ -34,11 +34,14 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     race = EnumField(Race, _("Race"), default=Race.NOT_FILLED)
     ethnicity = models.CharField(_("Ethnicity"), blank=True, max_length=50)
+    ethnicity_choices = EnumField(Ethnicity, _("Ethnicity"), default=Ethnicity.NOT_FILLED)
     education = models.CharField(_("Education"), blank=True, max_length=140)
     gender = EnumField(Gender, _("Gender identity"), default=Gender.NOT_FILLED)
     gender_other = models.CharField(_("User provided gender"), max_length=50, blank=True)
     birth_date = models.DateField(_("Birth Date"), null=True, blank=True)
+    age_range = EnumField(AgeRange, _("Age range"), default=AgeRange.NOT_FILLED)
     country = models.CharField(_("Country"), blank=True, max_length=50)
+    region = EnumField(Region, _("Region"), default=Region.NOT_FILLED)
     state = models.CharField(_("State"), blank=True, max_length=3)
     city = models.CharField(_("City"), blank=True, max_length=140)
     biography = models.TextField(_("Biography"), blank=True)
@@ -188,9 +191,9 @@ class Profile(models.Model):
             conversations=self.user.conversations.count(),
         )
 
-    def conversation_statistics(self, conversation):
+    def conversation_statistics(self, conversation: Conversation):
         """
-        Get information about user.
+        Return the profile statistics in the conversation.
         """
         approved_comments = conversation.comments.filter(
             status=Comment.STATUS.approved
