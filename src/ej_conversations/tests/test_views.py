@@ -16,6 +16,8 @@ from ej_conversations.models import Comment, Conversation, FavoriteConversation,
 from ej_conversations.mommy_recipes import ConversationRecipes
 from ej_conversations.utils import votes_counter
 from ej_conversations.views import ConversationParticipantResults
+from ej_clusters.enums import ClusterStatus
+from ej_clusters.models.clusterization import Clusterization
 from ej_users.models import User
 from ..enums import Choice
 
@@ -1600,6 +1602,9 @@ class TestConversationParticipantResults(ConversationRecipes):
         conversation = self.conversation.make()
         conversation.board.slug = "newname"
         conversation.board.save()
+        Clusterization.objects.create(
+            conversation=conversation, cluster_status=ClusterStatus.ACTIVE
+        )
         user = mk_user(email="userdot@domain.com")
         mk_comment = conversation.create_comment
         mk_comment(user, "aa", status="approved", check_limits=False),
@@ -1610,7 +1615,7 @@ class TestConversationParticipantResults(ConversationRecipes):
 
     def test_context_with_results(self, conversation_with_min_comments, mk_user):
         user = mk_user(email="user@domain.com")
-        
+
         for comment in conversation_with_min_comments.comments.all():
             comment.vote(user, "agree")
 
@@ -1625,27 +1630,29 @@ class TestConversationParticipantResults(ConversationRecipes):
         response = ConversationParticipantResults.as_view()(request, **kwargs)
         data = response.context_data
 
-        assert data['has_minimum_comments']
-        assert data['has_minimum_participant_votes']
-        assert data['conversation'] == conversation_with_min_comments
-        assert len(data['least_convergent_comments']) == 3
-        assert len(data['most_agreed_comments']) == 3
-        assert len(data['most_disagreed_comments']) == 3
+        assert data["has_minimum_comments"]
+        assert data["has_minimum_participant_votes"]
+        assert data["conversation"] == conversation_with_min_comments
+        assert len(data["least_convergent_comments"]) == 3
+        assert len(data["most_agreed_comments"]) == 3
+        assert len(data["most_disagreed_comments"]) == 3
 
-    def test_show_insufficient_participation_message(self, conversation_with_min_comments, mk_user):
+    def test_show_insufficient_participation_message(
+        self, conversation_with_min_comments, mk_user
+    ):
         user = mk_user(email="user1@email.br")
         profile = user.get_profile()
         profile.save()
         client = Client()
         client.force_login(user)
         url = reverse(
-             "boards:conversation-results",
-             kwargs=conversation_with_min_comments.get_url_kwargs(),
+            "boards:conversation-results",
+            kwargs=conversation_with_min_comments.get_url_kwargs(),
         )
         response = client.get(url)
         assert response.status_code == 200
-        assert b'Keep participating to see the results' in response.content
-    
+        assert b"Keep participating to see the results" in response.content
+
     def test_show_insufficient_comments_message(self, mk_user):
         user = mk_user(email="user1@email.br")
         profile = user.get_profile()
@@ -1653,10 +1660,13 @@ class TestConversationParticipantResults(ConversationRecipes):
         client = Client()
         client.force_login(user)
         conversation = self.conversation.make()
+        Clusterization.objects.create(
+            conversation=conversation, cluster_status=ClusterStatus.ACTIVE
+        )
         url = reverse(
-             "boards:conversation-results",
-             kwargs=conversation.get_url_kwargs(),
+            "boards:conversation-results",
+            kwargs=conversation.get_url_kwargs(),
         )
         response = client.get(url)
         assert response.status_code == 200
-        assert b'Insufficient data to view results' in response.content
+        assert b"Insufficient data to view results" in response.content

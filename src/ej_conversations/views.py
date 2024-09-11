@@ -545,7 +545,7 @@ class ConversationParticipantResults(DetailView):
         conversation.clusterization.update_clusterization(force=True)
         user_cluster = user.clusters.filter(clusterization__conversation=conversation)
         clusters_user_count = user_cluster.users().all().count()
-        
+
         return {
             "has_minimum_comments": conversation.has_minimum_comments(),
             "has_minimum_participant_votes": conversation.has_minimum_participant_votes(
@@ -555,7 +555,9 @@ class ConversationParticipantResults(DetailView):
             "least_convergent_comments": least_convergent_comments,
             "most_agreed_comments": most_agreed_comments,
             "most_disagreed_comments": most_disagreed_comments,
-            "similar_opinion": clusters_user_count/conversation.n_participants * 100,
+            "similar_opinion": clusters_user_count / conversation.n_participants * 100
+            if conversation.n_participants > 0
+            else None,
         }
 
 

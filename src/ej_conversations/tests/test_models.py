@@ -121,7 +121,7 @@ class TestConversation(ConversationRecipes):
         conversation = mk_conversation()
         user = mk_user(email="user@domain.com")
         assert not conversation.has_minimum_participant_votes(user)
-    
+
 
 class TestVote:
     def test_unique_vote_per_comment(self, mk_user, comment_db):
