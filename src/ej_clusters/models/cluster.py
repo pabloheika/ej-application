@@ -1,8 +1,10 @@
+import json
 from boogie import models
 from django.contrib.auth import get_user_model
 from django.db.models import Subquery
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django_celery_beat.models import PeriodicTask, IntervalSchedule
 from model_utils.models import TimeStampedModel
 from sidekick import delegate_to, lazy, import_later, placeholder as this
 
@@ -148,3 +150,19 @@ class Cluster(TimeStampedModel):
             df = pd.concat([df, cluster_df])
             df.sort_values(by=["content", "created"], inplace=True)
         return df
+
+    def get_periodic_clusterization(self):
+        clusterization_id = self.clusterization.id
+
+        if self.clusterization.clusters.all().count() >= 2:
+            schedule, _ = IntervalSchedule.objects.get_or_create(
+                every=10,
+                period=IntervalSchedule.SECONDS,
+            )
+
+            return PeriodicTask.objects.get_or_create(
+                name=f"update-clusterization-{clusterization_id}",
+                task="ej_clusters.tasks.update_clusterization",
+                interval=schedule,
+                kwargs=json.dumps({"id": clusterization_id, "force": True}),
+            )

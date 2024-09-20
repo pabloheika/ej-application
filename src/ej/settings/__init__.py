@@ -21,6 +21,7 @@ __all__ = ("celery_app",)
 
 default_app_config = "ej_clusters.apps.EjClustersConfig"
 
+
 class Conf(
     ThemesConf,
     ConstanceConf,

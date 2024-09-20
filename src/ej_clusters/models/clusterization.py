@@ -76,7 +76,7 @@ class Clusterization(TimeStampedModel):
         unconditionally updates the clusterization.
         """
         update_clusterization.delay(self.id, force)
-    
+
     def update_clusters(self, force=False, atomic=False):
         """
         Update clusters if necessary, unless force=True, in which it
