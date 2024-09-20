@@ -29,6 +29,7 @@ class StereotypeVote(models.Model):
 
     class Meta:
         unique_together = [("author", "comment")]
+        app_label = 'ej_clusters'
 
     def __str__(self):
         return f"StereotypeVote({self.author}, value={self.choice})"

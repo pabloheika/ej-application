@@ -1,26 +1,46 @@
+version: '3'
 services:
-    db:
-        image: postgres:12.2
-        environment:
-            - POSTGRES_PASSWORD=ej
-            - POSTGRES_USER=ej
-            - POSTGRES_DB=ej
-        volumes:
-            - "backups:/var/lib/postgresql/data"
-        container_name: docker_db_1
-    server:
-        container_name: server
-        build:
-            context: ../
-            dockerfile: docker/Dockerfile
-        volumes:
-            - ../:/ej-application/
-            - "statics:/ej-application/local/"
-        env_file:
-            - variables.env
-        ports:
-            - 8000:8000
-        entrypoint: ["/bin/bash", "docker/run_local_server.sh"]
+  db:
+    image: postgres:12.2
+    environment:
+      - POSTGRES_PASSWORD=ej
+      - POSTGRES_USER=ej
+      - POSTGRES_DB=ej
+    volumes:
+      - "backups:/var/lib/postgresql/data"
+    container_name: docker_db_1
+    networks:
+      - ejnetwork
+
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - ejnetwork
+
+  server:
+    container_name: server
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ../:/ej-application/
+      - "statics:/ej-application/local/"
+    env_file:
+      - variables.env
+    ports:
+      - 8000:8000
+    entrypoint: ["/bin/bash", "docker/run_local_server.sh"]
+    networks:
+      - ejnetwork
+
 volumes:
-    backups:
-    statics:
+  backups:
+  statics:
+
+networks:
+  ejnetwork:
+    driver: bridge

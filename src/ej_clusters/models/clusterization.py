@@ -14,6 +14,7 @@ from ..utils import cluster_shapes, use_transaction
 from .querysets import ClusterizationManager
 from .stereotype import Stereotype
 from .stereotype_vote import StereotypeVote
+from ..tasks import update_clusterization
 
 NOT_GIVEN = object()
 log = getLogger("ej")
@@ -70,6 +71,13 @@ class Clusterization(TimeStampedModel):
         )
 
     def update_clusterization(self, force=False, atomic=False):
+        """
+        Update clusters if necessary, unless force=True, in which it
+        unconditionally updates the clusterization.
+        """
+        update_clusterization.delay(self.id, force)
+    
+    def update_clusters(self, force=False, atomic=False):
         """
         Update clusters if necessary, unless force=True, in which it
         unconditionally updates the clusterization.
