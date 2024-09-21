@@ -1,4 +1,3 @@
-from collections import defaultdict
 import datetime
 from functools import lru_cache
 from logging import getLogger
@@ -12,7 +11,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.utils.text import slugify
 from django.utils.timezone import make_aware
-from django.utils.translation import gettext as _, gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView
 from sidekick import import_later
 from sklearn import impute
@@ -26,15 +25,20 @@ from ej_conversations.utils import check_promoted
 from ej_dataviz.models import ToolsLinksHelper
 from ej_tools.utils import get_host_with_schema
 
-from .constants import *
-from .utils import (
+from ej_dataviz.constants import (
+    FIELD_DATA,
+    VALID_GROUP_BY,
+    GROUP_NAMES,
+    GROUP_DESCRIPTIONS,
+)
+from ej_dataviz.utils import (
     clusters,
     comments_data_common,
     create_stereotype_coords,
     export_data,
     format_echarts_option,
     get_cluster_or_404,
-    get_dashboard_biggest_cluster,
+    get_conversation_biggest_cluster,
     get_stop_words,
     get_user_data,
     vote_data_common,
@@ -89,12 +93,9 @@ def index(request, conversation_id, **kwargs):
     check_promoted(conversation, request)
     can_view_detail = request.user.has_perm("ej.can_view_report_detail", conversation)
     statistics = conversation.statistics()
-    clusterization = Clusterization.objects.filter(conversation=conversation)
     host = get_host_with_schema(request)
     names = getattr(settings, "EJ_PROFILE_FIELD_NAMES", {})
-    biggest_cluster_data = get_dashboard_biggest_cluster(
-        request, conversation, clusterization
-    )
+    biggest_cluster_data = get_conversation_biggest_cluster(request, conversation)
 
     context = {
         "conversation": conversation,
@@ -105,7 +106,6 @@ def index(request, conversation_id, **kwargs):
         "biggest_cluster_data": biggest_cluster_data,
         "gender_field": names.get("gender", _("Gender")),
         "race_field": names.get("race", _("Race")),
-        "conversation": check_promoted(conversation, request),
         "pca_link": _("https://en.wikipedia.org/wiki/Principal_component_analysis"),
         "current_page": "dashboard",
     }
@@ -191,7 +191,7 @@ def scatter_group(request, conversation_id, groupby, **kwargs):
         votes__comment__conversation=conversation
     ).values_list("id", param)
 
-    data = defaultdict(list)
+    data = defaultdict(list)  # noqa: F821
     for user, value in data_pairs:
         data[value].append(user)
 

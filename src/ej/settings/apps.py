@@ -45,7 +45,8 @@ class InstalledAppsConf(Base, EjOptions):
         "ckeditor",
         "drf_spectacular",
         "django_celery_beat",
-        "ej_clusters",
+        "jazzmin",
+        "django.contrib.admin",
     ]
 
     CELERY_BROKER_URL = env("pyamqp://guest@rabbitmq//", name="CELERY_BROKER_URL")

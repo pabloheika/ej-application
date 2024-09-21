@@ -1,9 +1,9 @@
 import json
 from logging import getLogger
 
-from boogie import models, rules
-from boogie.fields import EnumField
-from django.db.models import Count, F
+from boogie import rules
+
+from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
@@ -30,7 +30,9 @@ class Clusterization(TimeStampedModel):
         on_delete=models.CASCADE,
         related_name="clusterization",
     )
-    cluster_status = EnumField(ClusterStatus, default=ClusterStatus.PENDING_DATA)
+    cluster_status = models.IntegerField(
+        ClusterStatus, default=ClusterStatus.PENDING_DATA
+    )
     comments = delegate_to("conversation")
     users = delegate_to("conversation")
     votes = delegate_to("conversation")
@@ -119,7 +121,7 @@ class Clusterization(TimeStampedModel):
 
         try:
             clusters = (
-                self.clusters.annotate(size=Count(F("users")))
+                self.clusters.annotate(size=models.Count(models.F("users")))
                 .annotate_attr(separated_comments=lambda c: c.separate_comments())
                 .prefetch_related("stereotypes")
             )
@@ -151,6 +153,6 @@ class Clusterization(TimeStampedModel):
 
     def get_biggest_cluster(self):
         if self.get_clusters_count() > 0:
-            clusters = self.clusters.annotate(size=Count(F("users")))
+            clusters = self.clusters.annotate(size=models.Count(models.F("users")))
             return clusters.order_by("-size").first()
         return None
