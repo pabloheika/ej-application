@@ -1,8 +1,6 @@
 from celery import Celery
 from django.conf import settings
 
-from ej_clusters import tasks
-from . import tasks
 
 # Use the name of the RabbitMQ container as the hostname.
 broker_url = "pyamqp://guest@rabbitmq//"
