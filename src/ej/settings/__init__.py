@@ -15,7 +15,7 @@ from .. import fixes
 
 log = logging.getLogger("ej")
 
-from ej_clusters.celery import app as celery_app
+from ej_tasks.celery import app as celery_app
 
 __all__ = ("celery_app",)
 

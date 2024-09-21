@@ -21,6 +21,7 @@ class InstalledAppsConf(Base, EjOptions):
         "ej_conversations",
         "ej_tools",
         "ej_admin",
+        "ej_tasks"
     ]
 
     third_party_apps = [

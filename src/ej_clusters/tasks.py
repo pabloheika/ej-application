@@ -15,7 +15,3 @@ def update_clusterization(id, force=False):
 
     return "Clusterization updated"
 
-
-@shared_task
-def test_celery():
-    return "Celery is working!"
