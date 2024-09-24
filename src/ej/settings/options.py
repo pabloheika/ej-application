@@ -1,3 +1,4 @@
+import os
 from boogie.configurations import Conf, env
 
 _ = lambda x: x
@@ -31,3 +32,5 @@ class EjOptions(Conf):
     EJ_PAGE_TITLE = env(_("EJ Platform"), name="{attr}")
     EJ_REGISTER_TEXT = _("Not part of EJ yet?")
     EJ_LOGIN_TITLE_TEXT = _("Welcome!")
+
+    CELERY_ACTIVE = os.getenv("CELERY_ACTIVE", True)

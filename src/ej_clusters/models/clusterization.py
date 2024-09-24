@@ -1,9 +1,11 @@
 import json
 from logging import getLogger
+import os
 
 from boogie import rules
 
 from django.db import models
+from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
@@ -74,10 +76,12 @@ class Clusterization(TimeStampedModel):
 
     def update_clusterization(self, force=False, atomic=False):
         """
-        Update clusters if necessary, unless force=True, in which it
-        unconditionally updates the clusterization.
+        Update clusters according to environment setup
+        if variable CELERY_ACTIVE is set, this is executed asynchronously
         """
-        update_clusterization.delay(self.id, force)
+        if settings.CELERY_ACTIVE:
+            update_clusterization.delay(self.id, force)
+        self.update_clusters(force, atomic)
 
     def update_clusters(self, force=False, atomic=False):
         """
