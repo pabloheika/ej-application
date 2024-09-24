@@ -14,4 +14,3 @@ def update_clusterization(id, force=False):
         clusterization.update_clusters(force=force)
 
     return "Clusterization updated"
-

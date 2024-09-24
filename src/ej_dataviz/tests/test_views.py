@@ -370,7 +370,7 @@ class TestUsersReport(TestReportRoutes):
             choice=Choice.AGREE, comment=comments[0], author_id=stereotype.id
         )
         StereotypeVote.objects.create(
-            choice=Choice.SKIP, comment=comments[1], author_id=stereotype.id
+            choice=Choice.AGREE, comment=comments[1], author_id=stereotype.id
         )
         StereotypeVote.objects.create(
             choice=Choice.DISAGREE, comment=comments[2], author_id=stereotype.id
@@ -378,7 +378,9 @@ class TestUsersReport(TestReportRoutes):
         StereotypeVote.objects.create(
             choice=Choice.DISAGREE, comment=comments[3], author_id=stereotype.id
         )
-        clusterization.update_clusterization(force=True)
+
+        clusterization.update_clusters(force=True)
+
         yield cluster
 
     def test_get_user_dataframe(self, conversation_with_comments):

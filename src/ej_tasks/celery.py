@@ -1,5 +1,4 @@
 from celery import Celery
-from django.conf import settings
 
 
 # Use the name of the RabbitMQ container as the hostname.

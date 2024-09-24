@@ -6,5 +6,4 @@ from ej_clusters.models import Cluster
 
 @receiver(post_save, sender=Cluster)
 def create_periodic_clusterization(sender, instance: Cluster, **kwargs):
-    print("entrou no signal")
     instance.get_periodic_clusterization()

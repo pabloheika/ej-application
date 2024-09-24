@@ -6,14 +6,14 @@ import pytest
 from .tasks import test_celery
 from ej_clusters.tasks import update_clusterization
 
-pytest_plugins = ('celery.contrib.pytest', )
+pytest_plugins = ("celery.contrib.pytest",)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def celery_config():
     return {
-        'broker_url': 'redis://localhost:8001',
-        'result_backend': 'redis://localhost:8001'
+        "broker_url": "redis://localhost:8001",
+        "result_backend": "redis://localhost:8001",
     }
 
 
@@ -39,16 +39,23 @@ def test_celery_worker_initializes(celery_app, celery_worker):
     assert True
 
 
-def test_celery_simple_task(celery_app, celery_worker ):
+def test_celery_simple_task(celery_app, celery_worker):
 
     assert test_celery.delay().get(timeout=5) == "Celery is working!"
 
 
-def test_update_clusterization_task(celery_app, celery_worker, conversation_with_comments):
+def test_update_clusterization_task(
+    celery_app, celery_worker, conversation_with_comments
+):
     clusterization = Clusterization.objects.create(
         conversation=conversation_with_comments, cluster_status=ClusterStatus.ACTIVE
     )
     cluster = Cluster.objects.create(name="name", clusterization=clusterization)
-    stereotype, _ = Stereotype.objects.get_or_create(name="name", owner=conversation_with_comments.author)
+    stereotype, _ = Stereotype.objects.get_or_create(
+        name="name", owner=conversation_with_comments.author
+    )
     cluster.stereotypes.add(stereotype)
-    assert update_clusterization.delay(clusterization.id, True).get(timeout=5) == "Celery is working!"
+    assert (
+        update_clusterization.delay(clusterization.id, True).get(timeout=5)
+        == "Celery is working!"
+    )
