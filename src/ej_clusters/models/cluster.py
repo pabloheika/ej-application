@@ -1,4 +1,3 @@
-import json
 from boogie import models
 from django.contrib.auth import get_user_model
 from django.db.models import Subquery

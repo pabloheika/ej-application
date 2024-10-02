@@ -232,7 +232,7 @@ def celery(ctx):
     """
     Run Celery instance.
     """
-    print_green(f"executing celery task")
+    print_green("executing celery task")
 
     celery_command = "sh docker/run_celery.sh"
 
