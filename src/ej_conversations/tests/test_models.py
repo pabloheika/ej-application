@@ -88,7 +88,7 @@ class TestConversation(ConversationRecipes):
 
     def test_has_not_suficient_comments(self, mk_conversation):
         conversation = mk_conversation()
-        assert not conversation.has_minimum_comments()
+        assert not conversation.has_minimum_comments
 
     def test_has_suficient_comments(self, mk_conversation, mk_user):
         conversation = mk_conversation()
@@ -99,12 +99,13 @@ class TestConversation(ConversationRecipes):
         mk_comment(user, "bb", status="approved", check_limits=False),
         mk_comment(user, "cc", status="approved", check_limits=False),
         mk_comment(user, "dd", status="approved", check_limits=False),
-        assert conversation.has_minimum_comments()
+        assert conversation.has_minimum_comments
 
     def test_has_minimum_participant_votes(self, mk_conversation, mk_user):
         conversation = mk_conversation()
         user = mk_user(email="user@domain.com")
         mk_comment = conversation.create_comment
+        conversation.set_request(user)
         comments = [
             mk_comment(user, "aa", status="approved", check_limits=False),
             mk_comment(user, "bb", status="approved", check_limits=False),
@@ -115,12 +116,13 @@ class TestConversation(ConversationRecipes):
         for comment in comments:
             comment.vote(user, "agree")
 
-        assert conversation.has_minimum_participant_votes(user)
+        assert conversation.has_minimum_participant_votes
 
     def test_has_not_minimum_participant_votes(self, mk_conversation, mk_user):
         conversation = mk_conversation()
         user = mk_user(email="user@domain.com")
-        assert not conversation.has_minimum_participant_votes(user)
+        conversation.set_request(user)
+        assert not conversation.has_minimum_participant_votes
 
 
 class TestVote:
