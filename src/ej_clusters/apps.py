@@ -11,8 +11,6 @@ class EjClustersConfig(AppConfig):
     def ready(self):
         from . import rules
         from . import api
-        from . import signals
 
         self.rules = rules
         self.api = api
-        self.signals = signals

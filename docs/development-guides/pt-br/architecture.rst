@@ -145,3 +145,6 @@ O `core` da EJ é composto pelos seguintes ``apps``:
 
     Aplicativo responsável por agrupar as conversas do perfil Analista.
 
+``ej_tasks``
+
+    Aplicativo responsável por administrar as tarefas assíncronas.

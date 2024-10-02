@@ -74,6 +74,37 @@ MAILGUN_API_KEY:
 MAILGUN_SENDER_DOMAIN:
     Domínio que será utilizado para enviar os emails.
 
+
+CELERY
+======
+
+Para implementar tarefas assíncronas, a EJ utiliza a ferramenta `Celery <https://docs.celeryq.dev/en/stable/index.html>`_. 
+Ela permite distribuir a responsabilidade na execução de funções e desta forma, melhorar a performance
+do servidor. 
+Para mais detalhes, consulte a `documentação <https://docs.celeryq.dev/en/stable/userguide/configuration.html>`_.
+
+CELERY_ACTIVE:
+    Quando definida como True, as tarefas definidas passam a ser executadas de forma assíncrona.
+
+CELERY_BROKER_URL:
+    Define a URL default do broker.
+
+CELERY_RESULT_BACKEND:
+    Backend utilizado para armazenar as tarefas definidas.
+
+CELERY_ACCEPT_CONTENT:
+    Tipos de mensagem aceitos.
+
+CELERY_TASK_SERIALIZER:
+    String que identifica o método de serialização padrão a ser usado.
+
+CELERY_RESULT_SERIALIZER:
+    Formato do resultado da serialização.
+
+CELERY_TIMEZONE:
+    Define o fuso horário a ser utilizado.
+
+
 Segurança
 =========
 

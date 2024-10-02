@@ -233,9 +233,8 @@ def celery(ctx):
     Run Celery instance.
     """
     print_green(f"executing celery task")
-    print_green(f"executing celery task agora")
-    
+
     celery_command = "sh docker/run_celery.sh"
-    
+
     do = runner(ctx, dry_run=False, pty=True)
-    do(f"docker exec --user=root -it server /bin/bash -c 'source /root/.bashrc && {celery_command}'")
+    do(f"source /root/.bashrc && {celery_command}")

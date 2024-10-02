@@ -61,6 +61,11 @@ class ConstanceConf:
                 "Set this variable to 'False' if you don't want the user voting again in comments he already skiped. You can edit this value in Django admin, in the Constance page.",
                 bool,
             ),
+            "CELERY_ACTIVE": (
+                self.CELERY_ACTIVE,
+                "Set this variable to 'True' if you want to use Celery for assynchronous tasks.",
+                bool,
+            ),
         }
 
     CONSTANCE_ADDITIONAL_FIELDS = {
@@ -83,6 +88,7 @@ class ConstanceConf:
             "EJ_PROFILE_STATE_CHOICES",
             "EJ_LANDING_PAGE_DOMAIN",
             "RETURN_USER_SKIPED_COMMENTS",
+            "CELERY_ACTIVE",
         )
     }
 
@@ -101,6 +107,8 @@ class ConstanceConf:
     )
 
     RETURN_USER_SKIPED_COMMENTS = os.getenv("{attr}", True)
+
+    CELERY_ACTIVE = os.getenv("{attr}", False)
 
     EJ_PROFILE_STATE_CHOICES = (
         ("AC", "Acre"),
@@ -168,3 +176,14 @@ class ConstanceConf:
             "height": 140,
         },
     }
+
+    # Celery config
+    CELERY_BROKER_URL = os.getenv("{attr}", "pyamqp://guest@rabbitmq//")
+    CELERY_RESULT_BACKEND = os.getenv("{attr}", "rpc://")
+    CELERY_ACCEPT_CONTENT = ["json"]
+    CELERY_TASK_SERIALIZER = "json"
+    CELERY_RESULT_SERIALIZER = "json"
+    CELERY_TIMEZONE = "UTC"
+
+    # Minimun participation required to access results analysis
+    MINIMUM_PARTICIPATION = 3

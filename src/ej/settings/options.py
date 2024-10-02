@@ -33,4 +33,4 @@ class EjOptions(Conf):
     EJ_REGISTER_TEXT = _("Not part of EJ yet?")
     EJ_LOGIN_TITLE_TEXT = _("Welcome!")
 
-    CELERY_ACTIVE = os.getenv("CELERY_ACTIVE", True)
+    CELERY_ACTIVE = os.getenv("CELERY_ACTIVE", False)

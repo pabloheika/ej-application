@@ -63,6 +63,8 @@ Some useful commands to manage the application **(run this inside django contain
 | inv db           | Prepare database and run migrations                            |
 | inv shell        | Executes django shell with ipython                             |
 | inv docs         | Compile .rst documentation to generates .html files            |
+| inv celery       | Activate Celery execution to allows asynchronous tasks         | 
+
 
 ## MacOS 
 

@@ -539,20 +539,17 @@ class ConversationParticipantResults(DetailView):
         most_agreed_comments = df.sort_values("agree", ascending=False)[:3]
         most_disagreed_comments = df.sort_values("disagree", ascending=False)[:3]
 
-        conversation.clusterization.update_clusterization(force=True)
-        user_cluster = user.clusters.filter(clusterization__conversation=conversation)
-        clusters_user_count = user_cluster.users().all().count()
+        conversation.get_clusterization().update_clusterization(force=True)
+        conversation.set_request(user)
 
         return {
-            "has_minimum_comments": conversation.has_minimum_comments(),
-            "has_minimum_participant_votes": conversation.has_minimum_participant_votes(
-                user
-            ),
+            "has_minimum_comments": conversation.has_minimum_comments,
+            "has_minimum_participant_votes": conversation.has_minimum_participant_votes,
             "conversation": conversation,
             "least_convergent_comments": least_convergent_comments,
             "most_agreed_comments": most_agreed_comments,
             "most_disagreed_comments": most_disagreed_comments,
-            "similar_opinion": clusters_user_count / conversation.n_participants * 100
+            "similar_opinion": conversation.clusterization.get_similar_opinion(user)
             if conversation.n_participants > 0
             else None,
         }

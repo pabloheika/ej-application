@@ -1,22 +1,23 @@
 import json
 from logging import getLogger
-import os
-
 from boogie import rules
+from constance import config
 
+from django_celery_beat.models import PeriodicTask, IntervalSchedule
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+
 from model_utils.models import TimeStampedModel
 from sidekick import delegate_to, lazy, placeholder as this
 
+from ej_tasks.tasks import update_clusterization
 from ..enums import ClusterStatus
 from ..utils import cluster_shapes, use_transaction
 from .querysets import ClusterizationManager
 from .stereotype import Stereotype
 from .stereotype_vote import StereotypeVote
-from ..tasks import update_clusterization
 
 NOT_GIVEN = object()
 log = getLogger("ej")
@@ -79,9 +80,9 @@ class Clusterization(TimeStampedModel):
         Update clusters according to environment setup
         if variable CELERY_ACTIVE is set, this is executed asynchronously
         """
-        if settings.CELERY_ACTIVE:
-            update_clusterization.delay(self.id, force)
-        self.update_clusters(force, atomic)
+        if config.CELERY_ACTIVE:
+            return self.get_periodic_clusterization()
+        return self.update_clusters(force, atomic)
 
     def update_clusters(self, force=False, atomic=False):
         """
@@ -160,3 +161,27 @@ class Clusterization(TimeStampedModel):
             clusters = self.clusters.annotate(size=models.Count(models.F("users")))
             return clusters.order_by("-size").first()
         return None
+
+    def get_similar_opinion(self, user):
+        user_cluster = user.clusters.filter(clusterization__id=self.id)
+        clusters_user_count = user_cluster.users().all().count()
+        return clusters_user_count / self.conversation.n_participants * 100
+
+    def get_periodic_clusterization(self):
+        id = self.id
+
+        if self.clusters.all().count() >= 2:
+            schedule, _ = IntervalSchedule.objects.get_or_create(
+                every=5,
+                period=IntervalSchedule.MINUTES,
+            )
+
+            periodic_task, created = PeriodicTask.objects.get_or_create(
+                name=f"update-clusterization-{id}",
+                task="ej_tasks.tasks.update_clusterization",
+                interval=schedule,
+                kwargs=json.dumps({"id": id, "force": True}),
+            )
+            if created:
+                update_clusterization.delay(id, True).get(timeout=5)
+            return periodic_task

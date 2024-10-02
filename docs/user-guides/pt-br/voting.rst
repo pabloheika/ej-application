@@ -34,6 +34,17 @@ da conversa. Estes comentários irão para moderação, antes de ficarem dispon�
    Tela de adição de comentários apresentada aos usuários comuns.
 
 
+Visualizando resultados parciais da conversa
+--------------------------------------------
+
+Na seção colapsável "Descubra", logo abaixo do comentário de uma conversa, é possível visualizar alguns dados parciais da conversa
+em questão. Dados como, porcentagem de participantes que interagem de forma similar ao usuário atual,
+nuvem de pontos, e apresentação dos comentários mais concordados, discordados e com menor convergência. 
+
+foto da seção fechada
+
+foto da seção colapsada
+
 Compartilhando uma conversa
 ---------------------------
 
