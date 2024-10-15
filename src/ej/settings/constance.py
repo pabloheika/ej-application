@@ -61,8 +61,8 @@ class ConstanceConf:
                 "Set this variable to 'False' if you don't want the user voting again in comments he already skiped. You can edit this value in Django admin, in the Constance page.",
                 bool,
             ),
-            "CELERY_ACTIVE": (
-                self.CELERY_ACTIVE,
+            "USE_CELERY_BACKEND": (
+                self.USE_CELERY_BACKEND,
                 "Set this variable to 'True' if you want to use Celery for assynchronous tasks.",
                 bool,
             ),
@@ -88,7 +88,7 @@ class ConstanceConf:
             "EJ_PROFILE_STATE_CHOICES",
             "EJ_LANDING_PAGE_DOMAIN",
             "RETURN_USER_SKIPED_COMMENTS",
-            "CELERY_ACTIVE",
+            "USE_CELERY_BACKEND",
         )
     }
 
@@ -108,7 +108,7 @@ class ConstanceConf:
 
     RETURN_USER_SKIPED_COMMENTS = os.getenv("{attr}", True)
 
-    CELERY_ACTIVE = os.getenv("{attr}", False)
+    USE_CELERY_BACKEND = os.getenv("{attr}", False)
 
     EJ_PROFILE_STATE_CHOICES = (
         ("AC", "Acre"),

@@ -19,15 +19,21 @@ COMPOSE_BINARY = "docker compose"
 
 
 @task
-def docker_up(ctx, dry_run=False, d=False):
+def docker_up(ctx, dry_run=False, d=False, celery=False):
     """
     Executes EJ on url http://localhost:8000
     """
     do = runner(ctx, dry_run, pty=True)
     file = "docker/docker-compose.yml"
+    base = f"{COMPOSE_BINARY} -f {file}"
     compose = (
-        f"{COMPOSE_BINARY} -f {file} up -d" if d else f"{COMPOSE_BINARY} -f {file} up"
+        f"{base} up -d" if d else f"{base} up"
     )
+    if celery: # todo flag true
+        compose = (
+        f"docker compose -f docker/rabbitmq-docker-compose.yml -f docker/docker-compose.yml up"
+        )
+
     do(compose)
 
 

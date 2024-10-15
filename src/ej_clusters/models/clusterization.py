@@ -77,9 +77,9 @@ class Clusterization(TimeStampedModel):
     def update_clusterization(self, force=False, atomic=False):
         """
         Update clusters according to environment setup
-        if variable CELERY_ACTIVE is set, this is executed asynchronously
+        if variable USE_CELERY_BACKEND is set, this is executed asynchronously
         """
-        if config.CELERY_ACTIVE:
+        if config.USE_CELERY_BACKEND:
             return self.get_periodic_clusterization()
         return self.update_clusters(force, atomic)
 
