@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
 from sidekick import delegate_to, lazy, placeholder as this
 
-from ej_tasks.tasks import update_clusterization
+from ej_clusters.tasks import update_clusterization
 from ..enums import ClusterStatus
 from ..utils import cluster_shapes, use_transaction
 from .querysets import ClusterizationManager
@@ -177,7 +177,7 @@ class Clusterization(TimeStampedModel):
 
             periodic_task, created = PeriodicTask.objects.get_or_create(
                 name=f"update-clusterization-{id}",
-                task="ej_tasks.tasks.update_clusterization",
+                task="ej_clusters.tasks.update_clusterization",
                 interval=schedule,
                 kwargs=json.dumps({"id": id, "force": True}),
             )

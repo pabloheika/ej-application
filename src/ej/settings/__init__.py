@@ -12,14 +12,12 @@ from .paths import PathsConf
 from .security import SecurityConf
 from .themes import ThemesConf
 from .. import fixes
-from ej_tasks.celery import app as celery_app
+from ej.settings.celery import app as celery_app
 
 log = logging.getLogger("ej")
 
 
 __all__ = ("celery_app",)
-
-default_app_config = "ej_clusters.apps.EjClustersConfig"
 
 
 class Conf(

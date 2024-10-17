@@ -83,7 +83,7 @@ Ela permite distribuir a responsabilidade na execução de funções e desta for
 do servidor. 
 Para mais detalhes, consulte a `documentação <https://docs.celeryq.dev/en/stable/userguide/configuration.html>`_.
 
-CELERY_ACTIVE:
+USE_CELERY_BACKEND:
     Quando definida como True, as tarefas definidas passam a ser executadas de forma assíncrona.
 
 CELERY_BROKER_URL:
