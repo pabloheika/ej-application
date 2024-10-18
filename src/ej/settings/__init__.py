@@ -12,7 +12,7 @@ from .paths import PathsConf
 from .security import SecurityConf
 from .themes import ThemesConf
 from .. import fixes
-from ej.settings.celery import app as celery_app
+from ej.celery import app as celery_app
 
 log = logging.getLogger("ej")
 

@@ -1,9 +1,10 @@
+import pytest
+
 from ej_clusters.enums import ClusterStatus
 from ej_clusters.models.cluster import Cluster
 from ej_clusters.models.clusterization import Clusterization
 from ej_clusters.models.stereotype import Stereotype
-import pytest
-from .tasks import test_celery
+from ..tasks import test_celery
 from ej_clusters.tasks import update_clusterization
 
 pytest_plugins = ("celery.contrib.pytest",)

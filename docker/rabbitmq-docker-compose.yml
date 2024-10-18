@@ -7,3 +7,23 @@ services:
       - "15672:15672"
     networks:
       - ejnetwork
+
+  celery:
+    container_name: celery
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ../:/ej-application/
+      - "statics:/ej-application/local/"
+    env_file:
+      - variables.env
+    ports:
+      - 8002:8002
+    entrypoint: ["/bin/bash", "docker/run_celery.sh"]
+    # command: poetry show
+    depends_on:
+      - rabbitmq
+      - server
+    networks:
+      - ejnetwork

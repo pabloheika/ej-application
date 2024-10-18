@@ -23,4 +23,5 @@ RUN poetry config virtualenvs.create false
 COPY ./ /ej-application
 WORKDIR ej-application
 # Installs main and dev groups dependencies
+RUN poetry add celery
 RUN poetry install --with main,dev --no-root
