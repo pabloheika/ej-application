@@ -26,13 +26,9 @@ def docker_up(ctx, dry_run=False, d=False, celery=False):
     do = runner(ctx, dry_run, pty=True)
     file = "docker/docker-compose.yml"
     base = f"{COMPOSE_BINARY} -f {file}"
-    compose = (
-        f"{base} up -d" if d else f"{base} up"
-    )
+    compose = f"{base} up -d" if d else f"{base} up"
     if celery:
-        compose = (
-        f"{base} -f docker/celery-docker-compose.yml up"
-        )
+        compose = f"{base} -f docker/celery-docker-compose.yml up"
 
     do(compose)
 
