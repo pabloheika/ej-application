@@ -21,7 +21,6 @@ services:
     ports:
       - 8002:8002
     entrypoint: ["/bin/bash", "docker/run_celery.sh"]
-    # command: poetry show
     depends_on:
       - rabbitmq
       - server

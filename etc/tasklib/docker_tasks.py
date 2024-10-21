@@ -29,9 +29,9 @@ def docker_up(ctx, dry_run=False, d=False, celery=False):
     compose = (
         f"{base} up -d" if d else f"{base} up"
     )
-    if celery: # todo flag true
+    if celery:
         compose = (
-        f"docker compose -f docker/rabbitmq-docker-compose.yml -f docker/docker-compose.yml up"
+        f"{base} -f docker/celery-docker-compose.yml up"
         )
 
     do(compose)
