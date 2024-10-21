@@ -40,6 +40,7 @@ class Conf(
     """
 
     USING_DOCKER = env(False, name="USING_DOCKER")
+    USE_CELERY_BACKEND = os.getenv("USE_CELERY_BACKEND", False)
     HOSTNAME = env("localhost")
 
     #

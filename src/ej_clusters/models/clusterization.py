@@ -2,7 +2,7 @@ import json
 from logging import getLogger
 from boogie import rules
 from constance import config
-
+from django.conf import settings
 from django_celery_beat.models import PeriodicTask, IntervalSchedule
 from django.db import models
 from django.urls import reverse
@@ -79,7 +79,7 @@ class Clusterization(TimeStampedModel):
         Update clusters according to environment setup
         if variable USE_CELERY_BACKEND is set, this is executed asynchronously
         """
-        if config.USE_CELERY_BACKEND:
+        if settings.USE_CELERY_BACKEND:
             return self.get_periodic_clusterization()
         return self.update_clusters(force, atomic)
 

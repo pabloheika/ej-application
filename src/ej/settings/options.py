@@ -32,5 +32,3 @@ class EjOptions(Conf):
     EJ_PAGE_TITLE = env(_("EJ Platform"), name="{attr}")
     EJ_REGISTER_TEXT = _("Not part of EJ yet?")
     EJ_LOGIN_TITLE_TEXT = _("Welcome!")
-
-    USE_CELERY_BACKEND = os.getenv("USE_CELERY_BACKEND", False)
