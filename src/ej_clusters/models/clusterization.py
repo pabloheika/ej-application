@@ -1,7 +1,6 @@
 import json
 from logging import getLogger
 from boogie import rules
-from constance import config
 from django.conf import settings
 from django_celery_beat.models import PeriodicTask, IntervalSchedule
 from django.db import models

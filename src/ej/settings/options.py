@@ -1,4 +1,3 @@
-import os
 from boogie.configurations import Conf, env
 
 _ = lambda x: x
