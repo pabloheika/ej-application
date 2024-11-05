@@ -504,9 +504,7 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
         try:
             return self.clusterization
         except Clusterization.DoesNotExist:
-            clusterization = Clusterization.objects.create(conversation=self)
-            log.info("profile successfully created")
-            return clusterization
+            return Clusterization.objects.create(conversation=self)
 
 
 #

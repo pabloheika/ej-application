@@ -18,19 +18,25 @@ __all__ = [
 COMPOSE_BINARY = "docker compose"
 
 
-@task
+@task(
+    help={
+        "dry_run": "Execute command in dry run mode",
+        "d": "Detached",
+        "celery": "Activates asynchronous tasks with Celery",
+    }
+)
 def docker_up(ctx, dry_run=False, d=False, celery=False):
     """
     Executes EJ on url http://localhost:8000
     """
     do = runner(ctx, dry_run, pty=True)
-    file = "docker/docker-compose.yml"
-    base = f"{COMPOSE_BINARY} -f {file}"
-    compose = f"{base} up -d" if d else f"{base} up"
+    cmd = f"{COMPOSE_BINARY} -f docker/docker-compose.yml"
     if celery:
-        compose = f"{base} -f docker/celery-docker-compose.yml up"
-
-    do(compose)
+        cmd += " -f docker/celery-docker-compose.yml"
+    if d:
+        cmd += " -d"
+    cmd += " up"
+    do(cmd)
 
 
 @task

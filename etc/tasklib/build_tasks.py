@@ -2,7 +2,6 @@ import os
 
 from invoke import task
 import environ
-from .base import runner
 
 try:
     from colorama import Fore, Style
@@ -36,7 +35,7 @@ except Exception:
 
 from .base import directory, exec_watch, manage, python
 
-__all__ = ["build_assets", "docs", "i18n", "js", "sass", "celery"]
+__all__ = ["build_assets", "docs", "i18n", "js", "sass"]
 
 env = environ.Env(
     EJ_THEME=(str, "ej"),
@@ -228,16 +227,3 @@ def sass(ctx, watch=False, background=False, minify=False, app_name=None):
                 thread.start()
 
     print_green("\nCompilation finished!")
-
-
-@task
-def celery(ctx):
-    """
-    Run Celery instance.
-    """
-    print_green("executing celery task")
-
-    celery_command = "sh docker/run_celery.sh"
-
-    do = runner(ctx, dry_run=False, pty=True)
-    do(f"source /root/.bashrc && {celery_command}")
