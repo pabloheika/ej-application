@@ -61,11 +61,6 @@ class ConstanceConf:
                 "Set this variable to 'False' if you don't want users to vote again on comments they already skipped.",
                 bool,
             ),
-            "USE_CELERY_BACKEND": (
-                self.USE_CELERY_BACKEND,
-                "Set this variable to 'True' if you want to use Celery for assynchronous tasks.",
-                bool,
-            ),
         }
 
     CONSTANCE_ADDITIONAL_FIELDS = {
@@ -88,7 +83,6 @@ class ConstanceConf:
             "EJ_PROFILE_STATE_CHOICES",
             "EJ_LANDING_PAGE_DOMAIN",
             "RETURN_USER_SKIPED_COMMENTS",
-            "USE_CELERY_BACKEND",
         )
     }
 
@@ -107,8 +101,6 @@ class ConstanceConf:
     )
 
     RETURN_USER_SKIPED_COMMENTS = os.getenv("{attr}", True)
-
-    USE_CELERY_BACKEND = os.getenv("{attr}", False)
 
     EJ_PROFILE_STATE_CHOICES = (
         ("AC", "Acre"),
@@ -178,7 +170,6 @@ class ConstanceConf:
     }
 
     # Celery config
-    CELERY_BROKER_URL = os.getenv("{attr}", "pyamqp://guest@rabbitmq//")
     CELERY_RESULT_BACKEND = os.getenv("{attr}", "rpc://")
     CELERY_ACCEPT_CONTENT = ["json"]
     CELERY_TASK_SERIALIZER = "json"

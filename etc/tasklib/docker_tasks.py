@@ -33,6 +33,7 @@ def docker_up(ctx, dry_run=False, d=False, celery=False):
     cmd = f"{COMPOSE_BINARY} -f docker/docker-compose.yml"
     if celery:
         cmd += " -f docker/celery-docker-compose.yml"
+        cmd = f"USE_CELERY_BACKEND=True {cmd}"
     if d:
         cmd += " -d"
     cmd += " up"
