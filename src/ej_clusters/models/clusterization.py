@@ -166,6 +166,7 @@ class Clusterization(TimeStampedModel):
 
     def get_periodic_clusterization(self):
         from django_celery_beat.models import PeriodicTask, IntervalSchedule
+
         id = self.id
 
         if self.clusters.all().count() >= 2:

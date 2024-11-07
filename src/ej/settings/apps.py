@@ -9,6 +9,7 @@ from .options import EjOptions
 log = getLogger("ej")
 CELERY_BEAT_APP = "django_celery_beat" if os.getenv("USE_CELERY_BACKEND", None) else None
 
+
 class InstalledAppsConf(Base, EjOptions):
     USE_DJANGO_ADMIN = env(True, name="{attr}")
     DISABLE_DJANGO_DEBUG_TOOLBAR = env(True, name="{attr}")
