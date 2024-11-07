@@ -115,12 +115,17 @@
   grid-template-rows: repeat(6, 1fr);
   grid-column-gap: 1.4rem;
   grid-row-gap: 1rem;
+  max-width: 42rem;
+
+  label{
+    margin-bottom: 0.5rem;
+  }
 
   span{
     font-family: 'Work Sans';
     font-size: 1rem;
-    font-weight: 700;
     color: $color-gray-darker;
+    margin-left: 0.8rem;
   }
   &__name {
     grid-area: 1 / 1 / 2 / 3;
