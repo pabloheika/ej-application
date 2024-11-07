@@ -7,7 +7,7 @@ import os
 from .options import EjOptions
 
 log = getLogger("ej")
-
+CELERY_BEAT_APP = "django_celery_beat" if os.getenv("USE_CELERY_BACKEND", None) else None
 
 class InstalledAppsConf(Base, EjOptions):
     USE_DJANGO_ADMIN = env(True, name="{attr}")
@@ -43,9 +43,9 @@ class InstalledAppsConf(Base, EjOptions):
         "anymail",
         "ckeditor",
         "drf_spectacular",
-        "django_celery_beat",
         "jazzmin",
         "django.contrib.admin",
+        CELERY_BEAT_APP,
     ]
 
     def get_django_contrib_apps(self):

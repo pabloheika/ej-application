@@ -2,7 +2,6 @@ import json
 from logging import getLogger
 from boogie import rules
 from django.conf import settings
-from django_celery_beat.models import PeriodicTask, IntervalSchedule
 from django.db import models
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -166,6 +165,7 @@ class Clusterization(TimeStampedModel):
         return clusters_user_count / self.conversation.n_participants * 100
 
     def get_periodic_clusterization(self):
+        from django_celery_beat.models import PeriodicTask, IntervalSchedule
         id = self.id
 
         if self.clusters.all().count() >= 2:
