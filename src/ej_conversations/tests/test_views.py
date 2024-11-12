@@ -1630,8 +1630,6 @@ class TestConversationParticipantResults(ConversationRecipes):
         response = ConversationParticipantResults.as_view()(request, **kwargs)
         data = response.context_data
 
-        assert data["has_minimum_comments"]
-        assert data["has_minimum_participant_votes"]
         assert data["conversation"] == conversation_with_min_comments
         assert len(data["least_convergent_comments"]) == 3
         assert len(data["most_agreed_comments"]) == 3

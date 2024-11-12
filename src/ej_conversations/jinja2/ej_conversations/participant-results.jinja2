@@ -9,10 +9,10 @@
 </div>
 
 <div class="results results--hidden">
-    {% if not has_minimum_comments %}
+    {% if not conversation.has_minimum_comments %}
         <p>{{_("Insufficient data to view results")}}</p>
 
-    {% elif not has_minimum_participant_votes %}
+    {% elif not conversation.has_minimum_participant_votes %}
         <p>{{_("Keep participating to see the results")}}</p>
 
     {% else %}

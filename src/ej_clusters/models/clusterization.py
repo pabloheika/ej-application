@@ -160,8 +160,7 @@ class Clusterization(TimeStampedModel):
         return None
 
     def get_similar_opinion(self, user):
-        user_cluster = user.clusters.filter(clusterization__id=self.id)
-        clusters_user_count = user_cluster.users().all().count()
+        clusters_user_count = self.clusters.filter(users__id=user.id).users().count()
         return clusters_user_count / self.conversation.n_participants * 100
 
     def get_periodic_clusterization(self):

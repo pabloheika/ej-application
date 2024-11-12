@@ -540,11 +540,9 @@ class ConversationParticipantResults(DetailView):
         most_disagreed_comments = df.sort_values("disagree", ascending=False)[:3]
 
         conversation.get_clusterization().update_clusterization(force=True)
-        conversation.set_request(user)
+        conversation.set_request(self.request)
 
         return {
-            "has_minimum_comments": conversation.has_minimum_comments,
-            "has_minimum_participant_votes": conversation.has_minimum_participant_votes,
             "conversation": conversation,
             "least_convergent_comments": least_convergent_comments,
             "most_agreed_comments": most_agreed_comments,

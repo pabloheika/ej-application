@@ -7,7 +7,6 @@ import os
 from .options import EjOptions
 
 log = getLogger("ej")
-CELERY_BEAT_APP = "django_celery_beat" if os.getenv("USE_CELERY_BACKEND", None) else None
 
 
 class InstalledAppsConf(Base, EjOptions):
@@ -46,7 +45,6 @@ class InstalledAppsConf(Base, EjOptions):
         "drf_spectacular",
         "jazzmin",
         "django.contrib.admin",
-        CELERY_BEAT_APP,
     ]
 
     def get_django_contrib_apps(self):
@@ -86,4 +84,7 @@ class InstalledAppsConf(Base, EjOptions):
             apps = ["debug_toolbar", *apps]
         if self.ENVIRONMENT == "production":
             apps = ["gunicorn", *apps]
+        if os.getenv("USE_CELERY_BACKEND", None):
+            apps.append("django_celery_beat")
+
         return apps
