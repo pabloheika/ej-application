@@ -1,0 +1,12 @@
+<p>User name {{ user.name }}</p>
+<p>User email {{ user.email }}</p>
+<p>User BIRTHDATE {{ user.get_profile().birth_date }}</p>
+<p>User city {{ user.get_profile().city }}</p>
+<p>User total comments {{conversation.n_user_total_comments}}</p>
+<p>User total votes {{conversation.n_user_votes}}</p>
+<p>User first participation date {{ conversation.user_participation_date().strftime('%d/%m/%Y') }}</p>
+{# todo Users df {{users}} não vai printar ms vai usar pra passar pro previous e next #}
+<p>Group {{group}}</p>
+
+<p>Previous user email {{ previous_email }}</p>
+<p>Next user email {{ next_email }}</p>

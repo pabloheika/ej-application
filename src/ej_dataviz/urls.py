@@ -26,6 +26,11 @@ reports_urlpatterns = [
         report.UsersReportFilterView.as_view(),
         name="users-filter",
     ),
+    path(
+        report_url + "users/modal",
+        report.UserDetailView.as_view(),
+        name="users-modal",
+    ),
 ]
 
 dataviz_urlpatterns = [

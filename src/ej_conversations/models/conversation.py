@@ -497,6 +497,15 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
             return f"{host}/media/{logo_image_url}"
         return None
 
+    def user_participation_date(self):
+        # todo refactor, metodo cconfuso
+        earliest_vote = self.user_votes.earliest("created") if self.user_votes.count() > 0 else None
+        earliest_comment = self.user_comments.earliest("created") if self.user_comments.count() > 0 else None
+        today =  datetime.today()
+        earliest = [earliest_comment, earliest_vote] 
+    
+        return min([getattr(obj, "created", today).astimezone() for obj in earliest])
+
 
 #
 #  AUXILIARY MODELS
