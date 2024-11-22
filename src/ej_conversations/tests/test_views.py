@@ -277,11 +277,12 @@ class TestConversationDetail(ConversationSetup):
         conversation_url = reverse(
             "boards:conversation-detail", kwargs=first_conversation.get_url_kwargs()
         )
+        response = client.get(conversation_url)
+        assert response.status_code == 200
+
         conversation_vote_url = reverse(
             "boards:conversation-vote", kwargs=first_conversation.get_url_kwargs()
         )
-        response = client.get(conversation_url)
-        assert response.status_code == 200
         response = client.post(
             conversation_vote_url,
             {"vote": "agree", "comment_id": comment.id},
@@ -289,7 +290,8 @@ class TestConversationDetail(ConversationSetup):
         assert response.status_code == 302
         assert response["HX-Redirect"] == f"/register/?next={conversation_url}"
 
-        first_conversation.anonymous_votes_limit = 1
+        first_conversation.anonymous_votes_enabled = True
+        first_conversation.anonymous_votes = 1
         first_conversation.save()
 
         response = client.post(
@@ -301,7 +303,8 @@ class TestConversationDetail(ConversationSetup):
     def test_register_user_from_session_after_conversation_anonymous_limit(
         self, first_conversation
     ):
-        first_conversation.anonymous_votes_limit = 1
+        first_conversation.anonymous_votes_enabled = True
+        first_conversation.anonymous_votes = 1
         first_conversation.save()
 
         client = Client()
@@ -406,7 +409,7 @@ class TestConversationCreate(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
             },
         )
         assert response.status_code == 302
@@ -432,7 +435,7 @@ class TestConversationCreate(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
             },
         )
         assert response.status_code == 302
@@ -478,7 +481,7 @@ class TestConversationCreate(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
             },
         )
         conversation = Conversation.objects.first()
@@ -505,7 +508,7 @@ class TestConversationCreate(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
                 "background_image": background_image,
                 "logo_image": logo_image,
                 "ending_message": "ending message",
@@ -533,7 +536,7 @@ class TestConversationCreate(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
                 "background_image": "",
                 "logo_image": "",
             },
@@ -560,7 +563,7 @@ class TestConversationCreate(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
                 "background_image": "",
                 "ending_message": "ending message",
             },
@@ -586,7 +589,7 @@ class TestConversationCreate(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
                 "background_image": "",
                 "ending_message": "",
             },
@@ -616,7 +619,7 @@ class TestConversationCreate(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
                 "background_image": background_image,
                 "logo_image": "",
             },
@@ -644,7 +647,7 @@ class TestConversationCreate(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
                 "background_image": "",
                 "logo_image": "",
             },
@@ -672,7 +675,7 @@ class TestConversationCreate(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
                 "background_image": "",
                 "logo_image": logo_image,
             },
@@ -807,7 +810,7 @@ class TestConversationEdit(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
             },
         )
 
@@ -840,13 +843,13 @@ class TestConversationEdit(ConversationSetup):
 
         client.post(
             url,
-            {"title": "bar updated", "text": "description", "anonymous_votes_limit": 1},
+            {"title": "bar updated", "text": "description", "anonymous_votes": 1},
         )
 
         conversation = Conversation.objects.get(id=new_conversation.id)
         assert conversation.title == "bar updated"
         assert conversation.text == "description"
-        assert conversation.anonymous_votes_limit == 1
+        assert conversation.anonymous_votes == 1
 
     def test_get_edit_conversation(self, base_user, new_conversation):
         url = f"/userboard/conversations/{new_conversation.id}/{new_conversation.slug}/edit/"
@@ -873,7 +876,7 @@ class TestConversationEdit(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
             },
         )
 
@@ -943,7 +946,7 @@ class TestConversationEdit(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
                 "background_image": background_image,
                 "logo_image": logo_image,
                 "ending_message": "ending message",
@@ -981,7 +984,7 @@ class TestConversationEdit(ConversationSetup):
                 "tags": "tag",
                 "text": "description",
                 "comments_count": 0,
-                "anonymous_votes_limit": 0,
+                "anonymous_votes": 0,
                 "background_image": "",
                 "logo_image": "",
             },
