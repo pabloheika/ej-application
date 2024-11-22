@@ -497,14 +497,24 @@ class Conversation(HasFavoriteMixin, CustomizeMenuMixin, TimeStampedModel):
             return f"{host}/media/{logo_image_url}"
         return None
 
+    def user_earliest_participation(self, query):
+        """
+        Returns a first date or None if there is no participation.
+        Participation is counted from the addition of a comment or a vote.
+        """
+        return query.earliest("created") if query.count() > 0 else None
+
+    @property
     def user_participation_date(self):
-        # todo refactor, metodo cconfuso
-        earliest_vote = self.user_votes.earliest("created") if self.user_votes.count() > 0 else None
-        earliest_comment = self.user_comments.earliest("created") if self.user_comments.count() > 0 else None
-        today =  datetime.today()
-        earliest = [earliest_comment, earliest_vote] 
-    
-        return min([getattr(obj, "created", today).astimezone() for obj in earliest])
+        earliest_vote = self.user_earliest_participation(self.user_votes)
+        earliest_comment = self.user_earliest_participation(self.user_comments)
+        earliest_participations = [earliest_comment, earliest_vote]
+        dates = [
+            getattr(obj, "created", datetime.today()).astimezone()
+            for obj in earliest_participations
+        ]
+
+        return min(dates)
 
 
 #

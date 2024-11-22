@@ -1,12 +1,38 @@
-<p>User name {{ user.name }}</p>
-<p>User email {{ user.email }}</p>
-<p>User BIRTHDATE {{ user.get_profile().birth_date }}</p>
-<p>User city {{ user.get_profile().city }}</p>
-<p>User total comments {{conversation.n_user_total_comments}}</p>
-<p>User total votes {{conversation.n_user_votes}}</p>
-<p>User first participation date {{ conversation.user_participation_date().strftime('%d/%m/%Y') }}</p>
-{# todo Users df {{users}} não vai printar ms vai usar pra passar pro previous e next #}
-<p>Group {{group}}</p>
+<p>{{_("More informations")}}</p>
 
-<p>Previous user email {{ previous_email }}</p>
-<p>Next user email {{ next_email }}</p>
+<span>{{_("Cluster")}}</span>
+<p>{{group}}</p>
+
+<span>{{_("Date of participation in the conversation")}}</span>
+<p>{{ conversation.user_participation_date.strftime('%d/%m/%Y') }}</p>
+{# todo Users df {{users}} não vai printar ms vai usar pra passar pro previous e next #}
+
+<span>{{_("Votes in the conversation")}}</span>
+<p>{{conversation.n_user_votes}}</p>
+
+<span>{{_("Comments in the conversation")}}</span>
+<p>{{conversation.n_user_total_comments}}</p>
+
+<span>{{_("Full name")}}</span>
+<p>{{ user.name }}</p>
+
+<span>{{_("Birth date")}}</span>
+{% if user.get_profile().birth_date %}
+    <p>{{ user.get_profile().birth_date }}</p>
+{% else %}
+    <p></p>
+{% endif %}
+
+<span>{{_("E-mail")}}</span>
+<p>{{ user.email }}</p>
+
+<span>{{_("City")}}</span>
+{% if user.get_profile().city %}
+    <p>{{ user.get_profile().city }}</p>
+{% else %}
+    <p></p>
+{% endif %}
+
+
+<p>{{_("Previous")}} {{ previous_email }}</p>
+<p>{{_("Next")}} {{ next_email }}</p>

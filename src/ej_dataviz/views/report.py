@@ -167,7 +167,7 @@ class UserDetailView(DetailView):
         conversation.for_user = user
         user_index = int(self.request.POST["current_index"][0])
         users = json.loads(self.request.POST["users"])
-        
+
         ## todo mesma coisa que o metodo previous de comment, vai ter que ver onde vai ficar
         ## talvez de pra tirar de comment e colocar em outro lugar já que são iguais
         previous_index = user_index - 1
@@ -180,11 +180,10 @@ class UserDetailView(DetailView):
 
         if previous_index < 0:
             previous_email = None
-        
 
         ## todo mesma coisa que o metodo next de comment, vai ter que ver onde vai ficar
         ## talvez de pra tirar de comment e colocar em outro lugar já que são iguais
-        
+
         next_index = user_index + 1
         next_email = None
 
