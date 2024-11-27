@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-26 19:38-0300\n"
+"POT-Creation-Date: 2024-11-27 00:41-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -1799,12 +1799,14 @@ msgstr "de"
 #: src/ej_admin/jinja2/ej_admin/environment/paginator.jinja2:6
 #: src/ej_admin/jinja2/ej_admin/environment/recent-boards-paginator.jinja2:5
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:66
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:63
 msgid "Previous"
 msgstr "Anterior"
 
 #: src/ej_admin/jinja2/ej_admin/environment/paginator.jinja2:18
 #: src/ej_admin/jinja2/ej_admin/environment/recent-boards-paginator.jinja2:17
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:77
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:68
 #: src/ej_profiles/jinja2/ej_profiles/includes/tour-page2.jinja2:20
 msgid "Next"
 msgstr "Próximo"
@@ -3002,6 +3004,7 @@ msgid "creation date"
 msgstr "data de criação"
 
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:5
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:5
 msgid "Chart line up"
 msgstr "Linha de gráfico crescente"
 
@@ -3047,7 +3050,7 @@ msgstr "Convergência"
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:52
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:13
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:68
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:55
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:61
 #, fuzzy
 msgid "Participation"
 msgstr "Participação"
@@ -3060,9 +3063,44 @@ msgstr "Comentário"
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:11
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:66
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:11
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:54
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:60
 msgid "Skipped"
 msgstr "Pulados"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:6
+#, fuzzy
+msgid "More informations"
+msgstr "Mais informações"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:10
+#, fuzzy
+msgid "Cluster"
+msgstr "Grupo"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:15
+#, fuzzy
+msgid "Date of participation in the conversation"
+msgstr "Data de participação na conversa"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:20
+#, fuzzy
+msgid "Votes in the conversation"
+msgstr "Votos na conversa"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:26
+#, fuzzy
+msgid "Comments in the conversation"
+msgstr "Comentários na conversa"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:32
+#, fuzzy
+msgid "Full name"
+msgstr "Nome completo"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:37
+#, fuzzy
+msgid "Birth date"
+msgstr "Data de nascimento"
 
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:13
 #, fuzzy
@@ -3967,10 +4005,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 #~ msgstr "Termos de uso"
 
 #, fuzzy
-#~ msgid "More informations"
-#~ msgstr "Mais informações"
-
-#, fuzzy
 #~ msgid "Comment added date"
 #~ msgstr "Data de adição de comentário"
 
@@ -4607,9 +4641,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 #~ msgstr ""
 #~ "faça os participantes saberem, comunicando diretamente e amplificando as "
 #~ "respostas."
-
-#~ msgid "Participative conversations"
-#~ msgstr "Conversas participativas"
 
 #~ msgid "Community driven"
 #~ msgstr "Orientado pela comunidade"
@@ -5615,9 +5646,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 
 #~ msgid "Filled Profile"
 #~ msgstr "Perfil preenchido"
-
-#~ msgid "User's full name"
-#~ msgstr "Nome completo do usuário"
 
 #~ msgid "slug"
 #~ msgstr "identificador"

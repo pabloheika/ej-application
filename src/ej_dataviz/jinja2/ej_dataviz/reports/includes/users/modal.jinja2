@@ -1,38 +1,89 @@
-<p>{{_("More informations")}}</p>
+<div id="users-detail-modal" class="cluster-modal modal__overlay">
+    <div class="comments-modal modal modal__container modal__container--text-align-unset modal__container--sm-height modal__container--lighter-bg modal--full-screen-mobile">
+        <div class="comment-detail">
+            <div class="cluster-modal__header comment-detail__modal-header">
+                <img src="{{ static('/img/icons/chart-line.svg') }}" alt="{{ _('Chart line up') }}">
+                <p>{{_("More informations")}}</p>
+                <i onclick="closeCommentModal()" class="fas fa-times"></i>
+            </div>
+            <div class="comment-detail__info">
+                <span>{{_("Cluster")}}</span>
+                <p>{{group}}</p>
+            </div>
 
-<span>{{_("Cluster")}}</span>
-<p>{{group}}</p>
+            <div class="comment-detail__info">
+                <span>{{_("Date of participation in the conversation")}}</span>
+                <p>{{ conversation.user_participation_date.strftime('%d/%m/%Y') }}</p>
+            </div>
 
-<span>{{_("Date of participation in the conversation")}}</span>
-<p>{{ conversation.user_participation_date.strftime('%d/%m/%Y') }}</p>
-{# todo Users df {{users}} não vai printar ms vai usar pra passar pro previous e next #}
+            <div class="comment-detail__info">
+                <span>{{_("Votes in the conversation")}}</span>
+                <p>{{conversation.n_user_votes}}</p>
+            </div>
+        
+            <div class="comment-detail__info">
+                <span>{{_("Comments in the conversation")}}</span>
+                <p>{{conversation.n_user_total_comments}}</p>
+            </div>
 
-<span>{{_("Votes in the conversation")}}</span>
-<p>{{conversation.n_user_votes}}</p>
+            <div class="comment-detail__info">
+                <span>{{_("Full name")}}</span>
+                <p>{{ user.name }}</p>
+            </div>
 
-<span>{{_("Comments in the conversation")}}</span>
-<p>{{conversation.n_user_total_comments}}</p>
+            <div class="comment-detail__info"></div>
+                <span>{{_("Birth date")}}</span>
+                {% if user.get_profile().birth_date %}
+                    <p>{{ user.get_profile().birth_date }}</p>
+                {% else %}
+                    <p></p>
+                {% endif %}
+            </div>
 
-<span>{{_("Full name")}}</span>
-<p>{{ user.name }}</p>
+            <div class="comment-detail__info">
+                <span>{{_("E-mail")}}</span>
+                <p class="comment-detail__info-author">{{ user.email }}</p>
+            </div>
 
-<span>{{_("Birth date")}}</span>
-{% if user.get_profile().birth_date %}
-    <p>{{ user.get_profile().birth_date }}</p>
-{% else %}
-    <p></p>
-{% endif %}
+            <div class="comment-detail__info">
+                <span>{{_("City")}}</span>
+                {% if user.get_profile().city %}
+                    <p>{{ user.get_profile().city }}</p>
+                {% else %}
+                    <p></p>
+                {% endif %}
+            </div>
+            
+            <div class="comment-detail__buttons">
+            {% if previous_email %}
+                <a> 
+                    <i class="fas fa-chevron-left"></i>
+                    {{_("Previous")}}
+                </a>
+            {% endif %}
+            {% if next_email %}
+                <a>
+                    {{_("Next")}}
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
 
-<span>{{_("E-mail")}}</span>
-<p>{{ user.email }}</p>
+<script>
+    function closeCommentModal() {
+        const modal = $('#users-detail-modal');
+        const body = $("body").removeClass('modal--hide-overflow-y');
+        modalContainer = modal.find('.modal__container--sm-height');
+        modalContainer.removeClass('modal__container--sm-height-transition');
+        modal.addClass('hide');
+    }
 
-<span>{{_("City")}}</span>
-{% if user.get_profile().city %}
-    <p>{{ user.get_profile().city }}</p>
-{% else %}
-    <p></p>
-{% endif %}
+    $(".comment-detail__buttons-link").click(function(){
+        $(".comments-modal").fadeOut(200);
+        $(".comments-modal").fadeIn(200);
+    });
 
-
-<p>{{_("Previous")}} {{ previous_email }}</p>
-<p>{{_("Next")}} {{ next_email }}</p>
+</script>
