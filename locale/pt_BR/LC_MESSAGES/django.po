@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-13 17:58-0300\n"
+"POT-Creation-Date: 2024-11-26 19:38-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -56,6 +56,19 @@ msgstr "Lista de papéis"
 #: src/ej/roles/tags.py:14
 msgid "hello"
 msgstr "olá"
+
+#: src/ej/settings/options.py:31
+msgid "EJ Platform"
+msgstr "Plataforma EJ"
+
+#: src/ej/settings/options.py:32
+msgid "Not part of EJ yet?"
+msgstr "Não faz parte da EJ ainda?"
+
+#: src/ej/settings/options.py:33
+#, fuzzy
+msgid "Welcome!"
+msgstr "Boas vindas!"
 
 #: src/ej_boards/apps.py:7 src/ej_boards/models.py:59
 msgid "Boards"
@@ -372,8 +385,8 @@ msgid "Tags, separated by commas."
 msgstr "Temas, separados por vírgula."
 
 #: src/ej_conversations/forms.py:78 src/ej_conversations/forms.py:81
-#: src/ej_conversations/models/conversation.py:121
-#: src/ej_conversations/models/conversation.py:128
+#: src/ej_conversations/models/conversation.py:123
+#: src/ej_conversations/models/conversation.py:130
 msgid "Background image"
 msgstr "Imagem de fundo"
 
@@ -386,7 +399,7 @@ msgstr "Logotipo"
 msgid "This title already exists!"
 msgstr "Esse título já existe."
 
-#: src/ej_conversations/mixins.py:177 src/ej_dataviz/tests/test_views.py:355
+#: src/ej_conversations/mixins.py:177 src/ej_dataviz/tests/test_views.py:390
 #, fuzzy
 msgid "No group"
 msgstr "Sem grupo"
@@ -489,18 +502,18 @@ msgid ""
 "conversations/ endpoint."
 msgstr "Conversas ocultas não aparecem no mural principal /conversations/."
 
-#: src/ej_conversations/models/conversation.py:90
+#: src/ej_conversations/models/conversation.py:91
 msgid ""
 "Check this option if you want your audience to vote without registering. All "
 "users will be created with a random and unique ID."
 msgstr ""
 
-#: src/ej_conversations/models/conversation.py:93
+#: src/ej_conversations/models/conversation.py:94
 #, fuzzy
 msgid "Enable anonymous votes"
 msgstr "Habilitar votos anônimos"
 
-#: src/ej_conversations/models/conversation.py:98
+#: src/ej_conversations/models/conversation.py:100
 #, fuzzy
 msgid ""
 "Configures how many anonymous votes the participants can give before asking "
@@ -512,31 +525,31 @@ msgstr ""
 "apresentado após o segundo voto na conversa. Caso o input tenha valor 0, a "
 "conversa não poderá receber votos anônimos."
 
-#: src/ej_conversations/models/conversation.py:101
+#: src/ej_conversations/models/conversation.py:103
 #, fuzzy
 msgid "Number of anonymous votes"
 msgstr "Quantidade de votos anônimos"
 
-#: src/ej_conversations/models/conversation.py:106
+#: src/ej_conversations/models/conversation.py:108
 #, fuzzy
 msgid "Send profile question?"
 msgstr "Enviar questões de perfil durante a enquete?"
 
-#: src/ej_conversations/models/conversation.py:107
+#: src/ej_conversations/models/conversation.py:109
 msgid "Send a question to participants to complete their profile."
 msgstr "Envia questões de perfil para o usuário responder durante as enquetes"
 
-#: src/ej_conversations/models/conversation.py:111
+#: src/ej_conversations/models/conversation.py:114
 msgid "Votes to send profile question"
 msgstr "Votos necessários para iniciar as perguntas"
 
-#: src/ej_conversations/models/conversation.py:112
+#: src/ej_conversations/models/conversation.py:115
 msgid "Number of votes to send profile question."
 msgstr ""
 "Número de votos realizados pelo usuário antes de iniciar as perguntas "
 "demográficas. "
 
-#: src/ej_conversations/models/conversation.py:135
+#: src/ej_conversations/models/conversation.py:136
 msgid "A message to be presented to participants before starting voting."
 msgstr ""
 "Um texto que poderá ser apresentado antes da tela de votação. A página "
@@ -1448,12 +1461,16 @@ msgid "Name used to publicly identify user"
 msgstr "Apelido público usado para identificar o usuário"
 
 #: src/ej_users/models.py:41
-#, fuzzy
-msgid "Agree with terms"
+msgid "Terms of use"
 msgstr "Termos de uso"
 
-#: src/ej_users/models.py:45 src/ej_users/models.py:46
+#: src/ej_users/models.py:45
 msgid "Agree with privacy policy"
+msgstr "Política de privacidade"
+
+#: src/ej_users/models.py:46
+#, fuzzy
+msgid "Privacy policy"
 msgstr "Política de privacidade"
 
 #: src/ej_users/models.py:66
@@ -1503,20 +1520,11 @@ msgstr "E-mail ou senha inválida"
 msgid "Welcome to EJ!"
 msgstr "Bem vindo à EJ!"
 
-#: src/ej_users/views/user.py:96
-msgid "You must agree with EJ terms before register"
-msgstr "Você precisa concordar com os nossos termos antes de se cadastrar."
-
-#: src/ej_users/views/user.py:104
-#, fuzzy
-msgid "You must agree with EJ privacy policy before register"
-msgstr "Você precisa concordar com os nossos termos antes de se cadastrar."
-
-#: src/ej_users/views/user.py:193
+#: src/ej_users/views/user.py:173
 msgid "Please reset your password"
 msgstr "Por favor reset sua senha"
 
-#: src/ej/templates/jinja2/base.jinja2:58
+#: src/ej/templates/jinja2/base.jinja2:70
 msgid "Please override the \"content\" block of your template!"
 msgstr "Por favor substitua o bloco \"content\" do seu template!"
 
@@ -1590,8 +1598,8 @@ msgstr "Foto de perfil"
 #: src/ej/templates/jinja2/ej/includes/profile-menu.jinja2:40
 #: src/ej_users/jinja2/account/index.jinja2:17
 #: src/ej_users/jinja2/account/logout.jinja2:2
-#: src/ej_users/jinja2/account/logout.jinja2:16
-#: src/ej_users/jinja2/account/logout.jinja2:20
+#: src/ej_users/jinja2/account/logout.jinja2:14
+#: src/ej_users/jinja2/account/logout.jinja2:17
 #: src/ej_users/jinja2/ej_users/includes/account-menu.jinja2:6
 msgid "Logout"
 msgstr "Sair"
@@ -1790,11 +1798,13 @@ msgstr "de"
 
 #: src/ej_admin/jinja2/ej_admin/environment/paginator.jinja2:6
 #: src/ej_admin/jinja2/ej_admin/environment/recent-boards-paginator.jinja2:5
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:66
 msgid "Previous"
 msgstr "Anterior"
 
 #: src/ej_admin/jinja2/ej_admin/environment/paginator.jinja2:18
 #: src/ej_admin/jinja2/ej_admin/environment/recent-boards-paginator.jinja2:17
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:77
 #: src/ej_profiles/jinja2/ej_profiles/includes/tour-page2.jinja2:20
 msgid "Next"
 msgstr "Próximo"
@@ -1806,6 +1816,7 @@ msgid "boards"
 msgstr "murais"
 
 #: src/ej_admin/jinja2/ej_admin/environment/searched-conversations.jinja2:6
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:30
 msgid "Author"
 msgstr "Autor"
 
@@ -1982,6 +1993,7 @@ msgstr "Conta"
 
 #: src/ej_clusters/jinja2/ej_clusters/stereotype-votes/create-tab.jinja2:11
 #: src/ej_clusters/jinja2/ej_clusters/stereotype-votes/edit-tab.jinja2:16
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:24
 #, fuzzy
 msgid "Votes"
 msgstr "votos"
@@ -2989,29 +3001,68 @@ msgstr "Exibindo"
 msgid "creation date"
 msgstr "data de criação"
 
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:5
+msgid "Chart line up"
+msgstr "Linha de gráfico crescente"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:7
+#, fuzzy
+msgid "Statistics in the group "
+msgstr "Estatísticas no grupo "
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:9
+#, fuzzy
+msgid "General statistics"
+msgstr "Estatísticas gerais"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:14
+#, fuzzy
+msgid "Comment "
+msgstr "Comentário"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:20
+#, fuzzy
+msgid "Creation date"
+msgstr "data de criação"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:36
+msgid "Concordance"
+msgstr "Concordância"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:40
+msgid "Discordance"
+msgstr "Discordância"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:44
+#, fuzzy
+msgid "Abstentions"
+msgstr "Abstenções"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:48
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:12
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:67
+msgid "Convergence"
+msgstr "Convergência"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:52
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:13
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:68
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:55
+#, fuzzy
+msgid "Participation"
+msgstr "Participação"
+
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:8
 #, fuzzy
 msgid "Comment content"
 msgstr "Comentário"
 
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:11
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:55
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:66
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:11
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:54
 msgid "Skipped"
 msgstr "Pulados"
-
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:12
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:56
-msgid "Convergence"
-msgstr "Convergência"
-
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:13
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/table.jinja2:57
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:55
-#, fuzzy
-msgid "Participation"
-msgstr "Participação"
 
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/table.jinja2:13
 #, fuzzy
@@ -3472,9 +3523,6 @@ msgid ""
 "Use EJ's web chatbot from our infrastructure. It does not require any "
 "additional configuration. The user will access an EJ route to participate."
 msgstr ""
-"Utilize o chatbot web da EJ a partir da nossa infraestrutura. Não exige "
-"nenhuma configuração adicional. O usuário irá acessar uma rota da EJ para "
-"participar."
 
 #: src/ej_profiles/jinja2/ej_profiles/detail.jinja2:16
 #: src/ej_profiles/jinja2/ej_profiles/edit.jinja2:26
@@ -3649,7 +3697,7 @@ msgstr "Conta inativa"
 msgid "This account is inactive."
 msgstr "Essa conta está inativa."
 
-#: src/ej_users/jinja2/account/base.jinja2:25
+#: src/ej_users/jinja2/account/base.jinja2:26
 msgid "Accounts"
 msgstr "Contas"
 
@@ -3738,16 +3786,16 @@ msgstr "Entre com um usuário diferente"
 msgid "Remove account"
 msgstr "Remover conta"
 
-#: src/ej_users/jinja2/account/logout.jinja2:11
+#: src/ej_users/jinja2/account/logout.jinja2:9
 msgid "We hope we'll see you soon ;)"
 msgstr "Esperamos ver você em breve;)"
 
-#: src/ej_users/jinja2/account/logout.jinja2:12
+#: src/ej_users/jinja2/account/logout.jinja2:10
 #, python-format
 msgid "Go back to %(login_link)s page."
 msgstr "Voltar a página de login: %(login_link)s."
 
-#: src/ej_users/jinja2/account/logout.jinja2:17
+#: src/ej_users/jinja2/account/logout.jinja2:15
 msgid "Please press the logout button to confirm."
 msgstr "Por favor, pressione o botão de logout para confirmar."
 
@@ -3780,25 +3828,26 @@ msgstr "Esta operação não pode ser desfeita!"
 msgid "You have to type your e-mail to confirm."
 msgstr "Você tem que digitar seu e-mail para confirmar."
 
-#: src/ej_users/jinja2/ej_users/login.jinja2:4
+#: src/ej_users/jinja2/ej_users/login.jinja2:8
 msgid "Login form"
 msgstr "Formulário de login"
 
-#: src/ej_users/jinja2/ej_users/login.jinja2:19
+#: src/ej_users/jinja2/ej_users/login.jinja2:25
 #, fuzzy
 msgid "I forgot my password"
 msgstr "Esqueci minha senha"
 
 #: src/ej_users/jinja2/ej_users/includes/menu.jinja2:4
-#: src/ej_users/jinja2/ej_users/login.jinja2:20
+#: src/ej_users/jinja2/ej_users/login.jinja2:28
+#: src/ej_users/jinja2/ej_users/register.jinja2:80
 msgid "Login"
 msgstr "Entrar"
 
-#: src/ej_users/jinja2/ej_users/login.jinja2:36
+#: src/ej_users/jinja2/ej_users/login.jinja2:47
 msgid "Create your account!"
 msgstr "Criar uma conta!"
 
-#: src/ej_users/jinja2/ej_users/login.jinja2:36
+#: src/ej_users/jinja2/ej_users/login.jinja2:47
 msgid "Register now!"
 msgstr "Registre-se"
 
@@ -3860,10 +3909,23 @@ msgstr ""
 msgid "Register new user"
 msgstr "Registre-se para continuar"
 
+#: src/ej_users/jinja2/ej_users/register.jinja2:50
+msgid "When registering, you agreed to the "
+msgstr "Ao se registrar, você concorda com os "
+
+#: src/ej_users/jinja2/ej_users/register.jinja2:52
+msgid "and"
+msgstr ""
+
 #: src/ej_users/jinja2/ej_users/includes/menu.jinja2:5
-#: src/ej_users/jinja2/ej_users/register.jinja2:68
+#: src/ej_users/jinja2/ej_users/register.jinja2:63
 msgid "Register"
 msgstr "Registrar"
+
+#: src/ej_users/jinja2/ej_users/register.jinja2:76
+#: src/ej_users/jinja2/ej_users/register.jinja2:80
+msgid "Already has an account?"
+msgstr "Já possui uma conta?"
 
 #: src/ej_users/jinja2/ej_users/includes/account-menu.jinja2:4
 msgid "Manage account"
@@ -3889,9 +3951,31 @@ msgstr "Logar com conta "
 msgid "By clicking, you agree with our user terms."
 msgstr "Ao clicar, você concorda com nossos termos de uso."
 
+#~ msgid "You must agree with EJ terms before register"
+#~ msgstr "Você precisa concordar com os nossos termos antes de se cadastrar."
+
 #, fuzzy
-#~ msgid "Send a profile queston"
-#~ msgstr "Coleta de perfil"
+#~ msgid "You must agree with EJ privacy policy before register"
+#~ msgstr "Você precisa concordar com os nossos termos antes de se cadastrar."
+
+#, fuzzy
+#~ msgid "Continue with your account!"
+#~ msgstr "Criar uma conta!"
+
+#, fuzzy
+#~ msgid "Agree with terms"
+#~ msgstr "Termos de uso"
+
+#, fuzzy
+#~ msgid "More informations"
+#~ msgstr "Mais informações"
+
+#, fuzzy
+#~ msgid "Comment added date"
+#~ msgstr "Data de adição de comentário"
+
+#~ msgid "Absolute number of votes"
+#~ msgstr "Número absoluto de votos"
 
 #, fuzzy
 #~ msgid "Grouping"
@@ -5355,10 +5439,6 @@ msgstr "Ao clicar, você concorda com nossos termos de uso."
 #~ "Para adicionar esta conversa no seu site/plataforma, primeiro selecione o "
 #~ "tipo de autenticação e qual tema visual o componente irá utilizar. "
 #~ "Depois, basta gerar o script e adiciona-lo às tags header e body do html. "
-
-#, fuzzy
-#~ msgid "More information"
-#~ msgstr "Saiba mais"
 
 #~ msgid "If you want a custom title for the e-mail template, enter here"
 #~ msgstr "Caso queira um título diferente para o e-mail, digite aqui"
