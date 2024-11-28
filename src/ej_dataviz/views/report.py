@@ -115,33 +115,6 @@ class CommentReportDetailView(ReportsBaseView):
         return context
 
 
-class CommentDetailView(DetailView):
-    """
-    Returns comment report page.
-    """
-
-    template_name = "ej_dataviz/reports/includes/comments/modal.jinja2"
-    model = Comment
-
-    def post(self, *args, **kwargs):
-        context = self.get_context_data()
-        return render(self.request, self.template_name, context)
-
-    def get_context_data(self, *args, **kwargs):
-        comment = self.get_object()
-        comment_index = int(self.request.POST["current_index"][0])
-        comments = json.loads(self.request.POST["comments"])
-
-        return {
-            "comment": comment,
-            "comments": json.dumps(self.request.POST["comments"]),
-            "comment_statistics": comments[comment_index],
-            "previous_id": comment.previous(comment_index, comments),
-            "next_id": comment.next(comment_index, comments),
-            "current_index": comment_index,
-        }
-
-
 class UsersReportDetailView(ReportsBaseView):
     """
     Returns user report page.
@@ -187,7 +160,54 @@ class UsersReportFilterView(ReportsBaseView):
         return context
 
 
-class UserDetailView(DetailView):
+class ReportDetailView(DetailView):
+    def post(self, *args, **kwargs):
+        context = self.get_context_data()
+        return render(self.request, self.template_name, context)
+
+    def get_context_data(self, *args, **kwargs):
+        current_index = int(self.request.POST["current_index"][0])
+        objects = json.loads(self.request.POST["objects"])
+
+        return {
+            "current_index": current_index,
+            "previous": self.previous(current_index, objects),
+            "next": self.next(current_index, objects),
+            "objects": json.dumps(self.request.POST["objects"]),
+            "current_object": objects[current_index],
+        }
+
+    def next(self, current_index, objects):
+        """
+        Get next object from list according to current index
+        """
+        next_index = current_index + 1
+        next = None
+
+        try:
+            next = objects[next_index][self.identifier]
+        except IndexError:
+            pass
+        return next
+
+    def previous(self, current_index, objects):
+        """
+        Get previous object from list according to current index
+        """
+        previous_index = current_index - 1
+        previous = None
+
+        try:
+            previous = objects[previous_index][self.identifier]
+        except IndexError:
+            pass
+
+        if previous_index < 0:
+            previous = None
+        return previous
+
+
+class UserDetailView(ReportDetailView):
     """
     Returns user report page.
     """
@@ -195,48 +215,33 @@ class UserDetailView(DetailView):
     template_name = "ej_dataviz/reports/includes/users/modal.jinja2"
     model = Conversation
 
-    def post(self, *args, **kwargs):
-        context = self.get_context_data()
-        return render(self.request, self.template_name, context)
-
     def get_context_data(self, *args, **kwargs):
+        self.identifier = "email"
         user_email = self.request.POST["user_email"]
         user = User.objects.get(email=user_email)
         conversation = self.get_object()
         conversation.for_user = user
-        user_index = int(self.request.POST["current_index"][0])
-        users = json.loads(self.request.POST["users"])
-
-        ## todo mesma coisa que o metodo previous de comment, vai ter que ver onde vai ficar
-        ## talvez de pra tirar de comment e colocar em outro lugar já que são iguais
-        previous_index = user_index - 1
-        previous_email = None
-
-        try:
-            previous_email = users[previous_index]["email"]
-        except IndexError:
-            pass
-
-        if previous_index < 0:
-            previous_email = None
-
-        ## todo mesma coisa que o metodo next de comment, vai ter que ver onde vai ficar
-        ## talvez de pra tirar de comment e colocar em outro lugar já que são iguais
-
-        next_index = user_index + 1
-        next_email = None
-
-        try:
-            next_email = users[next_index]["email"]
-        except IndexError:
-            pass
 
         return {
+            **super().get_context_data(**kwargs),
             "user": user,
-            "group": users[user_index]["group"],
             "conversation": conversation,
-            "users": json.dumps(self.request.POST["users"]),
-            "previous_email": previous_email,
-            "next_email": next_email,
-            "current_index": user_index,
+        }
+
+
+class CommentDetailView(ReportDetailView):
+    """
+    Returns comment report page.
+    """
+
+    template_name = "ej_dataviz/reports/includes/comments/modal.jinja2"
+    model = Comment
+
+    def get_context_data(self, *args, **kwargs):
+        self.identifier = "comment"
+        comment = self.get_object()
+
+        return {
+            **super().get_context_data(**kwargs),
+            "comment": comment,
         }

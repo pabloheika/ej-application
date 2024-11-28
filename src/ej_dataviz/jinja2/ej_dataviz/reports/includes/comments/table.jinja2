@@ -19,7 +19,7 @@
                         hx-post="{{ url('dataviz:comments-modal', pk=comment[0]) }}"
                         hx-target="#comments-detail-modal"
                         hx-trigger="click[event.target.matches('#comment-link-{{loop.index0}}')] from:body"
-                        hx-vals='{"comments": {{comments}}, "current_index": {{loop.index0}}}'
+                        hx-vals='{"objects": {{comments}}, "current_index": {{loop.index0}}}'
                     >
                         <td>
                             {{csrf_input}}

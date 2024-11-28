@@ -20,7 +20,7 @@
                         hx-post="{{ url('boards:dataviz-users-modal', **conversation.get_url_kwargs()) }}"
                         hx-target="#users-detail-modal"
                         hx-trigger="click"
-                        hx-vals='{"user_email": "{{user[1]}}", "current_index": {{loop.index0}}, "users": {{users}}}'
+                        hx-vals='{"user_email": "{{user[1]}}", "current_index": {{loop.index0}}, "objects": {{users}}}'
                     >
                         <td>
                             {{csrf_input}}

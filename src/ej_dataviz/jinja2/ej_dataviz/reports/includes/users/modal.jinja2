@@ -8,7 +8,7 @@
             </div>
             <div class="comment-detail__info">
                 <span>{{_("Cluster")}}</span>
-                <p>{{group}}</p>
+                <p>{{current_object["group"]}}</p>
             </div>
 
             <div class="comment-detail__info">
@@ -55,13 +55,13 @@
             </div>
             
             <div class="comment-detail__buttons">
-            {% if previous_email %}
+            {% if previous %}
                 <a> 
                     <i class="fas fa-chevron-left"></i>
                     {{_("Previous")}}
                 </a>
             {% endif %}
-            {% if next_email %}
+            {% if next %}
                 <a>
                     {{_("Next")}}
                     <i class="fas fa-chevron-right"></i>

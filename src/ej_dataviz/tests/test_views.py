@@ -350,7 +350,7 @@ class TestCommentsReport(TestReportRoutes):
         filtered_comments_df = search_filter.filter()
         assert len(filtered_comments_df.index) == 1
 
-    def test_get_modal(self, conversation_with_comments, logged_client):
+    def test_get_detail_modal(self, conversation_with_comments, logged_client):
         comments = conversation_with_comments.comments.all()
         index = 0
         comment = comments[index]
@@ -372,14 +372,12 @@ class TestCommentsReport(TestReportRoutes):
         ]
 
         response = logged_client.post(
-            url, {"comments": json.dumps(comments_ids_dict), "current_index": index}
+            url, {"objects": json.dumps(comments_ids_dict), "current_index": index}
         )
         context = response.context
-        comment_statistics = context["comment_statistics"]
+        comment_statistics = context["current_object"]
         statistics = comment.statistics(ratios=True)
         assert context["comment"] == comment
-        assert context["next_id"] == comment.next(index, comments_ids_dict)
-        assert context["previous_id"] == comment.previous(index, comments_ids_dict)
         assert comment_statistics["agree"] == statistics["agree_ratio"] * 100
         assert comment_statistics["disagree"] == statistics["disagree_ratio"] * 100
         assert comment_statistics["skipped"] == statistics["skip_ratio"] * 100

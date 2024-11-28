@@ -3,8 +3,8 @@
         <div class="comment-detail">
             <div class="cluster-modal__header comment-detail__modal-header">
                 <img src="{{ static('/img/icons/chart-line.svg') }}" alt="{{ _('Chart line up') }}">
-                {% if comment_statistics["group"] %}
-                    <p>{{_("Statistics in the group ")}}{{comment_statistics["group"]}}</p>
+                {% if current_object["group"] %}
+                    <p>{{_("Statistics in the group ")}}{{current_object["group"]}}</p>
                 {% else %}
                     <p>{{_("General statistics")}}</p>
                 {% endif %}
@@ -34,44 +34,44 @@
             <div class="comment-detail__statistics">
                 <div class="comment-detail__info">
                     <span>{{_("Concordance")}}</span>
-                    <p>{{"%s%%"|format(comment_statistics["agree"]|round)}}</p>
+                    <p>{{"%s%%"|format(current_object["agree"]|round)}}</p>
                 </div>
                 <div class="comment-detail__info">
                     <span>{{_("Discordance")}}</span>
-                    <p>{{"%s%%"|format(comment_statistics["disagree"]|round)}}</p>
+                    <p>{{"%s%%"|format(current_object["disagree"]|round)}}</p>
                 </div>
                 <div class="comment-detail__info">
                     <span>{{_("Abstentions")}}</span>
-                    <p>{{"%s%%"|format(comment_statistics["skipped"]|round)}}</p>
+                    <p>{{"%s%%"|format(current_object["skipped"]|round)}}</p>
                 </div>
                 <div class="comment-detail__info">
                     <span>{{_("Convergence")}}</span>
-                    <p>{{"%s%%"|format(comment_statistics["convergence"]|round)}}</p>
+                    <p>{{"%s%%"|format(current_object["convergence"]|round)}}</p>
                 </div>
                 <div class="comment-detail__info">
                     <span>{{_("Participation")}}</span>
-                     <p>{{"%s%%"|format(comment_statistics["participation"]|round)}}</p>
+                     <p>{{"%s%%"|format(current_object["participation"]|round)}}</p>
                 </div>
             </div>
             <div class="comment-detail__buttons">
-            {% if previous_id %}
+            {% if previous %}
                 <a class="comment-detail__buttons-link"
                     id="previous-{{current_index-1}}"
-                    hx-post="{{ url('dataviz:comments-modal', pk=previous_id) }}"
+                    hx-post="{{ url('dataviz:comments-modal', pk=previous) }}"
                     hx-target="#comments-detail-modal"
-                    hx-vals='{"comments": {{comments}}, "current_index": {{current_index-1}}}'
+                    hx-vals='{"objects": {{objects}}, "current_index": {{current_index-1}}}'
                     hx-trigger="click delay:0.5s">
                     {{csrf_input}}
                     <i class="fas fa-chevron-left"></i>
                     {{_("Previous")}}
                 </a>
             {% endif %}
-            {% if next_id %}
+            {% if next %}
                 <a class="comment-detail__buttons-link comment-detail__buttons-link--left"
                     id="next-{{current_index+1}}"
-                    hx-post="{{ url('dataviz:comments-modal', pk=next_id) }}"
+                    hx-post="{{ url('dataviz:comments-modal', pk=next) }}"
                     hx-target="#comments-detail-modal"
-                    hx-vals='{"comments": {{comments}}, "current_index": {{current_index+1}}}'
+                    hx-vals='{"objects": {{objects}}, "current_index": {{current_index+1}}}'
                     hx-trigger="click delay:0.5s">
                     {{csrf_input}}
                     {{_("Next")}}
