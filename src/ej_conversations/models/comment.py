@@ -1,16 +1,15 @@
-from boogie import models
+from django.db import models
 from hashlib import blake2b
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
-from django.urls import reverse
 from model_utils.choices import Choices
 from model_utils.models import TimeStampedModel, StatusModel
 
 from .comment_queryset import CommentQuerySet, log
-from .vote import Vote, normalize_choice
+from .vote import Vote
 from ..enums import Choice, RejectionReason
 from ..signals import vote_cast
 from ..utils import votes_counter
@@ -45,8 +44,8 @@ class Comment(StatusModel, TimeStampedModel):
         validators=[MinLengthValidator(2), is_not_empty],
         help_text=_("Body of text for the comment"),
     )
-    rejection_reason = models.EnumField(
-        RejectionReason, _("Rejection reason"), default=RejectionReason.USER_PROVIDED
+    rejection_reason = models.IntegerField(
+        choices=RejectionReason.choices, default=RejectionReason.USER_PROVIDED
     )
     rejection_reason_text = models.TextField(
         _("Rejection reason (free-form)"),
@@ -132,7 +131,8 @@ class Comment(StatusModel, TimeStampedModel):
 
         >>> comment.vote(user, 'agree')                         # doctest: +SKIP
         """
-        choice = normalize_choice(choice)
+
+        choice = Choice.normalize(choice)
 
         if self.is_pending:
             raise (ValidationError(_("Cannot vote on pending comment")))
@@ -211,14 +211,39 @@ class Comment(StatusModel, TimeStampedModel):
             )
         return stats
 
-    def comment_url(self):
-        return reverse(
-            "comments:detail",
-            kwargs={"comment_id": self.id, "hex_hash": self.comment_url_hash()},
-        )
-
     def comment_url_hash(self):
         """
         Compute the URL hash for the given comment.
         """
         return blake2b(self.content.encode("utf8"), digest_size=4).hexdigest()
+
+    def next(self, current_index, comments):
+        """
+        Get next comment of a conversation, according to create date
+        """
+        next_index = current_index + 1
+        id = None
+
+        try:
+            id = comments[next_index]["comment"]
+        except IndexError:
+            pass
+
+        return id
+
+    def previous(self, current_index, comments):
+        """
+        Get previous comment of a conversation, according to create date
+        """
+        previous_index = current_index - 1
+        id = None
+
+        try:
+            id = comments[previous_index]["comment"]
+        except IndexError:
+            pass
+
+        if previous_index < 0:
+            id = None
+
+        return id

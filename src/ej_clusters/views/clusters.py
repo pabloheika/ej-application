@@ -12,7 +12,7 @@ from ej.decorators import can_edit_conversation
 from ej_clusters.models.clusterization import Clusterization
 from ej_conversations.models import Conversation
 from ej_conversations.utils import check_promoted
-from ej_dataviz.utils import get_dashboard_biggest_cluster
+from ej_dataviz.utils import get_conversation_biggest_cluster
 
 from .. import forms
 
@@ -29,12 +29,11 @@ class ClustersIndexView(ListView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         conversation = Conversation.objects.get(id=self.kwargs["conversation_id"])
-        check_promoted(conversation, self.request)
         user = self.request.user
         clusterization = self.get_queryset()
         clusterization.update_clusterization(force=True)
-        biggest_cluster_data = get_dashboard_biggest_cluster(
-            self.request, conversation, clusterization
+        biggest_cluster_data = get_conversation_biggest_cluster(
+            self.request, conversation
         )
 
         json_shape_user_group = Clusterization.get_shape_data_by_groups(

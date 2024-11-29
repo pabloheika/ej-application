@@ -1,3 +1,4 @@
+from logging import log
 from typing import Callable
 
 from django.apps import apps
@@ -5,15 +6,21 @@ from django.conf import settings
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
-from django.utils.translation import gettext as __, gettext_lazy as _
+from django.utils.translation import gettext as __
+from django.utils.translation import gettext_lazy as _
 from sidekick import import_later
 
-from ej_clusters.models import Cluster, Clusterization
+from ej_clusters.models import Cluster
 from ej_conversations.utils import check_promoted
 from ej_conversations.models.conversation import Conversation
 
-from .constants import EXPOSED_PROFILE_FIELDS
-from .constants import *
+from .constants import (
+    COLORS,
+    EXPOSED_PROFILE_FIELDS,
+    FIELD_DATA,
+    NORMALIZE_LANGUAGES,
+    PIECEWISE_OPTIONS,
+)
 
 pd = import_later("pandas")
 stop_words = import_later("stop_words")
@@ -134,15 +141,6 @@ def get_user_dataframe(conversation: Conversation, page_number: int = 1):
     users_df = conversation.users.statistics_summary_dataframe(
         normalization=100, convergence=False, conversation=conversation
     )
-
-    users_df.insert(
-        0,
-        "participant",
-        users_df[["email"]].agg("\n".join, axis=1),
-        True,
-    )
-
-    users_df.drop(["phone_number"], inplace=True, axis=1)
     users_df = users_df.sort_values("name", ascending=False)
     return users_df
 
@@ -225,22 +223,6 @@ def get_stop_words():
     return stop_words.get_stop_words("en")
 
 
-def get_biggest_cluster(clusterization):
-    from django.db.models import Count, F
-
-    if isinstance(clusterization, Clusterization):
-        return clusterization.get_biggest_cluster()
-
-    if (
-        clusterization
-        and clusterization.exists()
-        and clusterization.stereotypes().count() > 0
-    ):
-        clusters = clusterization.clusters().annotate(size=Count(F("users")))
-        return clusters.order_by("-size").first()
-    return None
-
-
 def create_stereotype_coords(
     conversation, table, comments: list, transformer: Callable, kwargs: dict
 ):
@@ -271,7 +253,10 @@ def create_stereotype_coords(
                     "symbol": "circle",
                     "coord": [x, y, names[pk], None, None],
                     "label": {"show": True, "formatter": names[pk], "color": "black"},
-                    "itemStyle": {"opacity": 0.75, "color": "rgba(180, 180, 180, 0.33)"},
+                    "itemStyle": {
+                        "opacity": 0.75,
+                        "color": "rgba(180, 180, 180, 0.33)",
+                    },
                     "tooltip": {"formatter": _("{} persona").format(names[pk])},
                 }
 
@@ -374,13 +359,15 @@ def get_biggest_cluster_data(cluster, cluster_as_dataframe):
     return {}
 
 
-def get_dashboard_biggest_cluster(request, conversation, clusterization):
-    biggest_cluster = get_biggest_cluster(clusterization)
-    if biggest_cluster:
-        biggest_cluster_df = comments_data_cluster(
-            request, conversation, None, biggest_cluster.id
-        )
-        return get_biggest_cluster_data(biggest_cluster, biggest_cluster_df)
+def get_conversation_biggest_cluster(request, conversation):
+    clusterization = getattr(conversation, "clusterization", None)
+    if clusterization:
+        biggest_cluster = clusterization.get_biggest_cluster()
+        if biggest_cluster:
+            biggest_cluster_df = comments_data_cluster(
+                request, conversation, None, biggest_cluster.id
+            )
+            return get_biggest_cluster_data(biggest_cluster, biggest_cluster_df)
     return {}
 
 

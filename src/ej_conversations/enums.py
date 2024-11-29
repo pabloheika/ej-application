@@ -1,10 +1,8 @@
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 
-from boogie.fields import IntEnum
 
-
-class RejectionReason(IntEnum):
+class RejectionReason(models.IntegerChoices):
     """
     Possible rejection reasons for a comment.
     """
@@ -25,3 +23,27 @@ class Choice(models.IntegerChoices):
     SKIP = 0, _("Skip")
     AGREE = 1, _("Agree")
     DISAGREE = -1, _("Disagree")
+
+    @classmethod
+    def normalize(cls, choice):
+        """
+        Converts 'agree', 'skip' and 'disagree' to 1, 0 and -1.
+        It also converts '-1', '1' and '0' to -1, 1, and 0.
+        """
+
+        if choice is None or choice == "":
+            return None
+
+        if type(choice) == Choice:
+            return choice.value
+
+        if len(str(choice)) <= 2:
+            if int(choice) in cls:
+                return int(choice)
+            else:
+                raise ValueError
+
+        try:
+            return cls[choice.upper()].value
+        except KeyError as e:
+            raise e

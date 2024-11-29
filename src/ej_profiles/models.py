@@ -1,7 +1,6 @@
 import hashlib
 import logging
 
-from boogie.fields import EnumField
 from constance import config
 from django.apps import apps
 from django.conf import settings
@@ -32,16 +31,24 @@ class Profile(models.Model):
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    race = EnumField(Race, _("Race"), default=Race.NOT_FILLED)
+    race = models.IntegerField(
+        choices=Race.choices, default=Race.NOT_FILLED, verbose_name=_("Race")
+    )
     ethnicity = models.CharField(_("Ethnicity"), blank=True, max_length=50)
-    ethnicity_choices = EnumField(Ethnicity, _("Ethnicity"), default=Ethnicity.NOT_FILLED)
+    ethnicity_choices = models.IntegerField(
+        choices=Ethnicity.choices, default=Ethnicity.NOT_FILLED
+    )
     education = models.CharField(_("Education"), blank=True, max_length=140)
-    gender = EnumField(Gender, _("Gender identity"), default=Gender.NOT_FILLED)
+    gender = models.IntegerField(
+        choices=Gender.choices,
+        default=Gender.NOT_FILLED,
+        verbose_name=("Gender identity"),
+    )
     gender_other = models.CharField(_("User provided gender"), max_length=50, blank=True)
     birth_date = models.DateField(_("Birth Date"), null=True, blank=True)
-    age_range = EnumField(AgeRange, _("Age range"), default=AgeRange.NOT_FILLED)
+    age_range = models.IntegerField(choices=AgeRange.choices, default=AgeRange.NOT_FILLED)
     country = models.CharField(_("Country"), blank=True, max_length=50)
-    region = EnumField(Region, _("Region"), default=Region.NOT_FILLED)
+    region = models.IntegerField(choices=Region.choices, default=Region.NOT_FILLED)
     state = models.CharField(_("State"), blank=True, max_length=3)
     city = models.CharField(_("City"), blank=True, max_length=140)
     biography = models.TextField(_("Biography"), blank=True)
@@ -50,7 +57,7 @@ class Profile(models.Model):
     profile_photo = models.ImageField(
         _("Profile Photo"), blank=True, null=True, upload_to="profile_images"
     )
-    phone_number = models.CharField(_("Phone number"), blank=True, max_length=11)
+    phone_number = models.CharField(_("Phone number"), blank=True, max_length=16)
     completed_tour = models.BooleanField(default=False, blank=True, null=True)
     filtered_home_tag = models.BooleanField(default=False, blank=True, null=True)
 
@@ -82,7 +89,7 @@ class Profile(models.Model):
     @property
     def gender_description(self):
         if self.gender != Gender.NOT_FILLED:
-            return self.gender.description
+            return self.gender.label
         return self.gender_other
 
     @property
@@ -183,7 +190,7 @@ class Profile(models.Model):
 
     def statistics(self):
         """
-        Return a dictionary with all profile statistics.
+        Return a dictionary with the participatory user's statistics.
         """
         return dict(
             votes=self.user.votes.count(),
@@ -193,7 +200,7 @@ class Profile(models.Model):
 
     def conversation_statistics(self, conversation: Conversation):
         """
-        Return the profile statistics in the conversation.
+        Return a dictionary containing the participatory user's statistics in the conversation.
         """
         approved_comments = conversation.comments.filter(
             status=Comment.STATUS.approved
@@ -217,12 +224,6 @@ class Profile(models.Model):
             "total_comments": approved_comments,
             "comments": given_votes,
         }
-
-    def badges(self):
-        """
-        Return all profile badges.
-        """
-        return self.user.badges_earned.all()
 
     def comments(self):
         """
@@ -326,15 +327,15 @@ def gravatar_fallback(id_):
     return "https://gravatar.com/avatar/{}?s=40&d=mm".format(digest)
 
 
-def get_profile(user):
+def get_profile(user, phone_number=""):
     """
     Return profile instance for user. Create profile if it does not exist.
     """
     try:
         return user.profile
     except Profile.DoesNotExist:
-        profile = Profile.objects.create(user=user)
-        log.info("profile successfully created")
+        profile = Profile.objects.create(user=user, phone_number=phone_number)
+        log.info(f"{profile.user.email} profile successfully created")
         return profile
 
 

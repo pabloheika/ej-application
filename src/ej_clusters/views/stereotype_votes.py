@@ -55,7 +55,9 @@ class StereotypeVotesView(ListView):
 
         for form in stereotype_votes_formset:
             if form.is_valid():
-                form.save(form["choice"].value(), form["comment"].value())
+                choice, comment = [form["choice"].value(), form["comment"].value()]
+                if choice and comment:
+                    form.save(choice, comment)
 
         context["stereotype_votes_formset"] = stereotype_votes_formset
         return render(request, self.template_name, context)
@@ -86,7 +88,7 @@ class StereotypeVotesView(ListView):
 
 
 @method_decorator([login_required, can_edit_conversation], name="dispatch")
-class ManageStereotypeVotesView(CreateView):
+class StereotypeVotesManageView(CreateView):
     template_name = "ej_clusters/stereotype-votes/manage-stereotype-votes.jinja2"
 
     def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
@@ -114,7 +116,6 @@ class ManageStereotypeVotesView(CreateView):
             stereotype=self.stereotype,
             queryset=self.stereotype.votes.all(),
         )
-
         for form in voted_formset:
             if form.is_valid():
                 form.save(form["choice"].value(), form["comment"].value())

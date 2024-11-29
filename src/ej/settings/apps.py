@@ -19,7 +19,7 @@ class InstalledAppsConf(Base, EjOptions):
         "ej_dataviz",
         "ej_profiles",
         "ej_conversations",
-        "ej_tools",
+        "ej_integrations",
         "ej_admin",
     ]
 
@@ -43,6 +43,8 @@ class InstalledAppsConf(Base, EjOptions):
         "anymail",
         "ckeditor",
         "drf_spectacular",
+        "jazzmin",
+        "django.contrib.admin",
     ]
 
     def get_django_contrib_apps(self):

@@ -1,8 +1,9 @@
 import datetime
 import json
-from django.core.exceptions import ValidationError
 
+from django.core.exceptions import ValidationError
 from django.urls import reverse
+from django.utils.translation import gettext
 import pytest
 
 from ej.testing import UrlTester
@@ -13,16 +14,13 @@ from ej_clusters.models.stereotype import Stereotype
 from ej_clusters.models.stereotype_vote import StereotypeVote
 from ej_conversations.enums import Choice
 from ej_conversations.mommy_recipes import ConversationRecipes
-from ej_dataviz.models import (
+from ej_dataviz.utils import get_comments_dataframe, get_user_dataframe
+from ej_dataviz.views.filters import (
     CommentsReportClustersFilter,
     CommentsReportSearchFilter,
     ReportOrderByFilter,
     UsersReportClustersFilter,
     UsersReportSearchFilter,
-)
-from ej_dataviz.utils import (
-    get_comments_dataframe,
-    get_user_dataframe,
 )
 
 BASE_URL = "/api/v1"
@@ -188,10 +186,10 @@ class TestReportRoutes:
 
         response = logged_client.get(url)
         comments = list(response.context_data["page"])
-        assert conversation_with_comments.comments.all()[0].content == comments[0][0]
-        assert conversation_with_comments.comments.all()[1].content == comments[1][0]
-        assert conversation_with_comments.comments.all()[2].content == comments[2][0]
-        assert conversation_with_comments.comments.all()[3].content == comments[3][0]
+        assert conversation_with_comments.comments.all()[0].content == comments[0][1]
+        assert conversation_with_comments.comments.all()[1].content == comments[1][1]
+        assert conversation_with_comments.comments.all()[2].content == comments[2][1]
+        assert conversation_with_comments.comments.all()[3].content == comments[3][1]
 
     def test_get_dashboard_with_clusters(
         self, cluster, stereotype_vote, comment, logged_client
@@ -352,9 +350,44 @@ class TestCommentsReport(TestReportRoutes):
         filtered_comments_df = search_filter.filter()
         assert len(filtered_comments_df.index) == 1
 
+    def test_get_modal(self, conversation_with_comments, logged_client):
+        comments = conversation_with_comments.comments.all()
+        index = 0
+        comment = comments[index]
+        base_url = reverse("dataviz:comments-modal", kwargs={"pk": comment.id})
+        url = f"{base_url}?comments={comment.id}&comments={comments[1].id}"
+        comments_ids = list(comments.values_list("id", flat=True))
+        value = 100
+        comments_ids_dict = [
+            {
+                "comment": id,
+                "agree": value,
+                "disagree": 0,
+                "skipped": 0,
+                "convergence": value,
+                "participation": value,
+                "group": "",
+            }
+            for id in comments_ids
+        ]
+
+        response = logged_client.post(
+            url, {"comments": json.dumps(comments_ids_dict), "current_index": index}
+        )
+        context = response.context
+        comment_statistics = context["comment_statistics"]
+        statistics = comment.statistics(ratios=True)
+        assert context["comment"] == comment
+        assert context["next_id"] == comment.next(index, comments_ids_dict)
+        assert context["previous_id"] == comment.previous(index, comments_ids_dict)
+        assert comment_statistics["agree"] == statistics["agree_ratio"] * 100
+        assert comment_statistics["disagree"] == statistics["disagree_ratio"] * 100
+        assert comment_statistics["skipped"] == statistics["skip_ratio"] * 100
+        assert context["comment"].n_votes == statistics["total"]
+
 
 class TestUsersReport(TestReportRoutes):
-    no_group_text = "No group"
+    no_group_text = gettext("No group")
 
     @pytest.fixture
     def user_cluster(self, conversation_with_comments):
@@ -434,21 +467,21 @@ class TestUsersReport(TestReportRoutes):
 
         orderby_filter = ReportOrderByFilter("email", users_df)
         sorted_users_df = orderby_filter.filter()
-        assert sorted_users_df.iloc[[0]].get("participant").item() == "user3@email.br"
-        assert sorted_users_df.iloc[[1]].get("participant").item() == "user2@email.br"
-        assert sorted_users_df.iloc[[2]].get("participant").item() == "user1@email.br"
+        assert sorted_users_df.iloc[[0]].get("email").item() == "user3@email.br"
+        assert sorted_users_df.iloc[[1]].get("email").item() == "user2@email.br"
+        assert sorted_users_df.iloc[[2]].get("email").item() == "user1@email.br"
 
         orderby_filter = ReportOrderByFilter("name", users_df)
         sorted_users_df = orderby_filter.filter()
-        assert sorted_users_df.iloc[[0]].get("participant").item() == "user3@email.br"
-        assert sorted_users_df.iloc[[1]].get("participant").item() == "user2@email.br"
-        assert sorted_users_df.iloc[[2]].get("participant").item() == "user1@email.br"
+        assert sorted_users_df.iloc[[0]].get("email").item() == "user3@email.br"
+        assert sorted_users_df.iloc[[1]].get("email").item() == "user2@email.br"
+        assert sorted_users_df.iloc[[2]].get("email").item() == "user1@email.br"
 
         orderby_filter = ReportOrderByFilter("date_joined", users_df)
         sorted_users_df = orderby_filter.filter()
-        assert sorted_users_df.iloc[[0]].get("participant").item() == "user3@email.br"
-        assert sorted_users_df.iloc[[1]].get("participant").item() == "user2@email.br"
-        assert sorted_users_df.iloc[[2]].get("participant").item() == "user1@email.br"
+        assert sorted_users_df.iloc[[0]].get("email").item() == "user3@email.br"
+        assert sorted_users_df.iloc[[1]].get("email").item() == "user2@email.br"
+        assert sorted_users_df.iloc[[2]].get("email").item() == "user1@email.br"
 
     def test_sort_users_dataframe_in_ascending_order(self, conversation_with_comments):
         clusters_filter = UsersReportClustersFilter([], conversation_with_comments)
@@ -456,15 +489,15 @@ class TestUsersReport(TestReportRoutes):
 
         orderby_filter = ReportOrderByFilter("email", users_df, True)
         sorted_users_df = orderby_filter.filter()
-        assert sorted_users_df.iloc[[0]].get("participant").item() == "user1@email.br"
-        assert sorted_users_df.iloc[[1]].get("participant").item() == "user2@email.br"
-        assert sorted_users_df.iloc[[2]].get("participant").item() == "user3@email.br"
+        assert sorted_users_df.iloc[[0]].get("email").item() == "user1@email.br"
+        assert sorted_users_df.iloc[[1]].get("email").item() == "user2@email.br"
+        assert sorted_users_df.iloc[[2]].get("email").item() == "user3@email.br"
 
         orderby_filter = ReportOrderByFilter("date_joined", users_df, True)
         sorted_users_df = orderby_filter.filter()
-        assert sorted_users_df.iloc[[0]].get("participant").item() == "user1@email.br"
-        assert sorted_users_df.iloc[[1]].get("participant").item() == "user2@email.br"
-        assert sorted_users_df.iloc[[2]].get("participant").item() == "user3@email.br"
+        assert sorted_users_df.iloc[[0]].get("email").item() == "user1@email.br"
+        assert sorted_users_df.iloc[[1]].get("email").item() == "user2@email.br"
+        assert sorted_users_df.iloc[[2]].get("email").item() == "user3@email.br"
 
     def test_search_string_users_dataframe(self, conversation_with_comments):
         clusters_filter = UsersReportClustersFilter([], conversation_with_comments)
