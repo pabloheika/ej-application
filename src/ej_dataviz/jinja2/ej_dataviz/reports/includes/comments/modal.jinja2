@@ -12,7 +12,7 @@
             </div>
             <div class="comment-detail__info">
                 <span>{{_("Comment ")}}</span>
-                <p class="comment-detail__info-content">{{comment.content}}</p>
+                <p class="comment-detail__title">{{comment.content}}</p>
             </div>
 
             <div class="comment-detail_container-info">
@@ -28,7 +28,7 @@
         
             <div class="comment-detail__info">
                 {{_("Author")}}
-                <p class="comment-detail__info-author">{{comment.author.name}}</p>
+                <p class="comment-detail__author">{{comment.author.name}}</p>
             </div>
             
             <div class="comment-detail__statistics">
@@ -53,6 +53,7 @@
                      <p>{{"%s%%"|format(current_object["participation"]|round)}}</p>
                 </div>
             </div>
+            
             <div class="comment-detail__buttons">
             {% if previous %}
                 <a class="comment-detail__buttons-link"

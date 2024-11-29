@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ej\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-27 00:41-0300\n"
+"POT-Creation-Date: 2024-11-28 22:25-0300\n"
 "PO-Revision-Date: 2022-04-12 13:55-0300\n"
 "Last-Translator: David Carlos <davidcarlos@pencillabs.com.br>\n"
 "Language-Team: Brazilian Portuguese\n"
@@ -399,7 +399,7 @@ msgstr "Logotipo"
 msgid "This title already exists!"
 msgstr "Esse título já existe."
 
-#: src/ej_conversations/mixins.py:177 src/ej_dataviz/tests/test_views.py:390
+#: src/ej_conversations/mixins.py:177 src/ej_dataviz/tests/test_views.py:388
 #, fuzzy
 msgid "No group"
 msgstr "Sem grupo"
@@ -1798,15 +1798,15 @@ msgstr "de"
 
 #: src/ej_admin/jinja2/ej_admin/environment/paginator.jinja2:6
 #: src/ej_admin/jinja2/ej_admin/environment/recent-boards-paginator.jinja2:5
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:66
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:63
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:67
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:60
 msgid "Previous"
 msgstr "Anterior"
 
 #: src/ej_admin/jinja2/ej_admin/environment/paginator.jinja2:18
 #: src/ej_admin/jinja2/ej_admin/environment/recent-boards-paginator.jinja2:17
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:77
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:68
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:78
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:65
 #: src/ej_profiles/jinja2/ej_profiles/includes/tour-page2.jinja2:20
 msgid "Next"
 msgstr "Próximo"
@@ -3004,7 +3004,6 @@ msgid "creation date"
 msgstr "data de criação"
 
 #: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/comments/modal.jinja2:5
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:5
 msgid "Chart line up"
 msgstr "Linha de gráfico crescente"
 
@@ -3067,12 +3066,16 @@ msgstr "Comentário"
 msgid "Skipped"
 msgstr "Pulados"
 
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:6
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:4
+msgid "User with tag"
+msgstr "Usuário com etiqueta"
+
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:5
 #, fuzzy
 msgid "More informations"
 msgstr "Mais informações"
 
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:10
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:11
 #, fuzzy
 msgid "Cluster"
 msgstr "Grupo"
@@ -3082,22 +3085,22 @@ msgstr "Grupo"
 msgid "Date of participation in the conversation"
 msgstr "Data de participação na conversa"
 
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:20
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:19
 #, fuzzy
 msgid "Votes in the conversation"
 msgstr "Votos na conversa"
 
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:26
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:23
 #, fuzzy
 msgid "Comments in the conversation"
 msgstr "Comentários na conversa"
 
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:32
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:30
 #, fuzzy
 msgid "Full name"
 msgstr "Nome completo"
 
-#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:37
+#: src/ej_dataviz/jinja2/ej_dataviz/reports/includes/users/modal.jinja2:34
 #, fuzzy
 msgid "Birth date"
 msgstr "Data de nascimento"

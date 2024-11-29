@@ -1,72 +1,71 @@
 <div id="users-detail-modal" class="cluster-modal modal__overlay">
     <div class="comments-modal modal modal__container modal__container--text-align-unset modal__container--sm-height modal__container--lighter-bg modal--full-screen-mobile">
-        <div class="comment-detail">
-            <div class="cluster-modal__header comment-detail__modal-header">
-                <img src="{{ static('/img/icons/chart-line.svg') }}" alt="{{ _('Chart line up') }}">
-                <p>{{_("More informations")}}</p>
-                <i onclick="closeCommentModal()" class="fas fa-times"></i>
-            </div>
-            <div class="comment-detail__info">
-                <span>{{_("Cluster")}}</span>
-                <p>{{current_object["group"]}}</p>
-            </div>
-
-            <div class="comment-detail__info">
-                <span>{{_("Date of participation in the conversation")}}</span>
-                <p>{{ conversation.user_participation_date.strftime('%d/%m/%Y') }}</p>
-            </div>
-
-            <div class="comment-detail__info">
-                <span>{{_("Votes in the conversation")}}</span>
-                <p>{{conversation.n_user_votes}}</p>
-            </div>
-        
-            <div class="comment-detail__info">
-                <span>{{_("Comments in the conversation")}}</span>
-                <p>{{conversation.n_user_total_comments}}</p>
-            </div>
-
-            <div class="comment-detail__info">
-                <span>{{_("Full name")}}</span>
-                <p>{{ user.name }}</p>
+        <div class="cluster-modal__header user-detail__modal-header">
+            <img src="{{ static('/img/icons/user-tag.svg') }}" alt="{{ _('User with tag') }}">
+            <p>{{_("More informations")}}</p>
+            <i onclick="closeCommentModal()" class="fas fa-times"></i>
+        </div>
+        <div class="user-detail">
+            <div class="user-detail__column">
+                <div>
+                    <span>{{_("Cluster")}}</span>
+                    <p class="user-detail--lowercase">{{current_object["group"]}}</p>
+                </div>
+                <div>
+                    <span>{{_("Date of participation in the conversation")}}</span>
+                    <p>{{ conversation.user_participation_date.strftime('%d/%m/%Y') }}</p>
+                </div>
+                <div>
+                    <span>{{_("Votes in the conversation")}}</span>
+                    <p>{{conversation.n_user_votes}}</p>
+                </div>
+                <div>
+                    <span>{{_("Comments in the conversation")}}</span>
+                    <p>{{conversation.n_user_total_comments}}</p>
+                </div>
             </div>
 
-            <div class="comment-detail__info"></div>
-                <span>{{_("Birth date")}}</span>
-                {% if user.get_profile().birth_date %}
-                    <p>{{ user.get_profile().birth_date }}</p>
-                {% else %}
-                    <p></p>
+            <div class="user-detail__column">
+                <div>
+                    <span>{{_("Full name")}}</span>
+                    <p>{{ user.name }}</p>
+                </div>
+                <div>
+                    <span>{{_("Birth date")}}</span>
+                    {% if user.get_profile().birth_date %}
+                        <p>{{ user.get_profile().birth_date }}</p>
+                    {% else %}
+                        <p></p>
+                    {% endif %}
+                </div>
+                <div>
+                    <span>{{_("E-mail")}}</span>
+                    <p class="user-detail__email">{{ user.email }}</p>
+                </div>
+                <div>
+                    <span>{{_("City")}}</span>
+                    {% if user.get_profile().city %}
+                        <p>{{ user.get_profile().city }}</p>
+                    {% else %}
+                        <p></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="user-detail">
+            <div class="user-detail__buttons">
+                {% if previous %}
+                    <a class="user-detail__buttons-link"> 
+                        <i class="fas fa-chevron-left"></i>
+                        {{_("Previous")}}
+                    </a>
                 {% endif %}
-            </div>
-
-            <div class="comment-detail__info">
-                <span>{{_("E-mail")}}</span>
-                <p class="comment-detail__info-author">{{ user.email }}</p>
-            </div>
-
-            <div class="comment-detail__info">
-                <span>{{_("City")}}</span>
-                {% if user.get_profile().city %}
-                    <p>{{ user.get_profile().city }}</p>
-                {% else %}
-                    <p></p>
+                {% if next %}
+                    <a class="user-detail__buttons-link user-detail__buttons-link--left">
+                        {{_("Next")}}
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
                 {% endif %}
-            </div>
-            
-            <div class="comment-detail__buttons">
-            {% if previous %}
-                <a> 
-                    <i class="fas fa-chevron-left"></i>
-                    {{_("Previous")}}
-                </a>
-            {% endif %}
-            {% if next %}
-                <a>
-                    {{_("Next")}}
-                    <i class="fas fa-chevron-right"></i>
-                </a>
-            {% endif %}
             </div>
         </div>
     </div>
