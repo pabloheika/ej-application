@@ -42,9 +42,23 @@
     justify-content: space-between;
     color: $color-black;
 
+    @media only screen and (max-width: 900px) {
+        display: block;
+    }
+
     &__column {
         display: grid;
         row-gap: 1.5rem;
+    }
+
+    &__divider {
+        display: none;
+
+        @media only screen and (max-width: 900px) {
+            display: block;
+            margin: 3rem 0;
+            color: $color-gray-darker;
+        }
     }
     
     &--lowercase {
@@ -60,11 +74,11 @@
         align-self: baseline;
 
         p {
-            font-size: 1.5em;
+            font-size: 1.5em !important;
             color: $color-gray-darker; 
             letter-spacing: 0; 
-            font-weight: 400; 
-            margin: 0;
+            font-weight: 400 !important;
+            margin: 0 !important;
         }
     }
 

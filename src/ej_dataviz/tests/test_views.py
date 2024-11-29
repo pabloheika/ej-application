@@ -514,3 +514,30 @@ class TestUsersReport(TestReportRoutes):
         search_filter = UsersReportSearchFilter("@email.br", users_df)
         filtered_users_df = search_filter.filter()
         assert len(filtered_users_df.index) == 3
+
+    def test_get_detail_modal(self, conversation_with_comments, logged_client):
+        index = 0
+        url = reverse(
+            "boards:dataviz-users-modal",
+            kwargs=conversation_with_comments.get_url_kwargs(),
+        )
+        user_emails = ["user1@email.br", "user2@email.br", "user3@email.br"]
+        user_emails_dict = [
+            {
+                "group": "",
+                "email": email,
+            }
+            for email in user_emails
+        ]
+
+        response = logged_client.post(
+            url,
+            {
+                "objects": json.dumps(user_emails_dict),
+                "current_index": index,
+                "user_email": "user1@email.br",
+            },
+        )
+        context = response.context
+        assert context["next"] == "user2@email.br"
+        assert context["previous"] is None

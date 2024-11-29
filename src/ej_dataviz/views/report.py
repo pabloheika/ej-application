@@ -226,6 +226,7 @@ class UserDetailView(ReportDetailView):
             **super().get_context_data(**kwargs),
             "user": user,
             "conversation": conversation,
+            "user_email": user_email,
         }
 
 

@@ -25,6 +25,8 @@
                 </div>
             </div>
 
+            <hr class="user-detail__divider">
+
             <div class="user-detail__column">
                 <div>
                     <span>{{_("Full name")}}</span>
@@ -52,21 +54,31 @@
                 </div>
             </div>
         </div>
-        <div class="user-detail">
-            <div class="user-detail__buttons">
-                {% if previous %}
-                    <a class="user-detail__buttons-link"> 
-                        <i class="fas fa-chevron-left"></i>
-                        {{_("Previous")}}
-                    </a>
-                {% endif %}
-                {% if next %}
-                    <a class="user-detail__buttons-link user-detail__buttons-link--left">
-                        {{_("Next")}}
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                {% endif %}
-            </div>
+        <div class="user-detail__buttons">
+            {% if previous %}
+                <a class="user-detail__buttons-link"
+                    id="previous-{{current_index-1}}"
+                    hx-post="{{ url('boards:dataviz-users-modal', **conversation.get_url_kwargs()) }}"
+                    hx-target="#users-detail-modal"
+                    hx-vals='{"objects": {{objects}}, "user_email": "{{previous}}", "current_index": {{current_index-1}}}'
+                    hx-trigger="click delay:0.5s">
+                    {{csrf_input}}
+                    <i class="fas fa-chevron-left"></i>
+                    {{_("Previous")}}
+                </a>
+            {% endif %}
+            {% if next %}
+                <a class="user-detail__buttons-link user-detail__buttons-link--left"
+                    id="next-{{current_index+1}}"
+                    hx-post="{{ url('boards:dataviz-users-modal', **conversation.get_url_kwargs()) }}"
+                    hx-target="#users-detail-modal"
+                    hx-vals='{"objects": {{objects}}, "user_email": "{{next}}", "current_index": {{current_index+1}}}'
+                    hx-trigger="click delay:0.5s">
+                    {{csrf_input}}
+                    {{_("Next")}}
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            {% endif %}
         </div>
     </div>
 </div>
