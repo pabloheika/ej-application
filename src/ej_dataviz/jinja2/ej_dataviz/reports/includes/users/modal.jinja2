@@ -1,9 +1,9 @@
 <div id="users-detail-modal" class="cluster-modal modal__overlay">
-    <div class="comments-modal modal modal__container modal__container--text-align-unset modal__container--sm-height modal__container--lighter-bg modal--full-screen-mobile">
+    <div class="users-modal modal modal__container modal__container--text-align-unset modal__container--sm-height modal__container--lighter-bg modal--full-screen-mobile">
         <div class="cluster-modal__header user-detail__modal-header">
             <img src="{{ static('/img/icons/user-tag.svg') }}" alt="{{ _('User with tag') }}">
             <p>{{_("More informations")}}</p>
-            <i onclick="closeCommentModal()" class="fas fa-times"></i>
+            <i onclick="closeUserModal()" class="fas fa-times"></i>
         </div>
         <div class="user-detail">
             <div class="user-detail__column">
@@ -84,7 +84,7 @@
 </div>
 
 <script>
-    function closeCommentModal() {
+    function closeUserModal() {
         const modal = $('#users-detail-modal');
         const body = $("body").removeClass('modal--hide-overflow-y');
         modalContainer = modal.find('.modal__container--sm-height');
@@ -92,9 +92,9 @@
         modal.addClass('hide');
     }
 
-    $(".comment-detail__buttons-link").click(function(){
-        $(".comments-modal").fadeOut(200);
-        $(".comments-modal").fadeIn(200);
+    $(".user-detail__buttons-link").click(function(){
+        $(".users-modal").fadeOut(200);
+        $(".users-modal").fadeIn(200);
     });
 
 </script>
