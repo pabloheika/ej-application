@@ -19,16 +19,19 @@
                     <tr id="user-{{loop.index0}}"
                         hx-post="{{ url('boards:dataviz-users-modal', **conversation.get_url_kwargs()) }}"
                         hx-target="#users-detail-modal"
-                        hx-trigger="click"
+                        hx-trigger="click[event.target.matches('#user-link-{{loop.index0}}')] from:body"
                         hx-vals='{"user_email": "{{user[1]}}", "current_index": {{loop.index0}}, "objects": {{users}}}'
                     >
                         <td>
                             {{csrf_input}}
                             <div class="report__user">
                                 <div>{{user[0]}}</div>
-                                <div>{{user[1]}}</div>
-                                <div>{{user[2].strftime('%d/%m/%Y')}}</div>
-                                <div>{{user[7]}}</div>
+                                <div id="user-link-{{loop.index0}}" class="report__user-info cursor-pointer">
+                                    {{_("+ Info")}}
+                                </div>
+                                {% if filtered_by_group %}
+                                    <div>{{user[7]}}</div>
+                                {% endif %}
                             </div>
                         </td>
                         <td class="report__percentages">{{"%s%%"|format(user[3]|round)}}</td>

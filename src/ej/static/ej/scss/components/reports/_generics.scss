@@ -75,35 +75,12 @@
         }
     }
 
-    &__comment, &__user {
+    &__comment {
         div:nth-child(2),
         div:nth-child(3),
         div:nth-child(4),
         {
             font-size: .9em;
-        }
-
-        div:nth-child(4) {
-            color: $color-accent;
-            font-weight: 600;
-        }
-    }
-
-    &__comment, &__user {
-        padding: 1rem;
-        box-sizing: content-box;
-        div:first-child {
-            color: $color-black;
-            margin-bottom: 1rem;
-        }
-        div:nth-child(2) {
-            color: $color-brand;
-            font-weight: 600;
-        }
-    }
-
-    &__comment {
-        div:nth-child(3) {
             color: $color-accent;
             font-weight: 600;
         }
@@ -122,10 +99,39 @@
         }
     }
 
+    &__comment, &__user {
+        padding: 1rem;
+        box-sizing: content-box;
+        
+        div:first-child {
+            color: $color-black;
+        }
+
+        &--margin {
+            margin-top: 1rem;
+        }
+    }
+
     &__user {
-        div:nth-child(3) {
-            color: $color-brand;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        &-info, div:nth-child(3) {
+            color: $color-accent;
             font-weight: 600;
+        }
+
+        &-info {
+            text-transform: uppercase;
+        }
+
+        div:nth-child(2) {
+            font-size: .9em;
+        }
+
+        div:nth-child(3) {
+            font-size: 0.75em;
         }
     }
 

@@ -131,6 +131,7 @@ class UsersReportDetailView(ReportsBaseView):
         conversation = context["object"]
         dataframe = self.get_dataframe(conversation)
         context["users"] = json.dumps(dataframe.to_json(orient="records"))
+        context["filtered_by_group"] = False
         return context
 
 
@@ -157,6 +158,7 @@ class UsersReportFilterView(ReportsBaseView):
         users_df = ReportOrderByFilter(order_by, users_df, ascending, "name").filter()
         context["page"] = self.paginate(users_df, self.request.GET.get("page") or 1)
         context["users"] = json.dumps(users_df.to_json(orient="records"))
+        context["filtered_by_group"] = True if cluster_ids else False
         return context
 
 

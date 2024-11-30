@@ -30,9 +30,8 @@
                                         src="{{ static('/img/icons/chart-line-white.svg') }}"
                                     >
                                 </div>
-                                <div>{{comment[2]}}</div>
                                 {% if comment|length > 8 %}
-                                    <div>{{comment[8]}}</div>
+                                    <div class="report__comment--margin">{{comment[8]}}</div>
                                 {% endif %}
                             </div>
                         </td>
