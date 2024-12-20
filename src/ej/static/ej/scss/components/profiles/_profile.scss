@@ -179,13 +179,14 @@
         margin-left: 0.75rem;
       }
       label{
-        margin-bottom: 0rem !important;
+        margin-bottom: 0rem;
       }
     }
 
     .primeira, .segunda, .terceira, .quarta {
       & > * {
         width: max-content;
+        
       }
     }
 
@@ -193,7 +194,7 @@
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       column-gap: 96px;
-      margin: 54px 0 52px;
+      margin: 16px 0 52px;
     }
 
     .segunda {
