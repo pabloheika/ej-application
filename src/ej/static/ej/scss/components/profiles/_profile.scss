@@ -113,71 +113,13 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(6, 1fr);
-  grid-column-gap: 1.4rem;
-  grid-row-gap: 1rem;
+  // grid-column-gap: 1.4rem;
+  // grid-row-gap: 1rem;
 
-  span{
+  span {
     font-family: 'Work Sans';
     font-size: 1rem;
-    font-weight: 700;
     color: $color-gray-darker;
-  }
-  &__name {
-    grid-area: 1 / 1 / 2 / 3;
-
-  }
-  &__email {
-    grid-area: 1 / 3 / 2 / 5;
-  }
-  &__city {
-    grid-area: 2 / 1 / 3 / 2;
-  }
-  &__state {
-    grid-area: 2 / 2 / 3 / 3;
-  }
-
-  &__country {
-    grid-area: 2 / 3 / 3 / 4;
-  }
-
-  &__birth-date {
-    grid-area: 3 / 1 / 4 / 2;
-  }
-
-  &__occupation {
-    grid-area: 3 / 2 / 4 / 4;
-  }
-
-  &__education {
-    grid-area: 3 / 4 / 4 / 5;
-  }
-
-  &__education--detail {
-    grid-area: 3 / 3 / 4 / 5;
-  }
-
-  &__ethnicity {
-    grid-area: 4 / 1 / 5 / 2;
-  }
-
-  &__gender_other {
-    grid-area: 4 / 2 / 5 / 4;
-  }
-
-  &__political_activity {
-    grid-area: 5 / 1 / 7 / 3;
-  }
-
-  &__political_activity--detail{
-    grid-area: 5 / 1 / 7 / 2;
-  }
-
-  &__biography {
-    grid-area: 5 / 3 / 7 / 5;
-  }
-
-  &__biography--detail {
-    grid-area: 5 / 2 / 7 / 5;
   }
 
   &__current-password {
@@ -226,9 +168,67 @@
       background-color: $color-base-pink !important;
     }
   }
-
 }
 
+  .primeira, .segunda, .terceira, .quarta, .quinta {
+      span {
+        font-family: 'Work Sans';
+        font-size: 1rem;
+        font-weight: 700;
+        color: $color-gray-darker;
+        margin-left: 0.75rem;
+      }
+      label{
+        margin-bottom: 0rem !important;
+      }
+    }
+
+    .primeira, .segunda, .terceira, .quarta {
+      & > * {
+        width: max-content;
+      }
+    }
+
+    .primeira {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      column-gap: 96px;
+      margin: 54px 0 52px;
+    }
+
+    .segunda {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      column-gap: 96px;
+      margin-bottom: 52px;
+    }
+
+    .terceira {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      column-gap: 96px;
+      margin-bottom: 52px;
+    }
+
+    .quarta {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      column-gap: 96px;
+      margin-bottom: 52px;
+    }
+    
+    .quinta {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      grid-template-rows: auto auto;
+      column-gap: 96px;
+      
+      & > *:not(.form-profile__edit) {
+        width: max-content;
+      }
+    }
+    
+    
 .edit-profile{
   .form-profile {
     display: grid;
@@ -300,54 +300,6 @@
     &__biography--detail {
       grid-area: 5 / 2 / 7 / 5;
     }
-
-    &__current-password {
-      grid-area: 1 / 1 / 1 / 1;
-      input[type='password'] {margin: -1.125rem 0 0rem 0;}
-    }
-
-    &__new-password {
-      grid-area: 2 / 1 / 2 / 2;
-      input[type='password'] {margin: -1.125rem 0 0rem 0;}
-    }
-
-    &__confirm-password {
-      grid-area: 2;
-    }
-
-    &__save {
-      grid-area: 2;
-      align-items: center;
-      display: grid;
-      input {
-        margin: 0;
-        width: fit-content;
-      }
-    }
-
-    &__edit {
-      grid-area: 6 / 4 / 6 / 4;
-    }
-
-    select, textarea{
-      border-radius: 0.3125rem !important;
-    }
-
-    &--buttons{
-      display: flex;
-      flex-direction: row;
-      align-items: end;
-      justify-content: end;
-      column-gap: 2rem;
-      input, a {
-        border: none !important;
-        border-radius: 1.5625rem !important;
-      }
-      a {
-        background-color: $color-base-pink !important;
-      }
-    }
-
   }
 }
 

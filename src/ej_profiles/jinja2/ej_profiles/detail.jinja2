@@ -21,75 +21,78 @@
         <div class="content-grid inputs-min-size">
         {{ tabs({_('Profile'): 'profile-info',
                 _('Account'): 'profile-account'}) }}
-            <div class="form-profile form-profile--row-separation tabs__tab-content" id="profile-info">
-                <div class="form-profile__name">
-                    <label>{{_("name")}}</label>
-                    <span>{{ profile.name }}</span>
-                </div>
-                <div class="form-profile__email">
-                    <label>{{_("email")}}</label>
-                    <span>{{profile.email}}</span>
-                </div>
-                <div class="form-profile__city">
-                    <label>{{_("city")}}</label>
-                    <span>{{ profile.city}}</span>
-                </div>
-
-                <div class="form-profile__state">
-                    <label>{{_("state")}}</label>
-                    <span>{{ profile.state}}</span>
-                </div>
-
-                <div class="form-profile__country">
-                    <label>{{_("country")}}</label>
-                    <span>{{ profile.country}}</span>
-                </div>
-
-                <div class="form-profile__birth-date">
-                    <label>{{_("birth_date")}}</label>
-                    {% if profile.birth_date %}
-                        <span>{{ profile.birth_date.strftime('%d/%m/%Y')}}</span>
-                    {% else %}
-                        <span></span>
-                    {% endif %}
-                </div>
-
-                <div class="form-profile__occupation">
-                    <label>{{_("occupation")}}</label>
-                    <span>{{ profile.occupation}}</span>
-                </div>
-
-                <div class="form-profile__education--detail">
-                    <label>{{_("education")}}</label>
-                    <span>{{ profile.education}}</span>
-                </div>
-
-                <div class="form-profile__ethnicity">
-                    <label>{{_("ethnicity")}}</label>
-                    <span>{{ profile.ethnicity}}</span>
-                </div>
-                <div class="form-profile__gender_other">
-                    <label>{{_("gender")}}</label>
-                    <span>{{ profile.gender}}</span>
-                </div>
-                <div class="form-profile__political_activity--detail">
-                    <label>{{_("political_activity")}}</label>
-                    <span>{{ profile.political_activity}}</span>
-                </div>
-                <div class="form-profile__biography--detail">
-                    <label>{{_("biography")}}</label>
-                    <span>{{ profile.biography}}</span>
-                </div>
-
-                <div class="form-profile__edit">
-                    <div class="content-grid">
-                        <div id="btn-edit" class="form-profile--buttons">
-                            {{ link(_("Edit profile"), href="profile:edit", button=True, class="block margin-y3 form-profile--buttons__action") }}
+                <div class="tabs__tab-content" id="profile-info">
+                    <div class="primeira">
+                        <div class="form-profile__name">
+                            <label>{{ _("name") }}</label>
+                            <span>{{ profile.name }}</span>
+                        </div>
+                        <div class="form-profile__email">
+                            <label>{{ _("email") }}</label>
+                            <span>{{ profile.email }}</span>
+                        </div>
+                    </div>
+                    <div class="segunda">
+                        <div class="form-profile__city">
+                            <label>{{ _("city") }}</label>
+                            <span>{{ profile.city }}</span>
+                        </div>
+                        <div class="form-profile__state">
+                            <label>{{ _("state") }}</label>
+                            <span>{{ profile.state }}</span>
+                        </div>
+                        <div class="form-profile__country">
+                            <label>{{ _("country") }}</label>
+                            <span>{{ profile.country }}</span>
+                        </div>
+                    </div>
+                    <div class="terceira">
+                        <div class="form-profile__birth-date">
+                            <label>{{ _("birth_date") }}</label>
+                            {% if profile.birth_date %}
+                                <span>{{ profile.birth_date.strftime('%d/%m/%Y') }}</span>
+                            {% else %}
+                                <span></span>
+                            {% endif %}
+                        </div>
+                        <div class="form-profile__occupation">
+                            <label>{{ _("occupation") }}</label>
+                            <span>{{ profile.occupation }}</span>
+                        </div>
+                        <div class="form-profile__education--detail">
+                            <label>{{ _("education") }}</label>
+                            <span>{{ profile.education }}</span>
+                        </div>
+                    </div>
+                    <div class="quarta">
+                        <div class="form-profile__ethnicity">
+                            <label>{{ _("ethnicity") }}</label>
+                            <span>{{ profile.ethnicity }}</span>
+                        </div>
+                        <div class="form-profile__gender_other">
+                            <label>{{ _("gender") }}</label>
+                            <span>{{ profile.gender }}</span>
+                        </div>
+                    </div>
+                    <div class="quinta">
+                        <div class="form-profile__political_activity--detail">
+                            <label>{{ _("political_activity") }}</label>
+                            <span>{{ profile.political_activity }}</span>
+                        </div>
+                        <div class="form-profile__biography--detail">
+                            <label>{{ _("biography") }}</label>
+                            <span>{{ profile.biography }}</span>
+                        </div>
+                        <div class="form-profile__edit">
+                            <div class="content-grid">
+                                <div id="btn-edit" class="form-profile--buttons">
+                                    {{ link(_("Edit profile"), href="profile:edit", button=True, class="block margin-y3 form-profile--buttons__action") }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
             <form method="post" class="form-element profile-form-account" enctype="multipart/form-data">
                 {{ csrf_input }}
                 <div id="profile-account" class="tabs__tab-content">
