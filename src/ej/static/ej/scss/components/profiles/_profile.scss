@@ -192,35 +192,35 @@
 
     .primeira {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       column-gap: 96px;
       margin: 16px 0 52px;
     }
 
     .segunda {
       display: grid;
-      grid-template-columns: repeat(9, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       column-gap: 96px;
       margin-bottom: 52px;
     }
 
     .terceira {
       display: grid;
-      grid-template-columns: repeat(8, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       column-gap: 96px;
       margin-bottom: 52px;
     }
 
     .quarta {
       display: grid;
-      grid-template-columns: repeat(9, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       column-gap: 96px;
       margin-bottom: 52px;
     }
     
     .quinta {
       display: grid;
-      grid-template-columns: repeat(9, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       grid-template-rows: auto auto;
       column-gap: 96px;
       
