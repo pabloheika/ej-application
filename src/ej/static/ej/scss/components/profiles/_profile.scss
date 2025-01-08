@@ -168,7 +168,7 @@
   }
 }
 
-  .primeira, .segunda, .terceira, .quarta, .quinta {
+  .first, .second, .third, .fourth, .fifth {
       span {
         font-family: 'Work Sans';
         font-size: 1rem;
@@ -181,42 +181,42 @@
       }
     }
 
-    .primeira, .segunda, .terceira, .quarta {
+    .first, .second, .third, .fourth {
       & > * {
         width: max-content;
         
       }
     }
 
-    .primeira {
+    .first {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       column-gap: 6rem;
       margin: 1rem 0 3.25rem;
     }
 
-    .segunda {
+    .second {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       column-gap: 6rem;
       margin-bottom: 3.25rem;
     }
 
-    .terceira {
+    .third{
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       column-gap: 6rem;
       margin-bottom: 3.25rem;
     }
 
-    .quarta {
+    .fourth {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       column-gap: 6rem;
       margin-bottom: 3.25rem;
     }
     
-    .quinta {
+    .fifth {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: auto auto;

@@ -22,7 +22,7 @@
         {{ tabs({_('Profile'): 'profile-info',
                 _('Account'): 'profile-account'}) }}
                 <div class="tabs__tab-content" id="profile-info">
-                    <div class="primeira">
+                    <div class="first">
                         <div class="form-profile__name">
                             <label>{{ _("name") }}</label>
                             <span>{{ profile.name }}</span>
@@ -32,7 +32,7 @@
                             <span>{{ profile.email }}</span>
                         </div>
                     </div>
-                    <div class="segunda">
+                    <div class="second">
                         <div class="form-profile__city">
                             <label>{{ _("city") }}</label>
                             <span>{{ profile.city }}</span>
@@ -46,7 +46,7 @@
                             <span>{{ profile.country }}</span>
                         </div>
                     </div>
-                    <div class="terceira">
+                    <div class="third">
                         <div class="form-profile__birth-date">
                             <label>{{ _("birth_date") }}</label>
                             {% if profile.birth_date %}
@@ -64,7 +64,7 @@
                             <span>{{ profile.education }}</span>
                         </div>
                     </div>
-                    <div class="quarta">
+                    <div class="fourth">
                         <div class="form-profile__ethnicity">
                             <label>{{ _("ethnicity") }}</label>
                             <span>{{ profile.ethnicity }}</span>
@@ -74,7 +74,7 @@
                             <span>{{ profile.gender }}</span>
                         </div>
                     </div>
-                    <div class="quinta">
+                    <div class="fifth">
                         <div class="form-profile__political_activity--detail">
                             <label>{{ _("political_activity") }}</label>
                             <span>{{ profile.political_activity }}</span>
