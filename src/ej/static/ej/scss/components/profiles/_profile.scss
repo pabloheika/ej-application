@@ -228,8 +228,7 @@
     }
     
     
-.edit-profile{
-  .form-profile {
+.edit-profile-form-profile {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(6, 1fr);
@@ -300,7 +299,7 @@
       grid-area: 5 / 2 / 7 / 5;
     }
   }
-}
+
 
 @media (max-width:900px){
 

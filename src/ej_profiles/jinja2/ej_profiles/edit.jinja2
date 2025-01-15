@@ -30,58 +30,58 @@
 
         {{ csrf_input }}
         <div class="content-grid inputs-min-size">
-            <div class="edit-profile form-profile">
-                <div class="form-profile__name">
+            <div class="edit-profile-form-profile">
+                <div class="edit-profile-form-profile__name">
                     <label>{{_("name")}}</label>
                     {{ form.name }}
                 </div>
-                <div class="form-profile__email">
+                <div class="edit-profile-form-profile__email">
                     <label>{{_("email")}}</label>
                     <input disabled value="{{profile.email}}"/>
                 </div>
-                <div class="form-profile__city">
+                <div class="edit-profile-form-profile__city">
                     <label>{{_("city")}}</label>
                     {{ form.city}}
                 </div>
 
-                <div class="form-profile__state">
+                <div class="edit-profile-form-profile__state">
                     <label>{{_("state")}}</label>
                     {{ form.state}}
                 </div>
 
-                <div class="form-profile__country">
+                <div class="edit-profile-form-profile__country">
                     <label>{{_("country")}}</label>
                     {{ form.country}}
                 </div>
 
-                <div class="form-profile__birth-date">
+                <div class="edit-profile-form-profile__birth-date">
                     <label>{{_("birth_date")}}</label>
                     {{ form.birth_date}}
                 </div>
 
-                <div class="form-profile__occupation">
+                <div class="edit-profile-form-profile__occupation">
                     <label>{{_("occupation")}}</label>
                     {{ form.occupation}}
                 </div>
 
-                <div class="form-profile__education">
+                <div class="edit-profile-form-profile__education">
                     <label>{{_("education")}}</label>
                     {{ form.education}}
                 </div>
 
-                <div class="form-profile__ethnicity">
+                <div class="edit-profile-form-profile__ethnicity">
                     <label>{{_("ethnicity")}}</label>
                     {{ form.ethnicity}}
                 </div>
-                <div class="form-profile__gender_other">
+                <div class="edit-profile-form-profile__gender_other">
                     <label>{{_("gender")}}</label>
                     {{ form.gender}}
                 </div>
-                <div class="form-profile__political_activity">
+                <div class="edit-profile-form-profile__political_activity">
                     <label>{{_("political_activity")}}</label>
                     {{ form.political_activity}}
                 </div>
-                <div class="form-profile__biography">
+                <div class="edit-profile-form-profile__biography">
                     <label>{{_("biography")}}</label>
                     {{ form.biography}}
                 </div>
@@ -90,7 +90,7 @@
         <div class="content-grid">
             <div class="form-profile--buttons">
                 <input class="button form-profile--buttons__cancel" type="button" value="{{_('Cancel')}}" onclick="history.back()"/>
-                <input class="button form-profile--buttons__save" type="submit" name="submit" value="{{ _('Save') }}">
+                <input class="button form-profile--buttons__save" type="submit" name="submit" value="{{ _('save editions') }}">
             </div>
         </div>
     </form>
