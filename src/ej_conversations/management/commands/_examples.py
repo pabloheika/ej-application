@@ -59,7 +59,7 @@ class ExampleData:
 
     def new(self, question, title):
         return create_conversation(
-            question, title, self.get_staff_user, is_promoted=True, commit=False
+            question, title, self.get_staff_user(), is_promoted=True, commit=False
         )
 
     @bulk_create
