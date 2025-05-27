@@ -102,6 +102,85 @@ Follow "https://dev.to/ruanbekker/how-to-run-a-amd64-bit-linux-vm-on-a-mac-m1-51
      inv docker-up
 ```
 
+## MacOS Setup (Alternative Method)
+
+If you prefer to run the project directly on your Mac without a virtual machine, follow these steps:
+
+1. **Initial Setup**
+```sh
+# Clone the repository (if you haven't already)
+git clone https://gitlab.com/pencillabs/ej/ej-application
+cd ej-application
+```
+
+2. **Python Environment Setup**
+```sh
+# Install Python 3.11 (required version)
+brew install python@3.11
+
+# Create and activate a virtual environment with Python 3.11
+python3.11 -m venv .venv
+source .venv/bin/activate
+
+# Install required Python packages
+pip install invoke==2.0.0 django-environ
+```
+
+3. **Docker Setup**
+```sh
+# Build the Docker image with no cache
+inv docker-build --no-cache
+
+# Start the application
+inv docker-up
+```
+
+4. **Static Files Setup**
+```sh
+# Collect static files
+inv docker-exec "inv collect"
+
+# Compile SASS files
+inv docker-exec "inv sass"
+```
+
+5. **Create Superuser Account**
+```sh
+# Create a superuser for accessing the admin interface
+inv docker-exec "python manage.py createsuperuser"
+# Follow the prompts to create your admin account
+```
+
+6. **Social Authentication Setup** (Required for social login)
+   - Access Django admin at `http://localhost:8000/admin/`
+   - Log in with your superuser credentials
+   - Go to "Social applications" under "Social Accounts"
+   - Add a new social application:
+     - Provider: Google
+     - Name: EJ Google
+     - Client ID: (from Google Cloud Console)
+     - Secret Key: (from Google Cloud Console)
+     - Sites: Select your site
+
+7. **Google OAuth Setup** (Required for social login)
+   - Go to [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project or select existing one
+   - Enable Google+ API
+   - Create OAuth 2.0 credentials
+   - Set redirect URI to: `http://localhost:8000/accounts/google/login/callback/`
+   - Copy Client ID and Secret to Django admin
+
+After completing these steps, the application should be running at `http://localhost:8000` with:
+- Working static files (CSS/JS)
+- Working database
+- Working social authentication (once Google credentials are set up)
+- Working admin interface
+
+To populate the database with sample data:
+```sh
+inv docker-exec "inv db-fake"
+```
+
 # Tests
 
 If you are making changes to EJ codebase, do not forget to run tests frequently.
