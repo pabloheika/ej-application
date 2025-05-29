@@ -3,16 +3,20 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
+import logging
 
-from ej_users.serializers import UserAuthSerializer, UsersSerializer
+from ej_users.serializers import UserAuthSerializer, UsersSerializer, PasswordResetSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import User, UserSecretIdManager
+from .models import User, UserSecretIdManager, PasswordResetToken
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from dataclasses import dataclass
 from typing import Any
+
+log = logging.getLogger("ej")
 
 
 @dataclass
@@ -137,3 +141,45 @@ class UsersViewSet(viewsets.ModelViewSet):
         except KeyError:
             # action is not set return default permission_classes
             return [permission() for permission in self.permission_classes]
+
+    @action(detail=False, methods=["post"], permission_classes=[AllowAny], url_path="recover-password/(?P<token>[^/.]+)")
+    def recover_password(self, request, token=None):
+        """
+        Reset user password using a recovery token.
+        
+        Endpoint: POST /api/v1/users/recover-password/{token}/
+        Body: {"password": "new_password", "password_confirm": "new_password"}
+        """
+        # Get and validate the reset token
+        try:
+            reset_token = get_object_or_404(PasswordResetToken, url=token)
+        except Exception:
+            return Response({"error": _("Invalid or expired token")}, status=404)
+        
+        # Check if token is expired
+        if reset_token.is_expired:
+            return Response({"error": _("Token has expired")}, status=400)
+        
+        # Check if token was already used
+        if reset_token.is_used:
+            return Response({"error": _("Token has already been used")}, status=400)
+        
+        # Validate the password data
+        serializer = PasswordResetSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=400)
+        
+        # Update user password
+        user = reset_token.user
+        password = serializer.validated_data["password"]
+        user.set_password(password)
+        user.save()
+        
+        # Mark token as used and delete it
+        reset_token.use()
+        reset_token.delete()
+        
+        # Log the password reset
+        log.info(f"Password reset successful for user {user.email} using token {token}")
+        
+        return Response({"message": _("Password reset successful")}, status=200)

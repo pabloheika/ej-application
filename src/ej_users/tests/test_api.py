@@ -437,9 +437,148 @@ class TestUserAPI:
         assert response.status_code == 404
 
     def test_external_service_try_to_request_token_for_nonexistent_user(self, client, db):
+        ej_requests = EJRequests(client)
+        response = ej_requests.get_token(UserType.ANONYMOUS, self.SECRET_ID)
+        assert response.status_code == 404
+
+    def test_password_reset_with_valid_token(self, client, db, user):
+        """Test password reset with a valid token"""
+        from ej_users import password_reset_token
+        
+        # Create a password reset token
+        token = password_reset_token(user)
+        
+        # Test password reset
         response = client.post(
-            API_V1_URL + "/token/",
-            data={"email": "noexistentuser@mail.com", "password": "invalidpassword"},
+            API_V1_URL + f"/users/recover-password/{token.url}/",
+            data={
+                "password": "new_password123",
+                "password_confirm": "new_password123",
+            },
             content_type="application/json",
         )
+        
+        assert response.status_code == 200
+        response_data = response.json()
+        assert "message" in response_data
+        
+        # Verify password was changed
+        user.refresh_from_db()
+        assert user.check_password("new_password123")
+        
+        # Verify token was deleted
+        from ej_users.models import PasswordResetToken
+        assert not PasswordResetToken.objects.filter(url=token.url).exists()
+
+    def test_password_reset_with_invalid_token(self, client, db):
+        """Test password reset with an invalid token"""
+        response = client.post(
+            API_V1_URL + "/users/recover-password/invalid_token/",
+            data={
+                "password": "new_password123",
+                "password_confirm": "new_password123",
+            },
+            content_type="application/json",
+        )
+        
         assert response.status_code == 404
+        response_data = response.json()
+        assert "error" in response_data
+
+    def test_password_reset_with_expired_token(self, client, db, user):
+        """Test password reset with an expired token"""
+        from ej_users import password_reset_token
+        from ej_users.models import PasswordResetToken
+        from datetime import datetime, timezone, timedelta
+        
+        # Create a token and manually set it as expired
+        token = password_reset_token(user)
+        # Set created time to more than 10 minutes ago (600 seconds)
+        PasswordResetToken.objects.filter(url=token.url).update(
+            created=datetime.now(timezone.utc) - timedelta(seconds=700)
+        )
+        
+        response = client.post(
+            API_V1_URL + f"/users/recover-password/{token.url}/",
+            data={
+                "password": "new_password123",
+                "password_confirm": "new_password123",
+            },
+            content_type="application/json",
+        )
+        
+        assert response.status_code == 400
+        response_data = response.json()
+        assert "error" in response_data
+        assert "expired" in response_data["error"].lower()
+
+    def test_password_reset_with_used_token(self, client, db, user):
+        """Test password reset with an already used token"""
+        from ej_users import password_reset_token
+        
+        # Create a token and mark it as used
+        token = password_reset_token(user)
+        token.use()
+        
+        response = client.post(
+            API_V1_URL + f"/users/recover-password/{token.url}/",
+            data={
+                "password": "new_password123",
+                "password_confirm": "new_password123",
+            },
+            content_type="application/json",
+        )
+        
+        assert response.status_code == 400
+        response_data = response.json()
+        assert "error" in response_data
+        assert "used" in response_data["error"].lower()
+
+    def test_password_reset_with_mismatched_passwords(self, client, db, user):
+        """Test password reset with mismatched passwords"""
+        from ej_users import password_reset_token
+        
+        # Create a password reset token
+        token = password_reset_token(user)
+        
+        response = client.post(
+            API_V1_URL + f"/users/recover-password/{token.url}/",
+            data={
+                "password": "new_password123",
+                "password_confirm": "different_password",
+            },
+            content_type="application/json",
+        )
+        
+        assert response.status_code == 400
+        response_data = response.json()
+        assert "non_field_errors" in response_data or "password" in str(response_data)
+
+    def test_password_reset_with_missing_fields(self, client, db, user):
+        """Test password reset with missing required fields"""
+        from ej_users import password_reset_token
+        
+        # Create a password reset token
+        token = password_reset_token(user)
+        
+        # Test with missing password
+        response = client.post(
+            API_V1_URL + f"/users/recover-password/{token.url}/",
+            data={
+                "password_confirm": "new_password123",
+            },
+            content_type="application/json",
+        )
+        
+        assert response.status_code == 400
+        
+        # Test with missing password_confirm
+        response = client.post(
+            API_V1_URL + f"/users/recover-password/{token.url}/",
+            data={
+                "password": "new_password123",
+            },
+            content_type="application/json",
+        )
+        
+        assert response.status_code == 400

@@ -69,3 +69,28 @@ class UserAuthSerializer(serializers.Serializer):
     password = serializers.CharField(
         required=True, write_only=True, style={"input_type": "password"}
     )
+
+
+class PasswordResetSerializer(serializers.Serializer):
+    """
+    Serializer for password reset with token.
+    """
+    password = serializers.CharField(
+        required=True, 
+        write_only=True, 
+        style={"input_type": "password"}, 
+        max_length=128,
+        help_text=_("New password")
+    )
+    password_confirm = serializers.CharField(
+        required=True, 
+        write_only=True, 
+        style={"input_type": "password"}, 
+        max_length=128,
+        help_text=_("Confirm new password")
+    )
+
+    def validate(self, data):
+        if data["password"] != data["password_confirm"]:
+            raise serializers.ValidationError(_("Passwords do not match"))
+        return data
