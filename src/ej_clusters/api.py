@@ -12,6 +12,7 @@ from ej_clusters.serializers import (
 )
 from ej.permissions import IsOwner, IsSuperUser
 from rest_framework.permissions import IsAdminUser
+from rest_framework import status
 
 math = import_later(".math", package=__package__)
 
@@ -30,12 +31,20 @@ class ClusterizationViewSet(RestAPIBaseViewSet):
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
 
-    @action(detail=True)
+    @action(detail=True, methods=["get", "post"])
     def clusters(self, request, pk):
-        clusterization = self.get_object()
-        clusters = clusterization.clusters.all()
-        serializer = ClusterSerializer(clusters, context={"request": request}, many=True)
-        return Response(serializer.data)
+
+        if request.method == "GET":
+            clusterization = self.get_object()
+            clusters = clusterization.clusters.all()
+            serializer = ClusterSerializer(clusters, context={"request": request}, many=True)
+            return Response(serializer.data)
+        elif request.method == "POST":
+            clusterization = self.get_object()
+            serializer = ClusterSerializer(data=request.data, context={"request": request})
+            serializer.is_valid(raise_exception=True)
+            serializer.save(clusterization=clusterization)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(detail=True)
     def affinities(self, request, pk):
