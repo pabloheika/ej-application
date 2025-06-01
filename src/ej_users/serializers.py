@@ -1,7 +1,8 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from .models import User
-
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 class UsersSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=50, min_length=5, required=True)
@@ -69,3 +70,7 @@ class UserAuthSerializer(serializers.Serializer):
     password = serializers.CharField(
         required=True, write_only=True, style={"input_type": "password"}
     )
+
+
+class RecoverPasswordRequestSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
