@@ -3,7 +3,8 @@ from urllib import request
 from datetime import datetime
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from rest_framework import status
 from ej.permissions import (
     IsAuthor,
     IsAuthenticatedOnlyGetView,
@@ -199,6 +200,13 @@ class ConversationViewSet(RestAPIBaseViewSet):
 
         serializer = CommentSerializer(comment, context={"request": request})
         return Response(serializer.data)
+
+    @action(detail=False, methods=["post"], url_path="add", permission_classes=[AllowAny])
+    def add(self, request):
+        serializer = ConversationSerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        conversation = serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def filter_conversation_by_tag(
         self, request, is_promoted_queryset, tags, search_text
