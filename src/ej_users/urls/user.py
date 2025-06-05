@@ -30,7 +30,7 @@ urlpatterns = [
         user.api_key,
         name="api-key",
     ),
-    path("api/recover-password/", 
+    path("api/v1/recover-password/", 
          RecoverPasswordAPIView.as_view(), 
-         name="recover-password"),
+         name="recover-password-api"),
 ]
