@@ -1,5 +1,5 @@
 from django.urls import path
-from ej_dataviz.views import dataviz, report
+from ej_dataviz.views import api, dataviz, report
 
 app_name = "ej_dataviz"
 conversation_url = "<int:conversation_id>/<slug:slug>/"
@@ -88,6 +88,11 @@ dataviz_urlpatterns = [
         conversation_url + "dashboard/words.json",
         dataviz.words,
         name="words",
+    ),
+    path(
+        "api/v1/dataviz/conversations/" + conversation_url + "clusters/",
+        api.api_list_clusters,
+        name="api-list-clusters",
     ),
 ]
 
