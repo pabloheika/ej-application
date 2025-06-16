@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import DjangoModelPermissions
+from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated, BasePermission
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from django.utils.decorators import method_decorator
@@ -42,3 +42,21 @@ class SearchedBoardsAPIView(APIView):
         result_page = paginator.paginate_queryset(boards_qs, request)
         serializer = BoardSerializer(result_page, many=True, context={'request': request})
         return paginator.get_paginated_response(serializer.data)
+
+class CanAccessEnvironmentManagementPermission(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.has_perm('ej.can_access_environment_management')
+
+class FavoriteBoardsAPIView(APIView):
+    """
+    GET /api/admin/environment/favorite-boards/
+    Lista os boards favoritos do usuário autenticado.
+    Protegido por permissão 'ej.can_access_environment_management'.
+    """
+    permission_classes = [CanAccessEnvironmentManagementPermission]
+
+    def get(self, request):
+        user = request.user
+        favorite_boards = user.favorite_boards.order_by('-created')
+        serializer = BoardSerializer(favorite_boards, many=True, context={"request": request})
+        return Response(serializer.data)

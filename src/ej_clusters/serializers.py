@@ -65,7 +65,7 @@ class ClusterizationSerializer(BaseApiSerializer):
         fields = ["links", "conversation", "cluster_status"]
 
     def get_links(self, obj):
-        return {
+        links = {
             "self": reverse(
                 "v1-clusterizations-detail",
                 args=[obj.id],
@@ -91,7 +91,13 @@ class ClusterizationSerializer(BaseApiSerializer):
                 args=[obj.conversation.id],
                 request=self.context["request"],
             ),
+            "control": reverse(
+                "v1-clusterizations-control",
+                args=[obj.id],
+                request=self.context["request"],
+            ),
         }
+        return links
 
 
 class StereotypeSerializer(BaseApiSerializer):
