@@ -43,3 +43,37 @@ básicos de uma conversa como título e estatísticas de participação. Para ve
 permissões exigidas em cada endpoint, procure pelo atributo ``permission_classes`` nos
 módulos ``api.py`` da aplicação.
 
+Recuperação de Senha
+====================
+
+Para permitir que aplicações externas implementem funcionalidade de recuperação de senha,
+a API disponibiliza um endpoint específico para reset de senha com token:
+
+- ``/api/v1/users/recover-password/{token}/``: endpoint responsável por resetar a senha do usuário utilizando um token de recuperação. Espera um payload contendo a nova senha e sua confirmação.
+
+.. code-block:: json
+
+   {"password": "nova_senha_segura", "password_confirm": "nova_senha_segura"}
+
+**Fluxo de Recuperação de Senha:**
+
+1. O usuário solicita recuperação de senha através da interface web da EJ
+2. Um token de recuperação é gerado e enviado por email
+3. A aplicação externa pode usar o token para resetar a senha via API
+4. O token é invalidado após o uso ou expiração (10 minutos)
+
+**Validações Aplicadas:**
+
+- Token deve existir e não estar expirado
+- Token não pode ter sido usado anteriormente  
+- Senhas devem coincidir (password == password_confirm)
+- Token é automaticamente invalidado após uso bem-sucedido
+
+**Códigos de Resposta:**
+
+- ``200``: Senha resetada com sucesso
+- ``400``: Token expirado, já usado, ou dados inválidos
+- ``404``: Token não encontrado
+
+Este endpoint não requer autenticação JWT, pois utiliza o próprio token de recuperação como mecanismo de segurança.
+
