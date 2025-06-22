@@ -14,7 +14,7 @@ from ej import services
 from ej import views
 from ej.fixes import unregister_admin
 from ej_boards.api import BoardViewSet
-from ej_clusters.api import ClusterizationViewSet
+from ej_clusters.api import ClusterizationViewSet, StereotypeViewSet
 from ej_conversations.api import CommentViewSet, ConversationViewSet, VoteViewSet
 from ej_profiles.api import ProfileViewSet
 from ej_integrations.api import OpinionComponentViewSet, RasaConversationViewSet
@@ -37,6 +37,9 @@ api_router.register(r"comments", CommentViewSet, basename="v1-comments")
 api_router.register(r"votes", VoteViewSet, basename="v1-votes")
 api_router.register(
     r"clusterizations", ClusterizationViewSet, basename="v1-clusterizations"
+)
+api_router.register(
+    r"stereotypes", StereotypeViewSet, basename="v1-stereotypes"
 )
 api_router.register(r"profiles", ProfileViewSet, basename="v1-profiles")
 api_router.register(r"boards", BoardViewSet, basename="v1-boards")
