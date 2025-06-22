@@ -120,3 +120,14 @@ class IsViewRetrieve(permissions.BasePermission):
             return True
 
         return False
+
+
+class IsOwnerOrSuperUser(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        owner = getattr(obj, "owner", getattr(obj, "author", None))
+        if owner == request.user or request.user.is_superuser:
+            return True
+        return False

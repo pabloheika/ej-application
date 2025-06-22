@@ -10,7 +10,7 @@ from ej_clusters.serializers import (
     ClusterSerializer,
     StereotypeSerializer,
 )
-from ej.permissions import IsOwner, IsSuperUser
+from ej.permissions import IsOwnerOrSuperUser
 from rest_framework.permissions import IsAdminUser
 from ej_clusters.models import Stereotype
 
@@ -20,7 +20,7 @@ math = import_later(".math", package=__package__)
 class ClusterizationViewSet(RestAPIBaseViewSet):
     queryset = Clusterization.objects.all()
     serializer_class = ClusterizationSerializer
-    permission_classes = [IsOwner, IsSuperUser, IsAdminUser]
+    permission_classes = [IsOwnerOrSuperUser, IsAdminUser]
 
     def list(self, request):
         if request.user.is_superuser:
@@ -56,7 +56,7 @@ class ClusterizationViewSet(RestAPIBaseViewSet):
 class StereotypeViewSet(RestAPIBaseViewSet):
     queryset = Stereotype.objects.all()
     serializer_class = StereotypeSerializer
-    permission_classes = [IsOwner, IsSuperUser]
+    permission_classes = [IsOwnerOrSuperUser]
 
     def _get_conversation(self, stereotype):
         cluster = stereotype.clusters.first()
@@ -105,7 +105,7 @@ class StereotypeViewSet(RestAPIBaseViewSet):
             }
         )
 
-    @action(detail=True, methods=["post"], url_path="votes")
+    @action(detail=True, methods=["post"], url_path="votes", url_name="votes")
     def create_votes(self, request, pk=None):
         from ej_conversations.models import Comment
         from ej_conversations.enums import Choice
@@ -151,7 +151,7 @@ class StereotypeViewSet(RestAPIBaseViewSet):
 
         return Response({"voted": voted, "non_voted": non_voted})
 
-    @action(detail=True, methods=["put"], url_path="votes/bulk-update")
+    @action(detail=True, methods=["put"], url_path="votes/bulk-update", url_name="votes-bulk-update")
     def bulk_update_votes(self, request, pk=None):
         from ej_conversations.models import Comment
         from ej_conversations.enums import Choice
