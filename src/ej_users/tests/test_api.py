@@ -1,4 +1,5 @@
 import pytest
+from django.core import mail
 from ej_conversations.enums import Choice
 from ej_users.models import User
 from ej_conversations.tests.conftest import API_V1_URL
@@ -443,3 +444,42 @@ class TestUserAPI:
             content_type="application/json",
         )
         assert response.status_code == 404
+
+class TestRecoverPassword:
+
+    def test_recover_password_with_valid_email(self, client, db):
+        # Arrange: cria usuário no banco
+        user = User.objects.create_user(
+            email="margatufa@gmail.com", password="securepass123"
+        )
+
+        # Act: envia requisição para recuperação
+        response = client.post(
+            API_V1_URL + "/recover-password/",
+            data={"email": "margatufa@gmail.com"},
+            content_type="application/json",
+        )
+
+        # Assert: verifica resposta e e-mail enviado
+        assert response.status_code == 200
+        assert "message" in response.json()
+        assert len(mail.outbox) == 1
+        assert mail.outbox[0].to == ["margatufa@gmail.com"]
+
+    def test_recover_password_with_invalid_email(self, client, db):
+        response = client.post(
+            API_V1_URL + "/recover-password/",
+            data={"email": "nonexistent@example.com"},
+            content_type="application/json",
+        )
+        # Pode ser 200 ou 404, dependendo do comportamento esperado (ex: segurança)
+        assert response.status_code in [200, 404]
+
+    def test_recover_password_with_missing_email(self, client, db):
+        response = client.post(
+            API_V1_URL + "/recover-password/",
+            data={},
+            content_type="application/json",
+        )
+        assert response.status_code == 400
+        assert "email" in response.json()

@@ -3,8 +3,10 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
 
-from ej_users.serializers import UserAuthSerializer, UsersSerializer
+from ej_users.serializers import RecoverPasswordRequestSerializer, UserAuthSerializer, UsersSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import User, UserSecretIdManager
@@ -13,6 +15,16 @@ from rest_framework_simplejwt.views import (
 )
 from dataclasses import dataclass
 from typing import Any
+from django.conf import settings
+from django.core.mail import send_mail
+from django.template.loader import get_template
+from django.urls import reverse
+from django.contrib.auth import get_user_model
+from ej_users.models import PasswordResetToken
+import logging
+
+log = logging.getLogger("ej")
+User = get_user_model()
 
 
 @dataclass
@@ -137,3 +149,42 @@ class UsersViewSet(viewsets.ModelViewSet):
         except KeyError:
             # action is not set return default permission_classes
             return [permission() for permission in self.permission_classes]
+
+
+class RecoverPasswordAPIView(APIView):
+    """
+    POST /api/v1/users/recover-password/
+    Body: { "email": "user@email.com" }
+    Always returns 200 with a generic message.
+    """
+    permission_classes = []
+
+    def post(self, request):
+        serializer = RecoverPasswordRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data["email"]
+
+        user = User.objects.filter(email=email).first()
+        if user:
+            token = PasswordResetToken(user)
+            from_email = settings.DEFAULT_FROM_EMAIL
+            if getattr(settings, "DEFAULT_FROM_NAME", None):
+                from_email = f"{settings.DEFAULT_FROM_NAME} <{from_email}>"
+            path = reverse("auth:recover-password-token", kwargs={"token": token.url})
+            template = get_template("ej_users/recover-password-message.jinja2")
+            url = f"{request.scheme}://{request.get_host()}{path}"
+            email_body = template.render({"url": url}, request=request)
+            send_mail(
+                subject=_("Please reset your password"),
+                message=email_body,
+                from_email=from_email,
+                recipient_list=[email],
+            )
+            log.info(f"user {user} requested a password reset.")
+        else:
+            log.info(f"Password reset requested for non-existent email: {email}")
+
+        return Response(
+            {"message": _("If the email exists, a password reset link was sent.")},
+            status=status.HTTP_200_OK,
+        )
