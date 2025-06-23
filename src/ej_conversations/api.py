@@ -1,6 +1,7 @@
 import json
 from urllib import request
 from datetime import datetime
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -79,6 +80,16 @@ class ConversationViewSet(RestAPIBaseViewSet):
     permission_classes = (
         IsAuthenticatedOnlyGetView | IsViewRetrieve | IsRandomCommentAndNotAuthenticated,
     )
+
+    def get_permissions(self):
+        if self.action == 'destroy':
+            self.permission_classes = [IsAuthor | IsSuperUser]
+        return super().get_permissions()
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     def retrieve(self, request, pk):
         conversation = self.get_object()
