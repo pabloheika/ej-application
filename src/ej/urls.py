@@ -163,6 +163,8 @@ def get_urlpatterns():
             SpectacularSwaggerView.as_view(url_name="schema"),
             name="swagger",
         ),
+        # Inclui rotas de API administrativas customizadas
+        path("api/admin/", include("ej_admin.api_urls")),
         # Static files for the dev server
         *static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT),
         *static(settings.STATIC_URL, document_root=settings.STATIC_ROOT),

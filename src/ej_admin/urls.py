@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import include, path
 from . import views
+from . import api
 
 app_name = "ej_admin"
 
@@ -34,4 +35,10 @@ urlpatterns = [
         views.get_favorite_boards,
         name="favorite_boards",
     ),
+    path(
+        "api/admin/environment/searched-boards/",
+        api.SearchedBoardsAPIView.as_view(),
+        name="api_searched_boards",
+    ),
+    path("api/admin/environment/", include("ej_admin.api_urls")),
 ]
