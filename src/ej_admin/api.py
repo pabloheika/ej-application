@@ -6,7 +6,8 @@ from rest_framework import status
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 from ej_boards.serializers import BoardSerializer
-from .utils import apply_board_filters, NUM_ENTRIES_DEFAULT, PAGINATOR_START_PAGE
+from ej_users.serializers import UsersSerializer
+from .utils import apply_user_filters, apply_board_filters, NUM_ENTRIES_DEFAULT, PAGINATOR_START_PAGE
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiResponse
 
 class SearchedBoardsPagination(PageNumberPagination):
@@ -41,6 +42,44 @@ class SearchedBoardsAPIView(APIView):
         paginator.page_size = num_entries
         result_page = paginator.paginate_queryset(boards_qs, request)
         serializer = BoardSerializer(result_page, many=True, context={'request': request})
+        return paginator.get_paginated_response(serializer.data)
+
+@extend_schema(
+    summary="Busca usuarios com filtros, ordenação e paginação",
+    description="Endpoint para buscar usuarios com suporte a filtros por string, ordenação, paginação e proteção por permissão.",
+    parameters=[
+        OpenApiParameter(name="searchString", description="Texto para busca", required=False, type=str),
+        OpenApiParameter(name="orderBy", description="Campo de ordenação (date, conversations-count, comments-count)", required=False, type=str),
+        OpenApiParameter(name="sort", description="Ordem (asc ou desc)", required=False, type=str),
+        OpenApiParameter(name="page", description="Número da página", required=False, type=int),
+        OpenApiParameter(name="numEntries", description="Itens por página", required=False, type=int),
+    ],
+    responses={200: OpenApiResponse(response=UsersSerializer(many=True), description="Resposta paginada de usuarios")}
+)
+@method_decorator(permission_required('ej.can_access_environment_management'), name='dispatch')
+class SearchedUsersAPIView(APIView):
+    """
+    GET /api/admin/environment/searched-users/
+    Lista historico de usuarios pesquisados.
+    Protegido por permissão 'ej.can_access_environment_management'.
+    """
+    
+    def get(self, request):
+        num_entries = request.GET.get('numEntries', NUM_ENTRIES_DEFAULT)
+        order_by = request.GET.get('orderBy', 'date')
+        sort = request.GET.get('sort', 'desc')
+        search_string = request.GET.get('searchString', '')
+        page = int(request.GET.get('page', PAGINATOR_START_PAGE))
+
+        searched_users = apply_user_filters(order_by, sort, search_string)
+        
+        # O nome esta Boards, mas essa funcao funciona para qualquer paginacao. 
+        # TODO: alterar funcao para ser nomeada de forma generalista
+        paginator = SearchedBoardsPagination() 
+
+        paginator.page_size = num_entries
+        result_page = paginator.paginate_queryset(searched_users, request)
+        serializer = UsersSerializer(result_page, many=True, context={'request': request})
         return paginator.get_paginated_response(serializer.data)
 
 class CanAccessEnvironmentManagementPermission(BasePermission):
