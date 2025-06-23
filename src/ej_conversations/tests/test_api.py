@@ -1,10 +1,11 @@
 import pytest
 from django.utils.translation import gettext_lazy as _
+from rest_framework import status
 from rest_framework.viewsets import reverse
 
 from ej_boards.models import Board
 from ej_conversations.enums import Choice
-from ej_conversations.models import Comment, Vote
+from ej_conversations.models import Comment, Vote, Conversation 
 from ej_conversations.roles.comments import comment_summary
 from ej_conversations.tests.conftest import API_V1_URL, get_authorized_api_client
 from ej_users.models import User
@@ -579,3 +580,51 @@ class TestApiRoutes:
 
         vote = Vote.objects.first()
         assert vote.choice == Choice.DISAGREE
+
+@pytest.mark.django_db
+class TestDeleteConversation:
+    def test_delete_conversation_by_author_succeeds(self, conversation):
+        
+        author = conversation.author
+        api = get_authorized_api_client({"email": author.email, "password": "password"})
+
+        path = reverse("v1-conversations-detail", kwargs={"pk": conversation.id})
+
+        response = api.delete(path)
+
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+
+        assert not Conversation.objects.filter(id=conversation.id).exists()
+
+    def test_delete_conversation_by_superuser_succeeds(self, conversation, admin_user):
+
+        api = get_authorized_api_client({"email": admin_user.email, "password": "pass"})
+        
+        path = reverse("v1-conversations-detail", kwargs={"pk": conversation.id})
+        
+        response = api.delete(path)
+        
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert not Conversation.objects.filter(id=conversation.id).exists()
+
+    def test_delete_conversation_by_other_user_fails(self, conversation, other_user):
+        
+        api = get_authorized_api_client({"email": other_user.email, "password": "password"})
+        
+        path = reverse("v1-conversations-detail", kwargs={"pk": conversation.id})
+        
+        response = api.delete(path)
+        
+        assert response.status_code == status.HTTP_403_FORBIDDEN
+        
+        assert Conversation.objects.filter(id=conversation.id).exists()
+
+    def test_delete_conversation_by_unauthenticated_user_fails(self, conversation, api_client):
+        
+        path = reverse("v1-conversations-detail", kwargs={"pk": conversation.id})
+        
+        response = api_client.delete(path)
+        
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+        
+        assert Conversation.objects.filter(id=conversation.id).exists()
