@@ -45,7 +45,7 @@ módulos ``api.py`` da aplicação.
 
 .. _delete-conversation-endpoint:
 
-======================
+
 Deletar uma Conversa
 ======================
 
